@@ -1,0 +1,23 @@
+include *.md
+include *.txt
+recursive-include pywhy_graphs *.py
+
+### Exclude
+
+exclude .circleci/config.yml
+exclude .vscode/settings.json
+exclude CONTRIBUTING.md
+
+recursive-exclude experiments *
+recursive-exclude examples/.ipynb_checkpoints *
+exclude Makefile
+exclude .coveragerc
+exclude ignore_words.txt
+exclude .mailmap
+exclude *.pyc
+exclude *.toml
+
+recursive-exclude docs *
+recursive-exclude logo *
+recursive-exclude examples *
+recursive-exclude .github *
