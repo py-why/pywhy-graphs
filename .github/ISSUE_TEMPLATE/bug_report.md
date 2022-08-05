@@ -17,10 +17,10 @@ We reserve the right to close without a response bug reports which are incomplet
 <!-- To check an item on the list replace [ ] with [x]. -->
 
 - [ ] I have verified that the issue exists against the `main` branch.
-- [ ] I have read the relevant section in the [contribution guide](https://github.com/pywhy/pywhy-graphs/blob/main/CONTRIBUTING.md#bug-reports-and-feature-requests) on reporting bugs.
-- [ ] I have checked the [issues list](https://github.com/pywhy/pywhy-graphs/issues) for similar or identical bug reports.
-- [ ] I have checked the [pull requests list](https://github.com/pywhy/pywhy-graphs/pulls) for existing proposed fixes.
-- [ ] I have checked the [CHANGELOG](https://github.com/pywhy/pywhy-graphs/blob/main/CHANGELOG.md) and the [commit log](https://github.com/pywhy/pywhy-graphs/commits/main) to find out if the bug was already fixed in the main branch.
+- [ ] I have read the relevant section in the [contribution guide](https://github.com/py-why/pywhy-graphs/blob/main/CONTRIBUTING.md#bug-reports-and-feature-requests) on reporting bugs.
+- [ ] I have checked the [issues list](https://github.com/py-why/pywhy-graphs/issues) for similar or identical bug reports.
+- [ ] I have checked the [pull requests list](https://github.com/py-why/pywhy-graphs/pulls) for existing proposed fixes.
+- [ ] I have checked the [CHANGELOG](https://github.com/py-why/pywhy-graphs/blob/main/CHANGELOG.md) and the [commit log](https://github.com/py-why/pywhy-graphs/commits/main) to find out if the bug was already fixed in the main branch.
 - [ ] I have included in the "Description" section below a traceback from any exceptions related to this bug.
 - [ ] I have included in the "Related issues or possible duplicates" section beloew all related issues and possible duplicate issues (If there are none, check this box anyway).
 - [ ] I have included in the "Environment" section below the name of the operating system and Python version that I was using when I discovered this bug.

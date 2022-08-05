@@ -1,63 +1,159 @@
+[build-system]
+requires = ['setuptools >= 61.0.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'pywhy-graphs'
+version = '0.1.dev0'
+description = 'pywhy-graphs: Causal graphs from networkx.'
+readme = 'README.md'
+license = {file = 'LICENSE'}
+requires-python = '~=3.8'
+maintainers = [
+    {name = 'Adam Li', email = 'adam.li@columbia.edu'},
+]
+keywords = [
+    'machine-learning',
+    'graphs',
+    'networkx',
+    'neuroscience',
+    'causality',
+]
+classifiers = [
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: Unix',
+    'Operating System :: MacOS',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Natural Language :: English',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'Topic :: Software Development',
+    'Topic :: Scientific/Engineering',
+]
+dependencies = [
+    'numpy >= 1.16.0',
+    'scipy >= 1.2.0',
+    'networkx >= 2.8.3',
+    'importlib-resources; python_version<"3.9"',
+]
+
+[project.optional-dependencies]
+build = [
+    'build',
+    'twine',
+]
+doc = [
+    'memory_profiler',
+    'numpydoc',
+    'pydata-sphinx-theme',
+    'PyQt5',
+    'sphinx',
+    'sphinxcontrib-bibtex',
+    'sphinx-autodoc-typehints',
+    'sphinx-copybutton',
+    'sphinx-gallery',
+    'sphinx_rtd_theme',
+    'typing-extensions',
+    'pydot',
+    'pandas',
+    'matplotlib',
+    'graphviz',
+    'dowhy',
+]
+style = [
+    'black',
+    'codespell',
+    'isort',
+    'flake8',
+    'mypy',
+    'pydocstyle[toml]',
+]
+test = [
+    'pandas',
+    'pytest',
+    'pytest-cov',
+]
+all = [
+    'pywhy-graphs[build]',
+    'pywhy-graphs[doc]',
+    'pywhy-graphs[style]',
+    'pywhy-graphs[test]',
+]
+full = [
+    'pywhy-graphs[all]',
+]
+
+[project.urls]
+documentation = 'https://py-why/pywhy-graphs'
+source = 'https://github.com/py-why/pywhy-graphs'
+tracker = 'https://github.com/py-why/pywhy-graphs/issues'
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ['pywhy_graphs*']
+exclude = ['pywhy_graphs*tests']
+
 [tool.black]
 line-length = 100
-
+target-version = ['py38']
 include = '\.pyi?$'
-
-exclude = '''
+extend-exclude = '''
 (
       __pycache__
-    | \.git
-    | \.mypy_cache
-    | \.pytest_cache
-    | \.vscode
-    | \.venv
-    | \bdist\b
-    | \bdoc\b
+    | \.github
+    | setup.py
+    | docs/
+    | examples/
 )
 '''
 
-[tool.flake8]
-max-line-length = 115
+[tool.isort]
+profile = 'black'
+multi_line_output = 3
+line_length = 100
+py_version = 38
+extend_skip_glob = [
+    'setup.py',
+    'docs/*',
+    'examples/*',
+]
 
-ignore =
-    # these rules don't play well with black
-    # whitespace before :
-    E203
-    # line break before binary operator
-    W503
-    E241,E305,W504,W605,E731
-
-
-exclude =
-    .venv
-    .git
-    __pycache__
-    docs/build
-    dist
-    .mypy_cache
-    __init__.py
-    docs/auto_examples/*
-    docs/_build/*
-
-per-file-ignores =
-    # __init__.py files are allowed to have unused imports and lines-too-long
-    */__init__.py:F401
-    */**/**/__init__.py:F401,E501
-
+[tool.pydocstyle]
+convention = 'numpy'
+ignore-decorators = '(copy_doc|property|.*setter|.*getter|pyqtSlot|Slot)'
+match = '^(?!setup|__init__|test_).*\.py'
+match-dir = '^pywhy_graphs.*'
+add_ignore = 'D100,D104,D107'
 
 [tool.mypy]
 ignore_missing_imports = true
 no_site_packages = true
-allow_redefinition = True
-exclude = _script.py
 
-[tool.mypy-tests.*]
-strict_optional = false
+[tool.pytest.ini_options]
+minversion = '6.0'
+addopts = '--durations 20 --junit-xml=junit-results.xml --verbose'
+filterwarnings = []
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
+[tool.coverage.run]
+branch = true
+cover_pylib = false
+source = [
+    'pywhy_graphs',
+]
+omit = [
+    '**/__init__.py',
+    '**/tests/**',
+]
 
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+[tool.coverage.report]
+exclude_lines = [
+    'pragma: no cover',
+    'if __name__ == .__main__.:',
+]
+precision = 2

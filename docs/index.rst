@@ -28,15 +28,15 @@ Contents
    :hidden:
    :caption: Development
 
-   License <https://raw.githubusercontent.com/pywhy/pywhy-graphs/main/LICENSE>
-   Contributing <https://github.com/pywhy/pywhy-graphs/main/CONTRIBUTING.md>
+   License <https://raw.githubusercontent.com/py-why/pywhy-graphs/main/LICENSE>
+   Contributing <https://github.com/py-why/pywhy-graphs/main/CONTRIBUTING.md>
 
 Team
 ----
 
 **pywhy-graphs** is developed and maintained by pywhy.
 To learn more about who specifically contributed to this codebase, see
-`our contributors <https://github.com/pywhy/pywhy-graphs/graphs/contributors>`_ page.
+`our contributors <https://github.com/py-why/pywhy-graphs/graphs/contributors>`_ page.
 
 License
 -------

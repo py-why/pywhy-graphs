@@ -1,9 +1,0 @@
-# for plotting
-matplotlib
-pandas
-
-# for exporting to DOT format
-pydot
-
-# for interfacing with pgmpy
-pgmpy
