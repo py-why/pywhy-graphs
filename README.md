@@ -1,8 +1,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![CircleCI](https://circleci.com/gh/pywhy/pywhy-graphs/tree/main.svg?style=svg)](https://circleci.com/gh/pywhy/pywhy-graphs/tree/main)
-[![Main](https://github.com/pywhy/pywhy-graphs/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/pywhy/pywhy-graphs/actions/workflows/main.yml)
+[![CircleCI](https://circleci.com/gh/py-why/pywhy-graphs/tree/main.svg?style=svg)](https://circleci.com/gh/py-why/pywhy-graphs/tree/main)
+[![unit-tests](https://github.com/py-why/pywhy-graphs/actions/workflows/main.yml/badge.svg)](https://github.com/py-why/pywhy-graphs/actions/workflows/main.yml)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
-[![codecov](https://codecov.io/gh/pywhy/pywhy-graphs/branch/main/graph/badge.svg?token=H1reh7Qwf4)](https://codecov.io/gh/pywhy/pywhy-graphs)
+[![codecov](https://codecov.io/gh/py-why/pywhy-graphs/branch/main/graph/badge.svg?token=H1reh7Qwf4)](https://codecov.io/gh/py-why/pywhy-graphs)
 
 # PyWhy-Graphs
 
@@ -30,12 +30,9 @@ Installation is best done via `pip` or `conda`. For developers, they can also in
 Minimally, pywhy-graphs requires:
 
     * Python (>=3.8)
-    * NumPy
-    * SciPy
-    * Networkx
-
-For extra functionality, see the `extra-requirements.txt` for additional
-packages that one might install.
+    * numpy
+    * scipy
+    * networkx
 
 ## User Installation
 
@@ -44,9 +41,18 @@ If you already have a working installation of numpy, scipy and networkx, the eas
     # doesn't work until we make an official release :p
     pip install -U pywhy-graphs
 
+    # If you are a developer and would like to install the developer dependencies
+    pip install pywhy-graphs[doc,style,test]
+
+    # If you would like full functionality, which installs all of the above
+    pip install pywhy-graphs[all]
+
 To install the package from github, clone the repository and then `cd` into the directory:
 
     pip install -e .
+
+    # One can also add the different identifiers, such as '[doc]' to install
+    # extra dependencies
 
 # Current Limitations and Current Roadmap
 
