@@ -1,8 +1,8 @@
-from typing import FrozenSet, Dict, Iterator
+from typing import Dict, Iterator
 
-from collections import defaultdict
 import networkx as nx
 from graphs import MixedEdgeGraph
+
 from .base import AncestralMixin
 
 
@@ -13,8 +13,6 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
     Undirected edges imply uncertainty in the orientation of the causal
     relationship. For example, ``A - B``, can be ``A -> B`` or ``A <- B``,
     allowing for a Markov equivalence class of DAGs for each CPDAG.
-    This means that the number of DAGs represented by a CPDAG is $2^n$, where
-    ``n`` is the number of undirected edges present in the CPDAG.
 
     Parameters
     ----------
@@ -48,32 +46,42 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
     One should not use CPDAGs if they suspect their data has unobserved latent confounders.
     """
 
-    def __init__(self,
+    def __init__(
+        self,
         incoming_directed_edges=None,
         incoming_undirected_edges=None,
-        directed_edge_name='directed',
-        undirected_edge_name='undirected',
-        **attr):
+        directed_edge_name="directed",
+        undirected_edge_name="undirected",
+        **attr,
+    ):
         super().__init__(**attr)
         self.add_edge_type(nx.DiGraph(incoming_directed_edges), directed_edge_name)
         self.add_edge_type(nx.Graph(incoming_undirected_edges), undirected_edge_name)
 
         self._directed_name = directed_edge_name
         self._undirected_name = undirected_edge_name
-        
+
         if not nx.is_directed_acyclic_graph(self.sub_directed_graph()):
             raise RuntimeError(f"{self} is not a DAG, which it should be.")
 
-    def undirected_edges(self):
+        # extended patterns store unfaithful triples
+        # these can be used for conservative structure learning algorithm
+        self._unfaithful_triples = dict()
+
+    def undirected_edges(self) -> nx.reportviews.EdgeView:
+        """`EdgeView` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
-    def directed_edges(self):
+    def directed_edges(self) -> nx.reportviews.EdgeView:
+        """`EdgeView` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
 
-    def sub_directed_graph(self):
+    def sub_directed_graph(self) -> nx.DiGraph:
+        """Sub-graph of just the directed edges."""
         return self._get_internal_graph(self._directed_name)
 
-    def sub_undirected_graph(self):
+    def sub_undirected_graph(self) -> nx.Graph:
+        """Sub-graph of just the undirected edges."""
         return self._get_internal_graph(self._undirected_name)
 
     def orient_undirected_edge(self, u, v):
@@ -115,7 +123,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_undirected_graph.neighbors(n)
+        return self.sub_undirected_graph().neighbors(n)
 
     def possible_parents(self, n) -> Iterator:
         """Return an iterator over parents of node n.
@@ -136,22 +144,25 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_undirected_graph.neighbors(n)
-        
+        return self.sub_undirected_graph().neighbors(n)
 
+    def mark_unfaithful_triple(self, v_i, u, v_j) -> None:
+        """Mark an unfaithful triple.
 
-class ExtendedPattern(CPDAG):
-    def __init__(self, incoming_directed_edges=None, incoming_undirected_edges=None, directed_edge_name='directed', undirected_edge_name='undirected', **attr):
-        super().__init__(incoming_directed_edges, incoming_undirected_edges, directed_edge_name, undirected_edge_name, **attr)
-
-        # extended patterns store unfaithful triples
-        self._unfaithful_triples = dict()
-
-    def mark_unfaithful_triple(self, v_i, u, v_j):
+        Parameters
+        ----------
+        v_i : node
+            The first node in a triple.
+        u : node
+            The second node in a triple.
+        v_j : node
+            The third node in a triple.
+        """
         if any(node not in self.nodes for node in [v_i, u, v_j]):
             raise RuntimeError(f"The triple {v_i}, {u}, {v_j} is not in the graph.")
 
-        self._unfaithful_triples[frozenset(v_i, u, v_j)] = None
+        self._unfaithful_triples[frozenset(v_i, u, v_j)] = None  # type: ignore
 
     def unfaithful_triples(self) -> Dict:
+        """Unfaithful triples."""
         return self._unfaithful_triples

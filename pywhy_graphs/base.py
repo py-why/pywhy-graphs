@@ -1,16 +1,18 @@
-from typing import Set, Iterator
+from typing import Iterator, Set
 
 import networkx as nx
 
 
 class AncestralMixin:
+    """Mixin for graphs with ancestral functions."""
+
     def ancestors(self, source) -> Set:
         """Ancestors of 'source' node with directed path."""
-        return nx.ancestors(self.sub_directed_graph, source)
+        return nx.ancestors(self.sub_directed_graph(), source)  # type: ignore
 
     def descendants(self, source) -> Set:
         """Descendants of 'source' node with directed path."""
-        return nx.descendants(self.sub_directed_graph, source)
+        return nx.descendants(self.sub_directed_graph(), source)  # type: ignore
 
     def children(self, n) -> Iterator:
         """Return an iterator over children of node n.
@@ -31,7 +33,7 @@ class AncestralMixin:
         children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_directed_graph.successors(n)
+        return self.sub_directed_graph().successors(n)  # type: ignore
 
     def parents(self, n) -> Iterator:
         """Return an iterator over parents of node n.
@@ -52,4 +54,4 @@ class AncestralMixin:
         parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_directed_graph.predecessors(n)
+        return self.sub_directed_graph().predecessors(n)  # type: ignore
