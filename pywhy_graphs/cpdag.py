@@ -98,11 +98,11 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         v : node
             The node that 'u' points to in the graph.
         """
-        if not self.has_undirected_edge(u, v):
+        if not self.has_edge(u, v, self._undirected_name):
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
 
-        self.remove_undirected_edge(v, u)
-        self.add_edge(u, v)
+        self.remove_edge(v, u, self._undirected_name)
+        self.add_edge(u, v, self._directed_name)
 
     def possible_children(self, n) -> Iterator:
         """Return an iterator over children of node n.

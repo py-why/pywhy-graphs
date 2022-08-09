@@ -141,7 +141,6 @@ jobs:
         run: |
           python -m pip uninstall -yq networkx
       - name: Run pytest  # headless via Xvfb on linux
-        uses: GabrielBB/xvfb-action@v1.6
         with:
           run: pytest main/pywhy_graphs --cov=main/pywhy_graphs --cov-report=xml --cov-config=main/pyproject.toml
       - name: Upload coverage stats to codecov

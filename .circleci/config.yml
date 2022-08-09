@@ -45,9 +45,6 @@ jobs:
             name: Set BASH_ENV
             command: |
               set -e
-              curl https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/setup_xvfb.sh -o setup_xvfb.sh
-              chmod +x setup_xvfb.sh
-              ./setup_xvfb.sh
               sudo apt install -qq graphviz optipng python3.8-venv python3-venv libxft2
               python3.8 -m venv ~/python_env
               echo "set -e" >> $BASH_ENV
@@ -77,9 +74,7 @@ jobs:
               python -m pip install --progress-bar off --upgrade pip setuptools wheel
               python -m pip install --progress-bar off .
               python -m pip install --progress-bar off .[doc,gui]
-              python -m pip uninstall -yq mne mne-qt-browser
-              python -m pip install --progress-bar off git+https://github.com/py-why/mne-python
-              python -m pip install --progress-bar off git+https://github.com/py-why/mne-qt-browser
+              python -m pip install --progress-bar off git+https://github.com/py-why/pywhy-graphs
         - save_cache:
             name: Save pip cache
             key: pip-cache
@@ -94,9 +89,6 @@ jobs:
         - run:
             name: Check pip package versions
             command: pip freeze
-        - run:
-            name: Display MNE infos
-            command: QT_DEBUG_PLUGINS=1 mne sys_info -pd
         - run:
             name: Check installation
             command: |
@@ -167,10 +159,6 @@ jobs:
               python -m pip install --progress-bar off --upgrade pip setuptools wheel
               python -m pip install --progress-bar off .[doc]
         - run:
-            name: Check installation
-            command: |
-              mne sys_info -pd
-        - run:
             name: make linkcheck
             command: |
               make -C doc linkcheck
@@ -210,7 +198,7 @@ jobs:
               # see: https://github.com/tschaub/gh-pages/issues/354
               command: |
                 npm install gh-pages@3.0
-                git config --global user.email "circle@mne.com"
+                git config --global user.email "circle@pywhy.com"
                 git config --global user.name "Circle Ci"
           - add_ssh_keys:
               fingerprints:
