@@ -26,19 +26,7 @@ Version 0.1
 Changelog
 ---------
 
-- |Feature| Implement and test the :class:`pywhy_graphs.discovery.FCI` algorithm, by `Adam Li`_ (:gh:`1`)
-- |Feature| Implement :class:`pywhy_graphs.ci.KernelCITest` for kernel-based conditional independence testing, by `Adam Li`_ (:gh:`14`)
-- |Feature| Implement and test the :class:`pywhy_graphs.DAG` for fully observed causal DAGs, by `Adam Li`_ (:gh:`15`)
-- |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:gh:`16`)
-- |Feature| Implement and test the ``pywhy_graphs.discovery.learn_skeleton_graph_with_order`` for learning skeleton graph and keeping track of dependencies, by `Adam Li`_ (:gh:`17`)
-- |Feature| Implement and test the :class:`pywhy_graphs.discovery.RobustPC` for learning PC algorithm robustly with MCI condition, by `Adam Li`_ (:gh:`17`)
-- |Feature| Implement and test the :class:`pywhy_graphs.ci.ParentChildOracle` for running CI-discovery algorithms with the known parents, by `Adam Li`_ (:gh:`17`)
-- |Feature| Add ability to export/load causal graphs to networkx, by `Adam Li`_ (:gh:`17`)
-- |Feature| Add ability to export/load causal graphs to numpy and pgmpy, by `Adam Li`_ (:gh:`26`)
-- |Feature| Add ability to compare causal graphs, (i.e. CPDAGs and PAGs) for evaluation of structure learning, by `Adam Li`_ (:gh:`26`)
-- |API| All CI tests now have an abstract class representation for the ``test`` function, by `Adam Li`_ (:gh:`26`)
-- |API| Refactor the skeleton learning phase of the constraint-based causal discovery into a class of its own, by `Adam Li`_ (:gh:``)
-- |Feature| Adding the conservative PC algorithm :class:`pywhy_graphs.discovery.ConservativePC` for applying conservative rules to the orientations, by `Adam Li`_ (:gh:`29`)
+- |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:gh:`6`)
 
 Code and Documentation Contributors
 -----------------------------------
