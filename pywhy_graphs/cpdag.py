@@ -1,4 +1,4 @@
-from typing import Dict, Iterator
+from typing import Dict, FrozenSet, Iterator
 
 import networkx as nx
 from graphs import MixedEdgeGraph
@@ -68,10 +68,20 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         # these can be used for conservative structure learning algorithm
         self._unfaithful_triples = dict()
 
+    @property
+    def undirected_edge_name(self):
+        return self._undirected_name
+
+    @property
+    def directed_edge_name(self):
+        return self._directed_name
+
+    @property
     def undirected_edges(self) -> nx.reportviews.EdgeView:
         """`EdgeView` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
+    @property
     def directed_edges(self) -> nx.reportviews.EdgeView:
         """`EdgeView` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
@@ -84,7 +94,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         """Sub-graph of just the undirected edges."""
         return self._get_internal_graph(self._undirected_name)
 
-    def orient_undirected_edge(self, u, v):
+    def orient_uncertain_edge(self, u, v):
         """Orient undirected edge into an arrowhead.
 
         If there is an undirected edge u - v, then the arrowhead
@@ -163,6 +173,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
 
         self._unfaithful_triples[frozenset(v_i, u, v_j)] = None  # type: ignore
 
-    def unfaithful_triples(self) -> Dict:
+    @property
+    def excluded_triples(self) -> Dict[FrozenSet, None]:
         """Unfaithful triples."""
         return self._unfaithful_triples

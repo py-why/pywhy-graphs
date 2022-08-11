@@ -6,11 +6,11 @@ import networkx as nx
 class AncestralMixin:
     """Mixin for graphs with ancestral functions."""
 
-    def ancestors(self, source) -> Set:
+    def predecessors(self, source) -> Set:
         """Ancestors of 'source' node with directed path."""
         return nx.ancestors(self.sub_directed_graph(), source)  # type: ignore
 
-    def descendants(self, source) -> Set:
+    def successors(self, source) -> Set:
         """Descendants of 'source' node with directed path."""
         return nx.descendants(self.sub_directed_graph(), source)  # type: ignore
 

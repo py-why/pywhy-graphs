@@ -73,6 +73,18 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
         if not nx.is_directed_acyclic_graph(self.sub_directed_graph()):
             raise RuntimeError(f"{self} is not a DAG, which it should be.")
 
+    @property
+    def undirected_edge_name(self):
+        return self._undirected_name
+
+    @property
+    def directed_edge_name(self):
+        return self._directed_name
+
+    @property
+    def bidirected_edge_name(self):
+        return self._bidirected_name
+
     def c_components(self):
         """Generate confounded components of the graph.
 
@@ -84,14 +96,17 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
         return nx.connected_components(self.sub_bidirected_graph())
         # return [comp for comp in c_comps if len(comp) > 1]
 
+    @property
     def bidirected_edges(self) -> nx.reportviews.EdgeView:
         """`EdgeView` of the bidirected edges."""
         return self.get_graphs(self._bidirected_name).edges
 
+    @property
     def undirected_edges(self) -> nx.reportviews.EdgeView:
         """`EdgeView` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
+    @property
     def directed_edges(self) -> nx.reportviews.EdgeView:
         """`EdgeView` of the directed edges."""
         return self.get_graphs(self._directed_name).edges

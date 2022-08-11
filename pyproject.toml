@@ -53,7 +53,7 @@ doc = [
     'PyQt5',
     'sphinx',
     'sphinxcontrib-bibtex',
-    'sphinx-autodoc-typehints',
+    'sphinx-issues',
     'sphinx-copybutton',
     'sphinx-gallery',
     'sphinx_rtd_theme',
