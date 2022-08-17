@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pywhy-graphs"
+name = "pywhy_graphs"
 #
 # 0.0.0 is standard placeholder for poetry-dynamic-versioning
 # any changes to this should not be checked in
