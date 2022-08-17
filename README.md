@@ -42,18 +42,9 @@ If you already have a working installation of numpy, scipy and networkx, the eas
     pip install -U pywhy-graphs
 
     # If you are a developer and would like to install the developer dependencies
-    pip install pywhy-graphs[doc,style,test]
+    poetry install
 
-    # If you would like full functionality, which installs all of the above
-    pip install pywhy-graphs[all]
 
 To install the package from github, clone the repository and then `cd` into the directory:
 
     pip install -e .
-
-    # One can also add the different identifiers, such as '[doc]' to install
-    # extra dependencies
-
-# Current Limitations and Current Roadmap
-
-Currently, selection bias representation is not implemented in the graphs and corresponding algorithms. However, I believe it is technically feasible based on the design of how we use networkx.
