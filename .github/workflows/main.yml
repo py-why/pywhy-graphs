@@ -151,12 +151,12 @@ jobs:
         run: pip install poetry-dynamic-versioning
       - name: Install packages via poetry
         run: |
-          python -m poetry install
+          poetry install
       - name: Install Networkx (main)
         if: "matrix.networkx == 'main'"
         run: |
-          python -m pip uninstall -yq networkx
-          python -m pip install --progress-bar off git+https://github.com/networkx/networkx
+          pip uninstall -yq networkx
+          pip install --progress-bar off git+https://github.com/networkx/networkx
       - name: Run pytest  # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov
