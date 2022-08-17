@@ -93,7 +93,7 @@ jobs:
         run: |
           poetry install
       - name: Test package install
-        run: python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
+        run: poetry run python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
         run: python -m pip uninstall -yq pywhy_graphs
       - name: Check poetry lock file
