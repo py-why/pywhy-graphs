@@ -35,32 +35,21 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
         run: pip install poetry-dynamic-versioning
+      
+      # TODO: once poetry v1.2 is release, we want to only install dev dependencies
       - name: Install dependencies
         run: poetry install
-      - name: Run flake8
-        uses: py-actions/flake8@v2
-        with:
-          path: "pywhy_graphs"
-      - name: Run isort
-        uses: isort/isort-action@master
-      - name: Run black
-        uses: psf/black@stable
-        with:
-          options: "--check --verbose"
-      - name: Run codespell
-        uses: codespell-project/actions-codespell@master
-        with:
-          check_filenames: true
-          check_hidden: true
-          skip: './.git,./build,./.mypy_cache,./.pytest_cache'
-          ignore_words_file: ./.codespellignore
-      - name: Run pydocstyle
-        run: poetry run pydocstyle .
-      - name: Run mypy
-        uses: jpetrucciani/mypy-check@master
-        with:
-          path: './pywhy_graphs'
-          mypy_flags: '--config-file pyproject.toml'
+      
+      # check formatting of the code style
+      - name: Check code formatting
+        run: poetry run poe check_format
+
+      # this applies various linting
+      - name: Lint codebase
+        run: poetry run poe lint
+
+      - name: Typecheck
+        run: poetry run poe typecheck
 
   build:
     timeout-minutes: 10
