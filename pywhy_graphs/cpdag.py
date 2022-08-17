@@ -1,4 +1,4 @@
-from typing import Dict, FrozenSet, Iterable, Iterator
+from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 from graphs import MixedEdgeGraph
@@ -77,12 +77,12 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         return self._directed_name
 
     @property
-    def undirected_edges(self) -> Iterable:
+    def undirected_edges(self) -> Mapping:
         """``EdgeView`` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
     @property
-    def directed_edges(self) -> Iterable:
+    def directed_edges(self) -> Mapping:
         """``EdgeView`` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
 
@@ -94,7 +94,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         """Sub-graph of just the undirected edges."""
         return self._get_internal_graph(self._undirected_name)
 
-    def orient_uncertain_edge(self, u, v):
+    def orient_uncertain_edge(self, u, v) -> None:
         """Orient undirected edge into an arrowhead.
 
         If there is an undirected edge u - v, then the arrowhead

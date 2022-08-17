@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping
+from typing import Mapping
 
 import networkx as nx
 from graphs import MixedEdgeGraph

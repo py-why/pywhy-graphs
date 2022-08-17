@@ -91,7 +91,7 @@ jobs:
         run: pip install poetry-dynamic-versioning
       - name: Install from source
         run: |
-          python -m pip install -e .
+          poetry install
       - name: Test package install
         run: python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
