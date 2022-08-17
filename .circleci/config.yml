@@ -81,28 +81,28 @@ jobs:
       - run:
           name: Build documentation
           command: |
-            cd doc
+            cd docs
             poetry run make html
       # Save the example test results
       - store_test_results:
-          path: doc/_build/test-results
+          path: docs/_build/test-results
       - store_artifacts:
-          path: doc/_build/test-results
+          path: docs/_build/test-results
           destination: test-results
       # Save the SG RST
       - store_artifacts:
-          path: doc/auto_examples.zip
+          path: docs/auto_examples.zip
       - store_artifacts:
-          path: doc/generated.zip
+          path: docs/generated.zip
       # Save the outputs
       - store_artifacts:
-          path: doc/_build/html/
+          path: docs/_build/html/
           destination: dev
       - store_artifacts:
-          path: doc/_build/html_stable/
+          path: docs/_build/html_stable/
           destination: stable
       - persist_to_workspace:
-          root: doc/_build
+          root: docs/_build
           paths:
             - html
             - html_stable
@@ -145,7 +145,7 @@ jobs:
           command: |
             make -C doc linkcheck-grep
       - store_artifacts:
-          path: doc/_build/linkcheck
+          path: docs/_build/linkcheck
           destination: linkcheck
 
   deploy:
@@ -155,7 +155,7 @@ jobs:
       - checkout
 
       - attach_workspace:
-          at: doc/_build
+          at: docs/_build
       - run:
           name: Set BASH_ENV
           command: |
@@ -165,7 +165,7 @@ jobs:
       - run:
           name: Check docs
           command: |
-            if [ ! -f doc/_build/html/index.html ] && [ ! -f doc/_build/html_stable/index.html ]; then
+            if [ ! -f docs/_build/html/index.html ] && [ ! -f docs/_build/html_stable/index.html ]; then
               echo "No files found to upload (build: ${CIRCLE_BRANCH}).";
               circleci-agent step halt;
             fi;
@@ -186,10 +186,10 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               echo "Deploying dev doc for ${CIRCLE_BRANCH}.";
-              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist doc/_build/html --dest ./dev
+              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist docs/_build/html --dest ./dev
             else
               echo "Deploying stable doc for ${CIRCLE_BRANCH}.";
-              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist doc/_build/html_stable --dest ./stable
+              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist docs/_build/html_stable --dest ./stable
             fi;
 
 workflows:
