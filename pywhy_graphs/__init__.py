@@ -1,5 +1,4 @@
+from ._version import __version__  # noqa: F401
 from .admg import ADMG
 from .cpdag import CPDAG
 from .scm import StructuralCausalModel
-
-__version__ = "v0.1dev0"

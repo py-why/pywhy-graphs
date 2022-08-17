@@ -55,7 +55,7 @@ jobs:
           skip: './.git,./build,./.mypy_cache,./.pytest_cache'
           ignore_words_file: ./.codespellignore
       - name: Run pydocstyle
-        run: pydocstyle .
+        run: poetry run pydocstyle .
       - name: Run mypy
         uses: jpetrucciani/mypy-check@master
         with:
@@ -136,8 +136,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          path: main  # clone repository in a sub-directory
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
