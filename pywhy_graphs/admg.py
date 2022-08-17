@@ -1,3 +1,5 @@
+from typing import Iterable, Mapping
+
 import networkx as nx
 from graphs import MixedEdgeGraph
 
@@ -97,18 +99,18 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
         # return [comp for comp in c_comps if len(comp) > 1]
 
     @property
-    def bidirected_edges(self) -> nx.reportviews.EdgeView:
-        """`EdgeView` of the bidirected edges."""
+    def bidirected_edges(self) -> Mapping:
+        """``EdgeView`` of the bidirected edges."""
         return self.get_graphs(self._bidirected_name).edges
 
     @property
-    def undirected_edges(self) -> nx.reportviews.EdgeView:
-        """`EdgeView` of the undirected edges."""
+    def undirected_edges(self) -> Mapping:
+        """``EdgeView`` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
     @property
-    def directed_edges(self) -> nx.reportviews.EdgeView:
-        """`EdgeView` of the directed edges."""
+    def directed_edges(self) -> Mapping:
+        """``EdgeView`` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
 
     def sub_directed_graph(self) -> nx.DiGraph:

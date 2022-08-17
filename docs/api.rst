@@ -25,12 +25,3 @@ graphs encountered in the literature.
 
    CPDAG
    ADMG
-
-Converting Graphs
-=================
-.. currentmodule:: pywhy_graphs.algorithms
-
-.. autosummary::
-   :toctree: generated/
-
-   dag2cpdag

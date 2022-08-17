@@ -1,4 +1,4 @@
-from typing import Dict, FrozenSet, Iterator
+from typing import Dict, FrozenSet, Iterable, Iterator
 
 import networkx as nx
 from graphs import MixedEdgeGraph
@@ -77,13 +77,13 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         return self._directed_name
 
     @property
-    def undirected_edges(self) -> nx.reportviews.EdgeView:
-        """`EdgeView` of the undirected edges."""
+    def undirected_edges(self) -> Iterable:
+        """``EdgeView`` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
     @property
-    def directed_edges(self) -> nx.reportviews.EdgeView:
-        """`EdgeView` of the directed edges."""
+    def directed_edges(self) -> Iterable:
+        """``EdgeView`` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
 
     def sub_directed_graph(self) -> nx.DiGraph:
