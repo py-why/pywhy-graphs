@@ -47,7 +47,7 @@ graphs = { git = "https://github.com/py-why/graphs.git", branch = 'main' }
 
 # TODO: the below needs to be refactored into separate dev-dependencies
 # https://github.com/python-poetry/poetry/is
-# it is inefficient to have to install every single dependencey to run
+# it is inefficient to have to install every single dependency to run
 # e.g. a style check.
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"

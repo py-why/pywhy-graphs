@@ -40,7 +40,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
     CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
     these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
     causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
-    to be learned from score-based (such as the GES algorithm) and constraint-based
+    to be learned from score-based (such as the "GES" algorithm) and constraint-based
     (such as the PC algorithm) approaches for causal structure learning.
 
     One should not use CPDAGs if they suspect their data has unobserved latent confounders.
