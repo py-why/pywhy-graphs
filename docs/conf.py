@@ -20,20 +20,18 @@ from sphinx_gallery.sorting import ExampleTitleSortKey
 
 sys.path.insert(0, os.path.abspath("../"))
 
-from pywhy_graphs.version import VERSION, VERSION_SHORT  # noqa: E402
+import pywhy_graphs # noqa: E402
 
 curdir = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(curdir, "..")))
 sys.path.append(os.path.abspath(os.path.join(curdir, "..", "pywhy_graphs")))
-sys.path.append(os.path.abspath(os.path.join(curdir, "sphinxext")))
 
 # -- Project information -----------------------------------------------------
 
 project = "pywhy-graphs"
 copyright = f"{datetime.today().year}, Adam Li"
 author = "Adam Li"
-version = VERSION_SHORT
-release = VERSION
+version = pywhy_graphs.__version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -49,7 +47,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
-    "sphinx_autodoc_typehints",
+    'sphinx_issues',
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx_gallery.gen_gallery",
@@ -58,7 +56,6 @@ extensions = [
     "numpydoc",
     'IPython.sphinxext.ipython_console_highlighting',
     "nbsphinx",
-    "gh_substitutions",
 ]
 
 # configure sphinx-copybutton
@@ -68,9 +65,11 @@ copybutton_prompt_is_regexp = True
 # generate autosummary even if no references
 # -- sphinx.ext.autosummary
 autosummary_generate = True
-
 autodoc_default_options = {"inherited-members": None}
-autodoc_typehints = "signature"
+# autodoc_typehints = "signature"
+
+# TODO: remove when MixedEdgeGraph PRed to networkx
+autodoc_inherit_docstrings = True
 
 # -- numpydoc
 # Below is needed to prevent errors
@@ -79,6 +78,9 @@ numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
 numpydoc_use_blockquotes = True
 numpydoc_validate = True
+
+# TODO: remove once MixedEdgeGraph is PRed to networkx
+numpydoc_validation_exclude = {"graphs"}
 
 numpydoc_xref_ignore = {
     # words
@@ -107,12 +109,15 @@ numpydoc_xref_ignore = {
     "keyword",
     "arguments",
     "no",
-    "attributes",
+    "attributes", "dictionary",
     "DAG", "causal", "CPDAG", "PAG", "ADMG",
     # networkx
     "node",
     "nodes",
     "graph",
+    "directed", "bidirected", "undirected", "single", "G.name", "n in G",
+    "MixedEdgeGraph", "collection", "u", "v", "EdgeView", "AdjacencyView",
+    "DegreeView", "Graph", "sets", "value",
     # shapes
     "n_times",
     "obj",
@@ -128,7 +133,10 @@ numpydoc_xref_aliases = {
     # Networkx
     "nx.Graph": "networkx.Graph",
     "nx.DiGraph": "networkx.DiGraph",
+    "Graph": "networkx.Graph",
+    "DiGraph": "networkx.DiGraph",
     "nx.MultiDiGraph": "networkx.MultiDiGraph",
+    "NetworkXError": "networkx.NetworkXError",
     "pgmpy.models.BayesianNetwork": "pgmpy.models.BayesianNetwork",
     # pywhy-graphs
     "ADMG": "pywhy_graphs.ADMG",
@@ -143,7 +151,7 @@ numpydoc_xref_aliases = {
     "column": "pandas.DataFrame.columns",
 }
 
-default_role = "py:obj"
+default_role = "obj"
 
 # Tell myst-parser to assign header anchors for h1-h3.
 # myst_heading_anchors = 3
@@ -169,11 +177,8 @@ intersphinx_mapping = {
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest", None),
     "networkx": ("https://networkx.org/documentation/latest/", None),
+    "nx-guides": ("https://networkx.org/nx-guides/", None),
     "matplotlib": ("https://matplotlib.org/stable", None),
-    # Uncomment these if you use them in your codebase:
-    #  "torch": ("https://pytorch.org/docs/stable", None),
-    #  "datasets": ("https://huggingface.co/docs/datasets/master/en", None),
-    #  "transformers": ("https://huggingface.co/docs/transformers/master/en", None),
 }
 intersphinx_timeout = 5
 
@@ -197,7 +202,7 @@ master_doc = "index"
 
 html_theme = "pydata_sphinx_theme"
 
-html_title = f"pywhy-graphs v{VERSION}"
+html_title = f"pywhy-graphs v{version}"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -253,5 +258,5 @@ html_context = {
 # Enable nitpicky mode - which ensures that all references in the docs
 # resolve.
 
-nitpicky = True
-nitpick_ignore = []
+nitpicky = False
+nitpick_ignore = [('py:obj', 'MixedEdgeGraph')]
