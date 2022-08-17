@@ -75,7 +75,7 @@ jobs:
       - run:
           name: Check installation
           command: |
-            poetry run python -c "import dodiscover;"
+            poetry run python -c "import pywhy_graphs;"
             poetry run python -c "import numpy; numpy.show_config()"
             LIBGL_DEBUG=verbose poetry run python -c "import matplotlib.pyplot as plt; plt.figure()"
       - run:
