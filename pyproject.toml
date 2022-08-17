@@ -83,7 +83,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 _flake8 = 'flake8'
-_bandit = 'bandit -r pywhy_graphs'
+_bandit = 'bandit -r pywhy_graphs -c pyproject.toml'
 _black = 'black .'
 _isort = 'isort .'
 _black_check = 'black --check pywhy_graphs examples'
@@ -170,3 +170,6 @@ omit = ['**/__init__.py', '**/tests/**']
 [tool.coverage.report]
 exclude_lines = ['pragma: no cover', 'if __name__ == .__main__.:']
 precision = 2
+
+[tool.bandit]
+exclude_dirs = ["tests"]

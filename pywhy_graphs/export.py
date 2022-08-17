@@ -106,7 +106,8 @@ def to_numpy(causal_graph):
     # ADMGs can have two edges between any 2 nodes
     if type(causal_graph).__name__ == "ADMG":
         # we handle this case separately from the other graphs
-        assert len(graph_map) == 1
+        if len(graph_map) != 1:
+            raise AssertionError("The number of graph maps should be 1...")
 
         # set all bidirected edges with value 10
         bidirected_graph_arr[bidirected_graph_arr != 0] = 10
