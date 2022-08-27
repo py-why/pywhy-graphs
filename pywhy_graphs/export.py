@@ -2,7 +2,6 @@ from copy import deepcopy
 
 import networkx as nx
 import numpy as np
-from graphs import MixedEdgeGraph
 
 from pywhy_graphs import ADMG
 
@@ -15,7 +14,7 @@ EDGE_TO_VALUE_MAPPING = {
 }
 
 
-def to_digraph(graph: MixedEdgeGraph):
+def to_digraph(graph: nx.MixedEdgeGraph):
     """Convert causal graph to a uni-edge networkx directed graph.
 
     Parameters

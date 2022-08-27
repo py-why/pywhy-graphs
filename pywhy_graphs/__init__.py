@@ -1,4 +1,3 @@
 from ._version import __version__  # noqa: F401
-from .admg import ADMG
-from .cpdag import CPDAG
+from .classes import ADMG, CPDAG, PAG
 from .scm import StructuralCausalModel
