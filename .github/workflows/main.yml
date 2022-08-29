@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-          poetry-version: [1.1.14]
+          poetry-version: [1.1.15]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -48,8 +48,8 @@ jobs:
       - name: Lint codebase
         run: poetry run poe lint
 
-      - name: Typecheck
-        run: poetry run poe typecheck
+      - name: Type check
+        run: poetry run poe type_check
 
   build:
     timeout-minutes: 10
@@ -58,7 +58,7 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         python-version: [3.8, 3.9, "3.10"]
-        poetry-version: [1.1.14]
+        poetry-version: [1.1.15]
     name: build ${{ matrix.os }} - py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -81,6 +81,11 @@ jobs:
       - name: Install from source
         run: |
           poetry install
+          # TODO: remove when networkx merges... or poetry update
+          git clone https://github.com/adam2392/networkx.git
+          cd networkx;
+          git checkout mixededge;
+          poetry run pip install -e .;
       - name: Test package install
         run: poetry run python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
@@ -115,7 +120,7 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         python-version: [3.8, "3.10"]  # oldest and newest supported versions
-        poetry-version: [1.1.14]
+        poetry-version: [1.1.15]
         networkx: [stable, main]
     name: pytest ${{ matrix.os }} - py${{ matrix.python-version }} - Networkx ${{ matrix.networkx }}
     runs-on: ${{ matrix.os }}-latest
@@ -139,11 +144,17 @@ jobs:
       - name: Install packages via poetry
         run: |
           poetry install
-      - name: Install Networkx (main)
-        if: "matrix.networkx == 'main'"
-        run: |
-          pip uninstall -yq networkx
-          pip install --progress-bar off git+https://github.com/networkx/networkx
+          # TODO: remove when networkx merges... or poetry update
+          git clone https://github.com/adam2392/networkx.git
+          cd networkx;
+          git checkout mixededge;
+          poetry run pip install -e .;
+      # TODO: uncomment, when MixedEdgeGraph PRed into networkx
+      # - name: Install Networkx (main)
+      #   if: "matrix.networkx == 'main'"
+      #   run: |
+      #     pip uninstall -yq networkx
+      #     pip install --progress-bar off git+https://github.com/networkx/networkx
       - name: Run pytest  # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov

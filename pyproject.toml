@@ -36,14 +36,10 @@ exclude = ['*tests']
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-beartype = "^0.10.4"
 numpy = "^1.23.0"
 scipy = "^1.9.0"
-networkx = "^2.8.3"
-scikit-learn = "^1.1.0"
-pandas = "^1.1"
+networkx = { git = "https://github.com/adam2392/networkx.git", branch = 'mixededge' }
 importlib-resources = { version = "*", python = "<3.9" }
-graphs = { git = "https://github.com/py-why/graphs.git", branch = 'main' }
 
 # TODO: the below needs to be refactored into separate dev-dependencies
 # https://github.com/python-poetry/poetry/is
@@ -93,7 +89,7 @@ _codespell = 'codespell pywhy_graphs/ doc/ examples/ --ignore-words=.codespellig
 _changelog = 'semversioner changelog > CHANGELOG.md'
 _apply_version = 'semversioner release'
 
-typecheck = 'mypy -p pywhy_graphs --config-file pyproject.toml'
+type_check = 'mypy -p pywhy_graphs --config-file pyproject.toml'
 unit_test = 'pytest ./pywhy_graphs --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
 integration_test = 'pytest tests/integration_tests'
 build_docs = 'make build-docs'
@@ -114,7 +110,7 @@ ignore_fail = 'return_non_zero'
 # a standard verification sequence for use in pull requests
 #
 [[tool.poe.tasks.verify]]
-sequence = ['apply_format', 'lint', 'typecheck', 'unit_test']
+sequence = ['apply_format', 'lint', 'type_check', 'unit_test']
 ignore_fail = "return_non_zero"
 
 [[tool.poe.tasks.release]]

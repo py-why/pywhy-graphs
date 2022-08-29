@@ -41,10 +41,15 @@ If you already have a working installation of numpy, scipy and networkx, the eas
     # doesn't work until we make an official release :p
     pip install -U pywhy-graphs
 
-    # If you are a developer and would like to install the developer dependencies
+To install the package from github, clone the repository and then `cd` into the directory. You can then use `poetry` to install:
+
     poetry install
 
+    # for time-series graph functionality
+    poetry install --extras ts
 
-To install the package from github, clone the repository and then `cd` into the directory:
+    # for vizualizing graph functionality
+    poetry install --extras viz
 
+    # if you would like an editable install of dodiscover for dev purposes
     pip install -e .

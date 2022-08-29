@@ -1,3 +1,4 @@
+import networkx as nx
 import pytest
 
 from pywhy_graphs import ADMG, CPDAG
@@ -134,23 +135,22 @@ class TestADMG(BaseGraph):
     #     copy_hash = hash(G_copy)
     #     assert G_hash == copy_hash
 
-    # def test_m_separation(self):
-    #     G = self.G.copy()
-    #     # add collider on 0
-    #     G.add_edge(3, 0)
+    def test_m_separation(self):
+        G = self.G.copy()
+        # add collider on 0
+        G.add_edge(3, 0, G.directed_edge_name)
 
-    #     # normal d-separation statements should hold
-    #     assert not d_separated(G, 1, 2, set())
-    #     assert not d_separated(G, 1, 2)
-    #     assert d_separated(G, 1, 2, 0)
+        # normal d-separation statements should hold
+        assert not nx.m_separated(G, {1}, {2}, set())
+        assert nx.m_separated(G, {1}, {2}, {0})
 
-    #     # when we add an edge from 0 -> 1
-    #     # there is no d-separation statement
-    #     assert not d_separated(G, 3, 1, set())
-    #     assert not d_separated(G, 3, 1, 0)
+        # when we add an edge from 0 -> 1
+        # there is no d-separation statement
+        assert not nx.m_separated(G, {3}, {1}, set())
+        assert not nx.m_separated(G, {3}, {1}, {0})
 
-    #     # test collider works on bidirected edge
-    #     # 1 <-> 0
-    #     G.remove_edge(0, 1)
-    #     assert d_separated(G, 3, 1, set())
-    #     assert not d_separated(G, 3, 1, 0)
+        # test collider works on bidirected edge
+        # 1 <-> 0
+        G.remove_edge(0, 1, G.directed_edge_name)
+        assert nx.m_separated(G, {3}, {1}, set())
+        assert not nx.m_separated(G, {3}, {1}, {0})

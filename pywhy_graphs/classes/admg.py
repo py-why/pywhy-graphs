@@ -1,12 +1,11 @@
-from typing import Mapping
+from typing import Iterator, Mapping, Set
 
 import networkx as nx
-from graphs import MixedEdgeGraph
 
 from .base import AncestralMixin
 
 
-class ADMG(MixedEdgeGraph, AncestralMixin):
+class ADMG(nx.MixedEdgeGraph, AncestralMixin):
     """Acyclic directed mixed graph (ADMG).
 
     A causal graph with two different edge types: bidirected and traditional
@@ -58,9 +57,9 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
         incoming_directed_edges=None,
         incoming_bidirected_edges=None,
         incoming_undirected_edges=None,
-        directed_edge_name="directed",
-        bidirected_edge_name="bidirected",
-        undirected_edge_name="undirected",
+        directed_edge_name: str = "directed",
+        bidirected_edge_name: str = "bidirected",
+        undirected_edge_name: str = "undirected",
         **attr,
     ):
         super().__init__(**attr)
@@ -76,18 +75,21 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
             raise RuntimeError(f"{self} is not a DAG, which it should be.")
 
     @property
-    def undirected_edge_name(self):
+    def undirected_edge_name(self) -> str:
+        """Name of the undirected edge internal graph."""
         return self._undirected_name
 
     @property
-    def directed_edge_name(self):
+    def directed_edge_name(self) -> str:
+        """Name of the directed edge internal graph."""
         return self._directed_name
 
     @property
-    def bidirected_edge_name(self):
+    def bidirected_edge_name(self) -> str:
+        """Name of the bidirected edge internal graph."""
         return self._bidirected_name
 
-    def c_components(self):
+    def c_components(self) -> Iterator[Set]:
         """Generate confounded components of the graph.
 
         Returns
@@ -96,7 +98,6 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
             The c-components.
         """
         return nx.connected_components(self.sub_bidirected_graph())
-        # return [comp for comp in c_comps if len(comp) > 1]
 
     @property
     def bidirected_edges(self) -> Mapping:
