@@ -933,7 +933,7 @@ test = ["codecov (>=2.1)", "pytest (>=7.1)", "pytest-cov (>=3.0)"]
 type = "git"
 url = "https://github.com/adam2392/networkx.git"
 reference = 'mixededge'
-resolved_reference = "d95c9bb5629c7a598683f0e80c7c2619282f4ee5"
+resolved_reference = "7d49aed196249a357aa21fe1628b78696a6b970d"
 
 [[package]]
 name = "numpy"
