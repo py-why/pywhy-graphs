@@ -82,7 +82,7 @@ jobs:
         run: |
           poetry install
           # TODO: remove when networkx merges... or poetry update
-          poetry run pip install https://api.github.com/adam2392/networkx/zipball/main
+          poetry run pip install https://api.github.com/repos/adam2392/networkx/zipball/mixededge
       - name: Test package install
         run: poetry run python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
@@ -141,7 +141,7 @@ jobs:
       - name: Install packages via poetry
         run: |
           poetry install
-          poetry run pip install https://api.github.com/adam2392/networkx/zipball/main
+          poetry run pip install https://api.github.com/repos/adam2392/networkx/zipball/mixededge
       # TODO: uncomment, when MixedEdgeGraph PRed into networkx
       # - name: Install Networkx (main)
       #   if: "matrix.networkx == 'main'"

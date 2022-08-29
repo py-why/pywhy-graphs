@@ -56,7 +56,7 @@ jobs:
           command: |
             poetry --version
             poetry show
-            poetry run pip install https://api.github.com/adam2392/networkx/zipball/main
+            poetry run pip install https://api.github.com/repos/adam2392/networkx/zipball/mixededge
       - run:
           name: Set BASH_ENV
           command: |
