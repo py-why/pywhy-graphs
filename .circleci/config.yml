@@ -50,12 +50,16 @@ jobs:
             curl -sSL https://install.python-poetry.org | python3 -
       - python/install-packages:
           pkg-manager: poetry
-          cache-version: "v2" # change to clear cache
+          cache-version: "v1" # change to clear cache
       - run:
           name: Check poetry package versions
           command: |
             poetry --version
             poetry show
+            git clone https://github.com/adam2392/networkx.git
+            cd networkx;
+            git checkout mixededge;
+            poetry run pip install -e .;
       - run:
           name: Set BASH_ENV
           command: |
