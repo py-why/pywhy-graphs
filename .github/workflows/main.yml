@@ -48,8 +48,8 @@ jobs:
       - name: Lint codebase
         run: poetry run poe lint
 
-      - name: Typecheck
-        run: poetry run poe typecheck
+      - name: Type check
+        run: poetry run poe type_check
 
   build:
     timeout-minutes: 10
