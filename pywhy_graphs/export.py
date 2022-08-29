@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import networkx as nx
 import numpy as np
-from graphs import MixedEdgeGraph
+from networkx import MixedEdgeGraph
 
 from pywhy_graphs import ADMG
 
