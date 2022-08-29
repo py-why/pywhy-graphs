@@ -1,4 +1,4 @@
-from graphs import MixedEdgeGraph
+from networkx import MixedEdgeGraph
 
 
 def draw(G: MixedEdgeGraph, direction=None, filename=None):

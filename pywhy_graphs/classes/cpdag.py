@@ -67,10 +67,12 @@ class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
 
     @property
     def undirected_edge_name(self) -> str:
+        """Name of the undirected edge internal graph."""
         return self._undirected_name
 
     @property
     def directed_edge_name(self) -> str:
+        """Name of the directed edge internal graph."""
         return self._directed_name
 
     @property

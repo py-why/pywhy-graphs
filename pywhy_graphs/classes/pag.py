@@ -1,8 +1,8 @@
-from typing import Iterator, Mapping
+from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
-from pywhy_graphs.base import ConservativeMixin
+from pywhy_graphs.classes.base import ConservativeMixin
 from pywhy_graphs.typing import Node
 
 from .admg import ADMG
@@ -86,7 +86,7 @@ class PAG(ADMG, ConservativeMixin):
 
         # extended patterns store unfaithful triples
         # these can be used for conservative structure learning algorithm
-        self._unfaithful_triples = dict()
+        self._unfaithful_triples: Dict[FrozenSet[Node], None] = dict()
 
     @property
     def circle_edge_name(self) -> str:
@@ -124,11 +124,9 @@ class PAG(ADMG, ConservativeMixin):
     def possible_children(self, n: Node) -> Iterator:
         """Return an iterator over children of node n.
 
-        Children of node 'n' are nodes with a directed
-        edge from 'n' to that node. For example,
-        'n' -> 'x', 'n' -> 'y'. Nodes only connected
-        via a bidirected edge are not considered children:
-        'n' <-> 'y'.
+        Possible children of 'n' are nodes with an edge like
+        'n' o-> 'x'. Nodes with 'n' o-o 'x' are not considered
+        possible children.
 
         Parameters
         ----------
@@ -137,19 +135,17 @@ class PAG(ADMG, ConservativeMixin):
 
         Returns
         -------
-        children : Iterator
+        possible_children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_circle_graph().neighbors(n)
+        return self.sub_directed_graph().successors(n)
 
     def possible_parents(self, n: Node) -> Iterator:
-        """Return an iterator over parents of node n.
+        """Return an iterator over possible parents of node n.
 
-        Parents of node 'n' are nodes with a directed
-        edge from 'n' to that node. For example,
-        'n' <- 'x', 'n' <- 'y'. Nodes only connected
-        via a bidirected edge are not considered parents:
-        'n' <-> 'y'.
+        Possible parents of 'n' are nodes with an edge like
+        'n' <-o 'x'. Nodes with 'n' o-o 'x' are not considered
+        possible parents.
 
         Parameters
         ----------
@@ -158,7 +154,63 @@ class PAG(ADMG, ConservativeMixin):
 
         Returns
         -------
-        parents : Iterator
+        possible_parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_circle_graph().neighbors(n)
+        return self.sub_directed_graph().predecessors(n)
+
+    def parents(self, n: Node) -> Iterator:
+        """Return the definite parents of node 'n' in a PAG.
+
+        Definite parents are parents of node 'n' with only
+        a directed edge between them from 'n' <- 'x'. For example,
+        'n' <-o 'x' does not qualify 'x' as a parent of 'n'.
+
+        Parameters
+        ----------
+        n : node
+            A node in the causal DAG.
+
+        Yields
+        ------
+        parents : Iterator
+            An iterator of the definite parents of node 'n'.
+
+        See Also
+        --------
+        possible_children
+        children
+        possible_parents
+        """
+        possible_parents = self.possible_parents(n)
+        for node in possible_parents:
+            if not self.has_edge(n, node, self.circle_edge_name):
+                yield node
+
+    def children(self, n: Node) -> Iterator:
+        """Return the definite children of node 'n' in a PAG.
+
+        Definite children are children of node 'n' with only
+        a directed edge between them from 'n' -> 'x'. For example,
+        'n' o-> 'x' does not qualify 'x' as a children of 'n'.
+
+        Parameters
+        ----------
+        n : node
+            A node in the causal DAG.
+
+        Yields
+        ------
+        children : Iterator
+            An iterator of the children of node 'n'.
+
+        See Also
+        --------
+        possible_children
+        parents
+        possible_parents
+        """
+        possible_children = self.possible_children(n)
+        for node in possible_children:
+            if not self.has_edge(node, n, self.circle_edge_name):
+                yield node

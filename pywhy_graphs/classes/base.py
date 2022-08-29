@@ -16,7 +16,9 @@ class GraphMixinProtocol(Protocol):
 class ConservativeMixinProtocol(Protocol):
     """Protocol for any mixin for conservative graphs."""
 
-    _unfaithful_triples: Dict[FrozenSet, None]
+    # extended patterns store unfaithful triples
+    # these can be used for conservative structure learning algorithm
+    _unfaithful_triples: Dict[FrozenSet[Node], None]
 
     @property
     def nodes(self) -> nx.reportviews.NodeView:
@@ -99,8 +101,8 @@ class ConservativeMixin(ConservativeMixinProtocol):
         """
         if any(node not in self.nodes for node in [v_i, u, v_j]):
             raise RuntimeError(f"The triple {v_i}, {u}, {v_j} is not in the graph.")
-
-        self._unfaithful_triples[frozenset(v_i, u, v_j)] = None
+        new_triple: FrozenSet = frozenset([v_i, u, v_j])
+        self._unfaithful_triples[new_triple] = None
 
     @property
     def excluded_triples(self) -> Dict[FrozenSet, None]:

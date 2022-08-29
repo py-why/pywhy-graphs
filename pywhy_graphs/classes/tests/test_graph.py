@@ -137,25 +137,23 @@ class TestADMG(BaseGraph):
 
     def test_m_separation(self):
         G = self.G.copy()
-        G = nx.MixedEdgeGraph
         # add collider on 0
-        G.add_edge(3, 0)
+        G.add_edge(3, 0, G.directed_edge_name)
 
         # normal d-separation statements should hold
-        assert not nx.d_separated(G, 1, 2, set())
-        assert not nx.d_separated(G, 1, 2)
-        assert nx.d_separated(G, 1, 2, 0)
+        assert not nx.m_separated(G, {1}, {2}, set())
+        assert nx.m_separated(G, {1}, {2}, {0})
 
         # when we add an edge from 0 -> 1
         # there is no d-separation statement
-        assert not nx.d_separated(G, 3, 1, set())
-        assert not nx.d_separated(G, 3, 1, 0)
+        assert not nx.m_separated(G, {3}, {1}, set())
+        assert not nx.m_separated(G, {3}, {1}, {0})
 
         # test collider works on bidirected edge
         # 1 <-> 0
-        G.remove_edge(0, 1)
-        assert nx.d_separated(G, 3, 1, set())
-        assert not nx.d_separated(G, 3, 1, 0)
+        G.remove_edge(0, 1, G.directed_edge_name)
+        assert nx.m_separated(G, {3}, {1}, set())
+        assert not nx.m_separated(G, {3}, {1}, {0})
 
 
 class TestPAG(TestADMG):
@@ -165,20 +163,21 @@ class TestPAG(TestADMG):
         # 0 -> 1, 0 -> 2 with 1 <--> 0
         super().setup_method()
         self.Graph = PAG
-        self.PAG = PAG(self.G.dag)
+        self.G = PAG(self.G.sub_directed_graph())
 
         # Create a PAG: 2 <- 0 <-> 1 o-o 4
         # handle the bidirected edge from 0 to 1
-        self.PAG.remove_edge(0, 1)
-        self.PAG.add_bidirected_edge(0, 1)
+        self.G.remove_edge(0, 1, "directed")
+        self.G.add_edge(0, 1, "bidirected")
 
         # also setup a PAG with uncertain edges
-        self.PAG.add_circle_endpoint(1, 4, bidirected=True)
+        self.G.add_edge(1, 4, "circle")
+        self.G.add_edge(4, 1, "circle")
 
     def test_str_unnamed(self):
         G = self.Graph()
-        G.add_edges_from([(1, 2), (2, 3)])
-        G.add_bidirected_edge(1, 3)
+        G.add_edges_from([(1, 2), (2, 3)], G.directed_edge_name)
+        G.add_edge(1, 3, G.bidirected_edge_name)
         assert (
             str(G)
             == f"{type(G).__name__} with 3 nodes, 2 edges, 1 bidirected edges and 0 circle edges."
@@ -186,8 +185,8 @@ class TestPAG(TestADMG):
 
     def test_str_named(self):
         G = self.Graph(name="foo")
-        G.add_edges_from([(1, 2), (2, 3)])
-        G.add_bidirected_edge(1, 3)
+        G.add_edges_from([(1, 2), (2, 3)], G.directed_edge_name)
+        G.add_edge(1, 3, G.bidirected_edge_name)
         assert (
             str(G) == f"{type(G).__name__} named 'foo' with 3 nodes, 2 edges, "
             f"1 bidirected edges and 0 circle edges."
@@ -195,12 +194,12 @@ class TestPAG(TestADMG):
 
     def test_neighbors(self):
         # 0 -> 1, 0 -> 2 with 1 <--> 0
-        G = self.PAG
+        G = self.G
 
-        assert G.adjacencies(2) == [0]
-        assert G.adjacencies(0) == [2, 1]
-        assert G.adjacencies(1) == [0, 4]
-        assert G.adjacencies(4) == [1]
+        assert G.neighbors(2) == [0]
+        assert G.neighbors(0) == [2, 1]
+        assert G.neighbors(1) == [0, 4]
+        assert G.neighbors(4) == [1]
 
     def test_wrong_construction(self):
         # PAGs only allow one type of edge between any two nodes
@@ -210,99 +209,66 @@ class TestPAG(TestADMG):
         ]
         latent_edge_list = [("x1", "x2"), ("x4", "x5"), ("x4", "x1")]
         with pytest.raises(RuntimeError, match="There are multiple edges"):
-            PAG(edge_list, incoming_latent_data=latent_edge_list)
-
-    def test_hash_with_circles(self):
-        # 2 <- 0 <-> 1 o-o 4
-        G = self.PAG
-        current_hash = hash(G)
-        assert G._current_hash is None
-
-        G.add_circle_endpoint(2, 3, bidirected=True)
-        new_hash = hash(G)
-        assert current_hash != new_hash
-
-        G.remove_circle_endpoint(2, 3, bidirected=True)
-        assert current_hash == hash(G)
+            PAG(edge_list, incoming_circle_edges=latent_edge_list)
 
     def test_add_circle_edge(self):
-        G = self.PAG
-        assert not G.has_edge(1, 3)
+        G = self.G
+        assert not G.has_edge(1, 3, G.directed_edge_name)
 
-        # if we try to add a circle edge to a new node
-        # where there is no arrow already without specifying
-        # bidirected, then an error will be raised
-        with pytest.raises(RuntimeError, match="There is no directed"):
-            G.add_circle_endpoint(1, 3)
-        G.add_circle_endpoint(1, 3, bidirected=True)
+        G.add_edge(1, 3, G.circle_edge_name)
+        G.add_edge(3, 1, G.circle_edge_name)
         assert not G.has_edge(1, 3)
-        assert G.has_circle_endpoint(1, 3)
+        assert G.has_edge(1, 3, G.circle_edge_name)
 
     def test_adding_edge_errors(self):
         """Test that adding edges in PAG result in certain errors."""
         # 2 <- 0 <-> 1 o-o 4
-        G = self.PAG
+        G = self.G
 
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 2"):
-            G.add_circle_endpoint(0, 2)
+            G.add_edge(0, 2, G.circle_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 1"):
-            G.add_circle_endpoint(0, 1)
+            G.add_edge(0, 1, G.circle_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 1"):
-            G.add_circle_endpoints_from([(0, 1)])
+            G.add_edges_from([(0, 1)], G.circle_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 1 and 4"):
-            G.add_edge(1, 4)
+            G.add_edge(1, 4, G.directed_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 1"):
-            G.add_edges_from([(0, 1)])
+            G.add_edges_from([(0, 1)], G.directed_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 2"):
-            G.add_bidirected_edge(0, 2)
+            G.add_edge(0, 2, G.bidirected_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 0 and 2"):
-            G.add_bidirected_edges_from([(0, 2)])
+            G.add_edges_from([(0, 2)], G.bidirected_edge_name)
         with pytest.raises(RuntimeError, match="There is already an existing edge between 1 and 4"):
-            G.add_bidirected_edges_from([(1, 4)])
+            G.add_edges_from([(1, 4)], G.bidirected_edge_name)
         with pytest.raises(RuntimeError, match="There is an existing 0 -> 2"):
             # adding an edge from 2 -> 0, will result in an error
-            G.add_edge(2, 0)
+            G.add_edge(2, 0, G.directed_edge_name)
 
         # adding a single circle edge is fine
-        G.add_circle_endpoint(2, 0)
+        G.add_edge(2, 0, G.circle_edge_name)
 
     def test_remove_circle_edge(self):
-        G = self.PAG
-        assert G.has_circle_endpoint(1, 4)
-        G.remove_circle_endpoint(1, 4)
-        assert not G.has_circle_endpoint(1, 4)
+        G = self.G
+        assert G.has_edge(1, 4, G.circle_edge_name)
+        G.remove_edge(1, 4, G.circle_edge_name)
+        assert not G.has_edge(1, 4, G.circle_edge_name)
 
     def test_orient_circle_edge(self):
-        G = self.PAG
-        G.orient_circle_endpoint(1, 4, "arrow")
-        assert G.has_edge(1, 4)
-        assert not G.has_circle_endpoint(1, 4)
+        G = self.G
+        assert G.has_edge(1, 4, G.circle_edge_name)
+        assert not G.has_edge(1, 4, G.directed_edge_name)
+        G.orient_uncertain_edge(1, 4)
+        assert G.has_edge(1, 4, G.directed_edge_name)
+        assert not G.has_edge(1, 4, G.circle_edge_name)
 
-        with pytest.raises(ValueError, match="endpoint must be"):
-            G.orient_circle_endpoint(1, 4, "circl")
-        assert G.has_edge(1, 4)
-        assert not G.has_circle_endpoint(1, 4)
-
-    def test_m_separation(self):
-        G = self.PAG
-        assert not nx.d_separated(G, 0, 4, set())
-        assert not nx.d_separated(G, 0, 4, 1)
-
-        # check various cases
-        G.add_edge(4, 3)
-        assert not nx.d_separated(G, 3, 1, set())
-        assert nx.d_separated(G, 3, 1, 4)
-
-        # check what happens in the other direction
-        G.remove_edge(4, 3)
-        G.add_edge(3, 4)
-        assert not nx.d_separated(G, 3, 1, set())
-        assert not nx.d_separated(G, 3, 1, 4)
+        assert G.has_edge(1, 4, G.directed_edge_name)
+        assert not G.has_edge(1, 4, G.circle_edge_name)
 
     def test_children_and_parents(self):
         """Test working with children and parents."""
         # 2 <- 0 <-> 1 o-o 4
-        G = self.PAG.copy()
+        G = self.G.copy()
 
         # basic parent/children semantics
         assert [2] == list(G.children(0))
@@ -318,10 +284,30 @@ class TestPAG(TestADMG):
 
         # when the parental relationship between 2 and 0
         # is made uncertain, the parents/children sets reflect
-        G.add_circle_endpoint(2, 0)
+        G.add_edge(2, 0, G.circle_edge_name)
         assert [] == list(G.children(0))
         assert [] == list(G.parents(2))
 
         # 2 and 0 now have possible children/parents relationship
         assert [0] == list(G.possible_parents(2))
         assert [2] == list(G.possible_children(0))
+
+    # TODO: make work
+    @pytest.mark.skip(reason="Need to implement")
+    def test_definite_m_separation(self):
+        G = self.G
+
+        # 2 <- 0 <-> 1 o-o 4
+        assert not nx.m_separated(G, {0}, {4}, set())
+        assert not nx.m_separated(G, {0}, {4}, {1})
+
+        # check various cases
+        G.add_edge(4, 3, G.directed_edge_name)
+        assert not nx.m_separated(G, {3}, {1}, set())
+        assert nx.m_separated(G, {3}, {1}, {4})
+
+        # check what happens in the other direction
+        G.remove_edge(4, 3, G.directed_edge_name)
+        G.add_edge(3, 4, G.directed_edge_name)
+        assert not nx.m_separated(G, {3}, {1}, set())
+        assert not nx.m_separated(G, {3}, {1}, {4})

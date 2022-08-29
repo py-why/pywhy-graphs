@@ -41,24 +41,30 @@ scipy = "^1.9.0"
 networkx = { git = "https://github.com/adam2392/networkx.git", branch = 'mixededge' }
 importlib-resources = { version = "*", python = "<3.9" }
 
-# TODO: the below needs to be refactored into separate dev-dependencies
-# https://github.com/python-poetry/poetry/is
-# it is inefficient to have to install every single dependency to run
-# e.g. a style check.
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.test]
+optional = true
+[tool.poetry.group.test.dependencies]
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
+poethepoet = "^0.16.0"
+
+[tool.poetry.group.lint]
+optional = true
+[tool.poetry.group.lint.dependencies]
+poethepoet = "^0.16.0"
 beartype = "^0.10.4"
 mypy = "^0.971"
-poethepoet = "^0.16.0"
 black = "^22.6.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 bandit = "^1.7.4"
-portray = "^1.7.0"
 semversioner = "^1.1.0"
 pydocstyle = "^6.1.1"
 codespell = "^2.1.0"
+
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
 matplotlib = { version = "^3.5" }
 memory_profiler = { version = "^0.60.0" }
 numpydoc = { version = "^1.4" }

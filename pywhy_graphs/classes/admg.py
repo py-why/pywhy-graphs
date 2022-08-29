@@ -1,12 +1,11 @@
 from typing import Iterator, Mapping, Set
 
 import networkx as nx
-from graphs import MixedEdgeGraph
 
 from .base import AncestralMixin
 
 
-class ADMG(MixedEdgeGraph, AncestralMixin):
+class ADMG(nx.MixedEdgeGraph, AncestralMixin):
     """Acyclic directed mixed graph (ADMG).
 
     A causal graph with two different edge types: bidirected and traditional
@@ -77,14 +76,17 @@ class ADMG(MixedEdgeGraph, AncestralMixin):
 
     @property
     def undirected_edge_name(self) -> str:
+        """Name of the undirected edge internal graph."""
         return self._undirected_name
 
     @property
     def directed_edge_name(self) -> str:
+        """Name of the directed edge internal graph."""
         return self._directed_name
 
     @property
     def bidirected_edge_name(self) -> str:
+        """Name of the bidirected edge internal graph."""
         return self._bidirected_name
 
     def c_components(self) -> Iterator[Set]:

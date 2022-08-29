@@ -1,18 +1,175 @@
 import logging
 from collections import deque
 from itertools import chain
-from typing import Dict, List, Optional, Set, Tuple
+from typing import List, Optional, Set, Tuple
 
 import networkx as nx
 import numpy as np
 
 from pywhy_graphs import PAG
+from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
 from pywhy_graphs.typing import Node
 
 logger = logging.getLogger()
 
+__all__ = [
+    "possible_ancestors",
+    "possible_descendants",
+    "discriminating_path",
+    "possibly_d_sep_sets",
+    "pds_path",
+    "uncovered_pd_path",
+]
 
-def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: int = np.inf):
+
+def _possibly_directed(G: PAG, i: Node, j: Node, reverse: bool = False):
+    """Check that path is possibly directed.
+
+    A possibly directed path is one of the form:
+    - ``i -> j``
+    - ``i o-> j``
+    - ``i o-o j``
+
+    Parameters
+    ----------
+    G : PAG
+        The graph.
+    i : Node
+        The first node.
+    j : Node
+        The second node.
+    reverse : bool
+        Whether to check the reverse direction for valid path. If true,
+        will check for ``i *-> j``. If false (default) will check for
+        ``i <-* j``.
+
+    Returns
+    -------
+    valid : bool
+        Whether to path from ``... i *-* j ...`` is a valid path.
+    """
+    if i not in G.neighbors(j):
+        return False
+
+    if reverse:
+        # i *-> j is invalid
+        direct_check = G.has_edge(i, j, G.directed_edge_name)
+    else:
+        # i <-* j is invalid
+        direct_check = G.has_edge(j, i, G.directed_edge_name)
+
+    # the direct check checks for i *-> j or i <-* j
+    # i <-> j is also checked
+    # everything else is valid
+    if direct_check or G.has_edge(i, j, G.bidirected_edge_name):
+        return False
+    return True
+
+
+def possible_ancestors(G: PAG, source: Node) -> Set[Node]:
+    """Possible ancestors of a source node.
+
+    Parameters
+    ----------
+    G : PAG
+        The graph.
+    source : Node
+        The source node to start at.
+
+    Returns
+    -------
+    possible_ancestors : Set[Node]
+        The set of nodes that are possible ancestors.
+    """
+    valid_path = lambda *args: _possibly_directed(*args, reverse=True)  # type: ignore
+    # perform BFS starting at source using neighbors
+    paths = single_source_shortest_mixed_path(G, source, valid_path=valid_path)
+    return set(paths.keys())
+
+
+def possible_descendants(G: PAG, source: Node) -> Set[Node]:
+    """Possible descendants of a source node.
+
+    Parameters
+    ----------
+    G : PAG
+        The graph.
+    source : Node
+        The source node to start at.
+
+    Returns
+    -------
+    possible_descendants : Set[Node]
+        The set of nodes that are possible descendants.
+    """
+    valid_path = lambda *args: _possibly_directed(*args, reverse=False)  # type: ignore
+    # perform BFS starting at source using neighbors
+    paths = single_source_shortest_mixed_path(G, source, valid_path=valid_path)
+    return set(paths.keys())
+
+
+def is_definite_collider(G: PAG, node1: Node, node2: Node, node3: Node) -> bool:
+    """Check if <node1, node2, node3> path forms a definite collider.
+
+    I.e. node1 *-> node2 <-* node3.
+
+    Parameters
+    ----------
+    node1 : node
+        A node on the path to check.
+    node2 : node
+        A node on the path to check.
+    node3 : node
+        A node on the path to check.
+
+    Returns
+    -------
+    is_collider : bool
+        Whether or not the path is a definite collider.
+    """
+    # check arrow from node1 into node2
+    condition_one = G.has_edge(node1, node2, G.directed_edge_name) or G.has_edge(
+        node1, node2, G.bidirected_edge_name
+    )
+
+    # check arrow from node2 into node1
+    condition_two = G.has_edge(node3, node2, G.directed_edge_name) or G.has_edge(
+        node3, node2, G.bidirected_edge_name
+    )
+    return condition_one and condition_two
+
+
+def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bool:
+    """Check if <node1, node2, node3> path forms a definite non-collider.
+
+    I.e. node1 *-* node2 -> node3, or node1 <- node2 *-* node3
+
+    Parameters
+    ----------
+    node1 : node
+        A node on the path to check.
+    node2 : node
+        A node on the path to check.
+    node3 : node
+        A node on the path to check.
+
+    Returns
+    -------
+    is_noncollider : bool
+        Whether or not the path is a definite non-collider.
+    """
+    condition_one = G.has_edge(node2, node3, G.directed_edge_name) and not G.has_edge(
+        node3, node2, G.directed_edge_name
+    )
+    condition_two = G.has_edge(node2, node1, G.directed_edge_name) and not G.has_edge(
+        node1, node2, G.directed_edge_name
+    )
+    return condition_one or condition_two
+
+
+def discriminating_path(
+    graph: PAG, u: Node, a: Node, c: Node, max_path_length: int = np.inf
+) -> Tuple[bool, List[Node], Set[Node]]:
     """Find the discriminating path for <..., a, u, c>.
 
     A discriminating path, p = <v, ..., a, u, c>, is one
@@ -37,8 +194,8 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
 
     Returns
     -------
-    explored_nodes : dict
-        A hash map of explored nodes.
+    explored_nodes : set
+        A set of explored nodes.
     found_discriminating_path : bool
         Whether or not a discriminating path was found.
     disc_path : list
@@ -47,7 +204,7 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
     if max_path_length == np.inf:
         max_path_length = 1000
 
-    explored_nodes: Dict[Node, None] = dict()
+    explored_nodes: Set[Node] = set()
     found_discriminating_path = False
     disc_path: List[Node] = []
 
@@ -69,23 +226,25 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
     # - u has an arrow pointing to a
     # - TBD a is a definite collider
     # - TBD endpoint is not adjacent to c
-    explored_nodes[c] = None
-    explored_nodes[u] = None
-    explored_nodes[a] = None
+    explored_nodes.add(c)
+    explored_nodes.add(u)
+    explored_nodes.add(a)
 
     # a must be a parent of c
-    if not graph.has_edge(a, c):
-        return explored_nodes, found_discriminating_path, disc_path
+    if not graph.has_edge(a, c, graph.directed_edge_name):
+        return found_discriminating_path, disc_path, explored_nodes
 
     # a and u must be connected by a bidirected edge, or with an edge towards a
     # for a to be a definite collider
-    if not graph.has_bidirected_edge(a, u) and not graph.has_edge(u, a):
-        return explored_nodes, found_discriminating_path, disc_path
+    if not graph.has_edge(a, u, graph.bidirected_edge_name) and not graph.has_edge(
+        u, a, graph.directed_edge_name
+    ):
+        return found_discriminating_path, disc_path, explored_nodes
 
     # now add 'a' to the queue and begin exploring
     # adjacent nodes that are connected with bidirected edges
     path = deque([a])
-    while not len(path) == 0:
+    while len(path) != 0:
         this_node = path.popleft()
 
         # check distance criterion to prevent checking very long paths
@@ -95,13 +254,12 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
-            return explored_nodes, found_discriminating_path, disc_path
+            return found_discriminating_path, disc_path, explored_nodes
 
         # now we check all neighbors to this_node that are pointing to it
         # either with a direct edge, or a bidirected edge
         node_iterator = chain(graph.possible_parents(this_node), graph.parents(this_node))
-        if this_node in graph.c_component_graph:
-            node_iterator = chain(node_iterator, graph.c_component_graph.neighbors(this_node))
+        node_iterator = chain(node_iterator, graph.sub_bidirected_graph().neighbors(this_node))
 
         # 'next_node' is either a parent, possible parent, or in a bidrected
         # edge with 'this_node'.
@@ -115,13 +273,13 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
                 continue
 
             # keep track of explored_nodes
-            explored_nodes[next_node] = None
+            explored_nodes.add(next_node)
 
             # Check if 'next_node' is now the end of the discriminating path.
             # Note we now have 3 edges in the path by construction.
-            if not graph.has_adjacency(next_node, c) and next_node != c:
+            if c not in graph.neighbors(next_node) and next_node != c:
                 logger.info(f"Reached the end of the discriminating path with {next_node}.")
-                explored_nodes[next_node] = None
+                explored_nodes.add(next_node)
                 descendant_nodes[next_node] = this_node
                 found_discriminating_path = True
                 break
@@ -130,13 +288,15 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
             # then we can add 'next_node' to the path. This only occurs
             # if 'next_node' is a valid new entry, which requires it
             # to be a part of the parents of 'c'.
-            if next_node in cparents and graph.has_bidirected_edge(this_node, next_node):
+            if next_node in cparents and graph.has_edge(
+                this_node, next_node, graph.bidirected_edge_name
+            ):
                 # check that the next_node is a possible collider with at least
                 # this_node -> next_node
                 # since it is a parent, we can now add it to the path queue
                 path.append(next_node)
                 descendant_nodes[next_node] = this_node
-                explored_nodes[next_node] = None
+                explored_nodes.add(next_node)
 
     # return the actual discriminating path
     if found_discriminating_path:
@@ -145,12 +305,17 @@ def discriminating_path(graph: PAG, u: Node, a: Node, c: Node, max_path_length: 
         while disc_path[-1] != c:
             disc_path.append(descendant_nodes[disc_path[-1]])
 
-    return explored_nodes, found_discriminating_path, disc_path
+    return found_discriminating_path, disc_path, explored_nodes
 
 
 def uncovered_pd_path(
-    graph: PAG, u, c, max_path_length: int, first_node=None, second_node=None
-) -> Tuple[List, bool]:
+    graph: PAG,
+    u: Node,
+    c: Node,
+    max_path_length: int,
+    first_node: Optional[Node] = None,
+    second_node: Optional[Node] = None,
+) -> Tuple[List[Node], bool]:
     """Compute uncovered potentially directed path from u to c.
 
     An uncovered pd path is one where: u o-> ... -> c. There are no
@@ -160,7 +325,7 @@ def uncovered_pd_path(
 
     Parameters
     ----------
-    graph : ADMG
+    graph : PAG
         PAG to orient.
     u : node
         A node in the graph to start the uncovered path.
@@ -199,7 +364,7 @@ def uncovered_pd_path(
     if max_path_length == np.inf:
         max_path_length = 1000
 
-    explored_nodes: Dict[Node, None] = dict()
+    explored_nodes: Set[Node] = set()
     found_uncovered_pd_path = False
     uncov_pd_path: List[Node] = []
 
@@ -221,11 +386,11 @@ def uncovered_pd_path(
     # - u has an arrow pointing to a
     # - TBD a is a definite collider
     # - TBD endpoint is not adjacent to c
-    explored_nodes[u] = None
+    explored_nodes.add(u)
     if first_node is not None:
-        explored_nodes[first_node] = None
+        explored_nodes.add(first_node)
     if second_node is not None:
-        explored_nodes[second_node] = None
+        explored_nodes.add(second_node)
 
         # we now want to start on the second_node
         start_node = second_node
@@ -233,7 +398,7 @@ def uncovered_pd_path(
     # now add 'a' to the queue and begin exploring
     # adjacent nodes that are connected with bidirected edges
     path = deque([start_node])
-    while not len(path) == 0:
+    while len(path) != 0:
         this_node = path.popleft()
         prev_node = descendant_nodes.get(this_node)
 
@@ -247,25 +412,24 @@ def uncovered_pd_path(
             return uncov_pd_path, found_uncovered_pd_path
 
         # get all adjacent nodes to 'this_node'
-        for next_node in graph.adjacencies(this_node):
+        for next_node in graph.neighbors(this_node):
             # if we have already explored this neighbor, then ignore
             if next_node in explored_nodes:
                 continue
 
             # now check that the next_node is uncovered by comparing
             # with the previous node, because the triple is shielded
-            if prev_node is not None:
-                if graph.has_adjacency(prev_node, next_node):
-                    continue
+            if prev_node is not None and next_node in graph.neighbors(prev_node):
+                continue
 
             # now check that the triple is potentially directed, else
             # we skip this node
-            if not graph.has_edge(this_node, next_node):
+            if not graph.has_edge(this_node, next_node, graph.directed_edge_name):
                 continue
 
             # now this next node is potentially directed, does not
             # form a shielded triple, so we add it to the path
-            explored_nodes[next_node] = None
+            explored_nodes.add(next_node)
             descendant_nodes[next_node] = this_node
 
             # if we have reached our end node, then we have found an
@@ -282,32 +446,23 @@ def uncovered_pd_path(
         first_node = u
 
     if found_uncovered_pd_path:
-        uncov_pd_path = deque([])  # type: ignore
-        uncov_pd_path.appendleft(c)  # type: ignore
-        while uncov_pd_path[0] != first_node:
-            uncov_pd_path.appendleft(descendant_nodes[uncov_pd_path[0]])  # type: ignore
-        uncov_pd_path = list(uncov_pd_path)
+        uncov_pd_path_: deque = deque([])
+        uncov_pd_path_.appendleft(c)
+        while uncov_pd_path_[0] != first_node:
+            uncov_pd_path_.appendleft(descendant_nodes[uncov_pd_path_[0]])
+        uncov_pd_path = list(uncov_pd_path_)
     return uncov_pd_path, found_uncovered_pd_path
 
 
-def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = np.inf) -> Set:
+def possibly_d_sep_sets(
+    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np.inf
+) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
-
-    Possibly d-separting (PDS) sets are adjacency paths from 'node_x' to
-    some node 'V', which has the following characteristics for every
-    subpath triple <X, Y, Z> on the path:
-
-    - Y is a collider, or
-    - Y is a triangle (i.e. X, Y and Z form a complete subgraph)
-
-    If Y is a triangle, then it will be uncertain with circular edges
-    due to the fact that it is a shielded triple, not allowing us to infer
-    that it is a collider. These are defined in :footcite:`Colombo2012`.
 
     Parameters
     ----------
     graph : PAG
-        _description_
+        The graph.
     node_x : node
         The node 'x'.
     node_y : node
@@ -319,6 +474,25 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
     -------
     dsep : set
         The possibly d-separating set between node_x and node_y.
+
+    Notes
+    -----
+    Possibly d-separting (PDS) sets are nodes V, along an adjacency paths from
+    'node_x' to some 'V', which has the following characteristics for every
+    subpath triple <X, Y, Z> on the path:
+
+    - Y is a collider, or
+    - Y is a triangle (i.e. X, Y and Z form a complete subgraph)
+
+    If the path meets these characteristics, then 'V' is in the PDS set.
+
+    If Y is a triangle, then it will be uncertain with circular edges
+    due to the fact that it is a shielded triple, not allowing us to infer
+    that it is a collider. These are defined in :footcite:`Colombo2012`.
+
+    References
+    ----------
+    .. footbibliography::
     """
     if max_path_length == np.inf:
         max_path_length = 1000
@@ -338,7 +512,7 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
     previous = {node_x: None}
 
     # get the adjacency graph to perform path searches over
-    adj_graph = graph.to_adjacency_graph()
+    adj_graph = graph.to_undirected()
 
     if node_y is not None:
         # edge case: check that there exists paths between node_x
@@ -349,7 +523,7 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
     # get a list of all neighbors of node_x that is not y
     # and add these as candidates to explore a path
     # and also add them to the possibly d-separating set
-    for node_v in graph.adjacencies(node_x):
+    for node_v in graph.neighbors(node_x):
         # ngbhr cannot be endpoint
         if node_v == node_y:
             continue
@@ -398,8 +572,8 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
 
         # now we want to check the subpath that is created
         # using the previous node, the current node and the next node
-        for next_node in graph.adjacencies(this_node):
-            # check if 'node_c' in (X, Y, prev_node)
+        for next_node in graph.neighbors(this_node):
+            # check if 'node_c' in (prev_node, X, Y)
             if next_node in (prev_node, node_x, node_y):
                 continue
 
@@ -413,11 +587,11 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
             # check that we have a definite collider
             # check the edge: prev_node - this_node
             # check the edge: this_node - next_node
-            is_def_collider = graph.is_def_collider(prev_node, this_node, next_node)
+            is_def_collider = is_definite_collider(graph, prev_node, this_node, next_node)
 
             # check that there is a triangle, meaning
             # prev_node is adjacent to next_node
-            is_triangle = graph.has_adjacency(prev_node, next_node)
+            is_triangle = next_node in graph.neighbors(prev_node)
 
             # if we have a collider, or triangle, then this edge
             # is a candidate on a pdsep path
@@ -434,7 +608,7 @@ def possibly_d_sep_sets(graph: PAG, node_x, node_y=None, max_path_length: int = 
     return dsep
 
 
-def pds_path(graph: PAG, node_x, node_y, max_path_length: int = np.inf) -> Set:
+def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.inf) -> Set[Node]:
     """Compute the possibly-d-separating set path.
 
     Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.
@@ -442,13 +616,18 @@ def pds_path(graph: PAG, node_x, node_y, max_path_length: int = np.inf) -> Set:
     Parameters
     ----------
     graph : PAG
-        _description_
+        The graph.
     node_x : node
         The starting node.
     node_y : node
         The ending node
     max_path_length : int, optional
         The maximum length of a path to search on for PDS set, by default np.inf.
+
+    Returns
+    -------
+    pds_path : set
+        The set of nodes in the possibly d-separating path set.
 
     Notes
     -----
@@ -457,7 +636,7 @@ def pds_path(graph: PAG, node_x, node_y, max_path_length: int = np.inf) -> Set:
     graph that contains the edge (node_x, node_y).
     """
     # get the adjacency graph to perform path searches over
-    adj_graph = graph.to_adjacency_graph()
+    adj_graph = graph.to_undirected()
 
     # compute all biconnected componnets
     biconn_comp = nx.biconnected_component_edges(adj_graph)
@@ -467,10 +646,10 @@ def pds_path(graph: PAG, node_x, node_y, max_path_length: int = np.inf) -> Set:
         graph, node_x=node_x, node_y=node_y, max_path_length=max_path_length
     )
 
-    # now we intersect
+    # now we intersect the connected component that has the edge
     found_component: Set = set()
     for comp in biconn_comp:
-        if (node_x, node_y) in biconn_comp or (node_y, node_x) in biconn_comp:
+        if (node_x, node_y) in comp or (node_y, node_x) in comp:
             # add all unique nodes in the biconnected component
             for (x, y) in comp:
                 found_component.add(x)
