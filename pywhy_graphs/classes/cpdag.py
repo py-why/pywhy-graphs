@@ -1,12 +1,13 @@
-from typing import Dict, FrozenSet, Iterator, Mapping
+from typing import Iterator, Mapping
 
 import networkx as nx
-from graphs import MixedEdgeGraph
 
-from .base import AncestralMixin
+from pywhy_graphs.typing import Node
+
+from .base import AncestralMixin, ConservativeMixin
 
 
-class CPDAG(MixedEdgeGraph, AncestralMixin):
+class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
     """Completed partially directed acyclic graphs (CPDAG).
 
     CPDAGs generalize causal DAGs by allowing undirected edges.
@@ -50,8 +51,8 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         self,
         incoming_directed_edges=None,
         incoming_undirected_edges=None,
-        directed_edge_name="directed",
-        undirected_edge_name="undirected",
+        directed_edge_name: str = "directed",
+        undirected_edge_name: str = "undirected",
         **attr,
     ):
         super().__init__(**attr)
@@ -64,16 +65,14 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         if not nx.is_directed_acyclic_graph(self.sub_directed_graph()):
             raise RuntimeError(f"{self} is not a DAG, which it should be.")
 
-        # extended patterns store unfaithful triples
-        # these can be used for conservative structure learning algorithm
-        self._unfaithful_triples = dict()
-
     @property
-    def undirected_edge_name(self):
+    def undirected_edge_name(self) -> str:
+        """Name of the undirected edge internal graph."""
         return self._undirected_name
 
     @property
-    def directed_edge_name(self):
+    def directed_edge_name(self) -> str:
+        """Name of the directed edge internal graph."""
         return self._directed_name
 
     @property
@@ -94,7 +93,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         """Sub-graph of just the undirected edges."""
         return self._get_internal_graph(self._undirected_name)
 
-    def orient_uncertain_edge(self, u, v) -> None:
+    def orient_uncertain_edge(self, u: Node, v: Node) -> None:
         """Orient undirected edge into an arrowhead.
 
         If there is an undirected edge u - v, then the arrowhead
@@ -114,7 +113,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         self.remove_edge(v, u, self._undirected_name)
         self.add_edge(u, v, self._directed_name)
 
-    def possible_children(self, n) -> Iterator:
+    def possible_children(self, n: Node) -> Iterator[Node]:
         """Return an iterator over children of node n.
 
         Children of node 'n' are nodes with a directed
@@ -135,7 +134,7 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
         """
         return self.sub_undirected_graph().neighbors(n)
 
-    def possible_parents(self, n) -> Iterator:
+    def possible_parents(self, n: Node) -> Iterator[Node]:
         """Return an iterator over parents of node n.
 
         Parents of node 'n' are nodes with a directed
@@ -155,25 +154,3 @@ class CPDAG(MixedEdgeGraph, AncestralMixin):
             An iterator of the parents of node 'n'.
         """
         return self.sub_undirected_graph().neighbors(n)
-
-    def mark_unfaithful_triple(self, v_i, u, v_j) -> None:
-        """Mark an unfaithful triple.
-
-        Parameters
-        ----------
-        v_i : node
-            The first node in a triple.
-        u : node
-            The second node in a triple.
-        v_j : node
-            The third node in a triple.
-        """
-        if any(node not in self.nodes for node in [v_i, u, v_j]):
-            raise RuntimeError(f"The triple {v_i}, {u}, {v_j} is not in the graph.")
-
-        self._unfaithful_triples[frozenset(v_i, u, v_j)] = None  # type: ignore
-
-    @property
-    def excluded_triples(self) -> Dict[FrozenSet, None]:
-        """Unfaithful triples."""
-        return self._unfaithful_triples
