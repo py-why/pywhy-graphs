@@ -85,7 +85,7 @@ jobs:
           git clone https://github.com/adam2392/networkx.git
           cd networkx;
           git checkout mixededge;
-          poetry run pip install -e ./networkx;
+          poetry run pip install -e .;
       - name: Test package install
         run: poetry run python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
@@ -148,7 +148,7 @@ jobs:
           git clone https://github.com/adam2392/networkx.git
           cd networkx;
           git checkout mixededge;
-          poetry run pip install -e ./networkx;
+          poetry run pip install -e .;
       # TODO: uncomment, when MixedEdgeGraph PRed into networkx
       # - name: Install Networkx (main)
       #   if: "matrix.networkx == 'main'"
