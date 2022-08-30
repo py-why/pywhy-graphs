@@ -110,7 +110,9 @@ numpydoc_xref_ignore = {
     "arguments",
     "no",
     "attributes", "dictionary",
-    "DAG", "causal", "CPDAG", "PAG", "ADMG",
+    # pywhy-graphs
+    "causal",
+    'circular', 'endpoint',
     # networkx
     "node",
     "nodes",
@@ -142,7 +144,6 @@ numpydoc_xref_aliases = {
     "ADMG": "pywhy_graphs.ADMG",
     "PAG": "pywhy_graphs.PAG",
     "CPDAG": "pywhy_graphs.CPDAG",
-    "DAG": "pywhy_graphs.DAG",
     # joblib
     "joblib.Parallel": "joblib.Parallel",
     # pandas
@@ -172,13 +173,13 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "numpy": ("https://numpy.org/devdocs", None),
     "scipy": ("https://scipy.github.io/devdocs", None),
+    "networkx": ("https://networkx.org/documentation/latest/", None),
+    "nx-guides": ("https://networkx.org/nx-guides/", None),
+    "matplotlib": ("https://matplotlib.org/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/dev", None),
     "pgmpy": ("https://pgmpy.org", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest", None),
-    "networkx": ("https://networkx.org/documentation/latest/", None),
-    "nx-guides": ("https://networkx.org/nx-guides/", None),
-    "matplotlib": ("https://matplotlib.org/stable", None),
 }
 intersphinx_timeout = 5
 
