@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-from pywhy_graphs import ADMG, CPDAG
+from pywhy_graphs import ADMG, CPDAG, PAG
 
 
 class BaseGraph:
