@@ -2,7 +2,7 @@ from typing import Dict, FrozenSet, Iterator, Protocol, Set
 
 import networkx as nx
 
-from pywhy_graphs.typing import Node
+from ..typing import Node
 
 
 class GraphMixinProtocol(Protocol):

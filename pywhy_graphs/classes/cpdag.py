@@ -2,9 +2,11 @@ from typing import Iterator, Mapping
 
 import networkx as nx
 
-from pywhy_graphs.typing import Node
+import pywhy_graphs
 
+from ..typing import Node
 from .base import AncestralMixin, ConservativeMixin
+from .config import EdgeType
 
 
 class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
@@ -62,8 +64,8 @@ class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         self._directed_name = directed_edge_name
         self._undirected_name = undirected_edge_name
 
-        if not nx.is_directed_acyclic_graph(self.sub_directed_graph()):
-            raise RuntimeError(f"{self} is not a DAG, which it should be.")
+        # check that construction of PAG was valid
+        pywhy_graphs.is_valid_mec_graph(self)
 
     @property
     def undirected_edge_name(self) -> str:
@@ -154,3 +156,53 @@ class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
             An iterator of the parents of node 'n'.
         """
         return self.sub_undirected_graph().neighbors(n)
+
+    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
+        _check_adding_cpdag_edge(
+            self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type
+        )
+        return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
+
+    def add_edges_from(self, ebunch_to_add, edge_type, **attr):
+        for u_of_edge, v_of_edge in ebunch_to_add:
+            _check_adding_cpdag_edge(
+                self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type
+            )
+        return super().add_edges_from(ebunch_to_add, edge_type, **attr)
+
+
+def _check_adding_cpdag_edge(graph: CPDAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType):
+    """Check compatibility among internal graphs when adding an edge of a certain type.
+
+    Parameters
+    ----------
+    u_of_edge : node
+        The start node.
+    v_of_edge : node
+        The end node.
+    edge_type : EdgeType
+        The edge type that is being added.
+    """
+    raise_error = False
+    if edge_type == EdgeType.DIRECTED:
+        # there should not be a circle edge, or a bidirected edge
+        if graph.has_edge(u_of_edge, v_of_edge, graph.undirected_edge_name):
+            raise_error = True
+        if graph.has_edge(v_of_edge, u_of_edge, graph.directed_edge_name):
+            raise RuntimeError(
+                f"There is an existing {v_of_edge} -> {u_of_edge}. You are "
+                f"trying to add a directed edge from {u_of_edge} -> {v_of_edge}. "
+                f"If your intention is to create a bidirected edge, first remove the "
+                f"edge and then explicitly add the bidirected edge."
+            )
+    elif edge_type == EdgeType.UNDIRECTED:
+        # there should not be any type of edge between the two
+        if graph.has_edge(u_of_edge, v_of_edge):
+            raise_error = True
+
+    if raise_error:
+        raise RuntimeError(
+            f"There is already an existing edge between {u_of_edge} and {v_of_edge}. "
+            f"Adding a {edge_type} edge is not possible. Please remove the existing "
+            f"edge first."
+        )

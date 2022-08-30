@@ -139,7 +139,7 @@ profile = 'black'
 multi_line_output = 3
 line_length = 100
 py_version = 38
-extend_skip_glob = ['setup.py', 'docs/*', 'examples/*']
+extend_skip_glob = ['setup.py', 'docs/*', 'examples/*', 'pywhy_graphs/__init__.py']
 
 [tool.pydocstyle]
 convention = 'numpy'
