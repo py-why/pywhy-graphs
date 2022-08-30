@@ -16,7 +16,7 @@ __all__ = [
     "possible_ancestors",
     "possible_descendants",
     "discriminating_path",
-    "possibly_d_sep_sets",
+    "pds",
     "pds_path",
     "uncovered_pd_path",
 ]
@@ -454,9 +454,7 @@ def uncovered_pd_path(
     return uncov_pd_path, found_uncovered_pd_path
 
 
-def possibly_d_sep_sets(
-    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np.inf
-) -> Set[Node]:
+def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np.inf) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
     Parameters
@@ -642,9 +640,7 @@ def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.i
     biconn_comp = nx.biconnected_component_edges(adj_graph)
 
     # compute the PDS set
-    pds_set = possibly_d_sep_sets(
-        graph, node_x=node_x, node_y=node_y, max_path_length=max_path_length
-    )
+    pds_set = pds(graph, node_x=node_x, node_y=node_y, max_path_length=max_path_length)
 
     # now we intersect the connected component that has the edge
     found_component: Set = set()

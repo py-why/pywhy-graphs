@@ -43,6 +43,6 @@ causal graph operations.
    possible_ancestors
    possible_descendants
    discriminating_path
-   possibly_d_sep_sets
+   pds
    pds_path
    uncovered_pd_path

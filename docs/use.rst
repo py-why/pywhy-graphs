@@ -1,7 +1,7 @@
 :orphan:
 
-Using pywhy-graphs
-=====================
+Examples using pywhy-graphs
+===========================
 
 To be able to effectively use pywhy-graphs, look at some of the examples here
 to learn everything you need! We give an overview of concepts in causal graphs.

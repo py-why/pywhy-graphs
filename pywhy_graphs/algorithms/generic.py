@@ -1,6 +1,6 @@
 import networkx as nx
 
-import pywhy_graphs as pgraph
+from pywhy_graphs import CPDAG, PAG
 
 from ..config import EdgeType
 from ..typing import Node
@@ -8,9 +8,7 @@ from ..typing import Node
 __all__ = ["single_source_shortest_mixed_path"]
 
 
-def _check_adding_cpdag_edge(
-    graph: pgraph.CPDAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType
-):
+def _check_adding_cpdag_edge(graph: CPDAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType):
     """Check compatibility among internal graphs when adding an edge of a certain type.
 
     Parameters
@@ -47,9 +45,7 @@ def _check_adding_cpdag_edge(
         )
 
 
-def _check_adding_pag_edge(
-    graph: pgraph.PAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType
-):
+def _check_adding_pag_edge(graph: PAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType):
     """Check compatibility among internal graphs when adding an edge of a certain type.
 
     Parameters

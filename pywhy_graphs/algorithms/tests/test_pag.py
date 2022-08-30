@@ -6,10 +6,10 @@ import pywhy_graphs
 from pywhy_graphs import PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
+    pds,
     pds_path,
     possible_ancestors,
     possible_descendants,
-    possibly_d_sep_sets,
     uncovered_pd_path,
 )
 
@@ -279,8 +279,8 @@ def test_possibly_d_separated(pds_graph):
     """
     G = pds_graph
 
-    a_pdsep = possibly_d_sep_sets(G, "A", "E")
-    e_pdsep = possibly_d_sep_sets(G, "E", "A")
+    a_pdsep = pds(G, "A", "E")
+    e_pdsep = pds(G, "E", "A")
 
     assert a_pdsep == {"B", "F", "D"}
     assert e_pdsep == {"B", "D", "H"}
@@ -291,8 +291,8 @@ def test_pds_path(pds_graph: PAG):
 
     a_pdspath = pds_path(G, "A", "E")
     e_pdspath = pds_path(G, "E", "A")
-    a_pdsep = possibly_d_sep_sets(G, "A", "E")
-    e_pdsep = possibly_d_sep_sets(G, "E", "A")
+    a_pdsep = pds(G, "A", "E")
+    e_pdsep = pds(G, "E", "A")
 
     # the original graph is fully biconnected, so
     # pdspath is equivalent to pds
@@ -317,8 +317,8 @@ def test_pds_path(pds_graph: PAG):
     # node, the PDS(x, E) is the empty set, while
     # PDS(E, x) comprises now of {B, D, H} and {A}
     # because now A is not the end set
-    xe_pdsep = possibly_d_sep_sets(G, "x", "E")
-    ex_pdsep = possibly_d_sep_sets(G, "E", "x")
+    xe_pdsep = pds(G, "x", "E")
+    ex_pdsep = pds(G, "E", "x")
     xe_pdspath = pds_path(G, "x", "E")
     ex_pdspath = pds_path(G, "E", "x")
 
