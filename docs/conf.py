@@ -111,7 +111,7 @@ numpydoc_xref_ignore = {
     "no",
     "attributes", "dictionary",
     # pywhy-graphs
-    "causal",
+    "causal", "Node",
     'circular', 'endpoint',
     # networkx
     "node",

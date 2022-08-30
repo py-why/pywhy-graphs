@@ -26,3 +26,23 @@ graphs encountered in the literature.
    ADMG
    CPDAG
    PAG
+
+Algorithms for Markov Equivalence Classes
+=========================================
+Traditional graph algorithms operate over graphs with only one type of edge.
+Equivalence class graphs in causality generally consist of more than one type of
+edge. These algorithms are common algorithms used in a variety of different
+causal graph operations.
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autosummary::
+   :toctree: generated/
+
+   is_valid_mec_graph
+   possible_ancestors
+   possible_descendants
+   discriminating_path
+   pds
+   pds_path
+   uncovered_pd_path

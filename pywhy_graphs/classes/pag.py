@@ -2,12 +2,9 @@ from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
-import pywhy_graphs
-
 from ..typing import Node
 from .admg import ADMG
 from .base import ConservativeMixin
-from .config import EdgeType
 
 
 class PAG(ADMG, ConservativeMixin):
@@ -91,7 +88,9 @@ class PAG(ADMG, ConservativeMixin):
         self._unfaithful_triples: Dict[FrozenSet[Node], None] = dict()
 
         # check that construction of PAG was valid
-        pywhy_graphs.is_valid_mec_graph(self)
+        from pywhy_graphs import is_valid_mec_graph
+
+        is_valid_mec_graph(self)
 
     @property
     def circle_edge_name(self) -> str:
@@ -221,66 +220,16 @@ class PAG(ADMG, ConservativeMixin):
                 yield node
 
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
+        from pywhy_graphs.algorithms.generic import _check_adding_pag_edge
+
         _check_adding_pag_edge(self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type)
         return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
 
     def add_edges_from(self, ebunch_to_add, edge_type, **attr):
+        from pywhy_graphs.algorithms.generic import _check_adding_pag_edge
+
         for u_of_edge, v_of_edge in ebunch_to_add:
             _check_adding_pag_edge(
                 self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type
             )
         return super().add_edges_from(ebunch_to_add, edge_type, **attr)
-
-
-def _check_adding_pag_edge(graph: PAG, u_of_edge: Node, v_of_edge: Node, edge_type: EdgeType):
-    """Check compatibility among internal graphs when adding an edge of a certain type.
-
-    Parameters
-    ----------
-    u_of_edge : node
-        The start node.
-    v_of_edge : node
-        The end node.
-    edge_type : EdgeType
-        The edge type that is being added.
-    """
-    raise_error = False
-    if edge_type == EdgeType.ALL.value:
-        if graph.has_edge(u_of_edge, v_of_edge):
-            raise_error = True
-    elif edge_type == EdgeType.CIRCLE.value:
-        # there should not be an existing arrow
-        # nor a bidirected arrow
-        if graph.has_edge(u_of_edge, v_of_edge, graph.directed_edge_name) or graph.has_edge(
-            u_of_edge, v_of_edge, graph.bidirected_edge_name
-        ):
-            raise_error = True
-    elif edge_type == EdgeType.DIRECTED.value:
-        # there should not be a circle edge, or a bidirected edge
-        if graph.has_edge(u_of_edge, v_of_edge, graph.circle_edge_name) or graph.has_edge(
-            u_of_edge, v_of_edge, graph.bidirected_edge_name
-        ):
-            raise_error = True
-        if graph.has_edge(v_of_edge, u_of_edge, graph.directed_edge_name):
-            raise RuntimeError(
-                f"There is an existing {v_of_edge} -> {u_of_edge}. You are "
-                f"trying to add a directed edge from {u_of_edge} -> {v_of_edge}. "
-                f"If your intention is to create a bidirected edge, first remove the "
-                f"edge and then explicitly add the bidirected edge."
-            )
-    elif edge_type == EdgeType.BIDIRECTED.value:
-        # there should not be any type of edge between the two
-        if (
-            graph.has_edge(u_of_edge, v_of_edge, graph.directed_edge_name)
-            or graph.has_edge(u_of_edge, v_of_edge, graph.circle_edge_name)
-            or graph.has_edge(v_of_edge, u_of_edge, graph.directed_edge_name)
-            or graph.has_edge(v_of_edge, u_of_edge, graph.circle_edge_name)
-        ):
-            raise_error = True
-
-    if raise_error:
-        raise RuntimeError(
-            f"There is already an existing edge between {u_of_edge} and {v_of_edge}. "
-            f"Adding a {edge_type} edge is not possible. Please remove the existing "
-            f"edge first. {graph.edges()}"
-        )

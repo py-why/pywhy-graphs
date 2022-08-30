@@ -212,7 +212,9 @@ class TestPAG(TestADMG):
             ("x2", "x5"),
         ]
         latent_edge_list = [("x1", "x2"), ("x4", "x5"), ("x4", "x1")]
-        with pytest.raises(RuntimeError, match="There is more than one edge between"):
+        with pytest.raises(
+            RuntimeError, match="There is already an existing edge between x4 and x1"
+        ):
             PAG(edge_list, incoming_circle_edges=latent_edge_list)
 
     def test_add_circle_edge(self):
