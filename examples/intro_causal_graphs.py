@@ -76,7 +76,7 @@ set_random_seed(1234)
 
 # construct a causal graph that will result in
 # x -> y <- z -> w
-G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w")])
+G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ('xy', 'x'), ('xy', 'y')])
 
 causal_model = gcm.ProbabilisticCausalModel(G)
 causal_model.set_causal_mechanism("x", gcm.ScipyDistribution(stats.binom, p=0.5, n=1))
@@ -95,13 +95,20 @@ causal_model.set_causal_mechanism(
         noise_model=gcm.ScipyDistribution(stats.binom, p=0.5, n=1),
     ),
 )
+causal_model.set_causal_mechanism(
+    "xy",
+    gcm.AdditiveNoiseModel(
+        prediction_model=MyCustomModel(1),
+        noise_model=gcm.ScipyDistribution(stats.binom, p=0.5, n=1),
+    ),
+)
 
 # Fit here would not really fit parameters, since we don't do anything in the fit method.
 # Here, we only need this to ensure that each FCM has the correct local hash (i.e., we
 # get an inconsistency error if we would modify the graph afterwards without updating
 # the FCMs). Having an empty data set is a small workaround, since all models are
 # pre-defined.
-gcm.fit(causal_model, pd.DataFrame(columns=["x", "y", "z", "w"]))
+gcm.fit(causal_model, pd.DataFrame(columns=["x", "y", "z", "w", 'xy']))
 
 # sample the observational data
 data = gcm.draw_samples(causal_model, num_samples=500)
@@ -124,7 +131,7 @@ print(G)
 # One can query the parents of 'y' for example
 print(list(G.predecessors("y")))
 
-# Or the children of 'xy'
+# Or the children of 'x'
 print(list(G.successors("xy")))
 
 # Using the graph, we can explore d-separation statements, which by the Markov
@@ -143,7 +150,7 @@ print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, 
 # in the graph. These unobserved confounders are graphically depicted with a bidirected edge.
 
 # We can construct an ADMG from the DAG by just setting 'xy' as a latent confounder
-admg = pywhy_graphs.set_nodes_as_latent_confounders(G, ["xy"])
+admg = pywhy_graphs.set_nodes_as_latent_confounders(G, ["xx"])
 
 # Now there is a bidirected edge between 'x' and 'y'
 draw(admg)
