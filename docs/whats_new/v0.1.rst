@@ -28,7 +28,8 @@ Changelog
 
 - |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:pr:`6`)
 - |Feature| Implement and test the :class:`pywhy_graphs.PAG` for PAGs, by `Adam Li`_ (:pr:`9`)
-
+- |Feature| Implement and test various PAG algorithms :func:`pywhy_graphs.possible_ancestors`, :func:`pywhy_graphs.possible_descendants`, :func:`pywhy_graphs.discriminating_path`, :func:`pywhy_graphs.possibly_d_sep_sets`, :func:`pywhy_graphs.pds_path`, and :func:`pywhy_graphs.uncovered_pd_path`, by `Adam Li`_ (:pr:`10`)
+    
 Code and Documentation Contributors
 -----------------------------------
 
