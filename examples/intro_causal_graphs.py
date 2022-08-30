@@ -79,7 +79,7 @@ set_random_seed(1234)
 G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ("xy", "x"), ("xy", "y")])
 
 causal_model = gcm.ProbabilisticCausalModel(G)
-causal_model.set_causal_mechanism("x", gcm.ScipyDistribution(stats.binom, p=0.5, n=1))
+causal_model.set_causal_mechanism("xy", gcm.ScipyDistribution(stats.binom, p=0.5, n=1))
 causal_model.set_causal_mechanism("z", gcm.ScipyDistribution(stats.binom, p=0.9, n=1))
 causal_model.set_causal_mechanism(
     "y",
@@ -96,7 +96,7 @@ causal_model.set_causal_mechanism(
     ),
 )
 causal_model.set_causal_mechanism(
-    "xy",
+    "x",
     gcm.AdditiveNoiseModel(
         prediction_model=MyCustomModel(1),
         noise_model=gcm.ScipyDistribution(stats.binom, p=0.5, n=1),
@@ -150,7 +150,7 @@ print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, 
 # in the graph. These unobserved confounders are graphically depicted with a bidirected edge.
 
 # We can construct an ADMG from the DAG by just setting 'xy' as a latent confounder
-admg = pywhy_graphs.set_nodes_as_latent_confounders(G, ["xx"])
+admg = pywhy_graphs.set_nodes_as_latent_confounders(G, ["xy"])
 
 # Now there is a bidirected edge between 'x' and 'y'
 draw(admg)
@@ -160,7 +160,7 @@ print(list(admg.predecessors("y")))
 
 # The bidirected edges also form a cluster in what is known as "confounded-components", or
 # c-components for short.
-print(f"The ADMG has c-components: {admg.c_components}")
+print(f"The ADMG has c-components: {list(admg.c_components())}")
 
 # We can also look at m-separation statements similarly to a DAG.
 # For example, 'z' is still m-separated from 'x' because of the collider at 'y'
@@ -172,7 +172,7 @@ print(f"'z' is d-separated from 'x' given 'y': {nx.m_separated(admg, {'z'}, {'x'
 # Say we add a bidirected edge between 'z' and 'x', then they are no longer
 # d-separated.
 admg.add_edge("z", "x", admg.bidirected_edge_name)
-print(f"'z' is d-separated from 'x': {nx.m_separated(admg, {'z'}, {'x'})}")
+print(f"'z' is d-separated from 'x': {nx.m_separated(admg, {'z'}, {'x'}, set())}")
 
 # Markov Equivalence Classes
 # --------------------------
