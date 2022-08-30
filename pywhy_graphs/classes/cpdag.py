@@ -61,7 +61,7 @@ class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         self._directed_name = directed_edge_name
         self._undirected_name = undirected_edge_name
 
-        from pywhy_graphs.algorithms.graph import is_valid_mec_graph
+        from pywhy_graphs import is_valid_mec_graph
 
         # check that construction of PAG was valid
         is_valid_mec_graph(self)

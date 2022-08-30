@@ -88,7 +88,7 @@ class PAG(ADMG, ConservativeMixin):
         self._unfaithful_triples: Dict[FrozenSet[Node], None] = dict()
 
         # check that construction of PAG was valid
-        from pywhy_graphs.algorithms.graph import is_valid_mec_graph
+        from pywhy_graphs import is_valid_mec_graph
 
         is_valid_mec_graph(self)
 
