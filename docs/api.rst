@@ -23,5 +23,6 @@ graphs encountered in the literature.
 .. autosummary::
    :toctree: generated/
 
-   CPDAG
    ADMG
+   CPDAG
+   PAG
