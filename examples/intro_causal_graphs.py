@@ -76,7 +76,7 @@ set_random_seed(1234)
 
 # construct a causal graph that will result in
 # x -> y <- z -> w
-G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ('xy', 'x'), ('xy', 'y')])
+G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ("xy", "x"), ("xy", "y")])
 
 causal_model = gcm.ProbabilisticCausalModel(G)
 causal_model.set_causal_mechanism("x", gcm.ScipyDistribution(stats.binom, p=0.5, n=1))
@@ -108,7 +108,7 @@ causal_model.set_causal_mechanism(
 # get an inconsistency error if we would modify the graph afterwards without updating
 # the FCMs). Having an empty data set is a small workaround, since all models are
 # pre-defined.
-gcm.fit(causal_model, pd.DataFrame(columns=["x", "y", "z", "w", 'xy']))
+gcm.fit(causal_model, pd.DataFrame(columns=["x", "y", "z", "w", "xy"]))
 
 # sample the observational data
 data = gcm.draw_samples(causal_model, num_samples=500)
