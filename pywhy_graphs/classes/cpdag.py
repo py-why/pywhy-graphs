@@ -1,4 +1,4 @@
-from typing import Iterator, Mapping
+from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
@@ -65,6 +65,10 @@ class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
 
         # check that construction of PAG was valid
         is_valid_mec_graph(self)
+
+        # extended patterns store unfaithful triples
+        # these can be used for conservative structure learning algorithm
+        self._unfaithful_triples: Dict[FrozenSet[Node], None] = dict()
 
     @property
     def undirected_edge_name(self) -> str:

@@ -1,7 +1,7 @@
-from graphs import MixedEdgeGraph
+import networkx as nx
 
 
-def draw(G: MixedEdgeGraph, direction=None):
+def draw(G: nx.MixedEdgeGraph, direction=None):
     """
     Visualize the graph.
 

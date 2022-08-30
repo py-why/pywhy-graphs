@@ -14,7 +14,7 @@ clean-so:
 	find . -name "*.pyd" | xargs rm -f
 
 clean-build:
-	rm -rf _build build dist mne_icalabel.egg-info
+	rm -rf _build build dist pywhy_graphs.egg-info
 
 clean-ctags:
 	rm -f tags
