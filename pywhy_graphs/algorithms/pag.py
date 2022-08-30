@@ -2,6 +2,7 @@ import logging
 from collections import deque
 from itertools import chain
 from typing import List, Optional, Set, Tuple
+from warnings import warn
 
 import networkx as nx
 import numpy as np
@@ -168,7 +169,7 @@ def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bo
 
 
 def discriminating_path(
-    graph: PAG, u: Node, a: Node, c: Node, max_path_length: int = np.inf
+    graph: PAG, u: Node, a: Node, c: Node, max_path_length: Optional[int] = None
 ) -> Tuple[bool, List[Node], Set[Node]]:
     """Find the discriminating path for <..., a, u, c>.
 
@@ -201,7 +202,7 @@ def discriminating_path(
     disc_path : list
         The discriminating path starting from node c.
     """
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     explored_nodes: Set[Node] = set()
@@ -250,7 +251,7 @@ def discriminating_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            warn(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
@@ -312,7 +313,7 @@ def uncovered_pd_path(
     graph: PAG,
     u: Node,
     c: Node,
-    max_path_length: int,
+    max_path_length: Optional[int] =None,
     first_node: Optional[Node] = None,
     second_node: Optional[Node] = None,
 ) -> Tuple[List[Node], bool]:
@@ -361,7 +362,7 @@ def uncovered_pd_path(
     ):
         raise RuntimeError("Some nodes are not in graph... Double check function arguments.")
 
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     explored_nodes: Set[Node] = set()
@@ -405,7 +406,7 @@ def uncovered_pd_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            warn(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
