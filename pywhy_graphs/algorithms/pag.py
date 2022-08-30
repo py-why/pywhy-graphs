@@ -313,7 +313,7 @@ def uncovered_pd_path(
     graph: PAG,
     u: Node,
     c: Node,
-    max_path_length: Optional[int] =None,
+    max_path_length: Optional[int] = None,
     first_node: Optional[Node] = None,
     second_node: Optional[Node] = None,
 ) -> Tuple[List[Node], bool]:
