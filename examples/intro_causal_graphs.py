@@ -14,16 +14,16 @@ in causal inference, and their differences from traditional graphs.
 #
 # License: BSD (3-clause)
 
-import numpy as np
-
 import networkx as nx
-from scipy import stats
-import pywhy_graphs
-from pywhy_graphs.viz import draw
+import numpy as np
 import pandas as pd
-from pywhy_graphs import CPDAG, PAG
 from dowhy import gcm
 from dowhy.gcm.util.general import set_random_seed
+from scipy import stats
+
+import pywhy_graphs
+from pywhy_graphs import CPDAG, PAG
+from pywhy_graphs.viz import draw
 
 # %%
 # Structural Causal Models: Simulating some data
@@ -53,6 +53,7 @@ from dowhy.gcm.util.general import set_random_seed
 # set a random seed to make example reproducible
 seed = 12345
 rng = np.random.RandomState(seed=seed)
+
 
 class MyCustomModel(gcm.PredictionModel):
     def __init__(self, coefficient):
@@ -177,7 +178,7 @@ print(f"'z' is d-separated from 'x': {nx.m_separated(admg, {'z'}, {'x'})}")
 # used in constraint-based structure learning algorithms, which seek to reconstruct
 # parts of the causal graph from data. In this next section, we will briefly overview
 # some of these common graphs.
-# 
+#
 # Markov equivalence class graphs are usually learned from data. The algorithms for
 # doing so are in `dodiscover <https://github.com/py-why/dodiscover>`_. For more
 # details on causal discovery (i.e. structure learning algorithms), please see that repo.
@@ -210,9 +211,10 @@ draw(cpdag)
 # -----------------------------
 # PAGs are Markov equivalence classes for ADMGs. Since we allow latent confounders, these graphs
 # are more complex compared to the CPDAGs. PAGs encode uncertain edge orientations via circle
-# endpoints. A circle endpoint (``o-*``) can imply either: a tail (``-*``), or an arrowhead (``<-*``),
-# which can then imply either an undirected edge (selection bias), directed edge (ancestral relationship),
-# or bidirected edge (possible presence of a latent confounder).
+# endpoints. A circle endpoint (``o-*``) can imply either: a tail (``-*``), or an
+# arrowhead (``<-*``), which can then imply either an undirected edge (selection bias),
+# directed edge (ancestral relationship), or bidirected edge (possible presence of a
+# latent confounder).
 #
 # Note: a directed edge in the PAG does not actually imply parental relationships.
 #

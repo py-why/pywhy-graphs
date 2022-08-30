@@ -69,11 +69,13 @@ sphinx-copybutton = { version = "^0.5.0" }
 sphinx-gallery = { version = "^0.11.0" }
 sphinx_rtd_theme = { version = "^1.0.0" }
 graphviz = { version = "^0.20.1" }
-dowhy = { version = "^0.8" }
 ipython = { version = "^7.4.0" }
 nbsphinx = { version = "^0.8" }
-scikit-learn = { version = "^1.1.0" }
-pandas = { version = "^1.1" }
+dowhy = { version = "^0.8" }
+scikit-learn = { version = "^1.1.0" }  # needed in dowhy's package
+pandas = { version = "^1.1" }  # needed in dowhy's package
+joblib = { version = "^1.1.0" }  # needed in dowhy's package
+tqdm = { version = "^4.64.0" }  # needed in dowhy's package
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -128,7 +130,6 @@ extend-exclude = '''
     | \.github
     | setup.py
     | docs/
-    | examples/
 )
 '''
 
@@ -144,7 +145,6 @@ py_version = 38
 extend_skip_glob = [
     'setup.py',
     'docs/*',
-    'examples/*',
     'pywhy_graphs/__init__.py',
 ]
 
