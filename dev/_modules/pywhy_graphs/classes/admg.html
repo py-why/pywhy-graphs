@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.classes.admg &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="canonical" href="https://pywhy.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../use.html">
+  Examples using pywhy-graphs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference external nav-link" href="https://raw.githubusercontent.com/py-why/pywhy-graphs/main/LICENSE">
+  License
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference external nav-link" href="https://github.com/py-why/pywhy-graphs/main/CONTRIBUTING.md">
+  Contributing
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://pywhy.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pywhy/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.classes.admg</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Set</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">AncestralMixin</span>
+
+
+<div class="viewcode-block" id="ADMG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG">[docs]</a><span class="k">class</span> <span class="nc">ADMG</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">AncestralMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Acyclic directed mixed graph (ADMG).</span>
+
+<span class="sd">    A causal graph with two different edge types: bidirected and traditional</span>
+<span class="sd">    directed edges. Directed edges constitute causal relations as a</span>
+<span class="sd">    causal DAG did, while bidirected edges constitute the presence of a</span>
+<span class="sd">    latent confounder.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    incoming_directed_edges : input directed edges (optional, default: None)</span>
+<span class="sd">        Data to initialize directed edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.DiGraph` are accepted.</span>
+<span class="sd">    incoming_bidirected_edges : input bidirected edges (optional, default: None)</span>
+<span class="sd">        Data to initialize bidirected edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.Graph` are accepted.</span>
+<span class="sd">    incoming_undirected_edges : input undirected edges (optional, default: None)</span>
+<span class="sd">        Data to initialize undirected edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.Graph` are accepted.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        The name for the directed edges. By default &#39;directed&#39;.</span>
+<span class="sd">    bidirected_edge_name : str</span>
+<span class="sd">        The name for the bidirected edges. By default &#39;bidirected&#39;.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        The name for the directed edges. By default &#39;undirected&#39;.</span>
+<span class="sd">    attr : keyword arguments, optional (default= no attributes)</span>
+<span class="sd">        Attributes to add to graph as key=value pairs.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    networkx.DiGraph</span>
+<span class="sd">    networkx.Graph</span>
+<span class="sd">    MixedEdgeGraph</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The data structure underneath the hood is stored in two networkx graphs:</span>
+<span class="sd">    ``networkx.Graph`` and ``networkx.DiGraph`` to represent the non-directed</span>
+<span class="sd">    edges and directed edges. Non-directed edges in an ADMG can be present as</span>
+<span class="sd">    bidirected edges standing for latent confounders, or undirected edges</span>
+<span class="sd">    standing for selection bias.</span>
+
+<span class="sd">    - Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = `networkx.DiGraph`</span>
+<span class="sd">    - Bidirected edges (&lt;-&gt;, indicating latent confounder) = `networkx.Graph`</span>
+<span class="sd">    - Undirected edges (--, indicating selection bias) = `networkx.Graph`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">incoming_bidirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">directed_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+        <span class="n">bidirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+        <span class="n">undirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">attr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">incoming_directed_edges</span><span class="p">),</span> <span class="n">directed_edge_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">incoming_bidirected_edges</span><span class="p">),</span> <span class="n">bidirected_edge_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">incoming_undirected_edges</span><span class="p">),</span> <span class="n">undirected_edge_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span> <span class="o">=</span> <span class="n">directed_edge_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span> <span class="o">=</span> <span class="n">bidirected_edge_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span> <span class="o">=</span> <span class="n">undirected_edge_name</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not a DAG, which it should be.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Name of the undirected edge internal graph.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Name of the directed edge internal graph.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bidirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Name of the bidirected edge internal graph.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span>
+
+<div class="viewcode-block" id="ADMG.c_components"><a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.c_components">[docs]</a>    <span class="k">def</span> <span class="nf">c_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Set</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Generate confounded components of the graph.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        comp : iterator of sets</span>
+<span class="sd">            The c-components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sub_bidirected_graph</span><span class="p">())</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bidirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the bidirected edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the undirected edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the directed edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
+
+<div class="viewcode-block" id="ADMG.sub_directed_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_directed_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sub-graph of just the directed edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ADMG.sub_bidirected_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_bidirected_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_bidirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sub-graph of just the bidirected edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ADMG.sub_undirected_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_undirected_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sub-graph of just the undirected edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span></div></div>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2022, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
