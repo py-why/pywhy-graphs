@@ -1,16 +1,17 @@
-from itertools import combinations
 from typing import Union
 
 import networkx as nx
 
 import pywhy_graphs as pgraph
+from pywhy_graphs.algorithms.generic import _check_adding_cpdag_edge, _check_adding_pag_edge
 
 
 def is_valid_mec_graph(G: Union[pgraph.PAG, pgraph.CPDAG], on_error: str = "raise") -> bool:
     """Check G is a valid PAG.
 
     A valid CPDAG/PAG is one where each pair of nodes have
-    at most one edge between them.
+    at most one edge between them and the internal graph of directed edges
+    do not form cycles.
 
     Parameters
     ----------
@@ -25,20 +26,14 @@ def is_valid_mec_graph(G: Union[pgraph.PAG, pgraph.CPDAG], on_error: str = "rais
     bool
         Whether G is a valid PAG or CPDAG.
     """
-    for node1, node2 in combinations(G.nodes, 2):
-        n_edges = 0
-        names = []
-        for name, graph in G.get_graphs().items():
-            if (node1, node2) in graph.edges or (node2, node1) in graph.edges:
-                n_edges += 1
-                names.append(name)
-        if n_edges > 1:
-            if on_error == "raise":
-                raise RuntimeError(
-                    f"There is more than one edge between ({node1}, {node2}) in the "
-                    f"edge types: {names}. Please fix the construction of the PAG."
-                )
-            return False
+    if isinstance(G, pgraph.CPDAG):
+        check_func = _check_adding_cpdag_edge
+    elif isinstance(G, pgraph.PAG):
+        check_func = _check_adding_pag_edge
+
+    for edge_type, edgeview in G.edges().items():
+        for u, v in edgeview:
+            check_func(G, u, v, edge_type)
 
     # the directed edges should not form cycles
     if not nx.is_directed_acyclic_graph(G.sub_directed_graph()):
