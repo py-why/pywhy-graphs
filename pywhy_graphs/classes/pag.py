@@ -122,8 +122,28 @@ class PAG(ADMG, ConservativeMixin):
         if not self.has_edge(u, v, self.circle_edge_name):
             raise RuntimeError(f"There is no uncertain circular edge between {u} and {v}.")
 
-        self.remove_edge(u, v, self.circle_edge_name)
-        self.add_edge(u, v, self.directed_edge_name)
+        # Performs orientation of edges
+        if self.has_edge(v, u, self.directed_edge_name):
+            # Orients: u <-o v => u <-> v
+            # when we orient (u,v) now as an arrowhead, it is a bidirected arrow
+            self.remove_edge(v, u, self.directed_edge_name)
+            self.remove_edge(u, v, self.circle_edge_name)
+            self.add_edge(u, v, self.bidirected_edge_name)
+        elif self.has_edge(v, u, self.circle_edge_name):
+            # Orients: u o-o v => u o-> v
+            # In this case, we have a bidirected circle edge
+            # we only need to remove the circle edge and orient
+            # it as a normal edge
+            self.remove_edge(u, v, self.circle_edge_name)
+            self.add_edge(u, v, self.directed_edge_name)
+        elif self.has_edge(u, v, self.circle_edge_name):
+            # In this case, we have a circle edge that is oriented into an arrowhead
+            # we only need to remove the circle edge and orient
+            # it as a normal edge
+            self.remove_edge(u, v, self.circle_edge_name)
+            self.add_edge(u, v, self.directed_edge_name)
+        else:  # noqa
+            raise RuntimeError("The current PAG is invalid.")
 
     def possible_children(self, n: Node) -> Iterator:
         """Return an iterator over children of node n.
