@@ -4,12 +4,12 @@
 pywhy-graphs is a Python package for representing causal graphs. For example, Acyclic
 Directed Mixed Graphs (ADMG), also known as causal DAGs and Partial Ancestral Graphs (PAGs).
 We build on top of ``networkx's`` ``MixedEdgeGraph`` such that we maintain all the well-tested and efficient
-algorithms and data structures of ``networkx``.
-
-We encourage you to use the package for your causal inference research and also build on top
-with relevant Pull Requests.
+algorithms and data structures of ``networkx``. 
 
 See our examples for walk-throughs of how to use the package.
+
+We encourage you to use the package for your causal inference research and also build on top
+with relevant Pull Requests. Also, see our `contributing guide <https://github.com/mne-tools/mne-icalabel/blob/main/CONTRIBUTING.md>`_.
 
 Contents
 --------
@@ -23,13 +23,6 @@ Contents
    use
    whats_new
 
-.. toctree::
-   :hidden:
-   :caption: Development
-
-   License <https://raw.githubusercontent.com/py-why/pywhy-graphs/main/LICENSE>
-   Contributing <https://github.com/py-why/pywhy-graphs/main/CONTRIBUTING.md>
-
 Team
 ----
 
@@ -40,8 +33,8 @@ To learn more about who specifically contributed to this codebase, see
 License
 -------
 
-**pywhy-graphs** is licensed under `BSD 3.0 <https://opensource.org/licenses/BSD-3-Clause>`_.
-A full copy of the license can be found `on GitHub <https://github.com/pywhy/pywhy-graphs/blob/main/LICENSE>`_.
+**pywhy-graphs** is licensed under `MIT <https://opensource.org/licenses/MIT>`_.
+A full copy of the license can be found `on GitHub <https://github.com/py-why/pywhy-graphs/blob/main/LICENSE>`_.
 
 Indices and tables
 ------------------

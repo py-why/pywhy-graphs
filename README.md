@@ -17,9 +17,9 @@ ensuring acylicity via `networkx.is_directed_acyclic_graph` function.
 
 # Documentation
 
-See the [development version documentation](https://pywhy.github.io/pywhy-graphs/dev/index.html).
+See the [development version documentation](https://py-why.github.io/pywhy-graphs/dev/index.html).
 
-Or see [stable version documentation](https://pywhy.github.io/pywhy-graphs/stable/index.html)
+Or see [stable version documentation](https://py-why.github.io/pywhy-graphs/stable/index.html)
 
 # Installation
 
