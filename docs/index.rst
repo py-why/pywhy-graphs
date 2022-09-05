@@ -37,12 +37,6 @@ Team
 To learn more about who specifically contributed to this codebase, see
 `our contributors <https://github.com/py-why/pywhy-graphs/graphs/contributors>`_ page.
 
-License
--------
-
-**pywhy-graphs** is licensed under `BSD 3.0 <https://opensource.org/licenses/BSD-3-Clause>`_.
-A full copy of the license can be found `on GitHub <https://github.com/pywhy/pywhy-graphs/blob/main/LICENSE>`_.
-
 Indices and tables
 ------------------
 
