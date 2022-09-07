@@ -9,11 +9,6 @@ Causal graphs are graphical objects that attach causal notions to each edge
 and missing edge. We will review some of the fundamental causal graphs used
 in causal inference, and their differences from traditional graphs.
 """
-
-# Authors: Adam Li <adam2392@gmail.com>
-#
-# License: BSD (3-clause)
-
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -75,7 +70,8 @@ class MyCustomModel(gcm.PredictionModel):
 set_random_seed(1234)
 
 # construct a causal graph that will result in
-# x -> y <- z -> w
+# xy - > x -> y <- z -> w
+#  \_________/^
 G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ("xy", "x"), ("xy", "y")])
 dot_graph = draw(G)
 dot_graph.render(outfile="dag.png", view=True)
@@ -163,7 +159,7 @@ print(list(admg.predecessors("y")))
 
 # The bidirected edges also form a cluster in what is known as "confounded-components", or
 # c-components for short.
-print(f"The ADMG has c-components: {list(admg.c_components())}")
+print(f"The ADMG has confounded-components: {list(admg.c_components())}")
 
 # We can also look at m-separation statements similarly to a DAG.
 # For example, 'z' is still m-separated from 'x' because of the collider at 'y'

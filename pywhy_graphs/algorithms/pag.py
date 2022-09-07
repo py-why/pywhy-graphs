@@ -2,7 +2,6 @@ import logging
 from collections import deque
 from itertools import chain
 from typing import List, Optional, Set, Tuple
-from warnings import warn
 
 import networkx as nx
 import numpy as np
@@ -251,7 +250,7 @@ def discriminating_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            warn(
+            logger.warn(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
@@ -406,7 +405,7 @@ def uncovered_pd_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            warn(
+            logger.warn(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
