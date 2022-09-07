@@ -177,6 +177,7 @@ def test_discriminating_path():
 
 
 def test_uncovered_pd_path():
+    """Test basic uncovered partially directed path."""
     # If A o-> C and there is an undirected pd path
     # from A to C through u, where u and C are not adjacent
     # then orient A o-> C as A -> C
@@ -221,6 +222,7 @@ def test_uncovered_pd_path():
 
 
 def test_uncovered_pd_path_intersecting():
+    """Test basic uncovered partially directed path with intersecting paths."""
     G = pywhy_graphs.PAG()
 
     # make A o-> C
@@ -239,7 +241,7 @@ def test_uncovered_pd_path_intersecting():
     # get the uncovered pd paths
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="x")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "x", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "x", "y", "z", "u", "C"], ["A", "x", "y", "z", "v", "C"])
 
     # when we make the <A, x, y> triple shielded, it is no longer an uncovered path
     G.add_edge("A", "y", G.directed_edge_name)
@@ -252,7 +254,7 @@ def test_uncovered_pd_path_intersecting():
     G.add_edges_from([("A", "w"), ("w", "y")], G.directed_edge_name)
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="w")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "w", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "w", "y", "z", "u", "C"], ["A", "w", "y", "z", "v", "C"])
 
     # For the third test, the path through x is not an uncovered pd path, but the
     # path through 'y' is
