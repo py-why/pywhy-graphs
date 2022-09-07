@@ -57,12 +57,4 @@ def test_acyclification():
 
     for edge_type, graph in acyclic_G.get_graphs().items():
         expected_graph = expected_G.get_graphs(edge_type)
-        for edge in graph.edges:
-            if edge not in expected_graph.edges:
-                print(edge)
-        print("second part...")
-        for edge in expected_graph.edges:
-            if edge not in graph.edges:
-                print(edge)
-
         assert nx.is_isomorphic(graph, expected_graph)
