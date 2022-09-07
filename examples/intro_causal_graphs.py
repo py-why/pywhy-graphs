@@ -77,6 +77,8 @@ set_random_seed(1234)
 # construct a causal graph that will result in
 # x -> y <- z -> w
 G = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "w"), ("xy", "x"), ("xy", "y")])
+dot_graph = draw(G)
+dot_graph.render(outfile="dag.png", view=True)
 
 causal_model = gcm.ProbabilisticCausalModel(G)
 causal_model.set_causal_mechanism("xy", gcm.ScipyDistribution(stats.binom, p=0.5, n=1))
@@ -153,7 +155,8 @@ print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, 
 admg = pywhy_graphs.set_nodes_as_latent_confounders(G, ["xy"])
 
 # Now there is a bidirected edge between 'x' and 'y'
-draw(admg)
+dot_graph = draw(admg)
+dot_graph.render(outfile="admg.png", view=True)
 
 # Now if one queries the parents of 'y', it will not show 'xy' anymore
 print(list(admg.predecessors("y")))
@@ -211,7 +214,8 @@ cpdag.orient_uncertain_edge("x", "y")
 cpdag.orient_uncertain_edge("xy", "y")
 cpdag.orient_uncertain_edge("z", "y")
 
-draw(cpdag)
+dot_graph = draw(cpdag)
+dot_graph.render(outfile="pag.png", view=True)
 
 # %%
 # Partial Ancestral Graph (PAG)
@@ -223,11 +227,23 @@ draw(cpdag)
 # directed edge (ancestral relationship), or bidirected edge (possible presence of a
 # latent confounder).
 #
-# Note: a directed edge in the PAG does not actually imply parental relationships.
+# .. note: a directed edge in the PAG does not actually imply parental relationships, but simply
+# an ancestral relationship.
 #
 # Typically, PAGs are learnt using some variant of the FCI algorithm :footcite:`Spirtes1993` and
 # :footcite`Zhang2008`.
 pag = PAG()
+
+# let's assume all the undirected edges are formed from the earlier DAG
+pag.add_edges_from(G.edges, pag.undirected_edge_name)
+
+# next, we will orient all unshielded colliders present in the original DAG
+pag.orient_uncertain_edge("x", "y")
+pag.orient_uncertain_edge("xy", "y")
+pag.orient_uncertain_edge("z", "y")
+
+dot_graph = draw(pag)
+dot_graph.render(outfile="cpdag.png", view=True)
 
 # %%
 # References
