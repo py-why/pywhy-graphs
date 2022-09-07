@@ -969,7 +969,7 @@ test = ["codecov (>=2.1)", "pytest (>=7.1)", "pytest-cov (>=3.0)"]
 type = "git"
 url = "https://github.com/adam2392/networkx.git"
 reference = 'mixededge'
-resolved_reference = "7501bb9b75695b9c9f032003f559821f211676d2"
+resolved_reference = "7a76d65438bf7842773e5ccd7e77f6e27160f27e"
 
 [[package]]
 name = "numpy"
@@ -1951,7 +1951,7 @@ viz = ["pygraphviz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "5d6c519ea91ed7ee96b6fc1fc2800e637325c0c5297e9892be8673513a24ea2f"
+content-hash = "a93f8b80b3706446628843e56afd7fbf90ad7f0ecb22c9dae7cd5f1157842674"
 
 [metadata.files]
 alabaster = [
