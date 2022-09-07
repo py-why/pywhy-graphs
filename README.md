@@ -4,9 +4,11 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![codecov](https://codecov.io/gh/py-why/pywhy-graphs/branch/main/graph/badge.svg?token=H1reh7Qwf4)](https://codecov.io/gh/py-why/pywhy-graphs)
 
-# PyWhy-Graphs
+# PyWhy-Graphs (Experimental)
 
 pywhy-graphs is a Python graph library that extends `MixedEdgeGraph` in [networkx](https://github.com/networkx/networkx) to implement a light-weight API for causal graphical structures.
+
+Note: The API is subject to change without deprecation cycles due to the current work-in-progress `MixedEdgeGraph` class in networkx. For more information, follow the PR at https://github.com/networkx/networkx/pull/5947
 
 ## Why?
 
@@ -17,9 +19,9 @@ ensuring acylicity via `networkx.is_directed_acyclic_graph` function.
 
 # Documentation
 
-See the [development version documentation](https://pywhy.github.io/pywhy-graphs/dev/index.html).
+See the [development version documentation](https://py-why.github.io/pywhy-graphs/dev/index.html).
 
-Or see [stable version documentation](https://pywhy.github.io/pywhy-graphs/stable/index.html)
+Or see [stable version documentation](https://py-why.github.io/pywhy-graphs/stable/index.html)
 
 # Installation
 
@@ -53,3 +55,5 @@ To install the package from github, clone the repository and then `cd` into the 
 
     # if you would like an editable install of dodiscover for dev purposes
     pip install -e .
+
+    pip install https://api.github.com/repos/py-why/pywhy-graphs/zipball/main

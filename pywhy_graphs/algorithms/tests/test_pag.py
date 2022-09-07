@@ -266,7 +266,7 @@ def test_uncovered_pd_path_intersecting():
 
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="y")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "y", "z", "u", "C"], ["A", "y", "z", "v", "C"])
 
 
 def test_possibly_d_separated(pds_graph):
