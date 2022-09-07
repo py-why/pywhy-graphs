@@ -29,7 +29,7 @@ Changelog
 - |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:pr:`6`)
 - |Feature| Implement and test the :class:`pywhy_graphs.PAG` for PAGs, by `Adam Li`_ (:pr:`9`)
 - |Feature| Implement and test various PAG algorithms :func:`pywhy_graphs.algorithms.possible_ancestors`, :func:`pywhy_graphs.algorithms.possible_descendants`, :func:`pywhy_graphs.algorithms.discriminating_path`, :func:`pywhy_graphs.algorithms.pds`, :func:`pywhy_graphs.algorithms.pds_path`, and :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Adam Li`_ (:pr:`10`)
-- |Feature| Implement an array API wrapper to convert between causal graphs in pywhy-graphs and causal graphs in ``causal-learn``, by `Adam Li`_ (:pr:`11`)
+- |Feature| Implement an array API wrapper to convert between causal graphs in pywhy-graphs and causal graphs in ``causal-learn``, by `Adam Li`_ (:pr:`16`)
     
 Code and Documentation Contributors
 -----------------------------------

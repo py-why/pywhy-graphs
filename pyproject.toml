@@ -46,6 +46,7 @@ pygraphviz = { version = "*", optional = true }
 [tool.poetry.group.test]
 optional = true
 [tool.poetry.group.test.dependencies]
+poethepoet = "^0.16.0"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 memory_profiler = { version = "^0.60.0" }
@@ -54,6 +55,7 @@ causal-learn = { version="^0.1.2.8" }
 [tool.poetry.group.style]
 optional = true
 [tool.poetry.group.style.dependencies]
+poethepoet = "^0.16.0"
 mypy = "^0.971"
 black = "^22.6.0"
 isort = "^5.10.1"
@@ -65,6 +67,7 @@ codespell = "^2.1.0"
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
+poethepoet = "^0.16.0"
 portray = "^1.7.0"
 matplotlib = { version = "^3.5" }
 numpydoc = { version = "^1.4" }
@@ -81,9 +84,6 @@ ipython = { version = "^7.4.0" }
 nbsphinx = { version = "^0.8" }
 scikit-learn = { version = "^1.1.0" }
 pandas = { version = "^1.1" }
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.16.0"
 
 [tool.poetry.extras]
 ts = ['dynetx']
