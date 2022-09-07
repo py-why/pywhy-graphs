@@ -1,29 +1,13 @@
-from typing import Callable, List, Tuple
+from typing import List, Optional, Tuple
 
 import networkx as nx
 import numpy as np
 from numpy.typing import ArrayLike
 
 import pywhy_graphs
+from pywhy_graphs.classes.functions import edge_types
 from pywhy_graphs.config import CLearnEndpoint, EdgeType
 from pywhy_graphs.typing import Node
-
-
-def has_multiple_edges(G: pywhy_graphs.ADMG, u: Node, v: Node) -> bool:
-    edge_count = 0
-    for _, graph in G.get_graphs().items():
-        if graph.has_edge(u, v):
-            edge_count += 1
-
-    return edge_count > 1
-
-
-def edge_types(G: pywhy_graphs.ADMG, u: Node, v: Node) -> List[str]:
-    edge_types = []
-    for edge_type, graph in G.get_graphs().items():
-        if graph.has_edge(u, v):
-            edge_types.append(edge_type)
-    return edge_types
 
 
 def _graph_to_clearn_arr(G: nx.MixedEdgeGraph) -> Tuple[ArrayLike, List[Node]]:
@@ -51,74 +35,94 @@ def _graph_to_clearn_arr(G: nx.MixedEdgeGraph) -> Tuple[ArrayLike, List[Node]]:
             uv_edge_types = edge_types(G, u, v)
             if len(uv_edge_types) == 1:
                 edge_type = uv_edge_types[0]
-                if edge_type == EdgeType.DIRECTED:
-                    # ->
-                    endpoint_v = CLearnEndpoint.ARROW
-                    endpoint_u = CLearnEndpoint.TAIL
-                elif edge_type == EdgeType.BIDIRECTED:
+                if edge_type == EdgeType.DIRECTED.value:
+                    if G.has_edge(u, v, EdgeType.DIRECTED.value):
+                        # u -> v
+                        endpoint_v = CLearnEndpoint.ARROW
+                        endpoint_u = CLearnEndpoint.TAIL
+                    else:
+                        # u <- v
+                        endpoint_u = CLearnEndpoint.ARROW
+                        endpoint_v = CLearnEndpoint.TAIL
+                elif edge_type == EdgeType.BIDIRECTED.value:
                     # <->
                     endpoint_v = CLearnEndpoint.ARROW
                     endpoint_u = CLearnEndpoint.ARROW
-                elif edge_type == EdgeType.UNDIRECTED:
+                elif edge_type == EdgeType.UNDIRECTED.value:
                     # --
                     endpoint_v = CLearnEndpoint.TAIL
                     endpoint_u = CLearnEndpoint.TAIL
+                elif edge_type == EdgeType.CIRCLE.value:
+                    # u o-o v
+                    endpoint_v = CLearnEndpoint.CIRCLE
+                    endpoint_u = CLearnEndpoint.CIRCLE
+                else:
+                    raise RuntimeError(
+                        f"Unrecognizd edge type {edge_type}. Use one of "
+                        f"{[edge.value for edge in EdgeType]}."
+                    )
             elif len(uv_edge_types) == 2:
-                if (EdgeType.DIRECTED in uv_edge_types) and (EdgeType.BIDIRECTED in uv_edge_types):
-                    # u -> v and u <-> v
-                    endpoint_v = CLearnEndpoint.ARROW_AND_ARROW
-                    endpoint_u = CLearnEndpoint.TAIL_AND_ARROW
-                elif (EdgeType.DIRECTED in uv_edge_types) and (
-                    EdgeType.UNDIRECTED in uv_edge_types
+                if (EdgeType.DIRECTED.value in uv_edge_types) and (
+                    EdgeType.BIDIRECTED.value in uv_edge_types
                 ):
-                    # u -> v and u -- v
-                    endpoint_v = CLearnEndpoint.TAIL_AND_ARROW
-                    endpoint_u = CLearnEndpoint.TAIL_AND_TAIL
-                elif (EdgeType.BIDIRECTED in uv_edge_types) and (
-                    EdgeType.UNDIRECTED in uv_edge_types
+                    if G.has_edge(u, v, EdgeType.DIRECTED.value):
+                        # u -> v and u <-> v
+                        endpoint_v = CLearnEndpoint.ARROW_AND_ARROW
+                        endpoint_u = CLearnEndpoint.TAIL_AND_ARROW
+                    else:
+                        # u <- v and u <-> v
+                        endpoint_u = CLearnEndpoint.ARROW_AND_ARROW
+                        endpoint_v = CLearnEndpoint.TAIL_AND_ARROW
+                elif (EdgeType.DIRECTED.value in uv_edge_types) and (
+                    EdgeType.UNDIRECTED.value in uv_edge_types
+                ):
+                    if G.has_edge(u, v, EdgeType.DIRECTED.value):
+                        # u -> v and u -- v
+                        endpoint_v = CLearnEndpoint.TAIL_AND_ARROW
+                        endpoint_u = CLearnEndpoint.TAIL_AND_TAIL
+                    else:
+                        # u <- v and u -- v
+                        endpoint_u = CLearnEndpoint.TAIL_AND_ARROW
+                        endpoint_v = CLearnEndpoint.TAIL_AND_TAIL
+                elif (EdgeType.BIDIRECTED.value in uv_edge_types) and (
+                    EdgeType.UNDIRECTED.value in uv_edge_types
                 ):
                     # u -- v and u <-> v
                     endpoint_v = CLearnEndpoint.TAIL_AND_ARROW
                     endpoint_u = CLearnEndpoint.TAIL_AND_ARROW
+                elif EdgeType.CIRCLE.value in uv_edge_types:
+                    # u *-o v
+                    if G.has_edge(u, v, EdgeType.CIRCLE.value):
+                        endpoint_v = CLearnEndpoint.CIRCLE
+                        if G.has_edge(v, u, EdgeType.DIRECTED.value):
+                            endpoint_u = CLearnEndpoint.CIRCLE
+                        elif G.has_edge(v, u, EdgeType.UNDIRECTED.value):
+                            endpoint_u = CLearnEndpoint.TAIL
+                        else:
+                            raise RuntimeError(
+                                f"It is not possible for a PAG to have {u}-{v} with another edge..."
+                            )
+                    else:
+                        endpoint_u = CLearnEndpoint.CIRCLE
+                        if G.has_edge(u, v, EdgeType.DIRECTED.value):
+                            endpoint_v = CLearnEndpoint.CIRCLE
+                        elif G.has_edge(u, v, EdgeType.UNDIRECTED.value):
+                            endpoint_v = CLearnEndpoint.TAIL
+                        else:
+                            raise RuntimeError(
+                                f"It is not possible for a PAG to have {u}-{v} with another edge..."
+                            )
             else:
                 raise RuntimeError(
-                    f"Causal-learn does not support more than two types of edges between nodes. There are "
-                    f"{len(uv_edge_types)} edge types between {u} and {v}."
+                    f"Causal-learn does not support more than two types of edges between nodes. "
+                    f"There are {len(uv_edge_types)} edge types between {u} and {v}."
                 )
 
             # set the array to the endpoint values
-            arr[udx, vdx] = endpoint_v.value
-            arr[vdx, udx] = endpoint_u.value
+            arr[udx, vdx] = endpoint_u.value
+            arr[vdx, udx] = endpoint_v.value
 
     return arr, arr_idx
-
-
-def _infer_graph_from_causallearn(arr: ArrayLike) -> Callable:
-    unique_edge_nums = np.unique(arr)
-    n_nodes = arr.shape[0]
-
-    # check if there are two edges
-    if any(
-        CLearnEndpoint(endpoint)
-        in [
-            CLearnEndpoint.ARROW_AND_ARROW,
-            CLearnEndpoint.TAIL_AND_ARROW,
-            CLearnEndpoint.TAIL_AND_TAIL,
-        ]
-        for endpoint in unique_edge_nums
-    ):
-        graph_func = pywhy_graphs.ADMG
-    elif any(CLearnEndpoint(endpoint) == CLearnEndpoint.TAIL):
-        pass
-    # convert each non-zero array entry combination into
-    # an edge in the graph
-    for udx, vdx in np.triu_indices(n_nodes, k=1):
-        endpoint_u = CLearnEndpoint(arr[vdx, udx])
-        endpoint_v = CLearnEndpoint(arr[udx, vdx])
-
-
-def _graph_to_pcalg_arr(G: pywhy_graphs.ADMG) -> Tuple[ArrayLike, List[Node]]:
-    pass
 
 
 def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) -> nx.MixedEdgeGraph:
@@ -140,7 +144,7 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
         The causal graph.
     """
     if arr.shape[0] != arr.shape[1]:
-        raise RuntimeError("Only square arrays are convertable to pywhy-graphs.")
+        raise RuntimeError("Only square arrays are convertible to pywhy-graphs.")
 
     n_nodes = arr.shape[0]
     if len(arr_idx) != n_nodes:
@@ -150,35 +154,39 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
         )
 
     unique_edge_nums = np.unique(arr)
-    if any(CLearnEndpoint(num) not in CLearnEndpoint for num in unique_edge_nums):
-        raise RuntimeError(f"Some entries of array are not causal-learn specified.")
+    try:
+        any(CLearnEndpoint(num) not in CLearnEndpoint for num in unique_edge_nums)
+    except ValueError as e:
+        raise RuntimeError(
+            f"Some entries of array are not causal-learn specified, specifically: {e}"
+        )
 
     # TODO: enable us to infer the type?
+    # instantiate the type of causal graph
     if graph_type == "dag":
-        graph_func = nx.DiGraph
+        graph = pywhy_graphs.ADMG()
     elif graph_type == "admg":
-        graph_func = pywhy_graphs.ADMG
+        graph = pywhy_graphs.ADMG()
     elif graph_type == "cpdag":
-        graph_func = pywhy_graphs.CPDAG
+        graph = pywhy_graphs.CPDAG()
     elif graph_type == "pag":
-        graph_func = pywhy_graphs.PAG
+        graph = pywhy_graphs.PAG()
     else:
         raise RuntimeError(
             f"The graph type {graph_type} is unrecognized. Please use one of "
             f"'dag', 'admg', 'cpdag', 'pag'."
         )
-    # instantiate the graph
-    graph = graph_func()
 
     # convert each non-zero array entry combination into
     # an edge in the graph
-    for udx, vdx in np.triu_indices(n_nodes, k=1):
-        endpoint_u = CLearnEndpoint(arr[vdx, udx])
-        endpoint_v = CLearnEndpoint(arr[udx, vdx])
+    triu_inds = np.triu_indices(n_nodes, k=1)
+    for udx, vdx in zip(*triu_inds):
+        endpoint_v = CLearnEndpoint(arr[vdx, udx])
+        endpoint_u = CLearnEndpoint(arr[udx, vdx])
         u = arr_idx[udx]
         v = arr_idx[vdx]
 
-        # check if there are two edges
+        # First: check if there are two edges. If there
         if any(
             endpoint
             in [
@@ -220,9 +228,11 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
             ):
                 graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
                 graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
-        # there is only one edge between the two nodes
+        # Else, there is only one edge between the two nodes and this is
+        # either a DAG, or an equivalence class
         else:
-            if not any(endpoint in CLearnEndpoint.CIRCLE for endpoint in (endpoint_u, endpoint_v)):
+            # there are no circle edges, implying this is not a PAG at least
+            if not any(endpoint == CLearnEndpoint.CIRCLE for endpoint in (endpoint_u, endpoint_v)):
                 # u <--> v
                 if (endpoint_v == CLearnEndpoint.ARROW) and (endpoint_u == CLearnEndpoint.ARROW):
                     graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
@@ -252,19 +262,29 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
                     graph.add_edge(u, v, edge_type=graph.directed_edge_name)
                 elif endpoint_v == CLearnEndpoint.TAIL:
                     graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+
+    if graph_type == "dag":
+        graph = graph.to_directed()
     return graph
 
 
 def graph_to_arr(
     G: nx.MixedEdgeGraph,
-    format: str='causal-learn'
+    format: str = "causal-learn",
+    node_order: Optional[ArrayLike] = None,
 ) -> Tuple[ArrayLike, List[Node]]:
     """Convert a graph to a structured numpy array.
 
     Parameters
     ----------
     G : nx.MixedEdgeGraph
-        _description_
+        The mixed edge causal graph.
+    format : str
+        The format of the numpy array. One of 'causal-learn'. Default
+        is 'causal-learn'.
+    node_order : ArrayLike of shape (n_nodes,)
+        The array of nodes in which we would like the order of the output array to
+        be. See Notes for more information.
 
     Returns
     -------
@@ -277,10 +297,25 @@ def graph_to_arr(
 
     Notes
     -----
-    ``pcalg`` does not encode
+    The ``node_order`` parameter allows one to specify an array of nodes, with the order
+    corresponding to how the rows/columns of ``arr`` and order of ``arr_idx`` should be.
+
+    As of 09/05/2022, ``causal-learn`` does not explicitly support having a
+    "tail and a tail" endpoint at one node. For example, an undirected edge and
+    a directed edge: ``u -> v`` and ``u -- v``, indicating the presence of selection
+    bias as well as a direct causal relationship between u and v. We add this possibility
+    for encoding.
+
+    Moreover, ``causal-learn`` does not support adding more than 2 edges between nodes.
+    So simultaneous ``u -> v``, ``u -- v`` and ``u <-> v`` edges are not supported, although
+    in principle they can be present in an ADMG.
     """
-    if format == 'causal-learn':
+    # TODO: add option for exporting to pcalg
+    if format == "causal-learn":
         arr, arr_idx = _graph_to_clearn_arr(G)
-    elif format == 'pcalg':
-        arr, arr_idx = _graph_to_pcalg_arr(G)
+
+    if node_order is not None:
+        new_order = np.searchsorted(node_order, arr_idx)
+        arr = arr[np.ix_(new_order, new_order)]
+        arr_idx = [arr_idx[idx] for idx in new_order]
     return arr, arr_idx

@@ -58,6 +58,8 @@ class EdgeType(Enum, metaclass=MetaEnum):
 # between two nodes.
 # 'TAIL_AND_TAIL' means there are two types of edges with two tails ending on this endpoint
 class CLearnEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of causal-learn endpoints."""
+
     TAIL = -1
     NULL = 0
     ARROW = 1
