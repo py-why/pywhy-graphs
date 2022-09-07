@@ -215,7 +215,7 @@ cpdag.orient_uncertain_edge("xy", "y")
 cpdag.orient_uncertain_edge("z", "y")
 
 dot_graph = draw(cpdag)
-dot_graph.render(outfile="pag.png", view=True)
+dot_graph.render(outfile="cpdag.png", view=True)
 
 # %%
 # Partial Ancestral Graph (PAG)
@@ -235,7 +235,9 @@ dot_graph.render(outfile="pag.png", view=True)
 pag = PAG()
 
 # let's assume all the undirected edges are formed from the earlier DAG
-pag.add_edges_from(G.edges, pag.undirected_edge_name)
+for u, v in nx.Graph(G.edges).edges:
+    pag.add_edge(u, v, pag.circle_edge_name)
+    pag.add_edge(v, u, pag.circle_edge_name)
 
 # next, we will orient all unshielded colliders present in the original DAG
 pag.orient_uncertain_edge("x", "y")
@@ -243,7 +245,7 @@ pag.orient_uncertain_edge("xy", "y")
 pag.orient_uncertain_edge("z", "y")
 
 dot_graph = draw(pag)
-dot_graph.render(outfile="cpdag.png", view=True)
+dot_graph.render(outfile="pag.png", view=True)
 
 # %%
 # References
