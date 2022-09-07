@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-          poetry-version: [1.1.15]
+          poetry-version: [1.2.0]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
           python-version: '3.9'
           architecture: 'x64'
       - name: Install Poetry ${{ matrix.poetry-version }}
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.1.6
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
@@ -38,7 +38,7 @@ jobs:
       
       # TODO: once poetry v1.2 is release, we want to only install dev dependencies
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --only style
       
       # check formatting of the code style
       - name: Check code formatting
@@ -58,7 +58,7 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         python-version: [3.8, 3.9, "3.10"]
-        poetry-version: [1.1.15]
+        poetry-version: [1.2.0]
     name: build ${{ matrix.os }} - py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -73,7 +73,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
       - name: Install Poetry ${{ matrix.poetry-version }}
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.1.6
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
@@ -81,11 +81,6 @@ jobs:
       - name: Install from source
         run: |
           poetry install
-          # TODO: remove when networkx merges... or poetry update
-          git clone https://github.com/adam2392/networkx.git
-          cd networkx;
-          git checkout mixededge;
-          poetry run pip install -e .;
       - name: Test package install
         run: poetry run python -c "import pywhy_graphs; print(pywhy_graphs.__version__)"
       - name: Remove package install
@@ -120,7 +115,7 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         python-version: [3.8, "3.10"]  # oldest and newest supported versions
-        poetry-version: [1.1.15]
+        poetry-version: [1.2.0]
         networkx: [stable, main]
     name: pytest ${{ matrix.os }} - py${{ matrix.python-version }} - Networkx ${{ matrix.networkx }}
     runs-on: ${{ matrix.os }}-latest
@@ -136,19 +131,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
       - name: Install Poetry ${{ matrix.poetry-version }}
-        uses: abatilo/actions-poetry@v2.0.0
+        uses: abatilo/actions-poetry@v2.1.6
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
         run: pip install poetry-dynamic-versioning
       - name: Install packages via poetry
         run: |
-          poetry install
-          # TODO: remove when networkx merges... or poetry update
-          git clone https://github.com/adam2392/networkx.git
-          cd networkx;
-          git checkout mixededge;
-          poetry run pip install -e .;
+          poetry install --with test
       # TODO: uncomment, when MixedEdgeGraph PRed into networkx
       # - name: Install Networkx (main)
       #   if: "matrix.networkx == 'main'"

@@ -37,7 +37,7 @@ class ADMG(nx.MixedEdgeGraph, AncestralMixin):
     --------
     networkx.DiGraph
     networkx.Graph
-    MixedEdgeGraph
+    networkx.MixedEdgeGraph
 
     Notes
     -----
