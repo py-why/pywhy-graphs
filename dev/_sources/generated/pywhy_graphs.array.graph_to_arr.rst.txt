@@ -1,0 +1,12 @@
+﻿pywhy_graphs.array.graph_to_arr
+===============================
+
+.. currentmodule:: pywhy_graphs.array
+
+.. autofunction:: graph_to_arr
+
+.. include:: pywhy_graphs.array.graph_to_arr.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

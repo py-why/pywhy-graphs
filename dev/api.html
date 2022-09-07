@@ -119,18 +119,6 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
- <a class="reference external nav-link" href="https://raw.githubusercontent.com/py-why/pywhy-graphs/main/LICENSE">
-  License
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference external nav-link" href="https://github.com/py-why/pywhy-graphs/main/CONTRIBUTING.md">
-  Contributing
- </a>
-</li>
-
     
 </ul>
       </div>
@@ -231,6 +219,18 @@
   </a>
  </li>
 </ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.array.graph_to_arr.html">
+   pywhy_graphs.array.graph_to_arr
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.array.clearn_arr_to_graph.html">
+   pywhy_graphs.array.clearn_arr_to_graph
+  </a>
+ </li>
+</ul>
 
   </div>
 </nav>
@@ -262,6 +262,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#algorithms-for-markov-equivalence-classes">
    Algorithms for Markov Equivalence Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conversions-between-other-package-s-causal-graphs">
+   Conversions between other package’s causal graphs
   </a>
  </li>
 </ul>
@@ -344,6 +349,27 @@ causal graph operations.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path" title="pywhy_graphs.algorithms.uncovered_pd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncovered_pd_path</span></code></a>(graph, u, c, max_path_length)</p></td>
 <td><p>Compute uncovered potentially directed path from u to c.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conversions-between-other-package-s-causal-graphs">
+<h2>Conversions between other package’s causal graphs<a class="headerlink" href="#conversions-between-other-package-s-causal-graphs" title="Permalink to this heading">#</a></h2>
+<p>Other packages, such as <a class="reference external" href="https://github.com/cmu-phil/causal-learn">causal-learn</a>,
+implement various causal inference procedures, but encode a causal graph object
+differently. This submodule converts between those causal graph data structures
+and corresponding causal graphs in pywhy-graphs.</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr" title="pywhy_graphs.array.graph_to_arr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_arr</span></code></a>(G[, format, node_order])</p></td>
+<td><p>Convert a graph to a structured numpy array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph" title="pywhy_graphs.array.clearn_arr_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clearn_arr_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
+<td><p>Convert causal-learn array to a graph object.</p></td>
 </tr>
 </tbody>
 </table>
