@@ -46,3 +46,4 @@ causal graph operations.
    pds
    pds_path
    uncovered_pd_path
+   acyclification
