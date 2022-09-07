@@ -46,3 +46,19 @@ causal graph operations.
    pds
    pds_path
    uncovered_pd_path
+
+Conversions between other package's causal graphs
+=================================================
+Other packages, such as `causal-learn <https://github.com/cmu-phil/causal-learn>`_,
+implement various causal inference procedures, but encode a causal graph object
+differently. This submodule converts between those causal graph data structures
+and corresponding causal graphs in pywhy-graphs.
+
+.. currentmodule:: pywhy_graphs.array
+
+.. autosummary::
+   :toctree: generated/
+
+   graph_to_arr
+   clearn_arr_to_graph
+

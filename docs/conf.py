@@ -20,7 +20,7 @@ from sphinx_gallery.sorting import ExampleTitleSortKey
 
 sys.path.insert(0, os.path.abspath("../"))
 
-import pywhy_graphs # noqa: E402
+import pywhy_graphs  # noqa: E402
 
 curdir = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(curdir, "..")))
@@ -47,14 +47,14 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
-    'sphinx_issues',
+    "sphinx_issues",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
     "numpydoc",
-    'IPython.sphinxext.ipython_console_highlighting',
+    "IPython.sphinxext.ipython_console_highlighting",
     "nbsphinx",
 ]
 
@@ -68,9 +68,6 @@ autosummary_generate = True
 autodoc_default_options = {"inherited-members": None}
 # autodoc_typehints = "signature"
 
-# TODO: remove when MixedEdgeGraph PRed to networkx
-autodoc_inherit_docstrings = True
-
 # -- numpydoc
 # Below is needed to prevent errors
 numpydoc_xref_param_type = True
@@ -78,9 +75,6 @@ numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
 numpydoc_use_blockquotes = True
 numpydoc_validate = True
-
-# TODO: remove once MixedEdgeGraph is PRed to networkx
-numpydoc_validation_exclude = {"graphs"}
 
 numpydoc_xref_ignore = {
     # words
@@ -109,17 +103,36 @@ numpydoc_xref_ignore = {
     "keyword",
     "arguments",
     "no",
-    "attributes", "dictionary",
+    "attributes",
+    "dictionary",
+    "ArrayLike",
+    "nx.MixedEdgeGraph",
     # pywhy-graphs
-    "causal", "Node",
-    'circular', 'endpoint',
+    "causal",
+    "Node",
+    "circular",
+    "endpoint",
     # networkx
     "node",
     "nodes",
     "graph",
-    "directed", "bidirected", "undirected", "single", "G.name", "n in G",
-    "MixedEdgeGraph", "collection", "u", "v", "EdgeView", "AdjacencyView",
-    "DegreeView", "Graph", "sets", "value",
+    "directed",
+    "bidirected",
+    "undirected",
+    "single",
+    "G.name",
+    "n in G",
+    "nx.MixedEdgeGraph",
+    "MixedEdgeGraph",
+    "collection",
+    "u",
+    "v",
+    "EdgeView",
+    "AdjacencyView",
+    "DegreeView",
+    "Graph",
+    "sets",
+    "value",
     # shapes
     "n_times",
     "obj",
@@ -140,6 +153,7 @@ numpydoc_xref_aliases = {
     "nx.MultiDiGraph": "networkx.MultiDiGraph",
     "NetworkXError": "networkx.NetworkXError",
     "pgmpy.models.BayesianNetwork": "pgmpy.models.BayesianNetwork",
+    "ArrayLike": "numpy.ndarray",
     # pywhy-graphs
     "ADMG": "pywhy_graphs.ADMG",
     "PAG": "pywhy_graphs.PAG",
@@ -164,8 +178,14 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['auto_examples/index.rst', '_build', 'Thumbs.db',
-                    '.DS_Store', "**.ipynb_checkpoints", 'auto_examples/*.rst']
+exclude_patterns = [
+    "auto_examples/index.rst",
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
+    "**.ipynb_checkpoints",
+    "auto_examples/*.rst",
+]
 
 source_suffix = [".rst", ".md"]
 
@@ -230,19 +250,19 @@ html_theme_options = {
 scrapers = ("matplotlib",)
 
 sphinx_gallery_conf = {
-    'doc_module': 'pywhy_graphs',
-    'reference_url': {
-        'pywhy_graphs': None,
+    "doc_module": "pywhy_graphs",
+    "reference_url": {
+        "pywhy_graphs": None,
     },
-    'backreferences_dir': 'generated',
-    'plot_gallery': 'True',  # Avoid annoying Unicode/bool default warning
-    'within_subsection_order': ExampleTitleSortKey,
-    'examples_dirs': ['../examples'],
-    'gallery_dirs': ['auto_examples'],
-    'filename_pattern': '^((?!sgskip).)*$',
-    'matplotlib_animations': True,
-    'compress_images': ('images', 'thumbnails'),
-    'image_scrapers': scrapers,
+    "backreferences_dir": "generated",
+    "plot_gallery": "True",  # Avoid annoying Unicode/bool default warning
+    "within_subsection_order": ExampleTitleSortKey,
+    "examples_dirs": ["../examples"],
+    "gallery_dirs": ["auto_examples"],
+    "filename_pattern": "^((?!sgskip).)*$",
+    "matplotlib_animations": True,
+    "compress_images": ("images", "thumbnails"),
+    "image_scrapers": scrapers,
 }
 
 # Custom sidebar templates, maps document names to template names.
@@ -260,4 +280,10 @@ html_context = {
 # resolve.
 
 nitpicky = False
-nitpick_ignore = [('py:obj', 'MixedEdgeGraph')]
+nitpick_ignore = [
+    ("py:obj", "nx.MixedEdgeGraph"),
+    ("py:obj", "networkx.MixedEdgeGraph"),
+    ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
+    ("py:class", "numpy._typing._array_like._SupportsArray"),
+    ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
+]
