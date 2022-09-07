@@ -239,7 +239,7 @@ def test_uncovered_pd_path_intersecting():
     # get the uncovered pd paths
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="x")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "x", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "x", "y", "z", "u", "C"], ["A", "x", "y", "z", "v", "C"])
 
     # when we make the <A, x, y> triple shielded, it is no longer an uncovered path
     G.add_edge("A", "y", G.directed_edge_name)
@@ -252,7 +252,7 @@ def test_uncovered_pd_path_intersecting():
     G.add_edges_from([("A", "w"), ("w", "y")], G.directed_edge_name)
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="w")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "w", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "w", "y", "z", "u", "C"], ["A", "w", "y", "z", "v", "C"])
 
     # For the third test, the path through x is not an uncovered pd path, but the
     # path through 'y' is
@@ -264,7 +264,7 @@ def test_uncovered_pd_path_intersecting():
 
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 100, second_node="y")
     assert found_uncovered_pd_path
-    assert uncov_pd_path == ["A", "y", "z", "u", "C"]
+    assert uncov_pd_path in (["A", "y", "z", "u", "C"], ["A", "y", "z", "v", "C"])
 
 
 def test_possibly_d_separated(pds_graph):
