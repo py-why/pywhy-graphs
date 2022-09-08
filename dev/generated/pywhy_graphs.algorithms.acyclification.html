@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>pywhy_graphs.algorithms.pds &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.algorithms.acyclification &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -43,11 +43,13 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.algorithms.pds_path" href="pywhy_graphs.algorithms.pds_path.html" />
-    <link rel="prev" title="pywhy_graphs.algorithms.discriminating_path" href="pywhy_graphs.algorithms.discriminating_path.html" />
+    <link rel="next" title="pywhy_graphs.array.graph_to_arr" href="pywhy_graphs.array.graph_to_arr.html" />
+    <link rel="prev" title="pywhy_graphs.algorithms.uncovered_pd_path" href="pywhy_graphs.algorithms.uncovered_pd_path.html" />
     <link rel="canonical" href="https://pywhy.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -203,8 +205,8 @@
    pywhy_graphs.algorithms.discriminating_path
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.pds.html">
    pywhy_graphs.algorithms.pds
   </a>
  </li>
@@ -218,8 +220,8 @@
    pywhy_graphs.algorithms.uncovered_pd_path
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.algorithms.acyclification
   </a>
  </li>
@@ -273,55 +275,52 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-algorithms-pds">
-<h1>pywhy_graphs.algorithms.pds<a class="headerlink" href="#pywhy-graphs-algorithms-pds" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-algorithms-acyclification">
+<h1>pywhy_graphs.algorithms.acyclification<a class="headerlink" href="#pywhy-graphs-algorithms-acyclification" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.algorithms.pds">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">pds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.classes.pag.PAG"><span class="pre">PAG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.10)"><span class="pre">Set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/pag.html#pds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.pds" title="Permalink to this definition">#</a></dt>
-<dd><p>Find all PDS sets between node_x and node_y.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.algorithms.acyclification">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">acyclification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MixedEdgeGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MixedEdgeGraph</span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/cyclic.html#acyclification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.acyclification" title="Permalink to this definition">#</a></dt>
+<dd><p>Acyclify a cyclic graph.</p>
+<p>Applies the acyclification procedure presented in <a class="footnote-reference brackets" href="#footcite-mooij2020cyclic" id="id1">1</a>.
+This converts to G to what is called <span class="math notranslate nohighlight">\(G^{acy}\)</span> in the reference.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>graph</strong> : <a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAG</span></code></a></p>
+<dd class="field-odd"><p><strong>G</strong> : nx.MixedEdgeGraph</p>
 <blockquote>
-<div><p>The graph.</p>
+<div><p>A graph with cycles.</p>
 </div></blockquote>
-<p><strong>node_x</strong> : node</p>
+<p><strong>directed_edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
 <blockquote>
-<div><p>The node ‘x’.</p>
+<div><p>The name of the sub-graph of directed edges.</p>
 </div></blockquote>
-<p><strong>node_y</strong> : node</p>
+<p><strong>bidirected_edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
 <blockquote>
-<div><p>The node ‘y’.</p>
+<div><p>The name of the sub-graph of bidirected edges.</p>
 </div></blockquote>
-<p><strong>max_path_length</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
+<p><strong>copy</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.10)"><span class="xref std std-ref">bool</span></a></p>
 <blockquote>
-<div><p>The maximum length of a path to search on.</p>
+<div><p>Whether to operate on the graph in place, or make a copy.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dsep</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p>
+<dd class="field-even"><p><strong>G</strong> : nx.MixedEdgeGraph</p>
 <blockquote>
-<div><p>The possibly d-separating set between node_x and node_y.</p>
+<div><p>The acyclified graph.</p>
 </div></blockquote>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Possibly d-separting (PDS) sets are nodes V, along an adjacency paths from
-‘node_x’ to some ‘V’, which has the following characteristics for every
-subpath triple &lt;X, Y, Z&gt; on the path:</p>
-<ul class="simple">
-<li><p>Y is a collider, or</p></li>
-<li><p>Y is a triangle (i.e. X, Y and Z form a complete subgraph)</p></li>
-</ul>
-<p>If the path meets these characteristics, then ‘V’ is in the PDS set.</p>
-<p>If Y is a triangle, then it will be uncertain with circular edges
-due to the fact that it is a shielded triple, not allowing us to infer
-that it is a collider. These are defined in <a class="footnote-reference brackets" href="#footcite-colombo2012" id="id1">1</a>.</p>
+<p>This takes
+This replaces all strongly connected components of G by fully connected
+bidirected components without any directed edges. Then any node with an
+edge pointing into the SC (i.e. a directed edge, or bidirected edge) is
+made fully connected with the nodes of the SC either with a directed, or
+bidirected edge.</p>
 <p class="rubric">References</p>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
-<dt class="label" id="footcite-colombo2012"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Diego Colombo, Marloes H. Maathuis, Markus Kalisch, and Thomas S. Richardson. Learning high-dimensional directed acyclic graphs with latent and selection variables. <em>The Annals of Statistics</em>, 40(1):294 – 321, 2012. URL: <a class="reference external" href="https://doi.org/10.1214/11-AOS940">https://doi.org/10.1214/11-AOS940</a>, <a class="reference external" href="https://doi.org/10.1214/11-AOS940">doi:10.1214/11-AOS940</a>.</p>
+<dt class="label" id="footcite-mooij2020cyclic"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Joris M. Mooij and Tom Claassen. Constraint-based causal discovery using partial ancestral graphs in the presence of cycles. In Jonas Peters and David Sontag, editors, <em>Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence (UAI)</em>, volume 124 of Proceedings of Machine Learning Research, 1159–1168. PMLR, 03–06 Aug 2020. URL: <a class="reference external" href="https://proceedings.mlr.press/v124/m-mooij20a.html">https://proceedings.mlr.press/v124/m-mooij20a.html</a>.</p>
 </dd>
 </dl>
 </div>
@@ -337,17 +336,17 @@ that it is a collider. These are defined in <a class="footnote-reference bracket
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.discriminating_path.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.uncovered_pd_path.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.algorithms.discriminating_path</p>
+          <p class="prev-next-title">pywhy_graphs.algorithms.uncovered_pd_path</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.pds_path.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.array.graph_to_arr.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.algorithms.pds_path</p>
+      <p class="prev-next-title">pywhy_graphs.array.graph_to_arr</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

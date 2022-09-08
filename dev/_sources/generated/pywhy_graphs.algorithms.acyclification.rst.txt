@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.acyclification
+======================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: acyclification
+
+.. include:: pywhy_graphs.algorithms.acyclification.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

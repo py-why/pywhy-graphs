@@ -46,6 +46,7 @@ causal graph operations.
    pds
    pds_path
    uncovered_pd_path
+   acyclification
 
 Conversions between other package's causal graphs
 =================================================
