@@ -36,7 +36,6 @@ jobs:
       - name: Install Poetry Dynamic Versioning Plugin
         run: pip install poetry-dynamic-versioning
       
-      # TODO: once poetry v1.2 is release, we want to only install dev dependencies
       - name: Install dependencies
         run: poetry install --only style
       
