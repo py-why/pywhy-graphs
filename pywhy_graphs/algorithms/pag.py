@@ -4,7 +4,6 @@ from itertools import chain
 from typing import List, Optional, Set, Tuple
 
 import networkx as nx
-import numpy as np
 
 from pywhy_graphs import PAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
@@ -313,7 +312,7 @@ def uncovered_pd_path(
     graph: PAG,
     u: Node,
     c: Node,
-    max_path_length: Optional[int]=None,
+    max_path_length: Optional[int] = None,
     first_node: Optional[Node] = None,
     second_node: Optional[Node] = None,
 ) -> Tuple[List[Node], bool]:
@@ -456,7 +455,9 @@ def uncovered_pd_path(
     return uncov_pd_path, found_uncovered_pd_path
 
 
-def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None) -> Set[Node]:
+def pds(
+    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None
+) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
     Parameters
@@ -609,7 +610,9 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional
     return dsep
 
 
-def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: Optional[int] = None) -> Set[Node]:
+def pds_path(
+    graph: PAG, node_x: Node, node_y: Node, max_path_length: Optional[int] = None
+) -> Set[Node]:
     """Compute the possibly-d-separating set path.
 
     Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.
