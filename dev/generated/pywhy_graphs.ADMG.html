@@ -741,6 +741,8 @@ each edge type.</p>
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.c_components">
 <span class="sig-name descname"><span class="pre">c_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.10)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.10)"><span class="pre">Set</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.c_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.c_components" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate confounded components of the graph.</p>
+<p>Note the trivial c-component of a node without bidirected
+edges is the node themself.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><strong>comp</strong> : iterator of sets</p>

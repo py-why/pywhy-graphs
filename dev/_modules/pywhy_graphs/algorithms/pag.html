@@ -192,7 +192,6 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">PAG</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">single_source_shortest_mixed_path</span>
@@ -356,7 +355,7 @@
 
 
 <div class="viewcode-block" id="discriminating_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path">[docs]</a><span class="k">def</span> <span class="nf">discriminating_path</span><span class="p">(</span>
-    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Find the discriminating path for &lt;..., a, u, c&gt;.</span>
 
@@ -377,8 +376,9 @@
 <span class="sd">        A node in the graph.</span>
 <span class="sd">    c : node</span>
 <span class="sd">        A node in the graph.</span>
-<span class="sd">    max_path_length : int</span>
-<span class="sd">        The maximum distance to check in the graph.</span>
+<span class="sd">    max_path_length : optional, int</span>
+<span class="sd">        The maximum distance to check in the graph. By default None, which sets</span>
+<span class="sd">        it to 1000.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -389,7 +389,7 @@
 <span class="sd">    disc_path : list</span>
 <span class="sd">        The discriminating path starting from node c.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">max_path_length</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">max_path_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_path_length</span> <span class="o">=</span> <span class="mi">1000</span>
 
     <span class="n">explored_nodes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -500,7 +500,7 @@
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-    <span class="n">max_path_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">first_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">second_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
@@ -519,8 +519,9 @@
 <span class="sd">        A node in the graph to start the uncovered path.</span>
 <span class="sd">    c : node</span>
 <span class="sd">        A node in the graph.</span>
-<span class="sd">    max_path_length : int</span>
-<span class="sd">        The maximum distance to check in the graph.</span>
+<span class="sd">    max_path_length : optional, int</span>
+<span class="sd">        The maximum distance to check in the graph. By default None, which sets</span>
+<span class="sd">        it to 1000.</span>
 <span class="sd">    first_node : node, optional</span>
 <span class="sd">        The node previous to &#39;u&#39;. If it is before &#39;u&#39;, then we will check</span>
 <span class="sd">        that &#39;u&#39; is unshielded. If it is not passed, then &#39;u&#39; is considered</span>
@@ -549,7 +550,7 @@
     <span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Some nodes are not in graph... Double check function arguments.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">max_path_length</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">max_path_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_path_length</span> <span class="o">=</span> <span class="mi">1000</span>
 
     <span class="n">explored_nodes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -642,7 +643,9 @@
     <span class="k">return</span> <span class="n">uncov_pd_path</span><span class="p">,</span> <span class="n">found_uncovered_pd_path</span></div>
 
 
-<div class="viewcode-block" id="pds"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds">[docs]</a><span class="k">def</span> <span class="nf">pds</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<div class="viewcode-block" id="pds"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds">[docs]</a><span class="k">def</span> <span class="nf">pds</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Find all PDS sets between node_x and node_y.</span>
 
 <span class="sd">    Parameters</span>
@@ -653,8 +656,9 @@
 <span class="sd">        The node &#39;x&#39;.</span>
 <span class="sd">    node_y : node</span>
 <span class="sd">        The node &#39;y&#39;.</span>
-<span class="sd">    max_path_length : int</span>
-<span class="sd">        The maximum length of a path to search on.</span>
+<span class="sd">    max_path_length : optional, int</span>
+<span class="sd">        The maximum length of a path to search on. By default None, which sets</span>
+<span class="sd">        it to 1000.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -680,7 +684,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    .. footbibliography::</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">max_path_length</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">max_path_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_path_length</span> <span class="o">=</span> <span class="mi">1000</span>
 
     <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span>
@@ -794,7 +798,9 @@
     <span class="k">return</span> <span class="n">dsep</span></div>
 
 
-<div class="viewcode-block" id="pds_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path">[docs]</a><span class="k">def</span> <span class="nf">pds_path</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<div class="viewcode-block" id="pds_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path">[docs]</a><span class="k">def</span> <span class="nf">pds_path</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating set path.</span>
 
 <span class="sd">    Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.</span>
@@ -808,7 +814,8 @@
 <span class="sd">    node_y : node</span>
 <span class="sd">        The ending node</span>
 <span class="sd">    max_path_length : int, optional</span>
-<span class="sd">        The maximum length of a path to search on for PDS set, by default np.inf.</span>
+<span class="sd">        The maximum length of a path to search on for PDS set, by default None, which</span>
+<span class="sd">        sets it to 1000.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
