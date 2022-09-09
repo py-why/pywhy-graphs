@@ -58,6 +58,10 @@ jobs:
             poetry --version
             poetry show
       - run:
+          name: Install pysal dependencies
+          command: |
+            sudo apt install libspatialindex-dev xdg-utils
+      - run:
           name: Set BASH_ENV
           command: |
             set -e
