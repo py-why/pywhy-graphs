@@ -224,7 +224,7 @@ dot_graph.render(outfile="cpdag.png", view=True)
 # latent confounder).
 #
 # .. note: a directed edge in the PAG does not actually imply parental relationships, but simply
-# an ancestral relationship.
+#          an ancestral relationship.
 #
 # Typically, PAGs are learnt using some variant of the FCI algorithm :footcite:`Spirtes1993` and
 # :footcite`Zhang2008`.
