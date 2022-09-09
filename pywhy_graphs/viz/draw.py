@@ -1,11 +1,22 @@
+from typing import Optional
+
 import networkx as nx
 
 
-def draw(G: nx.MixedEdgeGraph, direction=None):
-    """
-    Visualize the graph.
+def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
+    """Visualize the graph.
 
-    :return : dot language representation of the graph.
+    Parameters
+    ----------
+    G : nx.MixedEdgeGraph
+        The mixed edge graph.
+    direction : str, optional
+        The direction, by default None.
+
+    Returns
+    -------
+    dot : Digraph
+        dot language representation of the graph.
     """
     from graphviz import Digraph
 

@@ -7,21 +7,23 @@ Installation
 
 **pywhy-graphs** is available [on PyPI](https://pypi.org/project/pywhy-graphs/). Just run
 
-```bash
-pip install pywhy-graphs
-```
+    pip install pywhy-graphs
+
+    # or if you use poetry which is recommended
+    poetry add pywhy-graphs
 
 ## Installing from source
 
-To install **pywhy-graphs** from source, first clone [the repository](https://github.com/pywhy/pywhy-graphs):
+To install **pywhy-graphs** from source, first clone [the repository](https://github.com/py-why/pywhy-graphs):
 
-```bash
-git clone https://github.com/pywhy/pywhy-graphs.git
-cd pywhy-graphs
-```
 
-Then run
+    git clone https://github.com/py-why/pywhy-graphs.git
+    cd pywhy-graphs
 
-```bash
-pip install -e .
-```
+Then run installation via poetry (recommended)
+
+    poetry install
+
+or via pip
+
+    pip install -e .

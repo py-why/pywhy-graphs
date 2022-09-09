@@ -4,7 +4,6 @@ from itertools import chain
 from typing import List, Optional, Set, Tuple
 
 import networkx as nx
-import numpy as np
 
 from pywhy_graphs import PAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
@@ -189,8 +188,9 @@ def discriminating_path(
         A node in the graph.
     c : node
         A node in the graph.
-    max_path_length : int
-        The maximum distance to check in the graph.
+    max_path_length : optional, int
+        The maximum distance to check in the graph. By default None, which sets
+        it to 1000.
 
     Returns
     -------
@@ -331,8 +331,9 @@ def uncovered_pd_path(
         A node in the graph to start the uncovered path.
     c : node
         A node in the graph.
-    max_path_length : int
-        The maximum distance to check in the graph.
+    max_path_length : optional, int
+        The maximum distance to check in the graph. By default None, which sets
+        it to 1000.
     first_node : node, optional
         The node previous to 'u'. If it is before 'u', then we will check
         that 'u' is unshielded. If it is not passed, then 'u' is considered
@@ -454,7 +455,9 @@ def uncovered_pd_path(
     return uncov_pd_path, found_uncovered_pd_path
 
 
-def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np.inf) -> Set[Node]:
+def pds(
+    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None
+) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
     Parameters
@@ -465,8 +468,9 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
         The node 'x'.
     node_y : node
         The node 'y'.
-    max_path_length : int
-        The maximum length of a path to search on.
+    max_path_length : optional, int
+        The maximum length of a path to search on. By default None, which sets
+        it to 1000.
 
     Returns
     -------
@@ -492,7 +496,7 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
     ----------
     .. footbibliography::
     """
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     distance = 0
@@ -606,7 +610,9 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
     return dsep
 
 
-def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.inf) -> Set[Node]:
+def pds_path(
+    graph: PAG, node_x: Node, node_y: Node, max_path_length: Optional[int] = None
+) -> Set[Node]:
     """Compute the possibly-d-separating set path.
 
     Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.
@@ -620,7 +626,8 @@ def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.i
     node_y : node
         The ending node
     max_path_length : int, optional
-        The maximum length of a path to search on for PDS set, by default np.inf.
+        The maximum length of a path to search on for PDS set, by default None, which
+        sets it to 1000.
 
     Returns
     -------

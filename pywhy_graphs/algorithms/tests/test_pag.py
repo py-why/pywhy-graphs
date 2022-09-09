@@ -177,6 +177,7 @@ def test_discriminating_path():
 
 
 def test_uncovered_pd_path():
+    """Test basic uncovered partially directed path."""
     # If A o-> C and there is an undirected pd path
     # from A to C through u, where u and C are not adjacent
     # then orient A o-> C as A -> C
@@ -221,6 +222,7 @@ def test_uncovered_pd_path():
 
 
 def test_uncovered_pd_path_intersecting():
+    """Test basic uncovered partially directed path with intersecting paths."""
     G = pywhy_graphs.PAG()
 
     # make A o-> C
