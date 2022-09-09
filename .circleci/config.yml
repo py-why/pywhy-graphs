@@ -53,7 +53,7 @@ jobs:
           command: |
             set -e
             sudo apt update
-            sudo apt install -qq graphviz optipng libxft2
+            sudo apt install -qq graphviz optipng libxft2 graphviz-dev
             echo "set -e" >> $BASH_ENV
             echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
             echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
