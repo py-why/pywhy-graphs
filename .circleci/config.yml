@@ -48,19 +48,6 @@ jobs:
           command: |
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_UNINSTALL=1 python -
             curl -sSL https://install.python-poetry.org | python3 -
-      - python/install-packages:
-          pkg-manager: poetry
-          cache-version: "v1" # change to clear cache
-          args: "--with docs"
-      - run:
-          name: Check poetry package versions
-          command: |
-            poetry --version
-            poetry show
-      - run:
-          name: Install pysal dependencies
-          command: |
-            sudo apt install libspatialindex-dev xdg-utils
       - run:
           name: Set BASH_ENV
           command: |
@@ -75,8 +62,21 @@ jobs:
             echo "BASH_ENV:"
             cat $BASH_ENV
       - run:
+          name: Install pysal dependencies
+          command: |
+            sudo apt install libspatialindex-dev xdg-utils
+      - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
+      - python/install-packages:
+          pkg-manager: poetry
+          cache-version: "v1" # change to clear cache
+          args: "--with docs"
+      - run:
+          name: Check poetry package versions
+          command: |
+            poetry --version
+            poetry show
       - run:
           name: Check installation
           command: |
