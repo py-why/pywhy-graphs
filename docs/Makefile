@@ -130,6 +130,12 @@ latexpdfja:
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf-ja
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
 
+linkcheck:
+ 	$(SPHINXBUILD) -b linkcheck $(ALLSPHINXOPTS) $(BUILDDIR)/linkcheck
+ 	@echo
+ 	@echo "Link check complete; look for any errors in the above output " \
+ 	      "or in $(BUILDDIR)/linkcheck/output.txt."
+
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	@echo

@@ -92,6 +92,9 @@ class ADMG(nx.MixedEdgeGraph, AncestralMixin):
     def c_components(self) -> Iterator[Set]:
         """Generate confounded components of the graph.
 
+        Note the trivial c-component of a node without bidirected
+        edges is the node themself.
+
         Returns
         -------
         comp : iterator of sets

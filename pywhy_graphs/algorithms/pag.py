@@ -168,7 +168,7 @@ def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bo
 
 
 def discriminating_path(
-    graph: PAG, u: Node, a: Node, c: Node, max_path_length: int = np.inf
+    graph: PAG, u: Node, a: Node, c: Node, max_path_length: Optional[int] = None
 ) -> Tuple[bool, List[Node], Set[Node]]:
     """Find the discriminating path for <..., a, u, c>.
 
@@ -189,8 +189,9 @@ def discriminating_path(
         A node in the graph.
     c : node
         A node in the graph.
-    max_path_length : int
-        The maximum distance to check in the graph.
+    max_path_length : optional, int
+        The maximum distance to check in the graph. By default None, which sets
+        it to 1000.
 
     Returns
     -------
@@ -201,7 +202,7 @@ def discriminating_path(
     disc_path : list
         The discriminating path starting from node c.
     """
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     explored_nodes: Set[Node] = set()
@@ -312,7 +313,7 @@ def uncovered_pd_path(
     graph: PAG,
     u: Node,
     c: Node,
-    max_path_length: int,
+    max_path_length: Optional[int]=None,
     first_node: Optional[Node] = None,
     second_node: Optional[Node] = None,
 ) -> Tuple[List[Node], bool]:
@@ -331,8 +332,9 @@ def uncovered_pd_path(
         A node in the graph to start the uncovered path.
     c : node
         A node in the graph.
-    max_path_length : int
-        The maximum distance to check in the graph.
+    max_path_length : optional, int
+        The maximum distance to check in the graph. By default None, which sets
+        it to 1000.
     first_node : node, optional
         The node previous to 'u'. If it is before 'u', then we will check
         that 'u' is unshielded. If it is not passed, then 'u' is considered
@@ -361,7 +363,7 @@ def uncovered_pd_path(
     ):
         raise RuntimeError("Some nodes are not in graph... Double check function arguments.")
 
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     explored_nodes: Set[Node] = set()
@@ -454,7 +456,7 @@ def uncovered_pd_path(
     return uncov_pd_path, found_uncovered_pd_path
 
 
-def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np.inf) -> Set[Node]:
+def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
     Parameters
@@ -465,8 +467,9 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
         The node 'x'.
     node_y : node
         The node 'y'.
-    max_path_length : int
-        The maximum length of a path to search on.
+    max_path_length : optional, int
+        The maximum length of a path to search on. By default None, which sets
+        it to 1000.
 
     Returns
     -------
@@ -492,7 +495,7 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
     ----------
     .. footbibliography::
     """
-    if max_path_length == np.inf:
+    if max_path_length is None:
         max_path_length = 1000
 
     distance = 0
@@ -606,7 +609,7 @@ def pds(graph: PAG, node_x: Node, node_y: Node = None, max_path_length: int = np
     return dsep
 
 
-def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.inf) -> Set[Node]:
+def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: Optional[int] = None) -> Set[Node]:
     """Compute the possibly-d-separating set path.
 
     Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.
@@ -620,7 +623,8 @@ def pds_path(graph: PAG, node_x: Node, node_y: Node, max_path_length: int = np.i
     node_y : node
         The ending node
     max_path_length : int, optional
-        The maximum length of a path to search on for PDS set, by default np.inf.
+        The maximum length of a path to search on for PDS set, by default None, which
+        sets it to 1000.
 
     Returns
     -------
