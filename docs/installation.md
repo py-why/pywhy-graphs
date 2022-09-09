@@ -14,10 +14,10 @@ Installation
 
 ## Installing from source
 
-To install **pywhy-graphs** from source, first clone [the repository](https://github.com/pywhy/pywhy-graphs):
+To install **pywhy-graphs** from source, first clone [the repository](https://github.com/py-why/pywhy-graphs):
 
 
-    git clone https://github.com/pywhy/pywhy-graphs.git
+    git clone https://github.com/py-why/pywhy-graphs.git
     cd pywhy-graphs
 
 Then run installation via poetry (recommended)
