@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>An introduction to causal graphs and how to use them &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Release History" href="../whats_new.html" />
+    <link rel="prev" title="Examples using pywhy-graphs" href="../use.html" />
+    <link rel="canonical" href="https://pywhy.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../use.html">
+  Examples using pywhy-graphs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://pywhy.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pywhy/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   An introduction to causal graphs and how to use them
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#structural-causal-models-simulating-some-data">
+   Structural Causal Models: Simulating some data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#causal-directed-ayclic-graphs-dag-also-known-as-causal-bayesian-networks">
+   Causal Directed Ayclic Graphs (DAG): Also known as Causal Bayesian Networks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#acyclic-directed-mixed-graphs-admg">
+   Acyclic Directed Mixed Graphs (ADMG)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#completed-partially-directed-ayclic-graph-cpdag">
+   Completed Partially Directed Ayclic Graph (CPDAG)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#partial-ancestral-graph-pag">
+   Partial Ancestral Graph (PAG)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-intro-causal-graphs-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="an-introduction-to-causal-graphs-and-how-to-use-them">
+<span id="ex-causal-graphs"></span><span id="sphx-glr-auto-examples-intro-causal-graphs-py"></span><h1>An introduction to causal graphs and how to use them<a class="headerlink" href="#an-introduction-to-causal-graphs-and-how-to-use-them" title="Permalink to this heading">#</a></h1>
+<p>Causal graphs are graphical objects that attach causal notions to each edge
+and missing edge. We will review some of the fundamental causal graphs used
+in causal inference, and their differences from traditional graphs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">dowhy</span> <span class="kn">import</span> <span class="n">gcm</span>
+<span class="kn">from</span> <span class="nn">dowhy.gcm.util.general</span> <span class="kn">import</span> <span class="n">set_random_seed</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="kn">import</span> <span class="nn">pywhy_graphs</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">CPDAG</span></a><span class="p">,</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <span class="n">draw</span>
+</pre></div>
+</div>
+<section id="structural-causal-models-simulating-some-data">
+<h2>Structural Causal Models: Simulating some data<a class="headerlink" href="#structural-causal-models-simulating-some-data" title="Permalink to this heading">#</a></h2>
+<p>Structural causal models (SCMs) <a class="footnote-reference brackets" href="#footcite-pearl-causality-2009" id="id1">1</a> are mathematical objects
+defined by a 4-tuple &lt;V, U, F, P(U)&gt;, where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>V is the set of endogenous observed variables</p></li>
+<li><p>U is the set of exogenous unobserved variables</p></li>
+<li><p>F is the set of functions for every $v in V$</p></li>
+<li><p>P(U) is the set of distributions for all $u in U$</p></li>
+</ul>
+</div></blockquote>
+<p>Taken together, these four objects define the generating causal
+mechanisms for a causal problem. Almost always, the SCM is not known.
+However, the SCM induces a causal graph, which has nodes from <code class="docutils literal notranslate"><span class="pre">V</span></code>
+and then edges are defined by the arguments of the functions in <code class="docutils literal notranslate"><span class="pre">F</span></code>.
+If there are common exogenous parents for any V, then this can be represented
+in an Acyclic Directed Mixed Graph (ADMG), or a causal graph with bidirected edges.
+The common latent confounder is represented with a bidirected edge between two
+endogenous variables.</p>
+<p>Even though the SCM is typically unknown, we can still use it to generate
+ground-truth simulations to evaluate various algorithms and build our intuition.
+Here, we will simulate some data to understand causal graphs in the context of SCMs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># set a random seed to make example reproducible</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">seed</span></a> <span class="o">=</span> <span class="mi">12345</span>
+<a href="https://numpy.org/devdocs/reference/random/legacy.html#numpy.random.RandomState" title="numpy.random.RandomState" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rng</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/random/legacy.html#numpy.random.RandomState" title="numpy.random.RandomState" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-class"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">seed</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">seed</span></a><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MyCustomModel</span><span class="p">(</span><span class="n">gcm</span><span class="o">.</span><span class="n">PredictionModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficient</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefficient</span> <span class="o">=</span> <span class="n">coefficient</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="c1"># Nothing to fit here, since we know the ground truth.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficient</span> <span class="o">*</span> <span class="n">X</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># We don&#39;t really need this actually.</span>
+        <span class="k">return</span> <span class="n">MyCustomModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coefficient</span><span class="p">)</span>
+
+
+<span class="c1"># set a random seed to make example reproducible</span>
+<span class="n">set_random_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+
+<span class="c1"># construct a causal graph that will result in</span>
+<span class="c1"># xy - &gt; x -&gt; y &lt;- z -&gt; w</span>
+<span class="c1">#  \_________/^</span>
+<a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a> <span class="o">=</span> <a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class"><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span></a><span class="p">([(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)])</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+<span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;dag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">causal_model</span> <span class="o">=</span> <span class="n">gcm</span><span class="o">.</span><span class="n">ProbabilisticCausalModel</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+<span class="n">causal_model</span><span class="o">.</span><span class="n">set_causal_mechanism</span><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">ScipyDistribution</span></a><span class="p">(</span><a href="https://scipy.github.io/devdocs/reference/generated/scipy.stats.binom.html#scipy.stats.binom" title="scipy.stats.binom" class="sphx-glr-backref-module-scipy-stats sphx-glr-backref-type-py-data"><span class="n">stats</span><span class="o">.</span><span class="n">binom</span></a><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">causal_model</span><span class="o">.</span><span class="n">set_causal_mechanism</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">ScipyDistribution</span></a><span class="p">(</span><a href="https://scipy.github.io/devdocs/reference/generated/scipy.stats.binom.html#scipy.stats.binom" title="scipy.stats.binom" class="sphx-glr-backref-module-scipy-stats sphx-glr-backref-type-py-data"><span class="n">stats</span><span class="o">.</span><span class="n">binom</span></a><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">causal_model</span><span class="o">.</span><span class="n">set_causal_mechanism</span><span class="p">(</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">AdditiveNoiseModel</span></a><span class="p">(</span>
+        <span class="n">prediction_model</span><span class="o">=</span><span class="n">MyCustomModel</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">noise_model</span><span class="o">=</span><a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">ScipyDistribution</span></a><span class="p">(</span><a href="https://scipy.github.io/devdocs/reference/generated/scipy.stats.binom.html#scipy.stats.binom" title="scipy.stats.binom" class="sphx-glr-backref-module-scipy-stats sphx-glr-backref-type-py-data"><span class="n">stats</span><span class="o">.</span><span class="n">binom</span></a><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">causal_model</span><span class="o">.</span><span class="n">set_causal_mechanism</span><span class="p">(</span>
+    <span class="s2">&quot;w&quot;</span><span class="p">,</span>
+    <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">AdditiveNoiseModel</span></a><span class="p">(</span>
+        <span class="n">prediction_model</span><span class="o">=</span><span class="n">MyCustomModel</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">noise_model</span><span class="o">=</span><a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">ScipyDistribution</span></a><span class="p">(</span><a href="https://scipy.github.io/devdocs/reference/generated/scipy.stats.binom.html#scipy.stats.binom" title="scipy.stats.binom" class="sphx-glr-backref-module-scipy-stats sphx-glr-backref-type-py-data"><span class="n">stats</span><span class="o">.</span><span class="n">binom</span></a><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">causal_model</span><span class="o">.</span><span class="n">set_causal_mechanism</span><span class="p">(</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">AdditiveNoiseModel</span></a><span class="p">(</span>
+        <span class="n">prediction_model</span><span class="o">=</span><span class="n">MyCustomModel</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">noise_model</span><span class="o">=</span><a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">gcm</span><span class="o">.</span><span class="n">ScipyDistribution</span></a><span class="p">(</span><a href="https://scipy.github.io/devdocs/reference/generated/scipy.stats.binom.html#scipy.stats.binom" title="scipy.stats.binom" class="sphx-glr-backref-module-scipy-stats sphx-glr-backref-type-py-data"><span class="n">stats</span><span class="o">.</span><span class="n">binom</span></a><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Fit here would not really fit parameters, since we don&#39;t do anything in the fit method.</span>
+<span class="c1"># Here, we only need this to ensure that each FCM has the correct local hash (i.e., we</span>
+<span class="c1"># get an inconsistency error if we would modify the graph afterwards without updating</span>
+<span class="c1"># the FCMs). Having an empty data set is a small workaround, since all models are</span>
+<span class="c1"># pre-defined.</span>
+<span class="n">gcm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">causal_model</span><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;xy&quot;</span><span class="p">]))</span>
+
+<span class="c1"># sample the observational data</span>
+<a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="n">gcm</span><span class="o">.</span><span class="n">draw_samples</span><span class="p">(</span><span class="n">causal_model</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">data</span><span class="o">.</span><span class="n">head</span></a><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class"><span class="n">pd</span><span class="o">.</span><span class="n">Series</span></a><span class="p">({</span><span class="n">col</span><span class="p">:</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">}))</span>
+
+<span class="c1"># note the graph shows colliders, which is a collision of arrows</span>
+<span class="c1"># for example between ``x`` and ``z`` at ``y``.</span>
+<span class="n">draw</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting causal models:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node x:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node y:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node z:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node w:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00&lt;?, ?it/s]
+Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00&lt;00:00, 1431.60it/s]
+   z  ...  y
+0  1  ...  1
+1  1  ...  3
+2  1  ...  2
+3  1  ...  1
+4  1  ...  1
+
+[5 rows x 5 columns]
+z           [1, 0]
+xy          [1, 0]
+w        [1, 2, 0]
+x        [1, 2, 0]
+y     [1, 3, 2, 0]
+dtype: object
+
+&lt;graphviz.graphs.Digraph object at 0x7fc1b118b160&gt;
+</pre></div>
+</div>
+</section>
+<section id="causal-directed-ayclic-graphs-dag-also-known-as-causal-bayesian-networks">
+<h2>Causal Directed Ayclic Graphs (DAG): Also known as Causal Bayesian Networks<a class="headerlink" href="#causal-directed-ayclic-graphs-dag-also-known-as-causal-bayesian-networks" title="Permalink to this heading">#</a></h2>
+<p>Causal DAGs represent Markovian SCMs, also known as the “causally sufficient”
+assumption, where there are no unobserved confounders in the graph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+
+<span class="c1"># One can query the parents of &#39;y&#39; for example</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.DiGraph.predecessors.html#networkx.DiGraph.predecessors" title="networkx.DiGraph.predecessors" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-method"><span class="n">G</span><span class="o">.</span><span class="n">predecessors</span></a><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Or the children of &#39;x&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.DiGraph.successors.html#networkx.DiGraph.successors" title="networkx.DiGraph.successors" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-method"><span class="n">G</span><span class="o">.</span><span class="n">successors</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Using the graph, we can explore d-separation statements, which by the Markov</span>
+<span class="c1"># condition, imply conditional independences.</span>
+<span class="c1"># For example, &#39;z&#39; is d-separated from &#39;x&#39; because of the collider at &#39;y&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;z&#39; is d-separated from &#39;x&#39;: </span><span class="si">{</span><span class="n">nx</span><span class="o">.</span><span class="n">d_separated</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;z&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">},</span> <span class="nb">set</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Conditioning on the collider, opens up the path</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: </span><span class="si">{</span><span class="n">nx</span><span class="o">.</span><span class="n">d_separated</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;z&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">})</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>DiGraph with 5 nodes and 5 edges
+[&#39;x&#39;, &#39;z&#39;, &#39;xy&#39;]
+[&#39;x&#39;, &#39;y&#39;]
+&#39;z&#39; is d-separated from &#39;x&#39;: True
+&#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: False
+</pre></div>
+</div>
+</section>
+<section id="acyclic-directed-mixed-graphs-admg">
+<h2>Acyclic Directed Mixed Graphs (ADMG)<a class="headerlink" href="#acyclic-directed-mixed-graphs-admg" title="Permalink to this heading">#</a></h2>
+<p>ADMGs represent Semi-Markovian SCMs, where there are possibly unobserved confounders
+in the graph. These unobserved confounders are graphically depicted with a bidirected edge.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can construct an ADMG from the DAG by just setting &#39;xy&#39; as a latent confounder</span>
+<a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">set_nodes_as_latent_confounders</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;xy&quot;</span><span class="p">])</span>
+
+<span class="c1"># Now there is a bidirected edge between &#39;x&#39; and &#39;y&#39;</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">)</span>
+<span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;admg.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Now if one queries the parents of &#39;y&#39;, it will not show &#39;xy&#39; anymore</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.predecessors" title="pywhy_graphs.ADMG.predecessors" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">admg</span><span class="o">.</span><span class="n">predecessors</span></a><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)))</span>
+
+<span class="c1"># The bidirected edges also form a cluster in what is known as &quot;confounded-components&quot;, or</span>
+<span class="c1"># c-components for short.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The ADMG has confounded-components: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.c_components" title="pywhy_graphs.ADMG.c_components" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">admg</span><span class="o">.</span><span class="n">c_components</span></a><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># We can also look at m-separation statements similarly to a DAG.</span>
+<span class="c1"># For example, &#39;z&#39; is still m-separated from &#39;x&#39; because of the collider at &#39;y&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;z&#39; is d-separated from &#39;x&#39;: </span><span class="si">{</span><span class="n">nx</span><span class="o">.</span><span class="n">m_separated</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;z&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">},</span> <span class="nb">set</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Conditioning on the collider, opens up the path</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: </span><span class="si">{</span><span class="n">nx</span><span class="o">.</span><span class="n">m_separated</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;z&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">})</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Say we add a bidirected edge between &#39;z&#39; and &#39;x&#39;, then they are no longer</span>
+<span class="c1"># d-separated.</span>
+<a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.add_edge" title="pywhy_graphs.ADMG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">admg</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.bidirected_edge_name" title="pywhy_graphs.ADMG.bidirected_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">admg</span><span class="o">.</span><span class="n">bidirected_edge_name</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;z&#39; is d-separated from &#39;x&#39;: </span><span class="si">{</span><span class="n">nx</span><span class="o">.</span><span class="n">m_separated</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;z&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">},</span> <span class="nb">set</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Markov Equivalence Classes</span>
+<span class="c1"># --------------------------</span>
+<span class="c1">#</span>
+<span class="c1"># Besides graphs that represent causal relationships from the SCM, there are other</span>
+<span class="c1"># graphical objects used in the causal inference literature.</span>
+<span class="c1">#</span>
+<span class="c1"># Markov equivalence class graphs are graphs that encode the same Markov equivalences</span>
+<span class="c1"># or d-separation statements, or conditional independences. These graphs are commonly</span>
+<span class="c1"># used in constraint-based structure learning algorithms, which seek to reconstruct</span>
+<span class="c1"># parts of the causal graph from data. In this next section, we will briefly overview</span>
+<span class="c1"># some of these common graphs.</span>
+<span class="c1">#</span>
+<span class="c1"># Markov equivalence class graphs are usually learned from data. The algorithms for</span>
+<span class="c1"># doing so are in `dodiscover &lt;https://github.com/py-why/dodiscover&gt;`_. For more</span>
+<span class="c1"># details on causal discovery (i.e. structure learning algorithms), please see that repo.</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;z&#39;, &#39;x&#39;]
+The ADMG has confounded-components: [{&#39;y&#39;, &#39;x&#39;}, {&#39;z&#39;}, {&#39;w&#39;}]
+&#39;z&#39; is d-separated from &#39;x&#39;: True
+&#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: False
+&#39;z&#39; is d-separated from &#39;x&#39;: False
+</pre></div>
+</div>
+</section>
+<section id="completed-partially-directed-ayclic-graph-cpdag">
+<h2>Completed Partially Directed Ayclic Graph (CPDAG)<a class="headerlink" href="#completed-partially-directed-ayclic-graph-cpdag" title="Permalink to this heading">#</a></h2>
+<p>CPDAGs are Markov Equivalence class graphs that encode the same d-separation statements
+as a causal DAG that stems from a Markovian SCM. All relevant variables are assumed to
+be observed. An uncertain edge orientation is encoded via a undirected edge between two
+variables. Here, we’ll construct a CPDAG that encodes the same d-separations as the
+earlier DAG.</p>
+<p>Typically, CPDAGs are learnt using some variant of the PC algorithm <a class="footnote-reference brackets" href="#footcite-spirtes1993" id="id2">2</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a> <span class="o">=</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">CPDAG</span></a><span class="p">()</span>
+
+<span class="c1"># let&#39;s assume all the undirected edges are formed from the earlier DAG</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.add_edges_from" title="pywhy_graphs.CPDAG.add_edges_from" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">add_edges_from</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.undirected_edge_name" title="pywhy_graphs.CPDAG.undirected_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">cpdag</span><span class="o">.</span><span class="n">undirected_edge_name</span></a><span class="p">)</span>
+
+<span class="c1"># next, we will orient all unshielded colliders present in the original DAG</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">)</span>
+<span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;cpdag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;cpdag.png&#39;
+</pre></div>
+</div>
+</section>
+<section id="partial-ancestral-graph-pag">
+<h2>Partial Ancestral Graph (PAG)<a class="headerlink" href="#partial-ancestral-graph-pag" title="Permalink to this heading">#</a></h2>
+<p>PAGs are Markov equivalence classes for ADMGs. Since we allow latent confounders, these graphs
+are more complex compared to the CPDAGs. PAGs encode uncertain edge orientations via circle
+endpoints. A circle endpoint (<code class="docutils literal notranslate"><span class="pre">o-*</span></code>) can imply either: a tail (<code class="docutils literal notranslate"><span class="pre">-*</span></code>), or an
+arrowhead (<code class="docutils literal notranslate"><span class="pre">&lt;-*</span></code>), which can then imply either an undirected edge (selection bias),
+directed edge (ancestral relationship), or bidirected edge (possible presence of a
+latent confounder).</p>
+<p>Typically, PAGs are learnt using some variant of the FCI algorithm <a class="footnote-reference brackets" href="#footcite-spirtes1993" id="id3">2</a> and
+:footcite`Zhang2008`.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a> <span class="o">=</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a><span class="p">()</span>
+
+<span class="c1"># let&#39;s assume all the undirected edges are formed from the earlier DAG</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">u</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">v</span></a> <span class="ow">in</span> <a href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="networkx.Graph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class"><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="o">.</span><span class="n">edges</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+    <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">u</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">v</span></a><span class="p">,</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+    <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">v</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">u</span></a><span class="p">,</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+
+<span class="c1"># next, we will orient all unshielded colliders present in the original DAG</span>
+<a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge" title="pywhy_graphs.PAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge" title="pywhy_graphs.PAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge" title="pywhy_graphs.PAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+
+<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">)</span>
+<span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;pag.png&#39;
+</pre></div>
+</div>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
+<div class="docutils container" id="id4">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-pearl-causality-2009"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Judea Pearl. <em>Causality: Models, Reasoning and Inference</em>. Cambridge University Press, USA, 2nd edition, 2009. ISBN 052189560X.</p>
+</dd>
+<dt class="label" id="footcite-spirtes1993"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Peter Spirtes, Clark Glymour, and Richard Scheines. <em>Causation, Prediction, and Search</em>. Volume 81. The MIT Press, 01 1993. ISBN 978-1-4612-7650-0. <a class="reference external" href="https://doi.org/10.1007/978-1-4612-2748-9">doi:10.1007/978-1-4612-2748-9</a>.</p>
+</dd>
+</dl>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.696 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-causal-graphs-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/56f75a68c880a75a213db97580fdafab/intro_causal_graphs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">intro_causal_graphs.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/db18db518b454c41f3dfe307c7181b19/intro_causal_graphs.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">intro_causal_graphs.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../use.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Examples using pywhy-graphs</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../whats_new.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Release History</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2022, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
