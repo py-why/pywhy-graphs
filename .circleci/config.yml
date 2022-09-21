@@ -136,6 +136,7 @@ jobs:
       - python/install-packages:
           pkg-manager: poetry
           cache-version: "v1" # change to clear cache
+          args: "--with docs"
       - run:
           name: make linkcheck
           command: |
