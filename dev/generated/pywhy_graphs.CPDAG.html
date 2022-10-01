@@ -303,12 +303,12 @@ allowing for a Markov equivalence class of DAGs for each CPDAG.</p>
 <dd class="field-odd"><p><strong>incoming_directed_edges</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#input" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a> directed <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a> (optional, default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>)</p>
 <blockquote>
 <div><p>Data to initialize directed edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
+by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
 </div></blockquote>
 <p><strong>incoming_undirected_edges</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#input" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a> undirected <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a> (optional, default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>)</p>
 <blockquote>
 <div><p>Data to initialize undirected edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
+by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
 </div></blockquote>
 <p><strong>directed_edge_name</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
 <blockquote>
@@ -327,8 +327,8 @@ by <a class="reference external" href="https://networkx.org/documentation/latest
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
 <dt><a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADMG</span></code></a></dt><dd></dd>
 </dl>
 </div>
@@ -708,7 +708,7 @@ attributes specified via keyword arguments.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.adj" title="Permalink to this definition">#</a></dt>
 <dd><p>Dictionary of graph adjacency objects holding the neighbors of each node.</p>
 <p>Each edge type has an adjacency object associated with it. For more information
-on the adjacency object itself, see the documentation in <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.Graph.adj.html#networkx.Graph.adj" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph.adj</span></code></a>.</p>
+on the adjacency object itself, see the documentation in <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.Graph.adj.html#networkx.Graph.adj" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph.adj</span></code></a>.</p>
 <p>Iterating over G.adj behaves like a dict. Useful idioms include the following
 for loop.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">adj</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -777,7 +777,7 @@ of the original graph without actually copying any data.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dd class="field-even"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
 <blockquote>
 <div><p>A copy of the graph.</p>
 </div></blockquote>
@@ -982,7 +982,7 @@ will then return a list of all edge graphs.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>graph</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a> | dictionary of <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dd class="field-even"><p><strong>graph</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a> | dictionary of <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
 <blockquote>
 <div><p>The graph representing a specific type of edge, or all edges.</p>
 </div></blockquote>
@@ -1138,7 +1138,7 @@ If nbunch is None, iterate over all nodes in the graph.</p>
 </div></blockquote>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
 <blockquote>
 <div><p>If nbunch is not a node or sequence of nodes.
 If a node in nbunch is not hashable.</p>
@@ -1404,7 +1404,7 @@ via a bidirected edge are not considered parents:
 </div></blockquote>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
 <blockquote>
 <div><p>If there is not an edge between u and v, or
 if there is no edge with the specified key.</p>
@@ -1503,13 +1503,13 @@ as a weight. If None, then each edge has weight 1.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.sub_directed_graph">
-<span class="sig-name descname"><span class="pre">sub_directed_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0b1.dev0)"><span class="pre">DiGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.sub_directed_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.sub_directed_graph" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sub_directed_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v2.8.7.dev0)"><span class="pre">DiGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.sub_directed_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.sub_directed_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Sub-graph of just the directed edges.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.sub_undirected_graph">
-<span class="sig-name descname"><span class="pre">sub_undirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.sub_undirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.sub_undirected_graph" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sub_undirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.sub_undirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.sub_undirected_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Sub-graph of just the undirected edges.</p>
 </dd></dl>
 
@@ -1547,7 +1547,7 @@ and the edges between those nodes.</p>
 <dd><p>Returns a directed representation of the graph.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiGraph</span></code></a></p>
+<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiGraph</span></code></a></p>
 <blockquote>
 <div><p>A directed graph with the same name, same nodes, and with
 each edge (u, v, data) replaced by two directed edges
@@ -1590,7 +1590,7 @@ DiGraph created by this method.</p>
 <dd><p>Returns an undirected representation of the digraph.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
 <blockquote>
 <div><p>An undirected graph with the same name and nodes and
 with edge (u, v, data) if either (u, v, data) or (v, u, data)
@@ -1649,7 +1649,7 @@ the add_edges_from/add_nodes_from methods. When iterated, they
 should yield 2-tuples (u, v) or 3-tuples (u, v, datadict).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>edges</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0b1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nx.Graph</span></code></a> object, collection of <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-odd"><p><strong>edges</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v2.8.7.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nx.Graph</span></code></a> object, collection of <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></p>
 <blockquote>
 <div><p>The first parameter can be a graph or some edges. If it has
 attributes <code class="docutils literal notranslate"><span class="pre">nodes</span></code> and <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, then it is taken to be a
