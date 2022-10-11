@@ -30,7 +30,6 @@ def acyclification(
 
     Notes
     -----
-    This takes
     This replaces all strongly connected components of G by fully connected
     bidirected components without any directed edges. Then any node with an
     edge pointing into the SC (i.e. a directed edge, or bidirected edge) is
@@ -46,7 +45,11 @@ def acyclification(
 
     # extract the subgraph of directed edges
     directed_G: nx.DiGraph = G.get_graphs(directed_edge_type).copy()
-    bidirected_G: nx.Graph = G.get_graphs(bidirected_edge_type).copy()
+    if bidirected_edge_type in G.edge_types:
+        bidirected_G: nx.Graph = G.get_graphs(bidirected_edge_type).copy()
+    else:
+        bidirected_G = nx.Graph()
+        bidirected_G.add_nodes_from(G.nodes)
 
     # first detect all strongly connected components
     scomps = nx.strongly_connected_components(directed_G)
@@ -86,7 +89,9 @@ def acyclification(
 
         # add them back in as a fully connected bidirected graph
         bidirected_fc_G = nx.complete_graph(comp)
-        G.add_edges_from(bidirected_fc_G.edges, bidirected_edge_type)
+        if bidirected_edge_type not in G.edge_types:
+            G.add_edge_type(nx.Graph(), bidirected_edge_type)
+            G.add_edges_from(bidirected_fc_G.edges, bidirected_edge_type)
 
         # add back the children
         G.add_edges_from(scomp_children, directed_edge_type)
@@ -98,3 +103,9 @@ def acyclification(
             for c_component in scomp_c_components:
                 G.add_edge(c_component, node, bidirected_edge_type)
     return G
+
+
+def sigma_separated(G: nx.MixedEdgeGraph, x, y, z):
+    acy_G = acyclification(G)
+
+    return nx.m_separated(G, x, y, z)

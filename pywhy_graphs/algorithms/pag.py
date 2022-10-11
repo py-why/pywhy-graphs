@@ -250,7 +250,7 @@ def discriminating_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            logger.warning(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
@@ -406,7 +406,7 @@ def uncovered_pd_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            logger.warning(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )

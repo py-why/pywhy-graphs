@@ -1,18 +1,25 @@
 from typing import Optional
-
 import networkx as nx
+import pywhy_graphs as pg
 
-
-def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
+def draw(G: nx.MixedEdgeGraph, 
+        directed_graph_name: str,
+        direction: Optional[str] = None,
+        **attrs):
     """Visualize the graph.
 
     Parameters
     ----------
     G : nx.MixedEdgeGraph
-        The mixed edge graph.
+        The mixed edge graph with a directed subgraph.
+    directed_graph_name : str
+        The name of the directed edge subgraph.
     direction : str, optional
         The direction, by default None.
-
+    attrs : dict
+        Any additional edge attributes (must be strings). For more
+        information, see documentation for GraphViz.
+        
     Returns
     -------
     dot : Digraph
@@ -26,32 +33,60 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
     if direction == "LR":
         dot.graph_attr["rankdir"] = direction
 
-    shape = "square"  # 'plaintext'
-    for v in G.nodes:
-        child = str(v)
+    # get directed subgraph
+    directed_G = G.get_graphs(directed_graph_name)
 
-        dot.node(child, shape=shape, height=".5", width=".5")
+    # compute which edges have circular endpoints, so we only draw edges once
+    # between any two nodes
+    circle_edges = set()
+    if hasattr(G, "circle_edges"):
+        for sib1, sib2 in G.circle_edges:
+            sib1, sib2 = str(sib1), str(sib2)
+            circle_edges.add(frozenset([sib1, sib2]))
 
-        for parent in G.predecessors(v):
-            parent = str(parent)
-            if parent == v:
-                dot.edge(parent, child, style="invis")
-            else:
-                dot.edge(parent, child, color="blue")
+    for parent, child in directed_G.edges:
+        if (parent, child) in circle_edges:
+            raise RuntimeError(f'There cannot be an arrowhead and a circle edge from {parent} to {child}.')
+        
+        # arrowhead and circle-endpoint: child <-o parent
+        if (child, parent) in circle_edges:
+        # if 'odot' in circle_edges[child][parent]:
+            dot.edge(parent, child, color="blue",
+                    arrowhead='normal', arrowtail='odot', **attrs)
+            circle_edges.remove((child, parent))
+        else:
+            dot.edge(parent, child, color="blue",
+                     arrowhead='normal', **attrs)
+    
+    # now for all rest of circular edges, add them in
+    for u, v in circle_edges:
+        # u o-o v
+        if (v, u) in circle_edges:
+            dot.edge(u, v, arrowhead="odot", arrowtail='odot', color="green", **attrs)
+        # u -o v
+        else:
+            dot.edge(u, v, arrowhead="odot", color="green", **attrs)
 
-        if hasattr(G, "undirected_edges"):
-            for neb1, neb2 in G.undirected_edges:
-                neb1, neb2 = str(neb1), str(neb2)
-                dot.edge(neb1, neb2, dir="none", color="brown")
+    # draw undirected edges if they are present
+    if hasattr(G, "undirected_edges"):
+        undirected_edges = G.undirected_edges
+    elif 'undirected' in G.edge_types is not None:
+        undirected_edges = G.get_graphs('undirected').edges
+    else:
+        undirected_edges = pg.CPDAG().undirected_edges
+    for neb1, neb2 in undirected_edges:
+        neb1, neb2 = str(neb1), str(neb2)
+        dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
 
-        if hasattr(G, "bidirected_edges"):
-            for sib1, sib2 in G.bidirected_edges:
-                sib1, sib2 = str(sib1), str(sib2)
-                dot.edge(sib1, sib2, dir="both", color="red")
-
-        if hasattr(G, "circle_edges"):
-            for sib1, sib2 in G.circle_edges:
-                sib1, sib2 = str(sib1), str(sib2)
-                dot.edge(sib1, sib2, arrowhead="circle", color="green")
+    # draw bidirected edges if they are present
+    if hasattr(G, "bidirected_edges"):
+        bidirected_edges = G.bidirected_edges
+    elif 'bidirected' in G.edge_types is not None:
+        bidirected_edges = G.get_graphs('bidirected').edges
+    else:
+        bidirected_edges = pg.CPDAG().undirected_edges
+    for sib1, sib2 in bidirected_edges:
+        sib1, sib2 = str(sib1), str(sib2)
+        dot.edge(sib1, sib2, dir="both", color="red", **attrs)
 
     return dot

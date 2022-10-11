@@ -68,3 +68,20 @@ class CLearnEndpoint(Enum, metaclass=MetaEnum):
     TAIL_AND_ARROW = 4
     ARROW_AND_ARROW = 5
     TAIL_AND_TAIL = 6  # added by pywhy.
+
+
+class TigramiteEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of causal-learn endpoints."""
+
+    TAIL = '--'
+    NULL = ''
+    ARROW = '->'
+    CIRCLE = '-o'
+    STAR = '-*'
+    TAIL_AND_ARROW = '+->'
+    # ARROW_AND_ARROW
+
+
+ARRAY_ENUMS = {
+    'clearn': CLearnEndpoint,
+}

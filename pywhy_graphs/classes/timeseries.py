@@ -1,22 +1,20 @@
-import dynetx as dn 
+import dynetx as dn
 import networkx as nx
 
 
-class TimeSeriesMixedEdgeGraph:
-    def __init__(self, graphs=None, ) -> None:
-        pass
-
-
 class TimeSeriesGraph(nx.MixedEdgeGraph):
-    def __init__(self, incoming_directed_edges=None,
-            incoming_bidirected_edges=None,
-            incoming_undirected_edges=None, 
-            directed_edge_name='directed',
-            bidirected_edge_name='bidirected',
-            undirected_edge_name='undirected',
-            **attr):
+    def __init__(
+        self,
+        incoming_directed_edges=None,
+        incoming_bidirected_edges=None,
+        incoming_undirected_edges=None,
+        directed_edge_name="directed",
+        bidirected_edge_name="bidirected",
+        undirected_edge_name="undirected",
+        **attr,
+    ):
         super().__init__(**attr)
-        
+
         self.add_edge_type(dn.DynDiGraph(incoming_directed_edges), directed_edge_name)
         self.add_edge_type(dn.DynGraph(incoming_bidirected_edges), bidirected_edge_name)
         self.add_edge_type(dn.DynGraph(incoming_undirected_edges), undirected_edge_name)
@@ -41,6 +39,4 @@ class TimeSeriesGraph(nx.MixedEdgeGraph):
         pass
 
     def time_slice(self, t_from, t_to):
-        pass 
-
-    
+        pass
