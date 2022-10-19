@@ -1,23 +1,28 @@
 from typing import Dict, List, Set
 
-import numpy as np 
-from numpy.typing import NDArray
 import networkx as nx
+import numpy as np
+from numpy.typing import NDArray
+
 from pywhy_graphs.config import ARRAY_ENUMS
 from pywhy_graphs.typing import Node
 
 
 def _check_valid_ts_arr(arr, arr_enum=None):
     if arr.ndim != 3:
-        raise RuntimeError(f'There should be 3 dimensions in time-series graph, but your array has {arr.ndims} dimensions.')
+        raise RuntimeError(
+            f"There should be 3 dimensions in time-series graph, but your array has {arr.ndims} dimensions."
+        )
     if arr.shape[0] != arr.shape[1]:
-        raise RuntimeError(f'This array is not a valid time-series graph because the first two dimensions '
-            f'of {arr.shape} do not match.')
+        raise RuntimeError(
+            f"This array is not a valid time-series graph because the first two dimensions "
+            f"of {arr.shape} do not match."
+        )
 
     if arr_enum is not None:
         arr_vals = np.unique(arr)
         if any(val not in arr_enum for val in arr_vals):
-            raise RuntimeError(f'Array values should follow enumeration of {arr_enum}.')
+            raise RuntimeError(f"Array values should follow enumeration of {arr_enum}.")
 
     # all time-series arrays are assumed to have rows as the starting node
     # and the columns as the ending node
@@ -27,7 +32,7 @@ def check_edge_homologous(arr, u_node, v_node, t):
     pass
 
 
-def get_summary_graph(arr: NDArray, arr_enum: str='clearn'):
+def get_summary_graph(arr: NDArray, arr_enum: str = "clearn"):
     """Compute the time-series summary graph from the given time-series graph.
 
     The summary graph is defined as a graph where nodes are the variables in the
@@ -68,13 +73,15 @@ def get_summary_graph(arr: NDArray, arr_enum: str='clearn'):
             for val in arr_vals:
                 if val == 0:
                     continue
-                
+
             # set summary array at (u, v) to the enumeration value
             summary_arr[u_node, v_node] = arr_enum
     return summary_arr
 
 
-def array_to_lagged_links(arr: NDArray, arr_idx: List[Node]=None, include_weights: bool=True) -> Dict[Node, List[Set]]:
+def array_to_lagged_links(
+    arr: NDArray, arr_idx: List[Node] = None, include_weights: bool = True
+) -> Dict[Node, List[Set]]:
     """Convert a time-series 3D array to a dictionary of lagged links.
 
     For usage with tigramite. Note that by assumption, if we have a stationary
@@ -127,7 +134,7 @@ def array_to_lagged_links(arr: NDArray, arr_idx: List[Node]=None, include_weight
         # for every lag point, find neighbors
         for it in range(max_lag + 1):
             node_nbrs = np.argwhere(arr[node, :, it] != 0).flatten()
-            
+
             # append sets of nbrs, lag point and coefficient
             for nbr in node_nbrs:
                 coeff = arr[node, nbr, it].item()
@@ -139,7 +146,6 @@ def array_to_lagged_links(arr: NDArray, arr_idx: List[Node]=None, include_weight
     return lagged_links
 
 
-
 def remove_ts_edge(arr, arr_idx, u_node, v_node, t=None):
     if t is None:
         t = np.arange(arr.shape[-1], dtype=int)
@@ -148,18 +154,16 @@ def remove_ts_edge(arr, arr_idx, u_node, v_node, t=None):
     v_idx = np.argwhere(arr_idx == v_node)
     arr[u_idx, v_idx, t] = 0
 
+
 def orient_ts_edge(arr, arr_idx, u_node, v_node, t=None, homologous=True):
     if t is None:
-        raise nx.NetworkXError(
-            "The t argument must be specified.")
+        raise nx.NetworkXError("The t argument must be specified.")
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import numpy as np
-    graph=np.array([[[0.2,0.,0.],[0.5,0.,0.]],
-                           [[0.,0.1,0. ],[0.3,0.,0.]]])
+
+    graph = np.array([[[0.2, 0.0, 0.0], [0.5, 0.0, 0.0]], [[0.0, 0.1, 0.0], [0.3, 0.0, 0.0]]])
 
     print(graph.shape)
     print(graph)

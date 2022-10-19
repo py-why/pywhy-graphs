@@ -73,15 +73,15 @@ class CLearnEndpoint(Enum, metaclass=MetaEnum):
 class TigramiteEndpoint(Enum, metaclass=MetaEnum):
     """Enumeration of causal-learn endpoints."""
 
-    TAIL = '--'
-    NULL = ''
-    ARROW = '->'
-    CIRCLE = '-o'
-    STAR = '-*'
-    TAIL_AND_ARROW = '+->'
+    TAIL = "--"
+    NULL = ""
+    ARROW = "->"
+    CIRCLE = "-o"
+    STAR = "-*"
+    TAIL_AND_ARROW = "+->"
     # ARROW_AND_ARROW
 
 
 ARRAY_ENUMS = {
-    'clearn': CLearnEndpoint,
+    "clearn": CLearnEndpoint,
 }

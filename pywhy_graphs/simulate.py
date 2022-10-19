@@ -2,13 +2,9 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-import pywhy_graphs
-
 
 def simulate_var_process_from_summary_graph(
-    G: nx.MixedEdgeGraph, max_lag=1, 
-    n_times=1000,
-    random_state: int = None
+    G: nx.MixedEdgeGraph, max_lag=1, n_times=1000, random_state: int = None
 ):
     """Simulate a VAR(max_lag) process starting from a summary graph.
 
@@ -48,10 +44,10 @@ def simulate_var_process_from_summary_graph(
     summary_arr = np.zeros((n_nodes, n_nodes))
     for edge_type, graph in G.get_graphs().items():
         # get the graph array
-        graph_arr = nx.to_numpy_array(graph, weight='weight')
+        graph_arr = nx.to_numpy_array(graph, weight="weight")
         non_zero_index = np.nonzero(graph_arr)
         weights = rng.normal(size=(len(non_zero_index[0]),))
-        
+
         # set the weights in the summary graph
         summary_arr[non_zero_index] = weights
     # TODO: generalize to directional weights
@@ -82,7 +78,7 @@ def simulate_var_process_from_summary_graph(
     for tdx in range(max_lag, n_times):
         ygen = x[:, tdx]
         for pdx in range(max_lag):
-            ygen += np.dot(var_arr[..., pdx], x[:, tdx-pdx-1].T).T
+            ygen += np.dot(var_arr[..., pdx], x[:, tdx - pdx - 1].T).T
 
     # convert to a DataFrame
     x_df = pd.DataFrame(x.T, columns=list(G.nodes))

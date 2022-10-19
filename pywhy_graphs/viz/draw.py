@@ -1,11 +1,11 @@
 from typing import Optional
+
 import networkx as nx
+
 import pywhy_graphs as pg
 
-def draw(G: nx.MixedEdgeGraph, 
-        directed_graph_name: str,
-        direction: Optional[str] = None,
-        **attrs):
+
+def draw(G: nx.MixedEdgeGraph, directed_graph_name: str, direction: Optional[str] = None, **attrs):
     """Visualize the graph.
 
     Parameters
@@ -19,7 +19,7 @@ def draw(G: nx.MixedEdgeGraph,
     attrs : dict
         Any additional edge attributes (must be strings). For more
         information, see documentation for GraphViz.
-        
+
     Returns
     -------
     dot : Digraph
@@ -46,23 +46,23 @@ def draw(G: nx.MixedEdgeGraph,
 
     for parent, child in directed_G.edges:
         if (parent, child) in circle_edges:
-            raise RuntimeError(f'There cannot be an arrowhead and a circle edge from {parent} to {child}.')
-        
+            raise RuntimeError(
+                f"There cannot be an arrowhead and a circle edge from {parent} to {child}."
+            )
+
         # arrowhead and circle-endpoint: child <-o parent
         if (child, parent) in circle_edges:
-        # if 'odot' in circle_edges[child][parent]:
-            dot.edge(parent, child, color="blue",
-                    arrowhead='normal', arrowtail='odot', **attrs)
+            # if 'odot' in circle_edges[child][parent]:
+            dot.edge(parent, child, color="blue", arrowhead="normal", arrowtail="odot", **attrs)
             circle_edges.remove((child, parent))
         else:
-            dot.edge(parent, child, color="blue",
-                     arrowhead='normal', **attrs)
-    
+            dot.edge(parent, child, color="blue", arrowhead="normal", **attrs)
+
     # now for all rest of circular edges, add them in
     for u, v in circle_edges:
         # u o-o v
         if (v, u) in circle_edges:
-            dot.edge(u, v, arrowhead="odot", arrowtail='odot', color="green", **attrs)
+            dot.edge(u, v, arrowhead="odot", arrowtail="odot", color="green", **attrs)
         # u -o v
         else:
             dot.edge(u, v, arrowhead="odot", color="green", **attrs)
@@ -70,8 +70,8 @@ def draw(G: nx.MixedEdgeGraph,
     # draw undirected edges if they are present
     if hasattr(G, "undirected_edges"):
         undirected_edges = G.undirected_edges
-    elif 'undirected' in G.edge_types is not None:
-        undirected_edges = G.get_graphs('undirected').edges
+    elif "undirected" in G.edge_types is not None:
+        undirected_edges = G.get_graphs("undirected").edges
     else:
         undirected_edges = pg.CPDAG().undirected_edges
     for neb1, neb2 in undirected_edges:
@@ -81,8 +81,8 @@ def draw(G: nx.MixedEdgeGraph,
     # draw bidirected edges if they are present
     if hasattr(G, "bidirected_edges"):
         bidirected_edges = G.bidirected_edges
-    elif 'bidirected' in G.edge_types is not None:
-        bidirected_edges = G.get_graphs('bidirected').edges
+    elif "bidirected" in G.edge_types is not None:
+        bidirected_edges = G.get_graphs("bidirected").edges
     else:
         bidirected_edges = pg.CPDAG().undirected_edges
     for sib1, sib2 in bidirected_edges:

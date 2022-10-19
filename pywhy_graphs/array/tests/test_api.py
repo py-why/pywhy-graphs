@@ -1,14 +1,16 @@
-import numpy as np 
 from collections import defaultdict
 
+import numpy as np
+
 from pywhy_graphs.array import api
+
 
 def test_array_to_lagged_links():
     max_lag = 3
     n_nodes = 2
 
     # create a simple time-series array graph
-    ts_arr = np.dstack([np.diag(np.ones(n_nodes))] * max_lag)#.reshape(n_nodes, n_nodes, max_lag)
+    ts_arr = np.dstack([np.diag(np.ones(n_nodes))] * max_lag)  # .reshape(n_nodes, n_nodes, max_lag)
     ts_arr[..., 0] = 0
 
     # test that the lagged links are the same as expected
