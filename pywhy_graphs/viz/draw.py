@@ -33,60 +33,50 @@ def draw(G: nx.MixedEdgeGraph, directed_graph_name: str, direction: Optional[str
     if direction == "LR":
         dot.graph_attr["rankdir"] = direction
 
-    # get directed subgraph
-    directed_G = G.get_graphs(directed_graph_name)
+    shape = "square"  # 'plaintext'
 
-    # compute which edges have circular endpoints, so we only draw edges once
-    # between any two nodes
-    circle_edges = set()
+    found_circle_sibs = set()
     if hasattr(G, "circle_edges"):
         for sib1, sib2 in G.circle_edges:
+            # memoize if we have seen the bidirected circular edge before
+            if f"{sib1}-{sib2}" in found_circle_sibs or f"{sib2}-{sib1}" in found_circle_sibs:
+                continue
+            found_circle_sibs.add(f"{sib1}-{sib2}")
+
+            # set directionality of the edges
+            dir = "forward"
+            if (sib2, sib1) in G.circle_edges:
+                dir = "both"
+                arrowtail = "odot"
+            elif (sib2, sib1) in G.directed_edges:
+                dir = "both"
+                arrowtail = "normal"
             sib1, sib2 = str(sib1), str(sib2)
-            circle_edges.add(frozenset([sib1, sib2]))
+            dot.edge(sib1, sib2, arrowhead="odot", arrowtail=arrowtail, dir=dir, color="green")
 
-    for parent, child in directed_G.edges:
-        if (parent, child) in circle_edges:
-            raise RuntimeError(
-                f"There cannot be an arrowhead and a circle edge from {parent} to {child}."
-            )
+    for v in G.nodes:
+        child = str(v)
 
-        # arrowhead and circle-endpoint: child <-o parent
-        if (child, parent) in circle_edges:
-            # if 'odot' in circle_edges[child][parent]:
-            dot.edge(parent, child, color="blue", arrowhead="normal", arrowtail="odot", **attrs)
-            circle_edges.remove((child, parent))
-        else:
-            dot.edge(parent, child, color="blue", arrowhead="normal", **attrs)
+        dot.node(child, shape=shape, height=".5", width=".5")
 
-    # now for all rest of circular edges, add them in
-    for u, v in circle_edges:
-        # u o-o v
-        if (v, u) in circle_edges:
-            dot.edge(u, v, arrowhead="odot", arrowtail="odot", color="green", **attrs)
-        # u -o v
-        else:
-            dot.edge(u, v, arrowhead="odot", color="green", **attrs)
+        for parent in G.predecessors(v):
+            # memoize if we have seen the bidirected circular edge before
+            if f"{child}-{parent}" in found_circle_sibs or f"{parent}-{child}" in found_circle_sibs:
+                continue
+            parent = str(parent)
+            if parent == v:
+                dot.edge(parent, child, style="invis")
+            else:
+                dot.edge(parent, child, color="blue")
 
-    # draw undirected edges if they are present
     if hasattr(G, "undirected_edges"):
-        undirected_edges = G.undirected_edges
-    elif "undirected" in G.edge_types is not None:
-        undirected_edges = G.get_graphs("undirected").edges
-    else:
-        undirected_edges = pg.CPDAG().undirected_edges
-    for neb1, neb2 in undirected_edges:
-        neb1, neb2 = str(neb1), str(neb2)
-        dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
+        for neb1, neb2 in G.undirected_edges:
+            neb1, neb2 = str(neb1), str(neb2)
+            dot.edge(neb1, neb2, dir="none", color="brown")
 
-    # draw bidirected edges if they are present
     if hasattr(G, "bidirected_edges"):
-        bidirected_edges = G.bidirected_edges
-    elif "bidirected" in G.edge_types is not None:
-        bidirected_edges = G.get_graphs("bidirected").edges
-    else:
-        bidirected_edges = pg.CPDAG().undirected_edges
-    for sib1, sib2 in bidirected_edges:
-        sib1, sib2 = str(sib1), str(sib2)
-        dot.edge(sib1, sib2, dir="both", color="red", **attrs)
+        for sib1, sib2 in G.bidirected_edges:
+            sib1, sib2 = str(sib1), str(sib2)
+            dot.edge(sib1, sib2, dir="both", color="red")
 
     return dot
