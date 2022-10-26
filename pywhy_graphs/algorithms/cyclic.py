@@ -108,4 +108,4 @@ def acyclification(
 def sigma_separated(G: nx.MixedEdgeGraph, x, y, z):
     acy_G = acyclification(G)
 
-    return nx.m_separated(G, x, y, z)
+    return nx.m_separated(acy_G, x, y, z)

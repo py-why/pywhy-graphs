@@ -7,7 +7,6 @@ from pywhy_graphs import TimeSeriesGraph
 from pywhy_graphs.classes.timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
-    StationaryTimeSeriesMixedEdgeGraph,
     TimeSeriesDiGraph,
     complete_ts_graph,
     empty_ts_graph,
@@ -139,8 +138,8 @@ class TestStationaryGraph:
             G.add_edge((1, -2, 3), (1, 0))
         with pytest.raises(ValueError, match="All lag points should be 0, or less"):
             G.add_edge((1, 2), (1, 0))
-        with pytest.raises(ValueError, match='The lag of the "to" node should be 0'):
-            G.add_edge((1, -1), (1, -1))
+        with pytest.raises(ValueError, match='The lag of the "to node" -1 should be'):
+            G.add_edge((1, 0), (1, -1))
 
         # now test adding/removing lagged edges
         # stationarity should be maintained
@@ -165,3 +164,56 @@ class TestStationaryGraph:
 
         # now test adding/removing contemporaneous edges
         # stationarity should be maintained
+        G.add_edge((2, 0), (1, 0))
+        assert G.has_edge((2, 0), (1, 0))
+        for lag in range(max_lag):
+            assert G.has_edge((2, -lag), (1, -lag))
+        G.remove_edge((2, 0), (1, 0))
+        assert len(G.edges) == 0
+
+        # when adding edges, the nodes should all be added
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+        ]
+        G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        for node in ["x1", "x2", "x3"]:
+            for lag in range(max_lag + 1):
+                assert G.has_node((node, -lag))
+
+    def test_copy(self, G_func, max_lag):
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+        ]
+        G = G_func(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # copy should retain all edges and structure
+        G_copy = G.copy()
+        for node in ["x1", "x2", "x3"]:
+            for lag in range(max_lag + 1):
+                assert G_copy.has_node((node, -lag))
+
+        for u, nbrs in G._adj.items():
+            for v, datadict in nbrs.items():
+                print(u, v, datadict)
+
+        assert nx.is_isomorphic(G, G_copy)
+
+        if isinstance(G, StationaryTimeSeriesDiGraph):
+            # TODO: this is technically incorrect because there is correlation between
+            # ('x2', -1) and ('x2', 0) if we unroll the graph
+            # TODO: for checking graphical separation, it seems we might need to "unroll" the graph
+            # further? (i.e. max_lag * 2)
+            if max_lag > 1:
+                assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
+            else:
+                assert nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
+            assert nx.d_separated(G_copy, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})

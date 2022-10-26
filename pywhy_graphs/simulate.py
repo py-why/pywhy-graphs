@@ -37,12 +37,12 @@ def simulate_var_process_from_summary_graph(
     var_arr = np.zeros((n_nodes, n_nodes, max_lag))
 
     # get the non-zeros
-    undir_graph = G.to_undirected()
+    # undir_graph = G.to_undirected()
 
     # simulate weights of the weight matrix
-    n_edges = G.number_of_edges()
+    # n_edges = G.number_of_edges()
     summary_arr = np.zeros((n_nodes, n_nodes))
-    for edge_type, graph in G.get_graphs().items():
+    for _, graph in G.get_graphs().items():
         # get the graph array
         graph_arr = nx.to_numpy_array(graph, weight="weight")
         non_zero_index = np.nonzero(graph_arr)
