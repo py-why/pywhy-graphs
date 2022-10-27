@@ -53,7 +53,7 @@ def get_summary_graph(arr: NDArray, arr_enum: str = "clearn"):
     summary_arr : ndarray of shape (n_nodes, n_nodes)
         The summary graph.
     """
-    arr_enum = ARRAY_ENUMS[arr_enum]
+    arr_enum = ARRAY_ENUMS[arr_enum]  # type: ignore
     _check_valid_ts_arr(arr, arr_enum)
 
     n_nodes, _, _ = arr.shape
@@ -124,7 +124,7 @@ def array_to_lagged_links(
     if arr_idx is None:
         arr_idx = np.arange(n_nodes)
 
-    lagged_links = dict()
+    lagged_links: Dict[Node, List] = dict()
 
     # loop over all nodes and extract its adjacencies
     for idx, node in enumerate(range(n_nodes)):

@@ -196,7 +196,7 @@ class TestStationaryGraph:
         G.add_edges_from(ts_edges)
 
         # copy should retain all edges and structure
-        G_copy = G.copy()
+        G_copy = G.copy(double_max_lag=False)
         for node in ["x1", "x2", "x3"]:
             for lag in range(max_lag + 1):
                 assert G_copy.has_node((node, -lag))
@@ -208,12 +208,5 @@ class TestStationaryGraph:
         assert nx.is_isomorphic(G, G_copy)
 
         if isinstance(G, StationaryTimeSeriesDiGraph):
-            # TODO: this is technically incorrect because there is correlation between
-            # ('x2', -1) and ('x2', 0) if we unroll the graph
-            # TODO: for checking graphical separation, it seems we might need to "unroll" the graph
-            # further? (i.e. max_lag * 2)
-            if max_lag > 1:
-                assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
-            else:
-                assert nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
+            assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
             assert nx.d_separated(G_copy, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})

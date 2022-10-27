@@ -9,6 +9,8 @@ from networkx import NetworkXError
 
 from pywhy_graphs.typing import Node
 
+from .networkxprotocol import NetworkXProtcol
+
 
 class tsdict(dict):
     def __setitem__(self, key, val):
@@ -23,7 +25,7 @@ class tsdict(dict):
         dict.__setitem__(self, key, val)
 
 
-class TimeSeriesGraphMixin:
+class TimeSeriesGraphMixin(NetworkXProtcol):
     """A mixin class for time-series graph.
 
     Adds the distinction between variables and nodes in a networkx-compliant
@@ -37,6 +39,15 @@ class TimeSeriesGraphMixin:
     @property
     def max_lag(self) -> int:
         """The maximum time-index lag."""
+        return self._max_lag
+
+    @property
+    def _max_lag(self) -> int:
+        """Private property to query the maximum time-index lag stored in the graph.
+
+        In stationary graphs, this is 2 times the maximum lag to enable proper
+        d-separation querying.
+        """
         return self.graph["max_lag"]
 
     @property
@@ -93,7 +104,7 @@ class TimeSeriesGraphMixin:
         return [nbr for nbr in nbrs if nbr[1] == 0]
 
 
-class StationaryTimeSeriesMixin:
+class StationaryTimeSeriesMixin(TimeSeriesGraphMixin):
     _auto_removal: bool = True
 
     def _check_ts_node(self, node):
@@ -104,21 +115,18 @@ class StationaryTimeSeriesMixin:
             )
         if node[1] > 0:
             raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
+
+        # Note: this uses the public max-lag, since the user should not be exposed to the
+        # private max
         if node[1] < -self.max_lag:
             raise ValueError(f"Lag {node[1]} cannot be greater than set max_lag {self.max_lag}.")
-
-    def add_variable(self, var_name):
-        pass
-
-    def add_variables_from(self, var_names):
-        pass
 
     def add_node(self, node_name, **attr):
         self._check_ts_node(node_name)
         super().add_node(node_name, **attr)
         var_name, _ = node_name
 
-        for t in range(self.max_lag + 1):
+        for t in range(self._max_lag + 1):
             super().add_node((var_name, -t), **attr)
 
     def add_nodes_from(self, nodes_for_adding, **attr):
@@ -137,7 +145,7 @@ class StationaryTimeSeriesMixin:
         var_name, _ = node_name
         super().remove_node(node_name)
         if self._auto_removal:
-            for t in range(self.max_lag + 1):
+            for t in range(self._max_lag + 1):
                 try:
                     super().remove_node((var_name, -t))
                 except NetworkXError:
@@ -204,33 +212,33 @@ class StationaryTimeSeriesMixin:
             self.remove_edge(*edge)
 
     def _add_homologous_contemporaneous_edges(self, u, v, **attr):
-        for t in range(self.max_lag + 1):
+        for t in range(self._max_lag + 1):
             super().add_edge((u, -t), (v, -t), **attr)
 
     def _add_homologous_ts_edges(self, u, v, lag, **attr):
         lag = np.abs(lag)
 
         to_t = 0
-        for from_t in range(lag, self.max_lag + 1, lag):
+        for from_t in range(lag, self._max_lag + 1, lag):
             super().add_edge((u, -from_t), (v, -to_t), **attr)
             to_t = from_t
 
     def _remove_homologous_contemporaneous_edges(self, u, v):
-        for t in range(self.max_lag + 1):
+        for t in range(self._max_lag + 1):
             super().remove_edge((u, -t), (v, -t))
 
     def _remove_homologous_ts_edges(self, u, v, lag):
         lag = np.abs(lag)
 
         to_t = 0
-        for from_t in range(lag, self.max_lag + 1, lag):
+        for from_t in range(lag, self._max_lag + 1, lag):
             super().remove_edge((u, -from_t), (v, -to_t))
             to_t = from_t
 
     def set_auto_removal(self, auto):
         self._auto_removal = auto
 
-    def copy(self, as_view: bool = False):
+    def copy(self, as_view: bool = False, double_max_lag: bool = True):
         """Returns a copy of the graph.
 
         The copy method by default returns an independent shallow copy
@@ -311,6 +319,10 @@ class StationaryTimeSeriesMixin:
             return nx.graphviews.generic_graph_view(self)
         G = self.__class__()
         G.graph.update(self.graph)
+
+        if double_max_lag:
+            G.graph["max_lag"] = G.max_lag * 2
+
         G.add_nodes_from((n, d.copy()) for n, d in self._node.items() if n[1] == 0)
         G.add_edges_from(
             (u, v, datadict.copy())
@@ -323,7 +335,10 @@ class StationaryTimeSeriesMixin:
 
 
 class TimeSeriesGraph(nx.Graph, TimeSeriesGraphMixin):
-    """A class to imbue undirected graph with time-series structure."""
+    """A class to imbue undirected graph with time-series structure.
+
+    This should not be used directly.
+    """
 
     # overloaded factory dictionary types to hold time-series nodes
     node_dict_factory = tsdict
@@ -334,12 +349,16 @@ class TimeSeriesGraph(nx.Graph, TimeSeriesGraphMixin):
     def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
         if max_lag <= 0:
             raise ValueError(f"Max lag for time series graph should be at least 1, not {max_lag}.")
+
         attr.update(dict(max_lag=max_lag))
         super().__init__(incoming_graph_data, **attr)
 
 
 class TimeSeriesDiGraph(nx.DiGraph, TimeSeriesGraphMixin):
-    """A class to imbue directed graph with time-series structure."""
+    """A class to imbue directed graph with time-series structure.
+
+    This should not be used directly.
+    """
 
     # overloaded factory dictionary types to hold time-series nodes
     node_dict_factory = tsdict
@@ -390,6 +409,12 @@ class StationaryTimeSeriesDiGraph(StationaryTimeSeriesMixin, TimeSeriesDiGraph):
         The max lag, by default 1.
     attr : keyword arguments, optional (default= no attributes)
         Attributes to add to graph as key=value pairs.
+
+    Notes
+    -----
+    A stationary time-series graph is one in which edges over time are repeated.
+    In order to properly query for d-separation, one needs to query up to 2 times
+    the maximum lag.
     """
 
     def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
@@ -435,7 +460,7 @@ class StationaryTimeSeriesMixedEdgeGraph(nx.MixedEdgeGraph):
             self.remove_edge(*edge, edge_type)
 
     def _add_homologous_contemporaneous_edges(self, u, v, edge_type, **attr):
-        for t in range(self.max_lag + 1):
+        for t in range(self._max_lag + 1):
             super().add_edge((u, t), (v, t), edge_type, **attr)
 
     def _add_homologous_ts_edges(self, u, v, lag, edge_type, **attr):
@@ -443,12 +468,12 @@ class StationaryTimeSeriesMixedEdgeGraph(nx.MixedEdgeGraph):
             raise RuntimeError(f"If lag is {lag}, then add contemporaneous edges.")
 
         to_t = 0
-        for from_t in range(lag, self.max_lag + 1, lag):
+        for from_t in range(lag, self._max_lag + 1, lag):
             super().add_edge((u, from_t), (v, to_t), edge_type, **attr)
             to_t = from_t
 
     def _remove_homologous_contemporaneous_edges(self, u, v, edge_type):
-        for t in range(self.max_lag + 1):
+        for t in range(self._max_lag + 1):
             super().remove_edge((u, t), (v, t), edge_type)
 
     def _remove_homologous_ts_edges(self, u, v, lag, edge_type):
@@ -456,7 +481,7 @@ class StationaryTimeSeriesMixedEdgeGraph(nx.MixedEdgeGraph):
             raise RuntimeError(f"If lag is {lag}, then remove contemporaneous edges.")
 
         to_t = 0
-        for from_t in range(lag, self.max_lag + 1, lag):
+        for from_t in range(lag, self._max_lag + 1, lag):
             super().remove_edge((u, from_t), (v, to_t), edge_type)
             to_t = from_t
 

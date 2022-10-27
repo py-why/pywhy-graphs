@@ -2,10 +2,8 @@ from typing import Optional
 
 import networkx as nx
 
-import pywhy_graphs as pg
 
-
-def draw(G: nx.MixedEdgeGraph, directed_graph_name: str, direction: Optional[str] = None, **attrs):
+def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, **attrs):
     """Visualize the graph.
 
     Parameters
@@ -52,7 +50,9 @@ def draw(G: nx.MixedEdgeGraph, directed_graph_name: str, direction: Optional[str
                 dir = "both"
                 arrowtail = "normal"
             sib1, sib2 = str(sib1), str(sib2)
-            dot.edge(sib1, sib2, arrowhead="odot", arrowtail=arrowtail, dir=dir, color="green")
+            dot.edge(
+                sib1, sib2, arrowhead="odot", arrowtail=arrowtail, dir=dir, color="green", **attrs
+            )
 
     for v in G.nodes:
         child = str(v)
@@ -65,18 +65,18 @@ def draw(G: nx.MixedEdgeGraph, directed_graph_name: str, direction: Optional[str
                 continue
             parent = str(parent)
             if parent == v:
-                dot.edge(parent, child, style="invis")
+                dot.edge(parent, child, style="invis", **attrs)
             else:
-                dot.edge(parent, child, color="blue")
+                dot.edge(parent, child, color="blue", **attrs)
 
     if hasattr(G, "undirected_edges"):
         for neb1, neb2 in G.undirected_edges:
             neb1, neb2 = str(neb1), str(neb2)
-            dot.edge(neb1, neb2, dir="none", color="brown")
+            dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
 
     if hasattr(G, "bidirected_edges"):
         for sib1, sib2 in G.bidirected_edges:
             sib1, sib2 = str(sib1), str(sib2)
-            dot.edge(sib1, sib2, dir="both", color="red")
+            dot.edge(sib1, sib2, dir="both", color="red", **attrs)
 
     return dot
