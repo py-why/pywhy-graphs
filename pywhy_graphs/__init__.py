@@ -5,6 +5,7 @@ from .classes import (
     PAG,
     TimeSeriesGraph,
     TimeSeriesDiGraph,
+    StationaryTimeSeriesGraph,
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesMixedEdgeGraph,
 )

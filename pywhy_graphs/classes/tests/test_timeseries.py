@@ -1,6 +1,7 @@
 from itertools import combinations
 
 import networkx as nx
+import numpy as np
 import pytest
 
 from pywhy_graphs import TimeSeriesGraph
@@ -10,7 +11,30 @@ from pywhy_graphs.classes.timeseries import (
     TimeSeriesDiGraph,
     complete_ts_graph,
     empty_ts_graph,
+    nodes_in_time_order,
 )
+
+
+def test_nodes_in_time_order():
+    max_lag = 3
+    G = StationaryTimeSeriesGraph(max_lag=max_lag)
+    ts_edges = [
+        (("x1", -1), ("x1", 0)),
+        (("x1", -1), ("x2", 0)),
+        (("x3", -1), ("x2", 0)),
+        (("x3", -1), ("x3", 0)),
+        (("x1", -3), ("x3", 0)),
+    ]
+    G.add_edges_from(ts_edges)
+    nodes_set = set(G.nodes)
+
+    nodes = nodes_in_time_order(G)
+    current_time = G.max_lag
+    for node in nodes:
+        assert np.abs(node[1]) <= current_time
+        current_time = np.abs(node[1])
+        nodes_set.remove(node)
+    assert nodes_set == set()
 
 
 @pytest.mark.parametrize(
@@ -76,6 +100,55 @@ class TestNetworkxIntegration:
             assert not nx.d_separated(complete_G, {u}, {v}, {})
 
 
+class TestStationaryGraphProperties:
+    """Test properties of a stationary time-series graph."""
+
+    def setup(self):
+        max_lag = 3
+        G = StationaryTimeSeriesGraph(max_lag=max_lag)
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+            (("x1", -3), ("x3", 0)),
+        ]
+        G.add_edges_from(ts_edges)
+        self.G = G
+
+    def test_nodes_at(self):
+        G = self.G.copy(double_max_lag=False)
+        for t in range(G.max_lag + 1):
+            nodes = G.nodes_at(t)
+            for node in nodes:
+                assert node[1] == -t
+
+    def test_contemporaneous_edge(self):
+        G = self.G.copy(double_max_lag=False)
+
+        for u, v in G.contemporaneous_edges:
+            assert u[1] == v[1] == 0
+
+    def test_lag_edges(self):
+        G = self.G.copy(double_max_lag=False)
+
+        for u, v in G.lag_edges:
+            assert v[1] == 0
+            assert u[1] < 0
+
+    def test_lagged_nbrs(self):
+        G = self.G.copy(double_max_lag=False)
+
+        nbrs = G.lagged_neighbors(("x3", 0))
+        assert set(nbrs) == {("x1", -3), ("x3", -1)}
+
+    def test_contemporaneous_nbrs(self):
+        G = self.G.copy(double_max_lag=False)
+
+        nbrs = G.contemporaneous_neighbors(("x3", 0))
+        assert set(nbrs) == set()
+
+
 @pytest.mark.parametrize(
     "max_lag",
     [1, 3],
@@ -88,6 +161,8 @@ class TestNetworkxIntegration:
     ],
 )
 class TestStationaryGraph:
+    """Test stationary graph adding and removing nodes and edges."""
+
     def test_timeseries_add_node(self, G_func, max_lag):
         G = G_func(max_lag=max_lag)
 
@@ -138,8 +213,8 @@ class TestStationaryGraph:
             G.add_edge((1, -2, 3), (1, 0))
         with pytest.raises(ValueError, match="All lag points should be 0, or less"):
             G.add_edge((1, 2), (1, 0))
-        with pytest.raises(ValueError, match='The lag of the "to node" -1 should be'):
-            G.add_edge((1, 0), (1, -1))
+        # with pytest.raises(ValueError, match='The lag of the "to node" -1 should be'):
+        #     G.add_edge((1, 0), (1, -1))
 
         # now test adding/removing lagged edges
         # stationarity should be maintained
@@ -155,9 +230,11 @@ class TestStationaryGraph:
         if max_lag > 2:
             G.add_edge((1, -2), (1, 0))
             to_lag = 0
-            for lag in range(2, max_lag, 2):
-                assert G.has_edge((1, -lag), (1, -to_lag))
-                to_lag = lag
+            from_lag = 2
+            for lag in range(2, max_lag + 1):
+                assert G.has_edge((1, -from_lag), (1, -to_lag))
+                to_lag += 1
+                from_lag += 1
 
             G.remove_edge((1, -2), (1, 0))
             assert len(G.edges) == 0
@@ -178,12 +255,27 @@ class TestStationaryGraph:
             (("x3", -1), ("x2", 0)),
             (("x3", -1), ("x3", 0)),
         ]
-        G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
+        G = G_func(max_lag=max_lag)
         G.add_edges_from(ts_edges)
-
         for node in ["x1", "x2", "x3"]:
             for lag in range(max_lag + 1):
                 assert G.has_node((node, -lag))
+
+    def test_add_edges_from(self, G_func, max_lag):
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+        ]
+        G = G_func(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+        variables = ("x1", "x2", "x3")
+        for var in variables:
+            assert var in G.variables
+
+            for lag in range(G.max_lag + 1):
+                assert G.has_node((var, -lag))
 
     def test_copy(self, G_func, max_lag):
         ts_edges = [
@@ -210,3 +302,124 @@ class TestStationaryGraph:
         if isinstance(G, StationaryTimeSeriesDiGraph):
             assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
             assert nx.d_separated(G_copy, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})
+            assert nx.d_separated(G_copy, {("x2", 0)}, {("x2", -1)}, {("x1", -1), ("x3", -1)})
+
+    def test_remove_backwards(self, G_func, max_lag):
+        if max_lag < 3:
+            return
+
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x2", -1), ("x2", 0)),
+            (("x2", -1), ("x1", 0)),
+            (("x1", -3), ("x1", 0)),
+        ]
+        G = G_func(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # create a copy to compare tests against
+        orig_G = G.copy(double_max_lag=False)
+
+        with pytest.raises(ValueError, match="Auto removal should be one"):
+            G.set_auto_removal(False)
+        with pytest.raises(ValueError, match="Auto removal should be one"):
+            G.set_auto_removal(True)
+
+        # test backwards removal does not remove unnecessary edges
+        G.set_auto_removal("backwards")
+        last_edge = (("x1", -max_lag), ("x1", -(max_lag - 1)))
+        G.remove_edge(*last_edge)
+        for edge in orig_G.edges:
+            if set(edge) != set(last_edge):
+                assert edge in G.edges
+            else:
+                assert edge not in G.edges
+
+        # test backwards removal should remove all backwards edges
+        G.add_edge(*last_edge)
+        G.remove_edge(("x1", -1), ("x1", 0))
+        for edge in orig_G.edges:
+            u, v = edge
+            u_lag = u[1]
+            v_lag = v[1]
+            if ((u_lag + 1 == v_lag) or (v_lag + 1 == u_lag)) and u[0] == v[0] and u[0] == "x1":
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+    def test_remove_forwards(self, G_func, max_lag):
+        if max_lag < 3:
+            return
+
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x2", -1), ("x2", 0)),
+            (("x2", -1), ("x1", 0)),
+            (("x1", -3), ("x1", 0)),
+        ]
+        G = G_func(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # create a copy to compare tests against
+        orig_G = G.copy(double_max_lag=False)
+
+        G.set_auto_removal("forwards")
+
+        # test forwards removal does not remove unnecessary edges
+        first_edge = (("x1", -1), ("x1", 0))
+        G.remove_edge(*first_edge)
+        for edge in orig_G.edges:
+            if set(edge) == set(first_edge):
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+        # test forwards removal should remove all forward edges
+        G.add_edge(*first_edge)
+        last_edge = (("x1", -max_lag), ("x1", -(max_lag - 1)))
+        G.remove_edge(*last_edge)
+        for edge in orig_G.edges:
+            u, v = edge
+            u_lag = u[1]
+            v_lag = v[1]
+            if ((u_lag + 1 == v_lag) or (v_lag + 1 == u_lag)) and u[0] == v[0] and u[0] == "x1":
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+    def test_remove_none(self, G_func, max_lag):
+        if max_lag < 3:
+            return
+
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x2", -1), ("x2", 0)),
+            (("x2", -1), ("x1", 0)),
+            (("x1", -3), ("x1", 0)),
+        ]
+        G = G_func(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # create a copy to compare tests against
+        orig_G = G.copy(double_max_lag=False)
+
+        G.set_auto_removal(None)
+
+        # test forwards removal does not remove unnecessary edges
+        first_edge = (("x1", -1), ("x1", 0))
+        G.remove_edge(*first_edge)
+        for edge in orig_G.edges:
+            if set(edge) == set(first_edge):
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+        # test forwards removal should remove all forward edges
+        G.add_edge(*first_edge)
+        last_edge = (("x1", -max_lag), ("x1", -(max_lag - 1)))
+        G.remove_edge(*last_edge)
+        for edge in orig_G.edges:
+            if set(edge) == set(last_edge):
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
