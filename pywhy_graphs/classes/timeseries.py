@@ -199,8 +199,8 @@ class StationaryTimeSeriesMixin(TimeSeriesGraphMixin):
         self._check_ts_node(v_of_edge)
         u, u_lag = u_of_edge
         v, v_lag = v_of_edge
-        # if v_lag != 0:
-        #     raise ValueError(f'The lag of the "to node" {v_lag} should be 0.')
+        if u_lag > 0 or v_lag > 0:
+            raise RuntimeError(f'All lags should be negative or 0, not {u_lag} or {v_lag}.')
         if v_lag < u_lag:
             raise RuntimeError(
                 f'The lag of the "to node" {v_lag} should be greater than "from node" {u_lag}'
@@ -259,6 +259,7 @@ class StationaryTimeSeriesMixin(TimeSeriesGraphMixin):
     def _add_homologous_contemporaneous_edges(self, u, v, **attr):
         """Add homologous edges to all contemporaneous pairs."""
         for t in range(self._max_lag + 1):
+            print(f'Adding homologous contemp edges: {t}')
             super().add_edge((u, -t), (v, -t), **attr)
 
     def _add_homologous_ts_edges(self, u, v, u_lag, v_lag, **attr):
@@ -431,7 +432,7 @@ class TimeSeriesGraph(nx.Graph, TimeSeriesGraphMixin):
             raise ValueError(f"Max lag for time series graph should be at least 1, not {max_lag}.")
 
         attr.update(dict(max_lag=max_lag))
-        super().__init__(incoming_graph_data, **attr)
+        super().__init__(incoming_graph_data=incoming_graph_data, **attr)
 
 
 class TimeSeriesDiGraph(nx.DiGraph, TimeSeriesGraphMixin):
@@ -453,8 +454,24 @@ class TimeSeriesDiGraph(nx.DiGraph, TimeSeriesGraphMixin):
         super().__init__(incoming_graph_data, **attr)
 
 
+class TimeSeriesMixedEdgeGraph(nx.MixedEdgeGraph, TimeSeriesGraphMixin):
+    # overloaded factory dictionary types to hold time-series nodes
+    node_dict_factory = tsdict
+    node_attr_dict_factory = tsdict
+
+    def __init__(self, graphs=None, edge_types=None, max_lag:int=1, **attr):
+        if max_lag <= 0:
+            raise ValueError(f"Max lag for time series graph should be at least 1, not {max_lag}.")
+        if graphs is not None and not all(issubclass(graph.__class__, (TimeSeriesGraph, TimeSeriesDiGraph)) for graph in graphs):
+            raise RuntimeError(f'All graphs for timeseries mixed-edge graph')
+        attr.update(dict(max_lag=max_lag))
+        super().__init__(graphs, edge_types, **attr)
+
+
 class StationaryTimeSeriesGraph(StationaryTimeSeriesMixin, TimeSeriesGraph):
-    """Stationary time-series undirected graph.
+    """Stationary time-series graph without directionality on edges.
+
+    This class in essence should not be used directly.
 
     Included for completeness to enable modeling and working with ``nx.Graph`` like
     objects with time-series structure. By the time-ordering assumption, all lagged
@@ -462,8 +479,21 @@ class StationaryTimeSeriesGraph(StationaryTimeSeriesMixin, TimeSeriesGraph):
     """
 
     def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
-        super().__init__(incoming_graph_data, max_lag=max_lag, **attr)
+        super().__init__(incoming_graph_data=None, max_lag=max_lag, **attr)
 
+        # TODO: this is needed because nx.from_edgelist() checks for type of 'create_using',
+        # which does not work with Protocol classes
+        if incoming_graph_data is not None:
+            # we assume a list of tuples of tuples as edges
+            if isinstance(incoming_graph_data, list):
+                self.add_edges_from(incoming_graph_data)
+            elif isinstance(incoming_graph_data, nx.Graph):
+                for edge in incoming_graph_data.edges:
+                    self.add_edge(*sorted(edge, key=lambda x: x[1]))
+            else:
+                raise RuntimeError(
+                    f'Not implemented yet for incoming graph data that is of type {type(incoming_graph_data)}.')
+            
 
 class StationaryTimeSeriesDiGraph(StationaryTimeSeriesMixin, TimeSeriesDiGraph):
     """Stationary time-series directed graph.
@@ -498,13 +528,40 @@ class StationaryTimeSeriesDiGraph(StationaryTimeSeriesMixin, TimeSeriesDiGraph):
     """
 
     def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
-        super().__init__(incoming_graph_data, max_lag=max_lag, **attr)
-
+        super().__init__(incoming_graph_data=None, max_lag=max_lag, **attr)
+        if incoming_graph_data is not None:
+            # we assume a list of tuples of tuples as edges
+            if isinstance(incoming_graph_data, list):
+                self.add_edges_from(incoming_graph_data)
+            elif isinstance(incoming_graph_data, nx.Graph):
+                self.add_edges_from(incoming_graph_data.edges)
+            else:
+                raise RuntimeError(
+                    f'Not implemented yet for incoming graph data that is of type {type(incoming_graph_data)}.')
+            
 
 class StationaryTimeSeriesMixedEdgeGraph(nx.MixedEdgeGraph):
     def __init__(self, graphs=None, edge_types=None, **attr):
         super().__init__(graphs, edge_types, **attr)
 
+    def add_node(self, node_name, **attr):
+        self._check_ts_node(node_name)
+        super().add_node(node_name, **attr)
+        var_name, _ = node_name
+
+        for t in range(self._max_lag + 1):
+            super().add_node((var_name, -t), **attr)
+
+    def add_nodes_from(self, nodes_for_adding, **attr):
+        for node in nodes_for_adding:
+            newdict = attr.copy()
+
+            if isinstance(node[0], tuple):
+                ndict = node[1]
+                node = node[0]
+                newdict = attr.copy()
+                newdict.update(ndict)
+            self.add_node(node, **newdict)
     def add_edge(self, u_of_edge, v_of_edge, edge_type, **attr):
         u, u_lag = u_of_edge
         v, v_lag = v_of_edge
@@ -549,24 +606,29 @@ def complete_ts_graph(
     G = create_using(max_lag=max_lag)
 
     # add all possible edges
-    for node in variables:
-        for to_node in variables:
-            for lag in range(max_lag + 1):
-                # skip contemporaneous edges if necessary
-                if not include_contemporaneous and lag == 0:
-                    continue
-                # do not add self connections
-                if node == to_node and lag == 0:
-                    continue
-                # do not add cyclicity
-                if lag == 0 and (
-                    G.has_edge((node, 0), (to_node, 0)) or G.has_edge((to_node, 0), (node, 0))
-                ):
-                    continue
-                # if there is already an edge, do not add
-                if G.has_edge((node, -lag), (to_node, 0)):
-                    continue
-                G.add_edge((node, -lag), (to_node, 0))
+    for u_node in variables:
+        for v_node in variables:
+            for u_lag in range(max_lag + 1):
+                for v_lag in range(max_lag + 1):
+                    if u_lag < v_lag:
+                        continue
+                    # skip contemporaneous edges if necessary
+                    if not include_contemporaneous and u_lag == v_lag:
+                        continue
+                    # do not add self connections
+                    if u_node == v_node and u_lag == v_lag:
+                        continue
+                    # do not add cyclicity
+                    if u_lag == v_lag and (
+                        G.has_edge((u_node, -u_lag), (v_node, -v_lag)) or \
+                        G.has_edge((v_node, -v_lag), (u_node, -u_lag))
+                    ):
+                        continue
+                    # if there is already an edge, do not add
+                    if G.has_edge((u_node, -u_lag), (v_node, -v_lag)):
+                        continue
+                    
+                    G.add_edge((u_node, -u_lag), (v_node, -v_lag))
     return G
 
 
