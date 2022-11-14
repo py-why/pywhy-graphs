@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing import Dict, Protocol
 
 
@@ -10,14 +11,16 @@ class NetworkXProtocol(Protocol):
 
     @property
     def nodes(self):
-        pass
+        ...
 
     @property
     def edges(self):
-        pass
+        ...
 
+    @abstractmethod
     def add_node(self, node):
-        pass
+        ...
 
+    @abstractmethod
     def remove_edge(self, u, v):
-        pass
+        ...

@@ -3,8 +3,6 @@ from .classes import (
     ADMG,
     CPDAG,
     PAG,
-    TimeSeriesGraph,
-    TimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesMixedEdgeGraph,

@@ -4,21 +4,20 @@ import networkx as nx
 import numpy as np
 import pytest
 
-from pywhy_graphs.classes.timeseries import (
+from pywhy_graphs.classes.timeseries.timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
-    TimeSeriesGraph,
-    TimeSeriesDiGraph,
-    TimeSeriesMixedEdgeGraph,
+    StationaryTimeSeriesMixedEdgeGraph,
     complete_ts_graph,
     empty_ts_graph,
     nodes_in_time_order,
 )
 
 
-def test_nodes_in_time_order():
+@pytest.mark.parametrize("G_func", [StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph])
+def test_nodes_in_time_order(G_func):
     max_lag = 3
-    G = StationaryTimeSeriesGraph(max_lag=max_lag)
+    G = G_func(max_lag=max_lag)
     ts_edges = [
         (("x1", -1), ("x1", 0)),
         (("x1", -1), ("x2", 0)),
@@ -41,9 +40,6 @@ def test_nodes_in_time_order():
 @pytest.mark.parametrize(
     "G_func",
     [
-        TimeSeriesGraph,
-        TimeSeriesDiGraph,
-        TimeSeriesMixedEdgeGraph,
         StationaryTimeSeriesGraph,
         StationaryTimeSeriesDiGraph,
     ],
@@ -63,14 +59,18 @@ def test_ts_graph_error(G_func):
 @pytest.mark.parametrize(
     "G_func",
     [
-        TimeSeriesGraph,
-        TimeSeriesDiGraph,
-        # TimeSeriesMixedEdgeGraph,
         StationaryTimeSeriesGraph,
         StationaryTimeSeriesDiGraph,
     ],
 )
 class TestNetworkxIntegration:
+    """Test core-networkx-like functions.
+
+    - complete_graph
+    - empty_graph
+    - d_separated
+    """
+
     def test_complete_graph(self, G_func, max_lag):
         variables = ["x", "y", "z"]
 
@@ -84,7 +84,7 @@ class TestNetworkxIntegration:
 
             for u, v in combinations(variables, 2):
                 for u_lag in range(max_lag + 1):
-                    for v_lag in range(max_lag + 1): 
+                    for v_lag in range(max_lag + 1):
                         if u_lag < v_lag:
                             continue
                         assert ((u, -u_lag), (v, -v_lag)) in G.edges()
@@ -111,41 +111,8 @@ class TestNetworkxIntegration:
             assert nx.d_separated(empty_G, {u}, {v}, {})
             assert not nx.d_separated(complete_G, {u}, {v}, {})
 
-    def test_m_separation(self, G_func, max_lag):
-        if not issubclass(G_func, nx.MixedEdgeGraph):
-            return
-        if max_lag > 1:
-            return
-        variables = ["x", "y", "z"]
-        # test empty graph
-        graphs = []
-        edge_types = []
-        for graph_func, edge_type in zip((TimeSeriesDiGraph, TimeSeriesGraph),
-            ('directed', 'bidirected')):
-            graphs.append(empty_ts_graph(variables=variables, max_lag=max_lag,
-                        create_using=graph_func))
-            edge_types.append(edge_type)
-        G = G_func(graphs=graphs, edge_types=edge_types, max_lag=max_lag)
-        for u, v in combinations(G.nodes, 2):
-            assert nx.m_separated(G, {u}, {v}, {})
 
-        # test complete graph
-        graphs = []
-        edge_types = []
-        for graph_func, edge_type in zip((TimeSeriesDiGraph, TimeSeriesGraph),
-            ('directed', 'bidirected')):
-            graphs.append(complete_ts_graph(variables=variables, max_lag=max_lag,
-                        create_using=graph_func))
-            edge_types.append(edge_type)
-
-        G = G_func(graphs=graphs, edge_types=edge_types, max_lag=max_lag)
-        print(G.edges())
-        for u, v in combinations(G.nodes, 2):
-            print(u, v)
-            assert not nx.m_separated(G, {u}, {v}, {})
-
-
-class TestStationaryGraphProperties:
+class TestStationaryDiGraphProperties:
     """Test properties of a stationary time-series graph."""
 
     def setup(self):
@@ -206,7 +173,12 @@ class TestStationaryGraphProperties:
     ],
 )
 class TestStationaryGraph:
-    """Test stationary graph adding and removing nodes and edges."""
+    """Test stationary graph adding and removing nodes and edges.
+
+    Stationary graphs add homologous edges every time they add edges.
+    During removal of edges, they can remove homologous edges either altogether,
+    or by default
+    """
 
     def test_construction(self, G_func, max_lag):
         # test construction directly with edges and by passing
@@ -221,14 +193,9 @@ class TestStationaryGraph:
         new_G = G_func(G, max_lag=max_lag)
         assert nx.is_isomorphic(G, new_G)
 
-
     def test_timeseries_add_node(self, G_func, max_lag):
         G = G_func(max_lag=max_lag)
 
-        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
-            G.add_node(1)
-        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
-            G.add_node((1, 2, 3))
         with pytest.raises(ValueError, match="All lag points should be 0, or less"):
             G.add_node((1, 2))
         with pytest.raises(ValueError, match="Lag -4 cannot be greater than set max_lag"):
@@ -272,8 +239,6 @@ class TestStationaryGraph:
             G.add_edge((1, -2, 3), (1, 0))
         with pytest.raises(ValueError, match="All lag points should be 0, or less"):
             G.add_edge((1, 2), (1, 0))
-        # with pytest.raises(ValueError, match='The lag of the "to node" -1 should be'):
-        #     G.add_edge((1, 0), (1, -1))
 
         # now test adding/removing lagged edges
         # stationarity should be maintained
@@ -355,13 +320,14 @@ class TestStationaryGraph:
         for u, nbrs in G._adj.items():
             for v, datadict in nbrs.items():
                 print(u, v, datadict)
-
+        print(G.nodes)
+        print(G_copy.nodes)
         assert nx.is_isomorphic(G, G_copy)
 
         if isinstance(G, StationaryTimeSeriesDiGraph):
-            assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
             assert nx.d_separated(G_copy, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})
             assert nx.d_separated(G_copy, {("x2", 0)}, {("x2", -1)}, {("x1", -1), ("x3", -1)})
+            assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
 
     def test_remove_backwards(self, G_func, max_lag):
         if max_lag < 3:
@@ -457,6 +423,8 @@ class TestStationaryGraph:
             (("x1", -3), ("x1", 0)),
         ]
         G = G_func(max_lag=max_lag)
+        print(G)
+        print(G.graph)
         G.add_edges_from(ts_edges)
 
         # create a copy to compare tests against
@@ -482,3 +450,116 @@ class TestStationaryGraph:
                 assert edge not in G.edges
             else:
                 assert edge in G.edges
+
+
+class TestStationaryMixedEdgeGraph:
+    def setup(self):
+        max_lag = 3
+
+        variables = ["x", "y", "z"]
+        # test empty graph
+        graphs = []
+        edge_types = []
+        for graph_func, edge_type in zip(
+            (StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph), ("directed", "bidirected")
+        ):
+            graphs.append(
+                empty_ts_graph(variables=variables, max_lag=max_lag, create_using=graph_func)
+            )
+            edge_types.append(edge_type)
+        G = StationaryTimeSeriesMixedEdgeGraph(
+            graphs=graphs, edge_types=edge_types, max_lag=max_lag
+        )
+        for u, v in combinations(G.nodes, 2):
+            assert nx.m_separated(G, {u}, {v}, {})
+
+        self.G = G
+        self.variables = variables
+        self.max_lag = max_lag
+
+    def test_max_lag(self):
+        assert self.G.max_lag == self.max_lag
+
+    def test_variables(self):
+        assert set(self.G.variables) == set(self.variables)
+
+    def test_copy(self):
+        G = self.G.copy(double_max_lag=False)
+
+        for edge_type, graph in G.get_graphs().items():
+            assert nx.is_isomorphic(graph, self.G.get_graphs(edge_type))
+
+    def test_ts_graph_errors(self):
+        # all subgraph errors should be preserved in this mixed-edge graph
+        G = self.G.copy(double_max_lag=False)
+        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
+            G.add_node("x")
+        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
+            G.add_edge((1, -2, 3), (1, 0))
+        with pytest.raises(ValueError, match="All lag points should be 0, or less"):
+            G.add_edge((1, 2), (1, 0))
+
+    def test_nodes(self):
+        G = self.G.copy(double_max_lag=False)
+        G.set_auto_removal("backwards")
+        for variable in G.variables:
+            for lag in range(G.max_lag + 1):
+                assert G.has_node((variable, -lag))
+
+        # now test adding a node and that all homologous nodes are added
+        G.add_node(("newx", 0))
+        for lag in range(G.max_lag + 1):
+            assert G.has_node(("newx", -lag))
+
+        # now test removing a node and that all homologous nodes are removed
+        G.remove_node(("newx", 0))
+        for lag in range(G.max_lag + 1):
+            assert not G.has_node(("newx", -lag))
+
+    def test_edges(self):
+        G = self.G.copy(double_max_lag=False)
+
+        # initial graph should have no edges
+        for graph in G.get_graphs().values():
+            assert set(graph.edges) == set()
+
+        assert ("x", 0) not in G.neighbors(("x", -1))
+
+        # test addition of edges
+        G.add_edge(("x", -1), ("x", 0))
+        assert ("x", 0) in G.neighbors(("x", -1))
+        assert all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
+
+        # now remove the edges
+        G.remove_edge(("x", -1), ("x", 0))
+        assert ("x", 0) not in G.neighbors(("x", -1))
+        assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
+
+        # only adding edges in a subgraph
+        G.add_edge(("x", -1), ("x", 0), "directed")
+        assert ("x", 0) in G.neighbors(("x", -1))
+        assert not all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
+        assert ("x", 0) in G.get_graphs("directed").neighbors(("x", -1))
+
+    @pytest.mark.skip()
+    def test_m_separation(self):
+        G = self.G.copy(double_max_lag=False)
+        variables = G.variables
+        max_lag = G.max_lag
+
+        # test complete graph
+        graphs = []
+        edge_types = []
+        for graph_func, edge_type in zip(
+            (StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph), ("directed", "bidirected")
+        ):
+            graphs.append(
+                complete_ts_graph(variables=variables, max_lag=max_lag, create_using=graph_func)
+            )
+            edge_types.append(edge_type)
+
+        # G = G_func(graphs=graphs, edge_types=edge_types, max_lag=max_lag)
+        print(G.edges())
+        for u, v in combinations(G.nodes, 2):
+            print(u, v)
+            assert not nx.m_separated(G, {u}, {v}, {})
