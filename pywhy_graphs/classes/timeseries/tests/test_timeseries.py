@@ -541,11 +541,35 @@ class TestStationaryMixedEdgeGraph:
         assert not all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
         assert ("x", 0) in G.get_graphs("directed").neighbors(("x", -1))
 
-    @pytest.mark.skip()
-    def test_m_separation(self):
-        G = self.G.copy(double_max_lag=False)
-        variables = G.variables
-        max_lag = G.max_lag
+
+class TestStationaryMixedEdgeGraphMSep:
+    def setup(self):
+        max_lag = 3
+
+        variables = ["x", "y", "z"]
+        # test empty graph
+        graphs = []
+        edge_types = []
+        for graph_func, edge_type in zip(
+            (StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph), ("directed", "bidirected")
+        ):
+            graphs.append(
+                empty_ts_graph(variables=variables, max_lag=max_lag, create_using=graph_func)
+            )
+            edge_types.append(edge_type)
+        G = StationaryTimeSeriesMixedEdgeGraph(
+            graphs=graphs, edge_types=edge_types, max_lag=max_lag
+        )
+        for u, v in combinations(G.nodes, 2):
+            assert nx.m_separated(G, {u}, {v}, {})
+
+        self.G = G
+        self.variables = variables
+        self.max_lag = max_lag
+
+    def test_m_separation_complete_graph(self):
+        variables = self.G.variables
+        max_lag = self.G.max_lag
 
         # test complete graph
         graphs = []
@@ -558,8 +582,50 @@ class TestStationaryMixedEdgeGraph:
             )
             edge_types.append(edge_type)
 
-        # G = G_func(graphs=graphs, edge_types=edge_types, max_lag=max_lag)
-        print(G.edges())
+        G = StationaryTimeSeriesMixedEdgeGraph(
+            graphs=graphs, edge_types=edge_types, max_lag=max_lag
+        )
         for u, v in combinations(G.nodes, 2):
-            print(u, v)
             assert not nx.m_separated(G, {u}, {v}, {})
+
+    def test_m_separation_empty_graph(self):
+        for u, v in combinations(self.G.nodes, 2):
+            assert nx.m_separated(self.G, {u}, {v}, {})
+
+    def test_m_separation_confounder(self):
+        """Test m-separation with a confounder and collider present."""
+
+        G = self.G.copy(double_max_lag=False)
+        G.set_auto_removal("backwards")
+
+        # create a confounder and selection bias with just directed edges
+        directed_edges = [
+            (("x", 0), ("y", 0)),
+            (("z", 0), ("y", 0)),
+            (("x", -1), ("x", 0)),
+            (("x", -1), ("z", 0)),
+        ]
+        G.add_edges_from(directed_edges, edge_type="directed")
+
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {})
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1)})
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1), ("y", 0)})
+
+        # without the confounder, the m-separation statements are swapped
+        G.remove_edges_from([(("x", -1), ("x", 0)), (("x", -1), ("z", 0))], edge_type="directed")
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {})
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1)})
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1), ("y", 0)})
+
+        # with the latent confounder as a bidirected edge the same m-separation statements hold
+        G.add_edge(("x", 0), ("z", 0), edge_type="bidirected")
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {})
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1)})
+        assert not nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1), ("y", 0)})
+
+        # without collider on ('y', 0), all three statements are always m-separated
+        G.remove_edge(("x", 0), ("z", 0), edge_type="bidirected")
+        G.remove_edges_from([(("x", 0), ("y", 0)), (("z", 0), ("y", 0))], edge_type="directed")
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {})
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1)})
+        assert nx.m_separated(G, {("x", 0)}, {("z", 0)}, {("x", -1), ("y", 0)})

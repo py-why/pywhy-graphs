@@ -1,6 +1,7 @@
 """API for networkx-compliant time-series graphs.
 
 """
+from copy import copy
 from typing import Dict, Iterator, List, Optional, Set
 
 import networkx as nx
@@ -237,6 +238,7 @@ class TsGraphEdgeMixin:
     """
 
     _auto_removal: Optional[str]
+    graph: Dict
     _adj: _CachedPropertyResetterAdj
     edges: Iterator
 
@@ -336,7 +338,6 @@ class TsGraphEdgeMixin:
     def _add_homologous_contemporaneous_edges(self, u, v, **attr):
         """Add homologous edges to all contemporaneous pairs."""
         for t in range(self._max_lag + 1):
-            print(f"Adding homologous contemp edges: {t}")
             super().add_edge((u, -t), (v, -t), **attr)
 
     def _add_homologous_ts_edges(self, u, v, u_lag, v_lag, **attr):
@@ -389,6 +390,34 @@ class TsGraphEdgeMixin:
             super().remove_edge((u, -from_t), (v, -to_t))
             from_t -= 1
             to_t -= 1
+
+    def set_max_lag(self, lag: int) -> None:
+        if lag <= 0:
+            raise ValueError(
+                f"Max lag must always be greater than 0, so passed in {lag} value is invalid."
+            )
+        max_lag = copy(self.max_lag)  # type: ignore
+        self.graph["max_lag"] = lag
+
+        # we need to add edges
+        if max_lag > lag:
+            # get all non-lag nodes
+            non_lag_nodes = self.nodes_at(t=0)  # type: ignore
+
+            # now get all neighbors that are in the past
+            edge_list = []
+            for node in non_lag_nodes:
+                edge_list.extend([(node, nbr) for nbr in self.lagged_neighbors(node)])
+
+            # now add all homologous edges
+            self.add_edges_from(edge_list)
+
+        # here, we need to remove edges that are at higher lags
+        elif max_lag < lag:
+            for lag in range(max_lag, lag, -1):
+                # get all non-lag nodes
+                nodes = self.nodes_at(t=-lag)  # type: ignore
+                self.remove_nodes_from(nodes)  # type: ignore
 
 
 class StationaryTimeSeriesGraph(
