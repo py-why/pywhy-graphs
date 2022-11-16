@@ -1,6 +1,26 @@
 from typing import Optional
 
 import networkx as nx
+from pywhy_graphs.classes.timeseries import BaseTimeSeriesDiGraph
+
+
+def draw_tsgraph(G: BaseTimeSeriesDiGraph, direction: Optional[str] = None, **attrs):
+    """Visualize stationary time-series graphs.
+
+    Here, time-series graph is drawn from left to right, where the left-most side
+    represents the maximum-lag nodes and edges, and then as we move towards the right,
+    the lag decreases.
+
+    Only the compact ts-DMG is visualized.
+
+    Parameters
+    ----------
+    G : BaseTimeSeriesDiGraph
+        _description_
+    direction : Optional[str], optional
+        _description_, by default None
+    """
+    pass
 
 
 def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, **attrs):
