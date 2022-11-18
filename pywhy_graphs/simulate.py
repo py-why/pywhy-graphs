@@ -91,7 +91,7 @@ def simulate_linear_var_process(
     n_variables: int = 5,
     p_time_self: float = 0.5,
     p_time_vars: float = 0.5,
-    p_contemporaneous: float=0.5,
+    p_contemporaneous: float = 0.5,
     max_lag: int = 1,
     n_times: int = 1000,
     n_realizations: int = 1,
@@ -160,7 +160,7 @@ def simulate_linear_var_process(
                 if non_lag_node[1] == lag_node[1] and p_contemporaneous > 0:
                     if rng.binomial(n=1, p=p_contemporaneous, size=None) == 1:
                         G.add_edge(lag_node, non_lag_node)
-                    
+
                     # check that the addition of this edge does not result in a cyclic
                     # causal relationship
                     if not nx.is_directed_acyclic_graph(G.subgraph(G.nodes_at(t=0))):

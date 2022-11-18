@@ -1,6 +1,7 @@
 from typing import Optional
 
 import networkx as nx
+
 from pywhy_graphs.classes.timeseries import BaseTimeSeriesDiGraph
 
 
