@@ -3,12 +3,13 @@ from typing import Dict, FrozenSet, Iterator, Mapping
 import networkx as nx
 
 from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
-from pywhy_graphs.classes.timeseries import (
+from pywhy_graphs.typing import Node
+
+from .timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     StationaryTimeSeriesMixedEdgeGraph,
 )
-from pywhy_graphs.typing import Node
 
 
 class StationaryTimeSeriesCPDAG(
@@ -123,6 +124,7 @@ class StationaryTimeSeriesCPDAG(
         """
         if not self.has_edge(u, v, self._undirected_name):
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
+        u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
         self.remove_edge(u, v, self._undirected_name)
         self.add_edge(u, v, self._directed_name)
 

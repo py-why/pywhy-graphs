@@ -8,6 +8,7 @@ def test_acyclification():
 
     Tests the graphs as presented in Figure 2.
     """
+    # cycle with x2 -> x4 -> x6 -> x5 -> x3 -> x4
     directed_edges = nx.DiGraph(
         [
             ("x8", "x2"),

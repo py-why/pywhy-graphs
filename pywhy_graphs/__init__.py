@@ -7,6 +7,7 @@ from .classes import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesMixedEdgeGraph,
     StationaryTimeSeriesCPDAG,
+    StationaryTimeSeriesPAG,
 )
 from .algorithms import *  # noqa: F403
 from .array import export

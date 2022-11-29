@@ -6,4 +6,5 @@ from .timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     StationaryTimeSeriesMixedEdgeGraph,
+    StationaryTimeSeriesPAG,
 )

@@ -91,7 +91,7 @@ def acyclification(
         bidirected_fc_G = nx.complete_graph(comp)
         if bidirected_edge_type not in G.edge_types:
             G.add_edge_type(nx.Graph(), bidirected_edge_type)
-            G.add_edges_from(bidirected_fc_G.edges, bidirected_edge_type)
+        G.add_edges_from(bidirected_fc_G.edges, bidirected_edge_type)
 
         # add back the children
         G.add_edges_from(scomp_children, directed_edge_type)
