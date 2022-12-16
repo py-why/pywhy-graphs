@@ -3,7 +3,7 @@ from typing import Optional
 import networkx as nx
 
 
-def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
+def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos = None):
     """Visualize the graph.
 
     Parameters
@@ -12,6 +12,8 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
         The mixed edge graph.
     direction : str, optional
         The direction, by default None.
+    pos : dict
+        The positions of the nodes (see
 
     Returns
     -------
@@ -19,6 +21,8 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
         dot language representation of the graph.
     """
     from graphviz import Digraph
+
+    # TODO assert that pos.keys() == G.nodes:
 
     dot = Digraph()
 
@@ -48,8 +52,10 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None):
 
     for v in G.nodes:
         child = str(v)
-
-        dot.node(child, shape=shape, height=".5", width=".5")
+        if pos and pos.get(v) is not None:
+            dot.node(child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!")
+        else:
+            dot.node(child, shape=shape, height=".5", width=".5")
 
         for parent in G.predecessors(v):
             # memoize if we have seen the bidirected circular edge before
