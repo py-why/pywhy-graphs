@@ -3,7 +3,7 @@ from typing import Optional
 import networkx as nx
 
 
-def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos = None):
+def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[dict] = None):
     """Visualize the graph.
 
     Parameters
@@ -12,8 +12,8 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos = None):
         The mixed edge graph.
     direction : str, optional
         The direction, by default None.
-    pos : dict
-        The positions of the nodes (see
+    pos : dict, optional
+        The positions of the nodes, by default None
 
     Returns
     -------
@@ -21,8 +21,6 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos = None):
         dot language representation of the graph.
     """
     from graphviz import Digraph
-
-    # TODO assert that pos.keys() == G.nodes:
 
     dot = Digraph()
 
