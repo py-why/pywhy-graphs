@@ -1,11 +1,70 @@
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import networkx as nx
 
 from pywhy_graphs.classes.timeseries import BaseTimeSeriesDiGraph
+from pywhy_graphs.typing import Node
 
 
-def draw_tsgraph(G: BaseTimeSeriesDiGraph, direction: Optional[str] = None, **attrs):
+def _draw_pag_edges(
+    dot,
+    directed_edges=None,
+    circle_edges: List[Tuple] = None,
+    undirected_edges=None,
+    bidirected_edges=None,
+    **attrs,
+):
+    # keep track of edges with circular edges between each other because we want to
+    # draw edges correctly when there are circular edges
+    found_circle_sibs = set()
+
+    # draw all possible causal edges on a graph
+    if circle_edges is not None:
+        for sib1, sib2 in circle_edges:
+            # memoize if we have seen the bidirected circular edge before
+            if f"{sib1}-{sib2}" in found_circle_sibs or f"{sib2}-{sib1}" in found_circle_sibs:
+                continue
+            found_circle_sibs.add(f"{sib1}-{sib2}")
+
+            # set directionality of the edges
+            direction = "forward"
+
+            # check if the circular edge is bidirectional
+            if (sib2, sib1) in circle_edges:
+                direction = "both"
+                arrowtail = "odot"
+            elif directed_edges is not None and (sib2, sib1) in directed_edges:
+                direction = "both"
+                arrowtail = "normal"
+            sib1, sib2 = str(sib1), str(sib2)
+            dot.edge(
+                sib1,
+                sib2,
+                arrowhead="odot",
+                arrowtail=arrowtail,
+                dir=direction,
+                color="green",
+                **attrs,
+            )
+
+    if undirected_edges is not None:
+        for neb1, neb2 in undirected_edges:
+            neb1, neb2 = str(neb1), str(neb2)
+            dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
+
+    if bidirected_edges is not None:
+        for sib1, sib2 in bidirected_edges:
+            sib1, sib2 = str(sib1), str(sib2)
+            dot.edge(sib1, sib2, dir="both", color="red", **attrs)
+    return dot, found_circle_sibs
+
+
+def draw_tsgraph(
+    G: BaseTimeSeriesDiGraph,
+    direction: Optional[str] = None,
+    node_order: Optional[List[Node]] = None,
+    **attrs,
+):
     """Visualize stationary time-series graphs.
 
     Here, time-series graph is drawn from left to right, where the left-most side
@@ -21,7 +80,37 @@ def draw_tsgraph(G: BaseTimeSeriesDiGraph, direction: Optional[str] = None, **at
     direction : Optional[str], optional
         _description_, by default None
     """
-    pass
+    from graphviz import Digraph
+
+    dot = Digraph()
+
+    max_lag = G.max_lag
+
+    # set direction from left to right if that's preferred
+    if direction == "LR":
+        dot.graph_attr["rankdir"] = direction
+
+    dot.graph_attr["ordering"] = "out"
+
+    # first define the node order if None is given
+    if node_order is None:
+        node_order = list(G.variables)
+
+    shape = "square"  # 'plaintext'
+
+    for variable in node_order:
+        # start at max-lag
+        for lag in range(max_lag, -1, -1):
+            # first draw node
+            node = f"({variable}, {-lag})"
+            dot.node(node, shape=shape, height=".5", width=".5")
+
+            # draw all lagged edges wrt this node
+            lagged_nbrs = G.lagged_neighbors((variable, -lag))
+            for nbr in lagged_nbrs:
+                parent = f"{nbr}"
+                dot.edge(parent, node, color="blue", **attrs)
+    return dot
 
 
 def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, **attrs):
@@ -54,26 +143,27 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, **attrs):
 
     shape = "square"  # 'plaintext'
 
-    found_circle_sibs = set()
+    circle_edges = None
+    directed_edges = None
+    undirected_edges = None
+    bidirected_edges = None
     if hasattr(G, "circle_edges"):
-        for sib1, sib2 in G.circle_edges:
-            # memoize if we have seen the bidirected circular edge before
-            if f"{sib1}-{sib2}" in found_circle_sibs or f"{sib2}-{sib1}" in found_circle_sibs:
-                continue
-            found_circle_sibs.add(f"{sib1}-{sib2}")
+        circle_edges = G.circle_edges
+    if hasattr(G, "directed_edges"):
+        directed_edges = G.directed_edges
+    if hasattr(G, "undirected_edges"):
+        undirected_edges = G.undirected_edges
+    if hasattr(G, "bidirected_edges"):
+        bidirected_edges = G.bidirected_edges
 
-            # set directionality of the edges
-            dir = "forward"
-            if (sib2, sib1) in G.circle_edges:
-                dir = "both"
-                arrowtail = "odot"
-            elif (sib2, sib1) in G.directed_edges:
-                dir = "both"
-                arrowtail = "normal"
-            sib1, sib2 = str(sib1), str(sib2)
-            dot.edge(
-                sib1, sib2, arrowhead="odot", arrowtail=arrowtail, dir=dir, color="green", **attrs
-            )
+    # draw PAG edges and keep track of the circular endpoints found
+    dot, found_circle_sibs = _draw_pag_edges(
+        dot,
+        directed_edges,
+        circle_edges=circle_edges,
+        undirected_edges=undirected_edges,
+        bidirected_edges=bidirected_edges,
+    )
 
     for v in G.nodes:
         child = str(v)
@@ -89,15 +179,5 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, **attrs):
                 dot.edge(parent, child, style="invis", **attrs)
             else:
                 dot.edge(parent, child, color="blue", **attrs)
-
-    if hasattr(G, "undirected_edges"):
-        for neb1, neb2 in G.undirected_edges:
-            neb1, neb2 = str(neb1), str(neb2)
-            dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
-
-    if hasattr(G, "bidirected_edges"):
-        for sib1, sib2 in G.bidirected_edges:
-            sib1, sib2 = str(sib1), str(sib2)
-            dot.edge(sib1, sib2, dir="both", color="red", **attrs)
 
     return dot

@@ -482,7 +482,7 @@ def pds(
 
     Notes
     -----
-    Possibly d-separting (PDS) sets are nodes V, along an adjacency paths from
+    Possibly d-separating (PDS) sets are nodes V, along an adjacency paths from
     'node_x' to some 'V', which has the following characteristics for every
     subpath triple <X, Y, Z> on the path:
 
@@ -784,6 +784,68 @@ def pds_t_path(
             pds_t_set.add(node)
 
     return pds_t_set
+
+
+def definite_m_separated(
+    G,
+    x,
+    y,
+    z,
+    bidirected_edge_name="bidirected",
+    directed_edge_name="directed",
+    circle_edge_name="cirlcle",
+):
+    """Check definite m-separation among 'x' and 'y' given 'z' in mixed-edge partial ancestral graph G.
+
+    A partial ancestral graph (PAG) is defined with directed edges (``->``), bidirected edges (``<->``),
+    and circle-endpoint edges (``o-*``, where the ``*`` for example can mean an arrowhead from a
+    directed edge).
+
+    This algorithm implements the definite m-separation check, which checks for the absence of
+    possibly m-connecting paths between 'x' and 'y' given 'z'.
+
+    This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge
+    of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After
+    that, an undirected graph composed from the directed and bidirected edges amongst the
+    remaining nodes is created. Then, x is independent of y given z if x is disconnected from y
+    in this new graph.
+
+    Parameters
+    ----------
+    G : mixed-edge-graph
+        Mixed edge causal graph.
+    x : set
+        First set of nodes in ``G``.
+    y : set
+        Second set of nodes in ``G``.
+    z : set
+        Set of conditioning nodes in ``G``. Can be empty set.
+
+    Returns
+    -------
+    b : bool
+        A boolean that is true if ``x`` is definite m-separated from ``y`` given ``z`` in ``G``.
+
+    References
+    ----------
+    .. footbibliography::
+
+    See Also
+    --------
+    d_separated
+    m_separated
+    PAG
+
+    Notes
+    -----
+    There is no known optimal algorithm for checking definite m-separation to our knowledge, so
+    the algorithm proceeds by enumerating paths between 'x' and 'y'. This first checks the
+    subgraph comprised of only circle edges. If there is a path
+    """
+    if not isinstance(G, PAG):
+        raise ValueError(f"Definite m-separated is only defined for a PAG.")
+
+    # this proceeds by first removing unnecessary nodes
 
 
 def _check_ts_node(node):

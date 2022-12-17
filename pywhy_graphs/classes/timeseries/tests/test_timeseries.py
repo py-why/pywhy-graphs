@@ -1,115 +1,17 @@
 from itertools import combinations
 
 import networkx as nx
-import numpy as np
 import pytest
 
 from pywhy_graphs.classes.timeseries.timeseries import (
+    BaseTimeSeriesDiGraph,
+    BaseTimeSeriesGraph,
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     StationaryTimeSeriesMixedEdgeGraph,
     complete_ts_graph,
     empty_ts_graph,
-    nodes_in_time_order,
 )
-
-
-@pytest.mark.parametrize("G_func", [StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph])
-def test_nodes_in_time_order(G_func):
-    max_lag = 3
-    G = G_func(max_lag=max_lag)
-    ts_edges = [
-        (("x1", -1), ("x1", 0)),
-        (("x1", -1), ("x2", 0)),
-        (("x3", -1), ("x2", 0)),
-        (("x3", -1), ("x3", 0)),
-        (("x1", -3), ("x3", 0)),
-    ]
-    G.add_edges_from(ts_edges)
-    nodes_set = set(G.nodes)
-
-    nodes = nodes_in_time_order(G)
-    current_time = G.max_lag
-    for node in nodes:
-        assert np.abs(node[1]) <= current_time
-        current_time = np.abs(node[1])
-        nodes_set.remove(node)
-    assert nodes_set == set()
-
-
-@pytest.mark.parametrize(
-    "G_func",
-    [
-        StationaryTimeSeriesGraph,
-        StationaryTimeSeriesDiGraph,
-    ],
-)
-def test_ts_graph_error(G_func):
-    max_lag = 0
-    variables = ["x", "y", "z"]
-
-    with pytest.raises(ValueError, match="Max lag for time series graph "):
-        complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-
-
-@pytest.mark.parametrize(
-    "max_lag",
-    [1, 3],
-)
-@pytest.mark.parametrize(
-    "G_func",
-    [
-        StationaryTimeSeriesGraph,
-        StationaryTimeSeriesDiGraph,
-    ],
-)
-class TestNetworkxIntegration:
-    """Test core-networkx-like functions.
-
-    - complete_graph
-    - empty_graph
-    - d_separated
-    """
-
-    def test_complete_graph(self, G_func, max_lag):
-        variables = ["x", "y", "z"]
-
-        if max_lag == 0:
-            with pytest.raises(ValueError, match=""):
-                complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-        else:
-            G = complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-            assert G.__class__ == G_func().__class__
-            assert set(G.variables) == set(variables)
-
-            for u, v in combinations(variables, 2):
-                for u_lag in range(max_lag + 1):
-                    for v_lag in range(max_lag + 1):
-                        if u_lag < v_lag:
-                            continue
-                        assert ((u, -u_lag), (v, -v_lag)) in G.edges()
-
-    def test_empty_graph(self, G_func, max_lag):
-        variables = ["x", "y", "z"]
-
-        G = empty_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-        assert G.__class__ == G_func().__class__
-        assert set(G.variables) == set(variables)
-        assert len(G.edges()) == 0
-
-    def test_d_separation(self, G_func, max_lag):
-        if issubclass(G_func, nx.Graph):
-            return
-        if issubclass(G_func, nx.MixedEdgeGraph):
-            return
-
-        variables = ["x", "y", "z"]
-
-        empty_G = empty_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-        complete_G = complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
-        for u, v in combinations(empty_G.nodes, 2):
-            assert nx.d_separated(empty_G, {u}, {v}, {})
-            assert not nx.d_separated(complete_G, {u}, {v}, {})
 
 
 class TestStationaryDiGraphProperties:
@@ -317,17 +219,14 @@ class TestStationaryGraph:
             for lag in range(max_lag + 1):
                 assert G_copy.has_node((node, -lag))
 
-        for u, nbrs in G._adj.items():
-            for v, datadict in nbrs.items():
-                print(u, v, datadict)
-        print(G.nodes)
-        print(G_copy.nodes)
         assert nx.is_isomorphic(G, G_copy)
 
+        # checking d-separation requires double the max-lag in time-series
+        double_G = G.copy().set_max_lag(G.max_lag * 2)
         if isinstance(G, StationaryTimeSeriesDiGraph):
-            assert nx.d_separated(G_copy, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})
-            assert nx.d_separated(G_copy, {("x2", 0)}, {("x2", -1)}, {("x1", -1), ("x3", -1)})
-            assert not nx.d_separated(G, {("x2", -1)}, {("x2", 0)}, {})
+            assert nx.d_separated(double_G, {("x2", -1)}, {("x2", 0)}, {("x1", -1), ("x3", -1)})
+            assert nx.d_separated(double_G, {("x2", 0)}, {("x2", -1)}, {("x1", -1), ("x3", -1)})
+            assert not nx.d_separated(double_G, {("x2", -1)}, {("x2", 0)}, {})
 
     def test_remove_backwards(self, G_func, max_lag):
         if max_lag < 3:

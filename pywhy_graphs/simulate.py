@@ -147,15 +147,15 @@ def simulate_linear_var_process(
     rng = np.random.default_rng(random_state)
 
     # first we sample the time-series graph
-    node_names = range(n_variables)
+    node_names = list(range(n_variables))
     G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
-    G.add_nodes_from(node_names)
+    G.add_variables_from(node_names)
 
     # loop through all possible edge combinations from (x, 0) to (x', -lag)
     # for lag up to max_lag
     for non_lag_node in G.nodes_at(t=0):
         for lag in range(1, max_lag + 1):
-            for lag_node in G.nodes_at(t=-lag):
+            for lag_node in G.nodes_at(t=lag):
                 # then we are looking at a auto-lag nbr in the same variable
                 if non_lag_node[1] == lag_node[1] and p_contemporaneous > 0:
                     if rng.binomial(n=1, p=p_contemporaneous, size=None) == 1:
@@ -177,29 +177,31 @@ def simulate_linear_var_process(
     # we maintain a lagged-order of the nodes, so that way
     # reshaping into a 3D array works properly
     var_order = list(G.variables)
-    nodelist = []
-    for variable in var_order:
-        for lag in range(G.max_lag + 1):
-            nodelist.append((variable, -lag))
-    graph_arr = nx.to_numpy_array(G, weight="weight", nodelist=nodelist)
+    ts_graph_arr = np.zeros((n_variables, n_variables, max_lag + 1))
+
+    for node_idx, node_x in enumerate(var_order):
+        for node_jdx, node_y in enumerate(var_order):
+            for lag in range(max_lag + 1):
+                if G.has_edge((node_x, -lag), (node_y, 0)):
+                    ts_graph_arr[node_idx, node_jdx, lag] = 1
 
     # reshape the array to the correct shape
-    graph_arr = graph_arr.reshape((n_variables, n_variables, max_lag))
-    nnz_index = np.nonzero(graph_arr)
-    nnz = len(nnz_index)
+    # graph_arr = graph_arr.reshape((n_variables, n_variables, max_lag + 1))
+    nnz_index = np.nonzero(ts_graph_arr)
+    nnz = np.count_nonzero(ts_graph_arr)
 
     # we sample weights from our weight distribution to fill
     # in every non-zero index of our VAR array
-    weights = weight_dist(nnz)
-    graph_arr[nnz_index] = weights
+    weights = weight_dist.rvs(size=nnz)
+    ts_graph_arr[nnz_index] = weights
 
     # our resulting VAR array is the function, which we will
     # simulate our data, starting from random Gaussian initial conditions.
     x = simulate_data_from_var(
-        var_arr=graph_arr,
+        var_arr=ts_graph_arr,
         n_times=n_times,
         n_realizations=n_realizations,
-        var_names=nodelist,
+        var_names=var_order,
         random_state=random_state,
     )
     return x, G

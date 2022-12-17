@@ -47,9 +47,6 @@ To install the package from github, clone the repository and then `cd` into the 
 
     poetry install
 
-    # for time-series graph functionality
-    poetry install --extras ts
-
     # for vizualizing graph functionality
     poetry install --extras viz
 

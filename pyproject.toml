@@ -6,7 +6,7 @@ name = "pywhy_graphs"
 #
 version = "0.0.0"
 description = "Causal Graphs for Python"
-authors = ["PyWhy Community <adam.li@columbia.com>"]
+authors = ["PyWhy Community <adam.li@columbia.edu>"]
 license = "MIT"
 documentation = "https://py-why.github.io/pywhy-graphs"
 repository = "https://github.com/py-why/pywhy-graphs"
@@ -38,9 +38,8 @@ exclude = ['*tests']
 python = ">=3.8,<3.11"
 numpy = "^1.23.0"
 scipy = "^1.9.0"
-networkx = { git = "https://github.com/adam2392/networkx.git", branch = 'mixededge' }
+networkx = "^2.8.3"
 importlib-resources = { version = "*", python = "<3.9" }
-dynetx = { version = "*", optional = true }
 pygraphviz = { version = "*", optional = true }
 
 [tool.poetry.group.test]

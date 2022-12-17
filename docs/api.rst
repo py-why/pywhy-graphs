@@ -13,8 +13,8 @@ for classes (``CamelCase`` names) and functions
 (``underscore_case`` names) of pywhy-graphs, grouped thematically by analysis
 stage.
 
-Most-used classes
-=================
+Causal graph classes
+====================
 These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature. 
 
@@ -63,3 +63,20 @@ and corresponding causal graphs in pywhy-graphs.
    graph_to_arr
    clearn_arr_to_graph
 
+NetworkX Experimental Functionality
+===================================
+Currently, NetworkX does not support mixed-edge graphs, which are crucial
+for representing causality with latent confounders and selection bias. The
+following represent functionality that we intend to PR eventually into
+networkx. They are included in pywhy-graphs as a temporary bridge. We 
+welcome feedback.
+
+.. currentmodule:: pywhy_graphs.networkx
+
+.. autosummary::
+   :toctree: generated/
+
+   MixedEdgeGraph
+   bidirected_to_unobserved_confounder
+   m_separated
+   
