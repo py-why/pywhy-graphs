@@ -13,7 +13,8 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[di
     direction : str, optional
         The direction, by default None.
     pos : dict, optional
-        The positions of the nodes, by default None
+        The positions of the nodes keyed by node with (x, y) coordinates as values. By default None, which will
+        use the default layout from graphviz.
 
     Returns
     -------
