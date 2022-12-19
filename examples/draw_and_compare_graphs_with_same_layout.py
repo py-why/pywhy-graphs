@@ -12,7 +12,9 @@ for the nodes, so that they are easily comparable.
 
 
 This examples shows how to create a position layout for all the nodes (using networkx)
-and pass this to other graphs so that the nodes positions are the same for the nodes with the same labels
+and pass this to other graphs so that the nodes positions are the same for the nodes with the same labels.
+
+Alternatively, one can create their own positions manually, or using software, such as `Dagitty <http://dagitty.net>`_.
 """
 
 import pywhy_graphs
