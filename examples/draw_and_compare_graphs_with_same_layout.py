@@ -39,6 +39,10 @@ pag.add_edges_from(G.edges, cpdag.undirected_edge_name)
 # https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
 pos_G = nx.spring_layout(G, k=10)
 
+# let us inspect the positions. Notice that networkx and graphviz related softwares store positions as
+# a dictionary keyed by node with (x, y) coordinates as values.
+print(pos_G)
+
 # draw the graphs (i.e., generate a graphviz object that can be rendered)
 # each time we call draw() we pass the layout position of G
 dot_G = draw(G, pos=pos_G)
