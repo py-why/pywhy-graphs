@@ -6,7 +6,9 @@ Drawing graphs and setting their layout for visual comparison
 =============================================================
 
 One can draw a graph without setting the `pos` argument, in that case graphviz will choose how to place the nodes.
-See https://graphviz.readthedocs.io/en/stable/api.html?highlight=render#graphviz.Digraph.render
+See https://graphviz.readthedocs.io/en/stable/api.html?highlight=render#graphviz.Digraph.render.
+In this example, we demonstrate how to visualize various different graphs with a fixed layout
+for the nodes, so that they are easily comparable.
 
 
 This examples shows how to create a position layout for all the nodes (using networkx)
