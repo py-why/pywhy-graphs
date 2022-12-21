@@ -5,16 +5,19 @@
 Drawing graphs and setting their layout for visual comparison
 =============================================================
 
-One can draw a graph without setting the ``pos`` argument, in that case graphviz will choose how to place the nodes.
-See `Digraph.render <https://graphviz.readthedocs.io/en/stable/api.html?highlight=render#graphviz.Digraph.render>`_.
+One can draw a graph without setting the ``pos`` argument,
+in that case graphviz will choose how to place the nodes.
+
 In this example, we demonstrate how to visualize various different graphs with a fixed layout
 for the nodes, so that they are easily comparable.
 
 
 This examples shows how to create a position layout for all the nodes (using networkx)
-and pass this to other graphs so that the nodes positions are the same for the nodes with the same labels.
+and pass this to other graphs so that the nodes positions
+are the same for the nodes with the same labels.
 
-Alternatively, one can create their own positions manually, or using software, such as `Dagitty <http://dagitty.net>`_.
+Alternatively, one can create their own positions manually, or using software,
+such as `Dagitty <http://dagitty.net>`_.
 """
 
 import networkx as nx
@@ -36,10 +39,10 @@ pag = PAG()
 pag.add_edges_from(G.edges, cpdag.undirected_edge_name)
 
 # get the layout position for the graph G using networkx
-# https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
 pos_G = nx.spring_layout(G, k=10)
 
-# let us inspect the positions. Notice that networkx and graphviz related software store positions as
+# let us inspect the positions.
+# Notice that networkx and graphviz related software store positions as
 # a dictionary keyed by node with (x, y) coordinates as values.
 print(pos_G)
 
@@ -51,7 +54,6 @@ dot_cpdag = draw(cpdag, pos=pos_G)
 dot_pag = draw(pag, pos=pos_G)
 
 # render the graphs using graphviz render() function
-# https://graphviz.readthedocs.io/en/stable/api.html?highlight=render#graphviz.Digraph.render
 dot_G.render(outfile="G.png", view=True, engine="neato")
 dot_admg.render(outfile="admg.png", view=True, engine="neato")
 dot_cpdag.render(outfile="cpdag.png", view=True, engine="neato")
