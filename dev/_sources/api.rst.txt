@@ -63,3 +63,15 @@ and corresponding causal graphs in pywhy-graphs.
    graph_to_arr
    clearn_arr_to_graph
 
+Visualization of causal graphs
+==============================
+Visualization of causal graphs is different compared to networkx because causal graphs
+can consist of mixed-edges. We implement an API that wraps ``graphviz`` and ``pygraphviz``
+to perform modular visualization of nodes and edges.
+
+.. currentmodule:: pywhy_graphs.viz
+
+.. autosummary::
+   :toctree: generated/
+
+   draw

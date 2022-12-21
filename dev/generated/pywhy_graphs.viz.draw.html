@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>pywhy_graphs.algorithms.possible_ancestors &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.viz.draw &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -46,8 +46,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.algorithms.possible_descendants" href="pywhy_graphs.algorithms.possible_descendants.html" />
-    <link rel="prev" title="pywhy_graphs.algorithms.is_valid_mec_graph" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" />
+    <link rel="next" title="Examples using pywhy-graphs" href="../use.html" />
+    <link rel="prev" title="pywhy_graphs.array.clearn_arr_to_graph" href="pywhy_graphs.array.clearn_arr_to_graph.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -182,14 +182,14 @@
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
    pywhy_graphs.algorithms.is_valid_mec_graph
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.possible_ancestors.html">
    pywhy_graphs.algorithms.possible_ancestors
   </a>
  </li>
@@ -236,9 +236,9 @@
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.viz.draw.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.viz.draw
   </a>
  </li>
@@ -260,9 +260,24 @@
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-using-pywhy-graphs-viz-draw">
+   Examples using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.viz.draw
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -280,33 +295,48 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-algorithms-possible-ancestors">
-<h1>pywhy_graphs.algorithms.possible_ancestors<a class="headerlink" href="#pywhy-graphs-algorithms-possible-ancestors" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-viz-draw">
+<h1>pywhy_graphs.viz.draw<a class="headerlink" href="#pywhy-graphs-viz-draw" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.algorithms.possible_ancestors">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">possible_ancestors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.classes.pag.PAG"><span class="pre">PAG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/pag.html#possible_ancestors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.possible_ancestors" title="Permalink to this definition">#</a></dt>
-<dd><p>Possible ancestors of a source node.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.viz.draw">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.viz.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MixedEdgeGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/viz/draw.html#draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.viz.draw" title="Permalink to this definition">#</a></dt>
+<dd><p>Visualize the graph.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAG</span></code></a></p>
+<dd class="field-odd"><p><strong>G</strong> : nx.MixedEdgeGraph</p>
 <blockquote>
-<div><p>The graph.</p>
+<div><p>The mixed edge graph.</p>
 </div></blockquote>
-<p><strong>source</strong> : Node</p>
+<p><strong>direction</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, optional</p>
 <blockquote>
-<div><p>The source node to start at.</p>
+<div><p>The direction, by default None.</p>
+</div></blockquote>
+<p><strong>pos</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>, optional</p>
+<blockquote>
+<div><p>The positions of the nodes keyed by node with (x, y) coordinates as values.
+By default None, which will
+use the default layout from graphviz.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>possible_ancestors</strong> : <code class="xref py py-obj docutils literal notranslate"><span class="pre">Set</span></code>[Node]</p>
+<dd class="field-even"><p><strong>dot</strong> : graphviz Digraph</p>
 <blockquote>
-<div><p>The set of nodes that are possible ancestors.</p>
+<div><p>DOT language representation of the graph.</p>
 </div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
-<div style='clear:both'></div></section>
+<section id="examples-using-pywhy-graphs-viz-draw">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.viz.draw</span></code><a class="headerlink" href="#examples-using-pywhy-graphs-viz-draw" title="Permalink to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W..."><img alt="An introduction to causal graphs and how to use them" src="../_images/sphx_glr_intro_causal_graphs_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/intro_causal_graphs.html#sphx-glr-auto-examples-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
+  <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
+</div></div><div style='clear:both'></div></section>
+</section>
 
 
               </article>
@@ -316,17 +346,17 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.array.clearn_arr_to_graph.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.algorithms.is_valid_mec_graph</p>
+          <p class="prev-next-title">pywhy_graphs.array.clearn_arr_to_graph</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.possible_descendants.html" title="next page">
+  <a class='right-next' id="next-link" href="../use.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.algorithms.possible_descendants</p>
+      <p class="prev-next-title">Examples using pywhy-graphs</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

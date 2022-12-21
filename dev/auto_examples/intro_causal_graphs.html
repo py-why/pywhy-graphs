@@ -46,9 +46,9 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Release History" href="../whats_new.html" />
+    <link rel="next" title="Drawing graphs and setting their layout for visual comparison" href="draw_and_compare_graphs_with_same_layout.html" />
     <link rel="prev" title="Examples using pywhy-graphs" href="../use.html" />
-    <link rel="canonical" href="https://pywhy.github.io/pywhy-graphs/stable/index.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
 
@@ -134,7 +134,7 @@
         <span class="caret"></span>
     </button>
     <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
-        <a class="list-group-item list-group-item-action py-1" href="https://pywhy.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
     </div>
 </div>
       </div>
@@ -142,7 +142,7 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/pywhy/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -169,6 +169,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    An introduction to causal graphs and how to use them
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="draw_and_compare_graphs_with_same_layout.html">
+   Drawing graphs and setting their layout for visual comparison
   </a>
  </li>
 </ul>
@@ -265,7 +270,7 @@ in causal inference, and their differences from traditional graphs.</p>
 
 <span class="kn">import</span> <span class="nn">pywhy_graphs</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">CPDAG</span></a><span class="p">,</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a>
 </pre></div>
 </div>
 <section id="structural-causal-models-simulating-some-data">
@@ -319,7 +324,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
 <span class="c1"># xy - &gt; x -&gt; y &lt;- z -&gt; w</span>
 <span class="c1">#  \_________/^</span>
 <a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a> <span class="o">=</span> <a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class"><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span></a><span class="p">([(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)])</span>
-<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
 <span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;dag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">causal_model</span> <span class="o">=</span> <span class="n">gcm</span><span class="o">.</span><span class="n">ProbabilisticCausalModel</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
@@ -362,7 +367,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
 
 <span class="c1"># note the graph shows colliders, which is a collision of arrows</span>
 <span class="c1"># for example between ``x`` and ``z`` at ``y``.</span>
-<span class="n">draw</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
+<a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting causal models:   0%|          | 0/5 [00:00&lt;?, ?it/s]
@@ -371,7 +376,7 @@ Fitting causal mechanism of node y:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node z:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node w:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00&lt;?, ?it/s]
-Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00&lt;00:00, 1632.41it/s]
+Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00&lt;00:00, 1499.89it/s]
    z  ...  y
 0  1  ...  1
 1  1  ...  3
@@ -387,7 +392,7 @@ x        [1, 2, 0]
 y     [1, 3, 2, 0]
 dtype: object
 
-&lt;graphviz.graphs.Digraph object at 0x7f7cf0db4670&gt;
+&lt;graphviz.graphs.Digraph object at 0x7f82f1a88790&gt;
 </pre></div>
 </div>
 </section>
@@ -428,7 +433,7 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
 <a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">set_nodes_as_latent_confounders</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;xy&quot;</span><span class="p">])</span>
 
 <span class="c1"># Now there is a bidirected edge between &#39;x&#39; and &#39;y&#39;</span>
-<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">)</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">)</span>
 <span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;admg.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Now if one queries the parents of &#39;y&#39;, it will not show &#39;xy&#39; anymore</span>
@@ -468,7 +473,7 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;z&#39;, &#39;x&#39;]
-The ADMG has confounded-components: [{&#39;x&#39;, &#39;y&#39;}, {&#39;z&#39;}, {&#39;w&#39;}]
+The ADMG has confounded-components: [{&#39;y&#39;, &#39;x&#39;}, {&#39;z&#39;}, {&#39;w&#39;}]
 &#39;z&#39; is d-separated from &#39;x&#39;: True
 &#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: False
 &#39;z&#39; is d-separated from &#39;x&#39;: False
@@ -493,7 +498,7 @@ earlier DAG.</p>
 <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
 <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
 
-<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">)</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">)</span>
 <span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;cpdag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -523,7 +528,7 @@ latent confounder).</p>
 <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge" title="pywhy_graphs.PAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
 <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge" title="pywhy_graphs.PAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
 
-<span class="n">dot_graph</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">)</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">)</span>
 <span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -542,7 +547,7 @@ latent confounder).</p>
 </dd>
 </dl>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.801 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.308 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-causal-graphs-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/56f75a68c880a75a213db97580fdafab/intro_causal_graphs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">intro_causal_graphs.py</span></code></a></p>
@@ -571,10 +576,10 @@ latent confounder).</p>
           <p class="prev-next-title">Examples using pywhy-graphs</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../whats_new.html" title="next page">
+  <a class='right-next' id="next-link" href="draw_and_compare_graphs_with_same_layout.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Release History</p>
+      <p class="prev-next-title">Drawing graphs and setting their layout for visual comparison</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

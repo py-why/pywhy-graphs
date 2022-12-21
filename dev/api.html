@@ -48,7 +48,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pywhy_graphs.ADMG" href="generated/pywhy_graphs.ADMG.html" />
     <link rel="prev" title="Installation" href="installation.html" />
-    <link rel="canonical" href="https://pywhy.github.io/pywhy-graphs/stable/index.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="_static/copybutton.js"></script>
     <script type="text/javascript" src="_static/scrollfix.js"></script>
 
@@ -134,7 +134,7 @@
         <span class="caret"></span>
     </button>
     <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
-        <a class="list-group-item list-group-item-action py-1" href="https://pywhy.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
     </div>
 </div>
       </div>
@@ -142,7 +142,7 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/pywhy/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -236,6 +236,13 @@
   </a>
  </li>
 </ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.viz.draw.html">
+   pywhy_graphs.viz.draw
+  </a>
+ </li>
+</ul>
 
   </div>
 </nav>
@@ -272,6 +279,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conversions-between-other-package-s-causal-graphs">
    Conversions between other package’s causal graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualization-of-causal-graphs">
+   Visualization of causal graphs
   </a>
  </li>
 </ul>
@@ -378,6 +390,23 @@ and corresponding causal graphs in pywhy-graphs.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph" title="pywhy_graphs.array.clearn_arr_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clearn_arr_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
 <td><p>Convert causal-learn array to a graph object.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="visualization-of-causal-graphs">
+<h2>Visualization of causal graphs<a class="headerlink" href="#visualization-of-causal-graphs" title="Permalink to this heading">#</a></h2>
+<p>Visualization of causal graphs is different compared to networkx because causal graphs
+can consist of mixed-edges. We implement an API that wraps <code class="docutils literal notranslate"><span class="pre">graphviz</span></code> and <code class="docutils literal notranslate"><span class="pre">pygraphviz</span></code>
+to perform modular visualization of nodes and edges.</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>(G[, direction, pos])</p></td>
+<td><p>Visualize the graph.</p></td>
 </tr>
 </tbody>
 </table>

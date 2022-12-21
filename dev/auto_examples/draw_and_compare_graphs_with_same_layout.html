@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Drawing graphs and setting their layout for visual comparison &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Release History" href="../whats_new.html" />
+    <link rel="prev" title="An introduction to causal graphs and how to use them" href="intro_causal_graphs.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../use.html">
+  Examples using pywhy-graphs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro_causal_graphs.html">
+   An introduction to causal graphs and how to use them
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Drawing graphs and setting their layout for visual comparison
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+
+<nav id="bd-toc-nav">
+    
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="drawing-graphs-and-setting-their-layout-for-visual-comparison">
+<span id="ex-draw-graphs"></span><span id="sphx-glr-auto-examples-draw-and-compare-graphs-with-same-layout-py"></span><h1>Drawing graphs and setting their layout for visual comparison<a class="headerlink" href="#drawing-graphs-and-setting-their-layout-for-visual-comparison" title="Permalink to this heading">#</a></h1>
+<p>One can draw a graph without setting the <code class="docutils literal notranslate"><span class="pre">pos</span></code> argument,
+in that case graphviz will choose how to place the nodes.</p>
+<p>In this example, we demonstrate how to visualize various different graphs with a fixed layout
+for the nodes, so that they are easily comparable.</p>
+<p>This examples shows how to create a position layout for all the nodes (using networkx)
+and pass this to other graphs so that the nodes positions
+are the same for the nodes with the same labels.</p>
+<p>Alternatively, one can create their own positions manually, or using software,
+such as <a class="reference external" href="http://dagitty.net">Dagitty</a>.</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;x&#39;: array([-1.        ,  0.15471958]), &#39;y&#39;: array([-0.42925134, -0.7990356 ]), &#39;z&#39;: array([0.90151211, 0.36916753]), &#39;w&#39;: array([ 0.62354034, -0.6548282 ]), &#39;xy&#39;: array([-0.09580111,  0.92997669])}
+
+&#39;pag.png&#39;
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">import</span> <span class="nn">pywhy_graphs</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">CPDAG</span></a><span class="p">,</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a>
+
+<span class="c1"># create some dummy graphs: G, admg, cpdag, and pag</span>
+<span class="c1"># this code is borrowed from the other example: intro_causal_graphs.py ;)</span>
+<a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a> <span class="o">=</span> <a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class"><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span></a><span class="p">([(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)])</span>
+<a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">set_nodes_as_latent_confounders</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;xy&quot;</span><span class="p">])</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a> <span class="o">=</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">CPDAG</span></a><span class="p">()</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.add_edges_from" title="pywhy_graphs.CPDAG.add_edges_from" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">add_edges_from</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.undirected_edge_name" title="pywhy_graphs.CPDAG.undirected_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">cpdag</span><span class="o">.</span><span class="n">undirected_edge_name</span></a><span class="p">)</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">cpdag</span><span class="o">.</span><span class="n">orient_uncertain_edge</span></a><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a> <span class="o">=</span> <a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a><span class="p">()</span>
+<a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edges_from" title="pywhy_graphs.PAG.add_edges_from" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edges_from</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.undirected_edge_name" title="pywhy_graphs.CPDAG.undirected_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">cpdag</span><span class="o">.</span><span class="n">undirected_edge_name</span></a><span class="p">)</span>
+
+<span class="c1"># get the layout position for the graph G using networkx</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># let us inspect the positions.</span>
+<span class="c1"># Notice that networkx and graphviz related software store positions as</span>
+<span class="c1"># a dictionary keyed by node with (x, y) coordinates as values.</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+
+<span class="c1"># draw the graphs (i.e., generate a graphviz object that can be rendered)</span>
+<span class="c1"># each time we call draw() we pass the layout position of G</span>
+<span class="n">dot_G</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<span class="n">dot_admg</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<span class="n">dot_cpdag</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<span class="n">dot_pag</span> <span class="o">=</span> <a href="../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+
+<span class="c1"># render the graphs using graphviz render() function</span>
+<span class="n">dot_G</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<span class="n">dot_admg</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;admg.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<span class="n">dot_cpdag</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;cpdag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<span class="n">dot_pag</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.203 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-draw-and-compare-graphs-with-same-layout-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/18eacea3632893ba9d0e5a98db7ae8b3/draw_and_compare_graphs_with_same_layout.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">draw_and_compare_graphs_with_same_layout.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a8db0ff73ddb6080b0cc26b8eb0db2ae/draw_and_compare_graphs_with_same_layout.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">draw_and_compare_graphs_with_same_layout.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="intro_causal_graphs.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">An introduction to causal graphs and how to use them</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../whats_new.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Release History</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2022, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>
