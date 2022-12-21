@@ -19,8 +19,8 @@ def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[di
 
     Returns
     -------
-    dot : Digraph
-        dot language representation of the graph.
+    dot : graphviz Digraph
+        DOT language representation of the graph.
     """
     from graphviz import Digraph
 

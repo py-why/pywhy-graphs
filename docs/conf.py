@@ -143,6 +143,9 @@ numpydoc_xref_ignore = {
     "n_estimated_nodes",
     "n_samples",
     "n_variables",
+    # graphviz
+    "graphviz",
+    "Digraph",
 }
 numpydoc_xref_aliases = {
     # Networkx

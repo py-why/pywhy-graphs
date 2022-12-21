@@ -139,7 +139,9 @@ of public classes and methods. All docstrings should adhere to the [Numpy stylin
 
 ### Testing Changes Locally With Poetry
 
-With poetry installed, we have included a few convenience functions to check your code. These checks must pass and will be checked by the PR's continuous integration services.
+With poetry installed, we have included a few convenience functions to check your code. These checks must pass and will be checked by the PR's continuous integration services. You can install the various different developer dependencies with poetry:
+
+    poetry install --with style, docs, test
 
 Check code formatting with black:
 
