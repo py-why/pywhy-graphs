@@ -143,6 +143,9 @@ numpydoc_xref_ignore = {
     "n_estimated_nodes",
     "n_samples",
     "n_variables",
+    # graphviz
+    "graphviz",
+    "Digraph",
 }
 numpydoc_xref_aliases = {
     # Networkx
@@ -237,7 +240,7 @@ html_theme_options = {
     "icon_links": [
         dict(
             name="GitHub",
-            url="https://github.com/pywhy/pywhy-graphs",
+            url="https://github.com/py-why/pywhy-graphs",
             icon="fab fa-github-square",
         ),
     ],
