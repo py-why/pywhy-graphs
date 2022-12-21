@@ -89,7 +89,6 @@ tqdm = { version = "^4.64.0" }                # needed in dowhy's package
 typing-extensions = { version = "*" }         # needed in dowhy's package 
 
 [tool.poetry.extras]
-ts = ['dynetx']
 viz = ['pygraphviz']
 
 [build-system]

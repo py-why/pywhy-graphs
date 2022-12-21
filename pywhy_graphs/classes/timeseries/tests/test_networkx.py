@@ -5,13 +5,12 @@ from itertools import combinations
 import networkx as nx
 import pytest
 
+from pywhy_graphs.classes.timeseries.functions import complete_ts_graph, empty_ts_graph
 from pywhy_graphs.classes.timeseries.timeseries import (
-    BaseTimeSeriesDiGraph,
-    BaseTimeSeriesGraph,
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
-    complete_ts_graph,
-    empty_ts_graph,
+    TimeSeriesDiGraph,
+    TimeSeriesGraph,
 )
 
 
@@ -24,8 +23,8 @@ from pywhy_graphs.classes.timeseries.timeseries import (
     [
         StationaryTimeSeriesGraph,
         StationaryTimeSeriesDiGraph,
-        BaseTimeSeriesDiGraph,
-        BaseTimeSeriesGraph,
+        TimeSeriesDiGraph,
+        TimeSeriesGraph,
     ],
 )
 class TestNetworkxIntegration:

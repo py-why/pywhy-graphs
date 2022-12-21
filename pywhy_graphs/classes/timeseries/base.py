@@ -98,22 +98,32 @@ class TsGraphNodeMixin:
             self.add_node(node, **newdict)
 
     def remove_node(self, node_name):
-        """Remove node in time."""
+        """Remove node in time.
+
+        Note
+        ----
+        Removing a node is not equivalent to adding a node. Addition/removal of
+        nodes are provided as a convenience API, but time-series graphs operate
+        by addition/removal of variables and modification of the max-lag.
+        """
         self._check_ts_node(node_name)
-        var_name, _ = node_name
         super().remove_node(node_name)
-        if self._auto_removal is not None:
-            for t in range(self._max_lag + 1):
-                try:
-                    super().remove_node((var_name, -t))
-                except NetworkXError:
-                    continue
 
     def remove_nodes_from(self, ebunch):
         """Remove nodes in time."""
         for node in ebunch:
             self.remove_node(node)
 
+    def remove_variable(self, variable_name):
+        for lag in range(self.max_lag + 1):
+            # we only remove nodes if they are within the set of noes
+            node_name = (variable_name, -lag)
+            if node_name in self.nodes:
+                self.remove_node(node_name)
+
+    def remove_variables_from(self, ebunch):
+        for variable_name in ebunch:
+            self.remove_variable(variable_name)
 
 class TsGraphPropertyMixin:
     """A mixin class for time-series graph properties."""
@@ -127,10 +137,6 @@ class TsGraphPropertyMixin:
         return self._max_lag
 
     @property
-    def check_time_direction(self) -> bool:
-        return self.graph["check_time_direction"]
-
-    @property
     def _max_lag(self) -> int:
         """Private property to query the maximum time-index lag stored in the graph.
 
@@ -139,13 +145,7 @@ class TsGraphPropertyMixin:
         """
         return self.graph["max_lag"]
 
-    def set_auto_removal(self, auto: Optional[str]):
-        AUTO_KEYWORDS = ["backwards", "forwards", None]
-        if auto not in AUTO_KEYWORDS:
-            raise ValueError(f"Auto removal should be one of {AUTO_KEYWORDS}.")
-        self._auto_removal = auto
-
-    def copy(self, as_view: bool = False, double_max_lag: bool = False):
+    def copy(self, as_view: bool = False):
         """Returns a copy of the graph.
 
         The copy method by default returns an independent shallow copy
@@ -227,19 +227,14 @@ class TsGraphPropertyMixin:
         G = self.__class__()
         G.graph.update(self.graph)
 
-        if double_max_lag:
-            G.graph["max_lag"] = G.max_lag * 2
-
-        G.add_nodes_from((n, d.copy()) for n, d in self._node.items() if n[1] == 0)  # type: ignore
+        G.add_nodes_from((n, d.copy()) for n, d in self._node.items())  # type: ignore
         G.add_edges_from(  # type: ignore
             (u, v, datadict.copy())
             for u, nbrs in self._adj.items()
             for v, datadict in nbrs.items()
-            if v[1] == 0
+            if v[1] >= u[1]
         )
 
-        # prevent auto-removal of homologous nodes and edges
-        G.set_auto_removal(None)
         return G
 
 
@@ -262,7 +257,7 @@ class TsGraphEdgePropertyMixin:
         """List of instantaneous (i.e. at same time point) edges."""
         edges = []
         for u_edge, v_edge in self.edges:
-            if u_edge[1] == 0 and v_edge[1] == 0:
+            if u_edge[1] == v_edge[1]:
                 edges.append((u_edge, v_edge))
         return edges
 
@@ -271,7 +266,7 @@ class TsGraphEdgePropertyMixin:
         """List of lagged edges."""
         edges = []
         for u_edge, v_edge in self.edges:
-            if u_edge[1] < 0 and v_edge[1] == 0:
+            if u_edge[1] < 0 and v_edge[1] > u_edge[1]:
                 edges.append((u_edge, v_edge))
         return edges
 
@@ -329,7 +324,7 @@ class TsGraphEdgePropertyMixin:
                 # now get all neighbors that are in the past
                 edge_list = []
                 for node in non_lag_nodes:
-                    edge_list.extend([(node, nbr) for nbr in self.lagged_neighbors(node)])
+                    edge_list.extend([(nbr, node) for nbr in self.lagged_neighbors(node)])
 
                 # now add all homologous edges
                 self.add_edges_from(edge_list)
@@ -359,7 +354,6 @@ class TsGraphEdgeMixin:
     as contemporaneous and lagged neighbors.
     """
 
-    check_time_direction: bool = False
     _auto_removal: Optional[str]
     graph: Dict
     _adj: _CachedPropertyResetterAdj
@@ -372,6 +366,9 @@ class TsGraphEdgeMixin:
         v, v_lag = v_of_edge
         if u_lag > 0 or v_lag > 0:
             raise RuntimeError(f"All lags should be negative or 0, not {u_lag} or {v_lag}.")
+
+        # time-directionality should be checked if the graph is directed; for PAGs, we will
+        # disable it
         if self.check_time_direction and v_lag < u_lag:
             raise RuntimeError(
                 f'The lag of the "to node" {v_lag} should be greater than "from node" {u_lag}'
@@ -380,17 +377,14 @@ class TsGraphEdgeMixin:
         self.add_node(v_of_edge)
 
         if self.stationary:
-            if u_lag == v_lag:
-                # add all homologous contemporaneous edges
-                self._add_homologous_contemporaneous_edges(u, v, **attr)
-            else:
-                # add all homologous edges
-                self._add_homologous_ts_edges(u, v, u_lag, v_lag, **attr)
+            self.add_homologous_edges(u_of_edge, v_of_edge, **attr)
         else:
             super().add_edge(u_of_edge, v_of_edge, **attr)
 
     def add_homologous_edges(self, u_of_edge: TsNode, v_of_edge: TsNode, direction="both", **attr):
         """Add homologous edges.
+
+        Assumes the edge that we consider is ``(u_of_edge, v_of_edge)``, that is 'u' points to 'v'.
 
         Parameters
         ----------
@@ -403,6 +397,92 @@ class TsGraphEdgeMixin:
             Which direction to add homologous edges to, by default 'both', corresponding
             to making the edge stationary over all time.
         """
+        self._check_ts_node(u_of_edge)
+        self._check_ts_node(v_of_edge)
+
+        u, u_lag = u_of_edge
+        v, v_lag = v_of_edge
+
+        # take absolute value
+        u_lag = np.abs(u_lag)
+        v_lag = np.abs(v_lag)
+
+        if direction == "both":
+            # re-center to 0, assuming v_lag is smaller, since it is the "to node"
+            u_lag = u_lag - v_lag
+            v_lag = 0
+
+            # now add lagged edges up until max lag
+            to_t = v_lag
+            from_t = u_lag
+            for _ in range(u_lag, self._max_lag + 1):
+                super().add_edge((u, -from_t), (v, -to_t), **attr)
+                to_t += 1
+                from_t += 1
+        elif direction == "forward":
+            # decrease lag moving forward
+            for _ in range(v_lag, -1, -1):
+                super().add_edge((u, -from_t), (v, -to_t), **attr)
+                to_t -= 1
+                from_t -= 1
+        elif direction == "backwards":
+            for _ in range(u_lag, self._max_lag + 1):
+                super().add_edge((u, -from_t), (v, -to_t), **attr)
+                to_t += 1
+                from_t += 1
+
+    def remove_homologous_edges(self, u_of_edge: TsNode, v_of_edge: TsNode, direction="both"):
+        """Remove homologous edges.
+
+        Assumes the edge that we consider is ``(u_of_edge, v_of_edge)``, that is 'u' points to 'v'.
+
+        Parameters
+        ----------
+        u_of_edge : TsNode
+            The from node.
+        v_of_edge : TsNode
+            The to node. The absolute value of the time lag should be less than or equal to
+            the from node's time lag.
+        direction : str, optional
+            Which direction to add homologous edges to, by default 'both', corresponding
+            to making the edge stationary over all time.
+        """
+        self._check_ts_node(u_of_edge)
+        self._check_ts_node(v_of_edge)
+
+        u, u_lag = u_of_edge
+        v, v_lag = v_of_edge
+
+        # take absolute value
+        u_lag = np.abs(u_lag)
+        v_lag = np.abs(v_lag)
+
+        if direction == "both":
+            # re-center to 0, assuming v_lag is smaller, since it is the "to node"
+            u_lag = u_lag - v_lag
+            v_lag = 0
+
+            # now add lagged edges up until max lag
+            to_t = v_lag
+            from_t = u_lag
+            for _ in range(u_lag, self._max_lag + 1):
+                if self.has_edge((u, -from_t), (v, -to_t)):
+                    super().remove_edge((u, -from_t), (v, -to_t))
+                to_t += 1
+                from_t += 1
+        elif direction == "forward":
+            # decrease lag moving forward
+            for _ in range(v_lag, -1, -1):
+                if self.has_edge((u, -from_t), (v, -to_t)):
+                    super().remove_edge((u, -from_t), (v, -to_t))
+                to_t -= 1
+                from_t -= 1
+        elif direction == "backwards":
+            for _ in range(u_lag, self._max_lag + 1):
+                if self.has_edge((u, -from_t), (v, -to_t)):
+                    super().remove_edge((u, -from_t), (v, -to_t))
+                to_t += 1
+                from_t += 1
 
     def add_edges_from(self, ebunch, **attr):
         for e in ebunch:
@@ -417,92 +497,19 @@ class TsGraphEdgeMixin:
             dd.update(attr)
             self.add_edge(u, v, **dd)
 
-    def _add_homologous_contemporaneous_edges(self, u, v, **attr):
-        """Add homologous edges to all contemporaneous pairs."""
-        for t in range(self._max_lag + 1):
-            super().add_edge((u, -t), (v, -t), **attr)
-
-    def _add_homologous_ts_edges(self, u, v, u_lag, v_lag, **attr):
-        """Add homologous time-series edges in a backwards manner."""
-        u_lag = np.abs(u_lag)
-        v_lag = np.abs(v_lag)
-
-        # re-center to 0, assuming v_lag is smaller, since it is the "to node"
-        u_lag = u_lag - v_lag
-        v_lag = 0
-
-        # now add lagged edges up until max lag
-        to_t = v_lag
-        from_t = u_lag
-        for _ in range(u_lag, self._max_lag + 1):
-            super().add_edge((u, -from_t), (v, -to_t), **attr)
-            to_t += 1
-            from_t += 1
-
     def remove_edge(self, u_of_edge, v_of_edge, check_lag: bool = False):
-        u, u_lag = u_of_edge
-        v, v_lag = v_of_edge
+        _, v_lag = v_of_edge
         if v_lag != 0 and check_lag:
             raise RuntimeError(f'The lag of the "to" node, {v_of_edge} should be 0.')
 
-        if self._auto_removal is not None:
-            if u_lag == v_lag:
-                # remove all contemporaneous homologous edges
-                if self._auto_removal == "backwards":
-                    self._backward_remove_homologous_contemporaneous_edges(u, v)
-                elif self._auto_removal == "forwards":
-                    self._forward_remove_homologous_contemporaneous_edges(u, v, u_lag)
-            elif u_lag < 0:
-                # remove all homologous edges
-                if self._auto_removal == "backwards":
-                    self._backward_remove_homologous_ts_edges(u, v, u_lag, v_lag)
-                elif self._auto_removal == "forwards":
-                    self._forward_remove_homologous_ts_edges(u, v, u_lag, v_lag)
+        if self.stationary:
+            self.remove_homologous_edges(u_of_edge, v_of_edge)
         else:
             super().remove_edge(u_of_edge, v_of_edge)  # type: ignore
 
     def remove_edges_from(self, ebunch):
         for edge in ebunch:
             self.remove_edge(*edge)
-
-    def _backward_remove_homologous_contemporaneous_edges(self, u, v):
-        """Remove homologous time-series edges in the backwards direction."""
-        for t in range(self._max_lag + 1):
-            super().remove_edge((u, -t), (v, -t))
-
-    def _forward_remove_homologous_contemporaneous_edges(self, u, v, lag):
-        """Remove homologous time-series edges in the forward direction."""
-        for t in range(lag, 0, -1):
-            super().remove_edge((u, -t), (v, -t))
-
-    def _backward_remove_homologous_ts_edges(self, u, v, u_lag, v_lag):
-        """Remove homologous time-series edges in the backwards direction."""
-        u_lag = np.abs(u_lag)
-        v_lag = np.abs(v_lag)
-
-        if u_lag <= v_lag:
-            raise RuntimeError(f"From lag {u_lag} should be larger than to lag {v_lag}.")
-
-        from_t = u_lag
-        to_t = v_lag
-        for _ in range(u_lag, self._max_lag + 1):
-            super().remove_edge((u, -from_t), (v, -to_t))
-            from_t += 1
-            to_t += 1
-
-    def _forward_remove_homologous_ts_edges(self, u, v, u_lag, v_lag):
-        """Remove homologous time-series edges in the backwards direction."""
-        u_lag = np.abs(u_lag)
-        v_lag = np.abs(v_lag)
-        if u_lag <= v_lag:
-            raise RuntimeError(f"From lag {u_lag} should be larger than to lag {v_lag}.")
-
-        from_t = u_lag
-        to_t = v_lag
-        for _ in range(0, v_lag + 1):
-            super().remove_edge((u, -from_t), (v, -to_t))
-            from_t -= 1
-            to_t -= 1
 
 
 class tsdict(dict):
@@ -519,59 +526,31 @@ class tsdict(dict):
 
 
 class BaseTimeSeriesGraph(
-    TsGraphPropertyMixin, TsGraphNodeMixin, TsGraphEdgePropertyMixin, nx.Graph
+    TsGraphNodeMixin, TsGraphPropertyMixin, TsGraphEdgePropertyMixin, TsGraphEdgeMixin
 ):
-    """A class to imbue undirected graph with time-series structure.
-
-    This should not be used directly. See ``BaseTimeSeriesDiGraph`` for documentation on the
-    functionality of time-series graphs.
-    """
-
-    # whether or not the graph should be assumed to be stationary
-    stationary: bool = False
-
-    # overloaded factory dictionary types to hold time-series nodes
-    node_dict_factory = tsdict
-    node_attr_dict_factory = tsdict
-    adjlist_outer_dict_factory = tsdict
-    adjlist_inner_dict_factory = tsdict
-
-    def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
-        if max_lag <= 0:
-            raise ValueError(f"Max lag for time series graph should be at least 1, not {max_lag}.")
-        attr.update(dict(max_lag=max_lag))
-        self.graph = dict()
-        self.graph["max_lag"] = max_lag
-        super(BaseTimeSeriesGraph, self).__init__(incoming_graph_data=None, **attr)
-
-        # TODO: this is needed because nx.from_edgelist() checks for type of 'create_using',
-        # which does not work with Protocol classes
-        if incoming_graph_data is not None:
-            # we assume a list of tuples of tuples as edges
-            if isinstance(incoming_graph_data, list):
-                self.add_edges_from(incoming_graph_data)
-            elif isinstance(incoming_graph_data, nx.Graph):
-                for edge in incoming_graph_data.edges:
-                    self.add_edge(*sorted(edge, key=lambda x: x[1]))
-            else:
-                raise RuntimeError(
-                    f"Not implemented yet for incoming graph data that is of "
-                    f"type {type(incoming_graph_data)}."
-                )
-
-
-class BaseTimeSeriesDiGraph(
-    TsGraphPropertyMixin, TsGraphNodeMixin, TsGraphEdgePropertyMixin, nx.DiGraph
-):
-    """A class to imbue directed graph with time-series structure.
+    """A mixin class to imbue networkx graphs with time-series structure.
 
     This should not be used directly.
 
+    Subclassing any time-series graph needs to define attributes and possibly override functions.
+
+    Attributes
+    ----------
+    - stationary : bool
+        Whether or not the graph should be assumed stationary. See Notes for details.
+    - check_time_direction : bool
+        Whether or not the graph should check for valid time-directionality when adding,
+        or removing edges. For example, undirected graphs should set this to ``False`` to
+        prevent errors due to the unordered edge structure. See Notes for details.
+
     Notes
     -----
+    **How are time-series graphs different to networkx graphs?**
+
     A time-series graph is similar to a normal NetworkX graph, except now each node is
     characterized by a tuple of the variable (i.e. 'A', 'B', 'X'), and the time-index lag
-    (i.e. 0, -1, -4). Therefore, any time-series graph's nodes are completely defined if
+    (i.e. 0, -1, -4). A node would be ``('A', 0)``, indicating the variable 'A' at time
+    lag 0. Therefore, any time-series graph's nodes are completely defined if
     given a set of variables and a max-lag. For example, if we have the following variable
     time-series 'x', 'y', 'z', and a max-lag of 2, then including time-lag of 0, there are
     three time points for every variable, resulting in nine unique nodes in the graph.
@@ -584,6 +563,8 @@ class BaseTimeSeriesDiGraph(
     > G.has_node(('x', G.max_lag))
     > True
 
+    **Stationary vs nonstationary time-series graphs**
+
     A time-series graph is by default not stationary. A stationary time-series graph is
     where all edges repeat over time. So looking at all edges with nodes at time-lag t=0
     is sufficient to determine the edge structure over the entire max-lag. For example,
@@ -593,79 +574,18 @@ class BaseTimeSeriesDiGraph(
     a graph is assumed to be stationary. When edges are _added/removed_ in a stationary graph,
     other edges are _automatically added and removed_ to keep the stationary edge structure.
     If you do not want this feature, then your time-series graph must have ``stationary`` property
-    set to ``False``. Even if the graph is considered stationary, a user may still manually
+    set to ``False``. Even if the graph is considered nonstationary, a user may still manually
     add/remove homologous edges. They may even specify the direction that this occurs.
     """
 
     # whether or not the graph should be assumed to be stationary
     stationary: bool = False
 
+    # whether to check for valid time-directionality in edges
+    check_time_direction: bool = False
+
     # overloaded factory dictionary types to hold time-series nodes
     node_dict_factory = tsdict
     node_attr_dict_factory = tsdict
     adjlist_outer_dict_factory = tsdict
     adjlist_inner_dict_factory = tsdict
-
-    def __init__(
-        self, incoming_graph_data=None, max_lag: int = 1, stationary: bool = False, **attr
-    ):
-        if max_lag <= 0:
-            raise ValueError(f"Max lag for time series graph should be at least 1, not {max_lag}.")
-        attr.update(dict(max_lag=max_lag))
-        self.graph = dict()
-        self.graph["max_lag"] = max_lag
-        super().__init__(incoming_graph_data=None, **attr)
-
-        # TODO: this is needed because nx.from_edgelist() checks for type of 'create_using',
-        # which does not work with Protocol classes
-        if incoming_graph_data is not None:
-            # we assume a list of tuples of tuples as edges
-            if isinstance(incoming_graph_data, list):
-                self.add_edges_from(incoming_graph_data)
-            elif isinstance(incoming_graph_data, nx.Graph):
-                for edge in incoming_graph_data.edges:
-                    self.add_edge(*sorted(edge, key=lambda x: x[1]))
-            else:
-                raise RuntimeError(
-                    f"Not implemented yet for incoming graph data that is of "
-                    f"type {type(incoming_graph_data)}."
-                )
-
-
-class BaseTimeSeriesMixedEdgeGraph(
-    TsGraphNodeMixin, TsGraphPropertyMixin, TsGraphEdgePropertyMixin, nx.MixedEdgeGraph
-):
-    """A class to imbue mixed-edge graph with time-series structure.
-
-    This should not be used directly.
-    """
-
-    # overloaded factory dictionary types to hold time-series nodes
-    node_dict_factory = tsdict
-    node_attr_dict_factory = tsdict
-
-    def __init__(self, graphs=None, edge_types=None, max_lag=1, **attr):
-        if max_lag is not None:
-            if graphs is not None and not all(max_lag == graph.max_lag for graph in graphs):
-                raise ValueError(
-                    f"Passing in max lag of {max_lag} to time-series mixed-edge graph, but "
-                    f"sub-graphs have max-lag of {[graph.max_lag for graph in graphs]}."
-                )
-        elif graphs is not None:
-            # infer max lag
-            max_lags = [graph.max_lag for graph in graphs]
-            if len(np.unique(max_lags)) != 1:
-                raise ValueError(f"All max lags in passed in graphs must be equal: {max_lags}.")
-        else:
-            max_lag = 1
-
-        if graphs is not None and not all(
-            issubclass(graph.__class__, (BaseTimeSeriesGraph, BaseTimeSeriesDiGraph))
-            for graph in graphs
-        ):
-            raise RuntimeError("All graphs for timeseries mixed-edge graph")
-
-        attr.update(dict(max_lag=max_lag))
-        self.graph = dict()
-        self.graph["max_lag"] = max_lag
-        super().__init__(graphs, edge_types, **attr)

@@ -2,7 +2,7 @@ from typing import List, Optional, Tuple
 
 import networkx as nx
 
-from pywhy_graphs.classes.timeseries import BaseTimeSeriesDiGraph
+from pywhy_graphs.classes.timeseries import TimeSeriesDiGraph
 from pywhy_graphs.typing import Node
 
 
@@ -60,7 +60,7 @@ def _draw_pag_edges(
 
 
 def draw_tsgraph(
-    G: BaseTimeSeriesDiGraph,
+    G: TimeSeriesDiGraph,
     direction: Optional[str] = None,
     node_order: Optional[List[Node]] = None,
     **attrs,

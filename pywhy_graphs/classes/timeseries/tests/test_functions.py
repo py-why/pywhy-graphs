@@ -3,14 +3,57 @@ import numpy as np
 import pytest
 
 from pywhy_graphs import StationaryTimeSeriesDiGraph
-from pywhy_graphs.classes.timeseries.functions import get_summary_graph
-from pywhy_graphs.classes.timeseries.timeseries import (
-    BaseTimeSeriesDiGraph,
-    BaseTimeSeriesGraph,
-    StationaryTimeSeriesDiGraph,
-    StationaryTimeSeriesGraph,
+from pywhy_graphs.classes.timeseries.functions import (
+    get_summary_graph,
+    has_homologous_edges,
     nodes_in_time_order,
 )
+from pywhy_graphs.classes.timeseries.timeseries import (
+    StationaryTimeSeriesDiGraph,
+    StationaryTimeSeriesGraph,
+    TimeSeriesDiGraph,
+    TimeSeriesGraph,
+)
+
+
+@pytest.mark.parametrize(
+    "G_func",
+    [
+        StationaryTimeSeriesGraph,
+        StationaryTimeSeriesDiGraph,
+        TimeSeriesDiGraph,
+        TimeSeriesGraph,
+    ],
+)
+def test_has_homologous_edges(G_func):
+    max_lag = 3
+    G = G_func(max_lag=max_lag)
+    ts_edges = [
+        (("x1", -1), ("x1", 0)),
+        (("x1", -1), ("x2", 0)),
+        (("x3", -1), ("x2", 0)),
+        (("x3", -1), ("x3", 0)),
+        (("x1", -3), ("x3", 0)),
+        (("x1", 0), ("x3", 0)),
+    ]
+    G.add_edges_from(ts_edges)
+
+    # if graph is stationary, then all time-series edges
+    # will have their homologous edges within the graph
+    if G.stationary:
+        for edge in ts_edges:
+            assert has_homologous_edges(G, *edge)
+    else:
+        # otherwise, not all homologous edges will be within the graph.
+        for edge in ts_edges:
+            u, v = edge
+
+            # as an edge case, if there are no homologous edges to check, then
+            # the function will return True
+            if u[1] == -max_lag and v[1] == 0:
+                assert has_homologous_edges(G, *edge)
+            else:
+                assert not has_homologous_edges(G, *edge)
 
 
 def test_get_summary_graph():
@@ -43,8 +86,8 @@ def test_get_summary_graph():
     [
         StationaryTimeSeriesGraph,
         StationaryTimeSeriesDiGraph,
-        BaseTimeSeriesDiGraph,
-        BaseTimeSeriesGraph,
+        TimeSeriesDiGraph,
+        TimeSeriesGraph,
     ],
 )
 def test_nodes_in_time_order(G_func):
