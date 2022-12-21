@@ -136,3 +136,28 @@ When you're ready to contribute code to address an open issue, please follow the
 
 We use [Sphinx](https://www.sphinx-doc.org/en/master/index.html) to build our API docs, which automatically parses all docstrings
 of public classes and methods. All docstrings should adhere to the [Numpy styling convention](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html).
+
+### Testing Changes Locally With Poetry
+With poetry installed, we have included a few convenience functions to check your code. These checks must pass and will be checked by the PR's continuous integration services. You can install the various different developer dependencies with poetry:
+
+    poetry install --with style, docs, test
+
+Check code formatting with black:
+
+    poetry run poe check_format
+
+If you would like to automatically black format your changes:
+
+    poetry run poe apply_format
+
+You can then check for code style and general linting:
+
+    poetry run poe lint
+
+Finally, you should run some mypy type checks:
+
+    poetry run poe type_check
+
+If you need to build the documentation locally and check for doc errors:
+
+    poetry run poe build_docs

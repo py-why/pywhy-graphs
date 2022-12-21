@@ -72,11 +72,22 @@ networkx. They are included in pywhy-graphs as a temporary bridge. We
 welcome feedback.
 
 .. currentmodule:: pywhy_graphs.networkx
-
 .. autosummary::
    :toctree: generated/
-
+   
    MixedEdgeGraph
    bidirected_to_unobserved_confounder
    m_separated
    
+Visualization of causal graphs
+==============================
+Visualization of causal graphs is different compared to networkx because causal graphs
+can consist of mixed-edges. We implement an API that wraps ``graphviz`` and ``pygraphviz``
+to perform modular visualization of nodes and edges.
+
+.. currentmodule:: pywhy_graphs.viz
+
+.. autosummary::
+   :toctree: generated/
+
+   draw
