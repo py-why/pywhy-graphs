@@ -240,7 +240,7 @@ html_theme_options = {
     "icon_links": [
         dict(
             name="GitHub",
-            url="https://github.com/pywhy/pywhy-graphs",
+            url="https://github.com/py-why/pywhy-graphs",
             icon="fab fa-github-square",
         ),
     ],
