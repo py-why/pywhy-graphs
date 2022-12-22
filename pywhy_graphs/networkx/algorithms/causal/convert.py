@@ -2,6 +2,8 @@ from copy import deepcopy
 
 import networkx as nx
 
+import pywhy_graphs.networkx as pywhy_nx
+
 __all__ = ["bidirected_to_unobserved_confounder"]
 
 
@@ -38,7 +40,7 @@ def bidirected_to_unobserved_confounder(
 
     .. warning: This does not work for graphs with undirected edges yet.
     """
-    if not isinstance(G, nx.MixedEdgeGraph):
+    if not isinstance(G, pywhy_nx.MixedEdgeGraph):
         raise RuntimeError(
             "converting bidirected to confounders should only be run on a MixedEdgeGraph."
         )

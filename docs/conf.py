@@ -7,9 +7,12 @@
 import os
 import sys
 from datetime import datetime
+import warnings
 
+import numpy as np
+import networkx as nx
 import sphinx_gallery  # noqa: F401
-from sphinx_gallery.sorting import ExampleTitleSortKey
+from sphinx_gallery.sorting import ExampleTitleSortKey, ExplicitOrder
 
 # -- Path setup --------------------------------------------------------------
 
@@ -48,14 +51,14 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx_issues",
-    "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
+    # "nbsphinx",  # enables building Jupyter notebooks and rendering
+    "sphinx.ext.mathjax",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
     "numpydoc",
-    "IPython.sphinxext.ipython_console_highlighting",
-    "nbsphinx",
+    # "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 # configure sphinx-copybutton
@@ -106,7 +109,7 @@ numpydoc_xref_ignore = {
     "attributes",
     "dictionary",
     "ArrayLike",
-    "nx.MixedEdgeGraph",
+    "pywhy_nx.MixedEdgeGraph",
     # pywhy-graphs
     "causal",
     "Node",
@@ -161,6 +164,7 @@ numpydoc_xref_aliases = {
     "ADMG": "pywhy_graphs.ADMG",
     "PAG": "pywhy_graphs.PAG",
     "CPDAG": "pywhy_graphs.CPDAG",
+    "pywhy_nx.MixedEdgeGraph": "pywhy_graphs.networkx.MixedEdgeGraph",
     # joblib
     "joblib.Parallel": "joblib.Parallel",
     # pandas
@@ -182,12 +186,13 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = [
-    "auto_examples/index.rst",
     "_build",
     "Thumbs.db",
-    ".DS_Store",
     "**.ipynb_checkpoints",
-    "auto_examples/*.rst",
+    # "auto_examples/*.rst",
+    # "auto_examples/index.rst",
+    # "auto_examples/mixededge/index.rst",
+    # "auto_examples/mixededge/*.rst",
 ]
 
 source_suffix = [".rst", ".md"]
@@ -213,7 +218,6 @@ bibtex_footbibliography_header = ""
 
 # The master toctree document.
 master_doc = "index"
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -253,24 +257,47 @@ html_theme_options = {
 scrapers = ("matplotlib",)
 
 sphinx_gallery_conf = {
+    # Modules for which function level galleries are created.  In
+    # this case sphinx_gallery and numpy in a tuple of strings.
     "doc_module": "pywhy_graphs",
+    # Insert links to documentation of objects in the examples
     "reference_url": {
         "pywhy_graphs": None,
     },
     "backreferences_dir": "generated",
     "plot_gallery": "True",  # Avoid annoying Unicode/bool default warning
-    "within_subsection_order": ExampleTitleSortKey,
     "examples_dirs": ["../examples"],
     "gallery_dirs": ["auto_examples"],
-    "filename_pattern": "^((?!sgskip).)*$",
+    "within_subsection_order": ExampleTitleSortKey,
+    "subsection_order": ExplicitOrder(
+        [
+            "../examples/mixededge",
+            "../examples/intro",
+            "../examples/visualization",
+        ]
+    ),
+    # "filename_pattern": "^((?!sgskip).)*$",
+    "filename_pattern": r"\.py",
     "matplotlib_animations": True,
     "compress_images": ("images", "thumbnails"),
     "image_scrapers": scrapers,
+    'show_memory': not sys.platform.startswith(('win', 'darwin')),
 }
+
+# Add pygraphviz png scraper, if available
+try:
+    from pygraphviz.scraper import PNGScraper
+
+    sphinx_gallery_conf["image_scrapers"] += (PNGScraper(),)
+except ImportError:
+    pass
 
 # Custom sidebar templates, maps document names to template names.
 html_sidebars = {
     "index": ["search-field.html"],
+    "install": [],
+    "tutorial": [],
+    "auto_examples/index": [],
 }
 
 html_context = {
@@ -286,7 +313,17 @@ nitpicky = False
 nitpick_ignore = [
     ("py:obj", "nx.MixedEdgeGraph"),
     ("py:obj", "networkx.MixedEdgeGraph"),
+    ("py:obj", "pywhy_graphs.networkx.MixedEdgeGraph"),
+    ("py:obj", "pywhy_nx.MixedEdgeGraph"),
     ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
     ("py:class", "numpy._typing._array_like._SupportsArray"),
     ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
 ]
+
+
+# -- Warnings management -----------------------------------------------------
+def setup(app):
+    # Ignore .ipynb files
+    app.registry.source_suffix.pop(".ipynb", None)
+
+warnings.filterwarnings("ignore", category=UserWarning)

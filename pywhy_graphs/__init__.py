@@ -11,3 +11,5 @@ from .classes import (
 )
 from .algorithms import *  # noqa: F403
 from .array import export
+
+from . import networkx

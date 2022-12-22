@@ -106,7 +106,7 @@ def set_nodes_as_latent_confounders(G: Union[nx.DiGraph, ADMG], nodes: List[Node
     return new_graph
 
 
-def is_valid_mec_graph(G: Union[PAG, CPDAG], on_error: str = "raise") -> bool:
+def is_valid_mec_graph(G, on_error: str = "raise") -> bool:
     """Check G is a valid PAG.
 
     A valid CPDAG/PAG is one where each pair of nodes have

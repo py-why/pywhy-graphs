@@ -1,12 +1,14 @@
 import networkx as nx
 
+import pywhy_graphs.networkx as pywhy_nx
+
 
 def acyclification(
-    G: nx.MixedEdgeGraph,
+    G: pywhy_nx.MixedEdgeGraph,
     directed_edge_type: str = "directed",
     bidirected_edge_type: str = "bidirected",
     copy: bool = True,
-) -> nx.MixedEdgeGraph:
+) -> pywhy_nx.MixedEdgeGraph:
     """Acyclify a cyclic graph.
 
     Applies the acyclification procedure presented in :footcite:`Mooij2020cyclic`.
@@ -14,7 +16,7 @@ def acyclification(
 
     Parameters
     ----------
-    G : nx.MixedEdgeGraph
+    G : pywhy_nx.MixedEdgeGraph
         A graph with cycles.
     directed_edge_type : str
         The name of the sub-graph of directed edges.
@@ -25,7 +27,7 @@ def acyclification(
 
     Returns
     -------
-    G : nx.MixedEdgeGraph
+    G : pywhy_nx.MixedEdgeGraph
         The acyclified graph.
 
     Notes

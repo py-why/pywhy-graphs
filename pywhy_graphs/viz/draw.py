@@ -1,6 +1,5 @@
 from typing import List, Optional, Tuple
 
-import networkx as nx
 
 from pywhy_graphs.classes.timeseries import TimeSeriesDiGraph
 from pywhy_graphs.typing import Node
@@ -113,15 +112,13 @@ def draw_tsgraph(
     return dot
 
 
-def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[dict] = None, **attrs):
+def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, **attrs):
     """Visualize the graph.
 
     Parameters
     ----------
-    G : nx.MixedEdgeGraph
-        The mixed edge graph with a directed subgraph.
-    directed_graph_name : str
-        The name of the directed edge subgraph.
+    G : pywhy_nx.MixedEdgeGraph
+        The mixed edge graph.
     direction : str, optional
         The direction, by default None.
     pos : dict, optional

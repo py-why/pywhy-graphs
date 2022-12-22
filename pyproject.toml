@@ -38,7 +38,7 @@ exclude = ['*tests']
 python = ">=3.8,<3.11"
 numpy = "^1.23.0"
 scipy = "^1.9.0"
-networkx = "^2.8.3"
+networkx = "^2.8.8"
 importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
 
@@ -70,7 +70,7 @@ optional = true
 poethepoet = "^0.16.0"
 portray = "^1.7.0"
 matplotlib = { version = "^3.5" }
-numpydoc = { version = "^1.4" }
+numpydoc = { version = "1.4" }
 pydata-sphinx-theme = { version = "^0.9.0" }
 sphinx = { version = "^5.1.1" }
 sphinxcontrib-bibtex = { version = "^2.4.2" }
@@ -82,6 +82,7 @@ graphviz = { version = "^0.20.1" }
 ipython = { version = "^7.4.0" }
 nbsphinx = { version = "^0.8" }
 dowhy = { version = "^0.8" }
+memory_profiler = { version = "*" }
 scikit-learn = { version = "^1.1.0" }         # needed in dowhy's package
 pandas = { version = "^1.1" }                 # needed in dowhy's package
 joblib = { version = "^1.1.0" }               # needed in dowhy's package

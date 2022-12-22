@@ -2,11 +2,13 @@ from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
+import pywhy_graphs.networkx as pywhy_nx
+
 from ..typing import Node
 from .base import AncestralMixin, ConservativeMixin
 
 
-class CPDAG(nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
+class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
     """Completed partially directed acyclic graphs (CPDAG).
 
     CPDAGs generalize causal DAGs by allowing undirected edges.

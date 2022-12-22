@@ -6,6 +6,9 @@ __pycache__/
 .vscode
 junit-results.xml
 
+*.gv 
+*.png
+
 # C extensions
 *.so
 .DS_Store

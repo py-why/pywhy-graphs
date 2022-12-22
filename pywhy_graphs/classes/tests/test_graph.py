@@ -1,6 +1,6 @@
-import networkx as nx
 import pytest
 
+import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs import ADMG, CPDAG, PAG
 
 
@@ -143,19 +143,19 @@ class TestADMG(BaseGraph):
         G.add_edge(3, 0, G.directed_edge_name)
 
         # normal d-separation statements should hold
-        assert not nx.m_separated(G, {1}, {2}, set())
-        assert nx.m_separated(G, {1}, {2}, {0})
+        assert not pywhy_nx.m_separated(G, {1}, {2}, set())
+        assert pywhy_nx.m_separated(G, {1}, {2}, {0})
 
         # when we add an edge from 0 -> 1
         # there is no d-separation statement
-        assert not nx.m_separated(G, {3}, {1}, set())
-        assert not nx.m_separated(G, {3}, {1}, {0})
+        assert not pywhy_nx.m_separated(G, {3}, {1}, set())
+        assert not pywhy_nx.m_separated(G, {3}, {1}, {0})
 
         # test collider works on bidirected edge
         # 1 <-> 0
         G.remove_edge(0, 1, G.directed_edge_name)
-        assert nx.m_separated(G, {3}, {1}, set())
-        assert not nx.m_separated(G, {3}, {1}, {0})
+        assert pywhy_nx.m_separated(G, {3}, {1}, set())
+        assert not pywhy_nx.m_separated(G, {3}, {1}, {0})
 
 
 class TestPAG(TestADMG):
@@ -320,16 +320,16 @@ class TestPAG(TestADMG):
         G = self.G.copy()
 
         # 2 <- 0 <-> 1 o-o 4
-        assert not nx.m_separated(G, {0}, {4}, set())
-        assert not nx.m_separated(G, {0}, {4}, {1})
+        assert not pywhy_nx.m_separated(G, {0}, {4}, set())
+        assert not pywhy_nx.m_separated(G, {0}, {4}, {1})
 
         # check various cases
         G.add_edge(4, 3, G.directed_edge_name)
-        assert not nx.m_separated(G, {3}, {1}, set())
-        assert nx.m_separated(G, {3}, {1}, {4})
+        assert not pywhy_nx.m_separated(G, {3}, {1}, set())
+        assert pywhy_nx.m_separated(G, {3}, {1}, {4})
 
         # check what happens in the other direction
         G.remove_edge(4, 3, G.directed_edge_name)
         G.add_edge(3, 4, G.directed_edge_name)
-        assert not nx.m_separated(G, {3}, {1}, set())
-        assert not nx.m_separated(G, {3}, {1}, {4})
+        assert not pywhy_nx.m_separated(G, {3}, {1}, set())
+        assert not pywhy_nx.m_separated(G, {3}, {1}, {4})

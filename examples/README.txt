@@ -1,4 +1,4 @@
-Examples
---------
+Examples Gallery
+----------------
 
-Examples demonstrating how to use causal graphs.
+Simple examples demonstrating how to use causal graphs.

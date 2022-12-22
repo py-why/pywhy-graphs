@@ -12,9 +12,9 @@ class MixedEdgeGraph:
     """Base class for mixed-edge graphs.
 
     A mixed-edge graph stores nodes and different kinds of edges.
-    The edges can represent non-directed (i.e. `nx.Graph`), or
-    directed (i.e. `nx.DiGraph`) edge connections among nodes. Nodes can be
-    any nodes that can be represented in `nx.Graph`, and `nx.DiGraph`.
+    The edges can represent non-directed (i.e. `networkx.Graph`), or
+    directed (i.e. `networkx.DiGraph`) edge connections among nodes. Nodes can be
+    any nodes that can be represented in `networkx.Graph`, and `networkx.DiGraph`.
 
     Edges are represented as links between nodes with optional
     key/value attributes.
@@ -33,10 +33,10 @@ class MixedEdgeGraph:
 
     See Also
     --------
-    Graph
-    DiGraph
-    MultiGraph
-    MultiDiGraph
+    networkx.Graph
+    networkx.DiGraph
+    networkx.MultiGraph
+    networkx.MultiDiGraph
 
     Notes
     -----
@@ -45,11 +45,11 @@ class MixedEdgeGraph:
 
     **Changes compared to existing networkx graphs:**
 
-    Compared to `nx.Graph` and `nx.DiGraph`, a ``MixedEdgeGraph`` has
+    Compared to `networkx.Graph` and `networkx.DiGraph`, a ``MixedEdgeGraph`` has
     a different method for initializing the graph and adding edges.
     When adding/removing/update edges to the graph, if that edge type
     does not exist, then an error will be raised. Users should explicitly
-    add an edge type graph via the `add_edge_type` function.
+    add an edge type graph via the ``add_edge_type`` function.
 
     Moreover, computing an ``edge_subgraph`` is not supported for
     ``MixedEdgeGraph``.
@@ -112,18 +112,14 @@ class MixedEdgeGraph:
     def __str__(self):
         """Returns a short summary of the graph.
 
-        Returns
-        -------
-        info : string
-            Graph information including the graph name (if any), graph type, and the
-            number of nodes and edges.
+        Graph information including the graph name (if any), graph type, and the
+        number of nodes and edges.
 
         Examples
         --------
-        >>> G = nx.MixedEdgeGraph(name="foo")
+        >>> G = pywhy_nx.MixedEdgeGraph(name="foo")
         >>> str(G)
         "MixedEdgeGraph named 'foo' with 0 nodes and 0 edges and 0 edge types"
-
         """
         return "".join(
             [
@@ -264,6 +260,12 @@ class MixedEdgeGraph:
         Parameters
         ----------
         n : node
+            The node to query. Identical to ``n in G``.
+
+        Returns
+        -------
+        has : bool
+            Whether or not the graph has node 'n'.
 
         Examples
         --------
@@ -285,11 +287,6 @@ class MixedEdgeGraph:
     def number_of_nodes(self):
         """Returns the number of nodes in the graph.
 
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
-
         See Also
         --------
         order: identical method
@@ -305,11 +302,6 @@ class MixedEdgeGraph:
 
     def order(self):
         """Returns the number of nodes in the graph.
-
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
 
         See Also
         --------
@@ -344,10 +336,7 @@ class MixedEdgeGraph:
     def __iter__(self):
         """Iterate over the nodes. Use: 'for n in G'.
 
-        Returns
-        -------
-        niter : iterator
-            An iterator over all nodes in the graph.
+        An iterator over all nodes in the graph.
 
         Examples
         --------
@@ -376,11 +365,6 @@ class MixedEdgeGraph:
     def __len__(self):
         """Returns the number of nodes in the graph. Use: 'len(G)'.
 
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
-
         See Also
         --------
         number_of_nodes: identical method
@@ -398,15 +382,7 @@ class MixedEdgeGraph:
     def __getitem__(self, n):
         """Returns a dict of neighbors of node n.  Use: 'G[n]'.
 
-        Parameters
-        ----------
-        n : node
-           A node in the graph.
-
-        Returns
-        -------
-        adj_dict : dictionary
-           The adjacency dictionary for nodes connected to n.
+        The adjacency dictionary for nodes connected to n.
 
         Notes
         -----
@@ -488,9 +464,6 @@ class MixedEdgeGraph:
         See Also
         --------
         add_edges_from : add a collection of edges
-
-        Notes
-        -----
         """
         u, v = u_of_edge, v_of_edge
         # add nodes
@@ -1092,7 +1065,7 @@ class MixedEdgeGraph:
 
         Returns
         -------
-        deg_dicts : dictionary of DegreeView or int
+        deg_dicts : dictionary of DegreeView | int
             If multiple nodes are requested (the default), returns a ``DegreeView``
             mapping nodes to their degree.
             If a single node is requested, returns the degree of the node as an integer.
@@ -1119,7 +1092,6 @@ class MixedEdgeGraph:
         size : float
             The number of edges or
             (if weight keyword is provided) the total weight sum.
-
             If weight is None, returns an int. Otherwise a float
             (or more general numeric if the weights are more general).
 
