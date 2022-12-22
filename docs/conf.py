@@ -110,6 +110,7 @@ numpydoc_xref_ignore = {
     "dictionary",
     "ArrayLike",
     "nx.MixedEdgeGraph",
+    "pywhy_nx.MixedEdgeGraph",
     # pywhy-graphs
     "causal",
     "Node",
