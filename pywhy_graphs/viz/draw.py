@@ -1,14 +1,14 @@
 from typing import Optional
 
-import networkx as nx
+import pywhy_graphs.networkx as pywhy_nx
 
 
-def draw(G: nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[dict] = None):
+def draw(G: pywhy_nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[dict] = None):
     """Visualize the graph.
 
     Parameters
     ----------
-    G : nx.MixedEdgeGraph
+    G : pywhy_nx.MixedEdgeGraph
         The mixed edge graph.
     direction : str, optional
         The direction, by default None.

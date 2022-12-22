@@ -120,7 +120,7 @@ class MixedEdgeGraph:
 
         Examples
         --------
-        >>> G = nx.MixedEdgeGraph(name="foo")
+        >>> G = pywhy_nx.MixedEdgeGraph(name="foo")
         >>> str(G)
         "MixedEdgeGraph named 'foo' with 0 nodes and 0 edges and 0 edge types"
 
