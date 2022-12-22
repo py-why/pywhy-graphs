@@ -39,9 +39,9 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="use.html">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -216,6 +216,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.__contains__">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.__contains__">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.__contains__">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -223,6 +225,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.__getitem__">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.__getitem__">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.__getitem__">(pywhy_graphs.PAG method)</a>
 </li>
@@ -234,6 +238,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.__iter__">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.__iter__">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.__iter__">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -241,6 +247,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.__len__">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.__len__">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.__len__">(pywhy_graphs.PAG method)</a>
 </li>
@@ -258,6 +266,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.add_edge">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.add_edge">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -265,6 +275,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.add_edges_from">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.add_edges_from">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edges_from">(pywhy_graphs.PAG method)</a>
 </li>
@@ -275,6 +287,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.adj">(pywhy_graphs.CPDAG property)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.adj">(pywhy_graphs.networkx.MixedEdgeGraph property)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.adj">(pywhy_graphs.PAG property)</a>
 </li>
@@ -301,6 +315,8 @@
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.bidirected_edges">(pywhy_graphs.PAG property)</a>
 </li>
       </ul></li>
+      <li><a href="generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html#pywhy_graphs.networkx.bidirected_to_unobserved_confounder">bidirected_to_unobserved_confounder() (in module pywhy_graphs.networkx)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -328,6 +344,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.clear_edge_types">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.clear_edge_types">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.clear_edge_types">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -339,6 +357,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.copy">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.copy">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.copy">(pywhy_graphs.PAG method)</a>
 </li>
@@ -355,6 +375,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.degree">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.degree">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.degree">(pywhy_graphs.PAG method)</a>
 </li>
@@ -392,6 +414,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.edges">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.edges">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.edges">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -414,6 +438,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.get_edge_data">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.get_edge_data">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.get_edge_data">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -421,6 +447,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.get_graphs">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.get_graphs">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.get_graphs">(pywhy_graphs.PAG method)</a>
 </li>
@@ -431,6 +459,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.graph_attr_dict_factory">(pywhy_graphs.CPDAG attribute)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.graph_attr_dict_factory">(pywhy_graphs.networkx.MixedEdgeGraph attribute)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.graph_attr_dict_factory">(pywhy_graphs.PAG attribute)</a>
 </li>
@@ -448,6 +478,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.has_edge">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.has_edge">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.has_edge">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -457,6 +489,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.has_node">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.has_node">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.has_node">(pywhy_graphs.PAG method)</a>
 </li>
@@ -472,6 +506,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.is_directed">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.is_directed">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.is_directed">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -481,6 +517,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.is_multigraph">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.is_multigraph">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.is_multigraph">(pywhy_graphs.PAG method)</a>
 </li>
@@ -493,6 +531,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated">m_separated() (in module pywhy_graphs.networkx)</a>
+</li>
       <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.mark_unfaithful_triple">mark_unfaithful_triple() (pywhy_graphs.CPDAG method)</a>
 
       <ul>
@@ -501,6 +541,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph">MixedEdgeGraph (class in pywhy_graphs.networkx)</a>
+</li>
       <li>
     module
 
@@ -519,6 +561,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.name">(pywhy_graphs.CPDAG property)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.name">(pywhy_graphs.networkx.MixedEdgeGraph property)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.name">(pywhy_graphs.PAG property)</a>
 </li>
       </ul></li>
@@ -526,6 +570,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.nbunch_iter">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.nbunch_iter">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.nbunch_iter">(pywhy_graphs.PAG method)</a>
 </li>
@@ -535,6 +581,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.node_attr_dict_factory">(pywhy_graphs.CPDAG attribute)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.node_attr_dict_factory">(pywhy_graphs.networkx.MixedEdgeGraph attribute)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.node_attr_dict_factory">(pywhy_graphs.PAG attribute)</a>
 </li>
       </ul></li>
@@ -542,6 +590,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.node_dict_factory">(pywhy_graphs.CPDAG attribute)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.node_dict_factory">(pywhy_graphs.networkx.MixedEdgeGraph attribute)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.node_dict_factory">(pywhy_graphs.PAG attribute)</a>
 </li>
@@ -559,6 +609,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.number_of_edge_types">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.number_of_edge_types">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.number_of_edge_types">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -567,6 +619,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.number_of_edges">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.number_of_edges">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.number_of_edges">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -574,6 +628,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.number_of_nodes">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.number_of_nodes">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.number_of_nodes">(pywhy_graphs.PAG method)</a>
 </li>
@@ -588,6 +644,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.order">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.order">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.order">(pywhy_graphs.PAG method)</a>
 </li>
@@ -664,6 +722,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.remove_edge">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.remove_edge">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -673,6 +733,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.remove_edges_from">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.remove_edges_from">(pywhy_graphs.PAG method)</a>
 </li>
@@ -687,6 +749,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.size">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.size">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.size">(pywhy_graphs.PAG method)</a>
 </li>
@@ -722,6 +786,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.subgraph">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.subgraph">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.subgraph">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -744,6 +810,8 @@
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.to_directed">(pywhy_graphs.CPDAG method)</a>
 </li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.to_directed">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
+</li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.to_directed">(pywhy_graphs.PAG method)</a>
 </li>
       </ul></li>
@@ -753,6 +821,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.to_undirected">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.to_undirected">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.to_undirected">(pywhy_graphs.PAG method)</a>
 </li>
@@ -787,6 +857,8 @@
 
       <ul>
         <li><a href="generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.update">(pywhy_graphs.CPDAG method)</a>
+</li>
+        <li><a href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.update">(pywhy_graphs.networkx.MixedEdgeGraph method)</a>
 </li>
         <li><a href="generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.update">(pywhy_graphs.PAG method)</a>
 </li>
@@ -826,7 +898,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

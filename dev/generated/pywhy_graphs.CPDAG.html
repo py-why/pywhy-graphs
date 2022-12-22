@@ -40,9 +40,9 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../use.html">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -238,6 +238,23 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html">
+   pywhy_graphs.networkx.MixedEdgeGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
+   pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
+   pywhy_graphs.networkx.m_separated
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
   </a>
@@ -266,6 +283,458 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     CPDAG
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.__contains__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.__contains__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.__getitem__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.__getitem__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.__iter__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.__iter__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.__len__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.__len__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.add_edge">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.add_edge()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.add_edges_from">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.add_edges_from()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.adj">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.adj
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.children">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.children()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.clear_edge_types">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.clear_edge_types()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.copy">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.copy()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.degree">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.degree()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.directed_edge_name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.directed_edge_name
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.directed_edges">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.directed_edges
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.edges">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.edges()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.excluded_triples">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.excluded_triples
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.get_edge_data">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.get_edge_data()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.get_graphs">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.get_graphs()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.graph_attr_dict_factory">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.graph_attr_dict_factory
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.has_edge">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.has_edge()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.has_node">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.has_node()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.is_directed">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.is_directed()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.is_multigraph">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.is_multigraph()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.mark_unfaithful_triple">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.mark_unfaithful_triple()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.name
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.nbunch_iter">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.nbunch_iter()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.node_attr_dict_factory">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.node_attr_dict_factory
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.node_dict_factory">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.node_dict_factory
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.nodes">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.nodes
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.number_of_edge_types">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.number_of_edge_types()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.number_of_edges">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.number_of_edges()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.number_of_nodes">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.number_of_nodes()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.order">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.order()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.orient_uncertain_edge">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.orient_uncertain_edge()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.parents">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.parents()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.possible_children">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.possible_children()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.possible_parents">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.possible_parents()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.predecessors">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.predecessors()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.remove_edge">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.remove_edge()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.remove_edges_from">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.remove_edges_from()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.size">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.size()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.sub_directed_graph">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.sub_directed_graph()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.sub_undirected_graph">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.sub_undirected_graph()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.subgraph">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.subgraph()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.successors">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.successors()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.to_directed">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.to_directed()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.to_undirected">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.to_undirected()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.undirected_edge_name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.undirected_edge_name
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.undirected_edges">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.undirected_edges
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.CPDAG.update">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       CPDAG.update()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examples-using-pywhy-graphs-cpdag">
    Examples using
@@ -554,20 +1023,7 @@ to be learned from score-based (such as the “GES” algorithm) and constraint-
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.__getitem__">
 <span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.__getitem__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a dict of neighbors of node n.  Use: ‘G[n]’.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> : node</p>
-<blockquote>
-<div><p>A node in the graph.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>adj_dict</strong> : dictionary</p>
-<blockquote>
-<div><p>The adjacency dictionary for nodes connected to n.</p>
-</div></blockquote>
-</dd>
-</dl>
+<p>The adjacency dictionary for nodes connected to n.</p>
 <p class="rubric">Notes</p>
 <p>G[n] is the same as G.adj[n] and similar to G.neighbors(n)
 (which is an iterator over G.adj[n])</p>
@@ -583,14 +1039,7 @@ to be learned from score-based (such as the “GES” algorithm) and constraint-
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.__iter__">
 <span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.__iter__" title="Permalink to this definition">#</a></dt>
 <dd><p>Iterate over the nodes. Use: ‘for n in G’.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>niter</strong> : iterator</p>
-<blockquote>
-<div><p>An iterator over all nodes in the graph.</p>
-</div></blockquote>
-</dd>
-</dl>
+<p>An iterator over all nodes in the graph.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="p">]</span>
@@ -605,14 +1054,6 @@ to be learned from score-based (such as the “GES” algorithm) and constraint-
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.__len__" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of nodes in the graph. Use: ‘len(G)’.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>nnodes</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
-<blockquote>
-<div><p>The number of nodes in the graph.</p>
-</div></blockquote>
-</dd>
-</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -862,7 +1303,7 @@ The degree is the sum of the edge weights adjacent to the node.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>deg_dicts</strong> : dictionary of DegreeView or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
+<dd class="field-even"><p><strong>deg_dicts</strong> : dictionary of DegreeView | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
 <blockquote>
 <div><p>If multiple nodes are requested (the default), returns a <code class="docutils literal notranslate"><span class="pre">DegreeView</span></code>
 mapping nodes to their degree.
@@ -1060,11 +1501,18 @@ will check if any edge exists between <code class="docutils literal notranslate"
 <span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.has_node" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True if the graph contains the node n.</p>
 <p>Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code></p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">node</span></dt><dd></dd>
-</dl>
+<dd class="field-odd"><p><strong>n</strong> : node</p>
+<blockquote>
+<div><p>The node to query. Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code>.</p>
+</div></blockquote>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>has</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<blockquote>
+<div><p>Whether or not the graph has node ‘n’.</p>
+</div></blockquote>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1239,14 +1687,6 @@ directed edges from <code class="docutils literal notranslate"><span class="pre"
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.number_of_nodes">
 <span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.number_of_nodes" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of nodes in the graph.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>nnodes</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
-<blockquote>
-<div><p>The number of nodes in the graph.</p>
-</div></blockquote>
-</dd>
-</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -1268,14 +1708,6 @@ directed edges from <code class="docutils literal notranslate"><span class="pre"
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.order">
 <span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.order" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of nodes in the graph.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>nnodes</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
-<blockquote>
-<div><p>The number of nodes in the graph.</p>
-</div></blockquote>
-</dd>
-</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -1479,8 +1911,8 @@ as a weight. If None, then each edge has weight 1.</p>
 <dd class="field-even"><p><strong>size</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></p>
 <blockquote>
 <div><p>The number of edges or
-(if weight keyword is provided) the total weight sum.</p>
-<p>If weight is None, returns an int. Otherwise a float
+(if weight keyword is provided) the total weight sum.
+If weight is None, returns an int. Otherwise a float
 (or more general numeric if the weights are more general).</p>
 </div></blockquote>
 </dd>
@@ -1682,10 +2114,10 @@ If the first parameter is a Graph, then <code class="docutils literal notranslat
 <section id="examples-using-pywhy-graphs-cpdag">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.CPDAG</span></code><a class="headerlink" href="#examples-using-pywhy-graphs-cpdag" title="Permalink to this heading">#</a></h2>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W..."><img alt="An introduction to causal graphs and how to use them" src="../_images/sphx_glr_intro_causal_graphs_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/intro_causal_graphs.html#sphx-glr-auto-examples-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
+<p><a class="reference internal" href="../auto_examples/intro/intro_causal_graphs.html#sphx-glr-auto-examples-intro-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
   <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
+<p><a class="reference internal" href="../auto_examples/visualization/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-visualization-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
   <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
 </div></div></section>
 </section>
@@ -1735,7 +2167,7 @@ If the first parameter is a Graph, then <code class="docutils literal notranslat
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

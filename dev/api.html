@@ -40,9 +40,9 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="use.html">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -238,6 +238,23 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html">
+   pywhy_graphs.networkx.MixedEdgeGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
+   pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.networkx.m_separated.html">
+   pywhy_graphs.networkx.m_separated
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
   </a>
@@ -279,6 +296,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conversions-between-other-package-s-causal-graphs">
    Conversions between other package’s causal graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#networkx-experimental-functionality">
+   NetworkX Experimental Functionality
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -394,6 +416,31 @@ and corresponding causal graphs in pywhy-graphs.</p>
 </tbody>
 </table>
 </section>
+<section id="networkx-experimental-functionality">
+<h2>NetworkX Experimental Functionality<a class="headerlink" href="#networkx-experimental-functionality" title="Permalink to this heading">#</a></h2>
+<p>Currently, NetworkX does not support mixed-edge graphs, which are crucial
+for representing causality with latent confounders and selection bias. The
+following represent functionality that we intend to PR eventually into
+networkx. They are included in pywhy-graphs as a temporary bridge. We
+welcome feedback.</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MixedEdgeGraph</span></code></a>([graphs, edge_types])</p></td>
+<td><p>Base class for mixed-edge graphs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html#pywhy_graphs.networkx.bidirected_to_unobserved_confounder" title="pywhy_graphs.networkx.bidirected_to_unobserved_confounder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bidirected_to_unobserved_confounder</span></code></a>(G[, ...])</p></td>
+<td><p>Convert all bidirected edges to unobserved confounders.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated" title="pywhy_graphs.networkx.m_separated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_separated</span></code></a>(G, x, y, z[, ...])</p></td>
+<td><p>Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="visualization-of-causal-graphs">
 <h2>Visualization of causal graphs<a class="headerlink" href="#visualization-of-causal-graphs" title="Permalink to this heading">#</a></h2>
 <p>Visualization of causal graphs is different compared to networkx because causal graphs
@@ -458,7 +505,7 @@ to perform modular visualization of nodes and edges.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

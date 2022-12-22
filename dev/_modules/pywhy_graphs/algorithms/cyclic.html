@@ -39,9 +39,9 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../use.html">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -188,13 +188,15 @@
   <h1>Source code for pywhy_graphs.algorithms.cyclic</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
+<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+
 
 <div class="viewcode-block" id="acyclification"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.acyclification.html#pywhy_graphs.algorithms.acyclification">[docs]</a><span class="k">def</span> <span class="nf">acyclification</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span>
+    <span class="n">G</span><span class="p">:</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span>
     <span class="n">directed_edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;directed&quot;</span><span class="p">,</span>
     <span class="n">bidirected_edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
     <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Acyclify a cyclic graph.</span>
 
 <span class="sd">    Applies the acyclification procedure presented in :footcite:`Mooij2020cyclic`.</span>
@@ -202,7 +204,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    G : nx.MixedEdgeGraph</span>
+<span class="sd">    G : pywhy_nx.MixedEdgeGraph</span>
 <span class="sd">        A graph with cycles.</span>
 <span class="sd">    directed_edge_type : str</span>
 <span class="sd">        The name of the sub-graph of directed edges.</span>
@@ -213,7 +215,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    G : nx.MixedEdgeGraph</span>
+<span class="sd">    G : pywhy_nx.MixedEdgeGraph</span>
 <span class="sd">        The acyclified graph.</span>
 
 <span class="sd">    Notes</span>
@@ -318,7 +320,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

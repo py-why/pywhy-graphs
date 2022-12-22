@@ -39,9 +39,9 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../use.html">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -188,7 +188,6 @@
   <h1>Source code for pywhy_graphs.array.export</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 
@@ -198,7 +197,7 @@
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
 
 
-<span class="k">def</span> <span class="nf">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
     <span class="c1"># define the array</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -313,7 +312,7 @@
     <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span>
 
 
-<div class="viewcode-block" id="clearn_arr_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_arr_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">:</span>
+<div class="viewcode-block" id="clearn_arr_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_arr_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert causal-learn array to a graph object.</span>
 
 <span class="sd">    Parameters</span>
@@ -328,7 +327,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    graph : nx.MixedEdgeGraph</span>
+<span class="sd">    graph : pywhy_nx.MixedEdgeGraph</span>
 <span class="sd">        The causal graph.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
@@ -356,7 +355,7 @@
     <span class="k">elif</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;admg&quot;</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">ADMG</span><span class="p">()</span>
     <span class="k">elif</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;cpdag&quot;</span><span class="p">:</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">CPDAG</span><span class="p">()</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">CPDAG</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
     <span class="k">elif</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;pag&quot;</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">PAG</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
@@ -434,10 +433,13 @@
                 <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">):</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;circle_edge_name&quot;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Graph </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="s2"> is adding circular end points...&quot;</span><span class="p">)</span>
+
                 <span class="c1"># Endpoints contain a circle...</span>
                 <span class="c1"># u o- v</span>
                 <span class="k">if</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
                 <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">:</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">:</span>
@@ -445,7 +447,7 @@
 
                 <span class="c1"># u -o v</span>
                 <span class="k">if</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
                 <span class="k">elif</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">:</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">:</span>
@@ -457,7 +459,7 @@
 
 
 <div class="viewcode-block" id="graph_to_arr"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr">[docs]</a><span class="k">def</span> <span class="nf">graph_to_arr</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span>
+    <span class="n">G</span><span class="p">,</span>
     <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;causal-learn&quot;</span><span class="p">,</span>
     <span class="n">node_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
@@ -465,7 +467,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    G : nx.MixedEdgeGraph</span>
+<span class="sd">    G : pywhy_nx.MixedEdgeGraph</span>
 <span class="sd">        The mixed edge causal graph.</span>
 <span class="sd">    format : str</span>
 <span class="sd">        The format of the numpy array. One of &#39;causal-learn&#39;. Default</span>
@@ -539,7 +541,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

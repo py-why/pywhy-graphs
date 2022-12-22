@@ -1,0 +1,12 @@
+﻿pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+=========================================================
+
+.. currentmodule:: pywhy_graphs.networkx
+
+.. autofunction:: bidirected_to_unobserved_confounder
+
+.. include:: pywhy_graphs.networkx.bidirected_to_unobserved_confounder.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

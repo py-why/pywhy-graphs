@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Examples using pywhy-graphs &#8212; pywhy-graphs v0.0.0</title>
+    <title>How to use pywhy-graphs with examples and tutorials &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -40,13 +40,13 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="An introduction to causal graphs and how to use them" href="auto_examples/intro_causal_graphs.html" />
+    <link rel="next" title="Networkx MixedEdgeGraph Examples" href="auto_examples/mixededge/index.html" />
     <link rel="prev" title="pywhy_graphs.viz.draw" href="generated/pywhy_graphs.viz.draw.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="_static/copybutton.js"></script>
@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 current active nav-item">
  <a class="current reference internal nav-link" href="#">
-  Examples using pywhy-graphs
+  Usage
  </a>
 </li>
 
@@ -166,15 +166,56 @@
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="auto_examples/intro_causal_graphs.html">
-   An introduction to causal graphs and how to use them
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="auto_examples/mixededge/index.html">
+   Networkx MixedEdgeGraph Examples
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="auto_examples/mixededge/plot_mixed_edge_graph.html">
+     MixedEdgeGraph - Graph with different types of edges
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="auto_examples/draw_and_compare_graphs_with_same_layout.html">
-   Drawing graphs and setting their layout for visual comparison
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="auto_examples/intro/index.html">
+   Introduction to causal graphs
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="auto_examples/intro/intro_causal_graphs.html">
+     An introduction to causal graphs and how to use them
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="auto_examples/visualization/index.html">
+   Visualization of causal graphs
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="auto_examples/visualization/draw_and_compare_graphs_with_same_layout.html">
+     Drawing graphs and setting their layout for visual comparison
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -201,8 +242,23 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples">
-   Examples
+  <a class="reference internal nav-link" href="#examples-gallery">
+   Examples Gallery
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#networkx-mixededgegraph-examples">
+   Networkx MixedEdgeGraph Examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction-to-causal-graphs">
+   Introduction to causal graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualization-of-causal-graphs">
+   Visualization of causal graphs
   </a>
  </li>
 </ul>
@@ -224,18 +280,31 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="examples-using-pywhy-graphs">
-<h1>Examples using pywhy-graphs<a class="headerlink" href="#examples-using-pywhy-graphs" title="Permalink to this heading">#</a></h1>
+  <section id="how-to-use-pywhy-graphs-with-examples-and-tutorials">
+<h1>How to use pywhy-graphs with examples and tutorials<a class="headerlink" href="#how-to-use-pywhy-graphs-with-examples-and-tutorials" title="Permalink to this heading">#</a></h1>
 <p>To be able to effectively use pywhy-graphs, look at some of the examples here
 to learn everything you need! We give an overview of concepts in causal graphs.</p>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
-<p>Examples demonstrating how to use causal graphs.</p>
+<section id="examples-gallery">
+<h2>Examples Gallery<a class="headerlink" href="#examples-gallery" title="Permalink to this heading">#</a></h2>
+<p>Simple examples demonstrating how to use causal graphs.</p>
+<div class="sphx-glr-thumbnails"></div></section>
+<section id="networkx-mixededgegraph-examples">
+<h2>Networkx MixedEdgeGraph Examples<a class="headerlink" href="#networkx-mixededgegraph-examples" title="Permalink to this heading">#</a></h2>
+<p>Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with the intention of adding into networkx).</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A MixedEdgeGraph is a graph comprised of a tuple, G = (V, E). The difference compared to the ot..."><img alt="MixedEdgeGraph - Graph with different types of edges" src="_images/sphx_glr_plot_mixed_edge_graph_thumb.png" />
+<p><a class="reference internal" href="auto_examples/mixededge/plot_mixed_edge_graph.html#sphx-glr-auto-examples-mixededge-plot-mixed-edge-graph-py"><span class="std std-ref">MixedEdgeGraph - Graph with different types of edges</span></a></p>
+  <div class="sphx-glr-thumbnail-title">MixedEdgeGraph - Graph with different types of edges</div>
+</div></div></section>
+<section id="introduction-to-causal-graphs">
+<h2>Introduction to causal graphs<a class="headerlink" href="#introduction-to-causal-graphs" title="Permalink to this heading">#</a></h2>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W..."><img alt="An introduction to causal graphs and how to use them" src="_images/sphx_glr_intro_causal_graphs_thumb.png" />
-<p><a class="reference internal" href="auto_examples/intro_causal_graphs.html#sphx-glr-auto-examples-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
+<p><a class="reference internal" href="auto_examples/intro/intro_causal_graphs.html#sphx-glr-auto-examples-intro-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
   <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
-<p><a class="reference internal" href="auto_examples/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
+</div></div></section>
+<section id="visualization-of-causal-graphs">
+<h2>Visualization of causal graphs<a class="headerlink" href="#visualization-of-causal-graphs" title="Permalink to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
+<p><a class="reference internal" href="auto_examples/visualization/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-visualization-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
   <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
@@ -266,10 +335,10 @@ to learn everything you need! We give an overview of concepts in causal graphs.<
           <p class="prev-next-title">pywhy_graphs.viz.draw</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="auto_examples/intro_causal_graphs.html" title="next page">
+  <a class='right-next' id="next-link" href="auto_examples/mixededge/index.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">An introduction to causal graphs and how to use them</p>
+      <p class="prev-next-title">Networkx MixedEdgeGraph Examples</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -296,7 +365,7 @@ to learn everything you need! We give an overview of concepts in causal graphs.<
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

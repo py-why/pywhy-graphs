@@ -1,0 +1,40 @@
+
+
+.. _sphx_glr_auto_examples_visualization:
+
+Visualization of causal graphs
+------------------------------
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to...">
+
+.. only:: html
+
+  .. image:: /auto_examples/visualization/images/thumb/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png
+    :alt: Drawing graphs and setting their layout for visual comparison
+
+  :ref:`sphx_glr_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/visualization/draw_and_compare_graphs_with_same_layout
+
