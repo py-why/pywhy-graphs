@@ -142,7 +142,11 @@ With poetry installed, we have included a few convenience functions to check you
 
     poetry install --with style, docs, test
 
-Check code formatting with black:
+You can verify that your code will pass certain style, formatting and lint checks by running:
+
+    poetry run poe verify
+
+``verify`` runs a sequence of tests that can also be run individually. For example, you can check code formatting with black:
 
     poetry run poe check_format
 
@@ -158,6 +162,16 @@ Finally, you should run some mypy type checks:
 
     poetry run poe type_check
 
+### Documentation
+
 If you need to build the documentation locally and check for doc errors:
 
     poetry run poe build_docs
+
+### Dependency Changes
+
+If you need to add new, or remove old dependencies, then you need to modify the ``pyproject.toml`` file and then also update the ``poetry.lock`` file, which version-controls all necessary dependencies. If you alter any dependency in the ``pyproject.toml`` file, you must run:
+
+    poetry update
+
+To update the lock file.

@@ -51,9 +51,9 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx_issues",
-    "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
-    # "nbsphinx",
+    # "nbsphinx",  # enables building Jupyter notebooks and rendering
+    "sphinx.ext.mathjax",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
