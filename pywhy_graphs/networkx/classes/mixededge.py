@@ -12,9 +12,9 @@ class MixedEdgeGraph:
     """Base class for mixed-edge graphs.
 
     A mixed-edge graph stores nodes and different kinds of edges.
-    The edges can represent non-directed (i.e. `nx.Graph`), or
-    directed (i.e. `nx.DiGraph`) edge connections among nodes. Nodes can be
-    any nodes that can be represented in `nx.Graph`, and `nx.DiGraph`.
+    The edges can represent non-directed (i.e. `networkx.Graph`), or
+    directed (i.e. `networkx.DiGraph`) edge connections among nodes. Nodes can be
+    any nodes that can be represented in `networkx.Graph`, and `networkx.DiGraph`.
 
     Edges are represented as links between nodes with optional
     key/value attributes.
@@ -33,10 +33,10 @@ class MixedEdgeGraph:
 
     See Also
     --------
-    Graph
-    DiGraph
-    MultiGraph
-    MultiDiGraph
+    networkx.Graph
+    networkx.DiGraph
+    networkx.MultiGraph
+    networkx.MultiDiGraph
 
     Notes
     -----
@@ -45,11 +45,11 @@ class MixedEdgeGraph:
 
     **Changes compared to existing networkx graphs:**
 
-    Compared to `nx.Graph` and `nx.DiGraph`, a ``MixedEdgeGraph`` has
+    Compared to `networkx.Graph` and `networkx.DiGraph`, a ``MixedEdgeGraph`` has
     a different method for initializing the graph and adding edges.
     When adding/removing/update edges to the graph, if that edge type
     does not exist, then an error will be raised. Users should explicitly
-    add an edge type graph via the `add_edge_type` function.
+    add an edge type graph via the ``add_edge_type`` function.
 
     Moreover, computing an ``edge_subgraph`` is not supported for
     ``MixedEdgeGraph``.

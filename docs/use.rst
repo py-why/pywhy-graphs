@@ -7,5 +7,8 @@ To be able to effectively use pywhy-graphs, look at some of the examples here
 to learn everything you need! We give an overview of concepts in causal graphs.
 
 
-.. include:: auto_examples/index.rst
-   :start-after: :orphan:
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   Examples<../auto_examples/index>

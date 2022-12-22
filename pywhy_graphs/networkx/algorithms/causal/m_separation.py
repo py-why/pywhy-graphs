@@ -44,7 +44,7 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
 
     See Also
     --------
-    d_separated
+    networkx.algorithms.d_separation.d_separated
 
     Notes
     -----
