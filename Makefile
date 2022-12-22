@@ -3,7 +3,7 @@
 build-docs:
 	@echo "Building documentation"
 	make -C docs/ clean
-	make -C docs/ html-noplot
+	make -C docs/ html
 	cd docs/ && make view
 
 clean-pyc:

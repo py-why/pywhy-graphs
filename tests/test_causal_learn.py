@@ -8,6 +8,7 @@ from causallearn.graph.GraphNode import GraphNode
 from numpy.testing import assert_array_equal
 
 import pywhy_graphs
+import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.array.export import clearn_arr_to_graph, graph_to_arr
 
 
@@ -164,7 +165,9 @@ def test_graph_to_arr_roundtrip_dag():
         [*pag(), "pag"],
     ],
 )
-def test_graph_to_arr_roundtrip(clearn_G: GeneralGraph, expected_G: nx.MixedEdgeGraph, graph_type):
+def test_graph_to_arr_roundtrip(
+    clearn_G: GeneralGraph, expected_G: pywhy_nx.MixedEdgeGraph, graph_type
+):
     # get causal-learn graph as array
     arr = clearn_G.graph
 

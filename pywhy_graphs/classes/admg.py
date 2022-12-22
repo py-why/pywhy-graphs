@@ -2,10 +2,12 @@ from typing import Iterator, Mapping, Set
 
 import networkx as nx
 
+import pywhy_graphs.networkx as pywhy_nx
+
 from .base import AncestralMixin
 
 
-class ADMG(nx.MixedEdgeGraph, AncestralMixin):
+class ADMG(pywhy_nx.MixedEdgeGraph, AncestralMixin):
     """Acyclic directed mixed graph (ADMG).
 
     A causal graph with two different edge types: bidirected and traditional
@@ -37,7 +39,6 @@ class ADMG(nx.MixedEdgeGraph, AncestralMixin):
     --------
     networkx.DiGraph
     networkx.Graph
-    networkx.MixedEdgeGraph
 
     Notes
     -----

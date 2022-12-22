@@ -17,6 +17,7 @@ from dowhy.gcm.util.general import set_random_seed
 from scipy import stats
 
 import pywhy_graphs
+import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs import CPDAG, PAG
 from pywhy_graphs.viz import draw
 
@@ -163,15 +164,15 @@ print(f"The ADMG has confounded-components: {list(admg.c_components())}")
 
 # We can also look at m-separation statements similarly to a DAG.
 # For example, 'z' is still m-separated from 'x' because of the collider at 'y'
-print(f"'z' is d-separated from 'x': {nx.m_separated(admg, {'z'}, {'x'}, set())}")
+print(f"'z' is d-separated from 'x': {pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}")
 
 # Conditioning on the collider, opens up the path
-print(f"'z' is d-separated from 'x' given 'y': {nx.m_separated(admg, {'z'}, {'x'}, {'y'})}")
+print(f"'z' is d-separated from 'x' given 'y': {pywhy_nx.m_separated(admg, {'z'}, {'x'}, {'y'})}")
 
 # Say we add a bidirected edge between 'z' and 'x', then they are no longer
 # d-separated.
 admg.add_edge("z", "x", admg.bidirected_edge_name)
-print(f"'z' is d-separated from 'x': {nx.m_separated(admg, {'z'}, {'x'}, set())}")
+print(f"'z' is d-separated from 'x': {pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}")
 
 # Markov Equivalence Classes
 # --------------------------

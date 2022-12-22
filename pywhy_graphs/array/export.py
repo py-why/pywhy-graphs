@@ -1,6 +1,5 @@
 from typing import List, Optional, Tuple
 
-import networkx as nx
 import numpy as np
 from numpy.typing import ArrayLike
 
@@ -10,7 +9,7 @@ from pywhy_graphs.config import CLearnEndpoint, EdgeType
 from pywhy_graphs.typing import Node
 
 
-def _graph_to_clearn_arr(G: nx.MixedEdgeGraph) -> Tuple[ArrayLike, List[Node]]:
+def _graph_to_clearn_arr(G) -> Tuple[ArrayLike, List[Node]]:
     # define the array
     arr = np.zeros((G.number_of_nodes(), G.number_of_nodes()), dtype=int)
 
@@ -125,7 +124,7 @@ def _graph_to_clearn_arr(G: nx.MixedEdgeGraph) -> Tuple[ArrayLike, List[Node]]:
     return arr, arr_idx
 
 
-def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) -> nx.MixedEdgeGraph:
+def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str):
     """Convert causal-learn array to a graph object.
 
     Parameters
@@ -140,7 +139,7 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
 
     Returns
     -------
-    graph : nx.MixedEdgeGraph
+    graph : pywhy_nx.MixedEdgeGraph
         The causal graph.
     """
     if arr.shape[0] != arr.shape[1]:
@@ -168,7 +167,7 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
     elif graph_type == "admg":
         graph = pywhy_graphs.ADMG()
     elif graph_type == "cpdag":
-        graph = pywhy_graphs.CPDAG()
+        graph = pywhy_graphs.CPDAG()  # type: ignore
     elif graph_type == "pag":
         graph = pywhy_graphs.PAG()
     else:
@@ -246,10 +245,13 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
                 elif (endpoint_v == CLearnEndpoint.TAIL) and (endpoint_u == CLearnEndpoint.TAIL):
                     graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
             else:
+                if not hasattr(graph, "circle_edge_name"):
+                    raise RuntimeError(f"Graph {graph} is adding circular end points...")
+
                 # Endpoints contain a circle...
                 # u o- v
                 if endpoint_u == CLearnEndpoint.CIRCLE:
-                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)
+                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)  # type: ignore
                 elif endpoint_u == CLearnEndpoint.ARROW:
                     graph.add_edge(v, u, edge_type=graph.directed_edge_name)
                 elif endpoint_u == CLearnEndpoint.TAIL:
@@ -257,7 +259,7 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
 
                 # u -o v
                 if endpoint_v == CLearnEndpoint.CIRCLE:
-                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)  # type: ignore
                 elif endpoint_v == CLearnEndpoint.ARROW:
                     graph.add_edge(u, v, edge_type=graph.directed_edge_name)
                 elif endpoint_v == CLearnEndpoint.TAIL:
@@ -269,7 +271,7 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str) ->
 
 
 def graph_to_arr(
-    G: nx.MixedEdgeGraph,
+    G,
     format: str = "causal-learn",
     node_order: Optional[ArrayLike] = None,
 ) -> Tuple[ArrayLike, List[Node]]:
@@ -277,7 +279,7 @@ def graph_to_arr(
 
     Parameters
     ----------
-    G : nx.MixedEdgeGraph
+    G : pywhy_nx.MixedEdgeGraph
         The mixed edge causal graph.
     format : str
         The format of the numpy array. One of 'causal-learn'. Default

@@ -1,6 +1,7 @@
 import networkx as nx
 
 import pywhy_graphs
+import pywhy_graphs.networkx as pywhy_nx
 
 
 def test_acyclification():
@@ -22,7 +23,7 @@ def test_acyclification():
         ]
     )
     bidirected_edges = nx.Graph([("x1", "x3")])
-    G = nx.MixedEdgeGraph([directed_edges, bidirected_edges], ["directed", "bidirected"])
+    G = pywhy_nx.MixedEdgeGraph([directed_edges, bidirected_edges], ["directed", "bidirected"])
     acyclic_G = pywhy_graphs.acyclification(G)
 
     directed_edges = nx.DiGraph(
@@ -53,7 +54,9 @@ def test_acyclification():
             ("x1", "x6"),
         ]
     )
-    expected_G = nx.MixedEdgeGraph([directed_edges, bidirected_edges], ["directed", "bidirected"])
+    expected_G = pywhy_nx.MixedEdgeGraph(
+        [directed_edges, bidirected_edges], ["directed", "bidirected"]
+    )
 
     for edge_type, graph in acyclic_G.get_graphs().items():
         expected_graph = expected_G.get_graphs(edge_type)

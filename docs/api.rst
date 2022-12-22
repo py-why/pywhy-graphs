@@ -63,6 +63,22 @@ and corresponding causal graphs in pywhy-graphs.
    graph_to_arr
    clearn_arr_to_graph
 
+NetworkX Experimental Functionality
+===================================
+Currently, NetworkX does not support mixed-edge graphs, which are crucial
+for representing causality with latent confounders and selection bias. The
+following represent functionality that we intend to PR eventually into
+networkx. They are included in pywhy-graphs as a temporary bridge. We 
+welcome feedback.
+
+.. currentmodule:: pywhy_graphs.networkx
+.. autosummary::
+   :toctree: generated/
+   
+   MixedEdgeGraph
+   bidirected_to_unobserved_confounder
+   m_separated
+   
 Visualization of causal graphs
 ==============================
 Visualization of causal graphs is different compared to networkx because causal graphs
