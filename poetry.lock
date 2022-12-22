@@ -2021,7 +2021,7 @@ viz = ["pygraphviz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "00957f123cbc41ad6377543604a3da9da138123208a7653e0e65017f26105a7b"
+content-hash = "a2d1c43a3f0dcbf667eb7d5190db56f1da85d42d9dcd7e26e94d0ff8230d530e"
 
 [metadata.files]
 alabaster = [
