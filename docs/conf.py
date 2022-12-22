@@ -109,7 +109,6 @@ numpydoc_xref_ignore = {
     "attributes",
     "dictionary",
     "ArrayLike",
-    "nx.MixedEdgeGraph",
     "pywhy_nx.MixedEdgeGraph",
     # pywhy-graphs
     "causal",
@@ -165,6 +164,7 @@ numpydoc_xref_aliases = {
     "ADMG": "pywhy_graphs.ADMG",
     "PAG": "pywhy_graphs.PAG",
     "CPDAG": "pywhy_graphs.CPDAG",
+    "pywhy_nx.MixedEdgeGraph": "pywhy_graphs.networkx.MixedEdgeGraph",
     # joblib
     "joblib.Parallel": "joblib.Parallel",
     # pandas
