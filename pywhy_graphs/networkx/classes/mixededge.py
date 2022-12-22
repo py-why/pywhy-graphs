@@ -112,11 +112,8 @@ class MixedEdgeGraph:
     def __str__(self):
         """Returns a short summary of the graph.
 
-        Returns
-        -------
-        info : string
-            Graph information including the graph name (if any), graph type, and the
-            number of nodes and edges.
+        Graph information including the graph name (if any), graph type, and the
+        number of nodes and edges.
 
         Examples
         --------
@@ -263,10 +260,11 @@ class MixedEdgeGraph:
         Parameters
         ----------
         n : node
+            The node to query. Identical to ``n in G``.
 
         Returns
         -------
-        has : bool 
+        has : bool
             Whether or not the graph has node 'n'.
 
         Examples
@@ -289,11 +287,6 @@ class MixedEdgeGraph:
     def number_of_nodes(self):
         """Returns the number of nodes in the graph.
 
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
-
         See Also
         --------
         order: identical method
@@ -309,11 +302,6 @@ class MixedEdgeGraph:
 
     def order(self):
         """Returns the number of nodes in the graph.
-
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
 
         See Also
         --------
@@ -348,10 +336,7 @@ class MixedEdgeGraph:
     def __iter__(self):
         """Iterate over the nodes. Use: 'for n in G'.
 
-        Returns
-        -------
-        niter : iterator
-            An iterator over all nodes in the graph.
+        An iterator over all nodes in the graph.
 
         Examples
         --------
@@ -380,11 +365,6 @@ class MixedEdgeGraph:
     def __len__(self):
         """Returns the number of nodes in the graph. Use: 'len(G)'.
 
-        Returns
-        -------
-        nnodes : int
-            The number of nodes in the graph.
-
         See Also
         --------
         number_of_nodes: identical method
@@ -402,15 +382,7 @@ class MixedEdgeGraph:
     def __getitem__(self, n):
         """Returns a dict of neighbors of node n.  Use: 'G[n]'.
 
-        Parameters
-        ----------
-        n : node
-           A node in the graph.
-
-        Returns
-        -------
-        adj_dict : dictionary
-           The adjacency dictionary for nodes connected to n.
+        The adjacency dictionary for nodes connected to n.
 
         Notes
         -----
@@ -1093,7 +1065,7 @@ class MixedEdgeGraph:
 
         Returns
         -------
-        deg_dicts : dictionary of DegreeView or int
+        deg_dicts : dictionary of DegreeView | int
             If multiple nodes are requested (the default), returns a ``DegreeView``
             mapping nodes to their degree.
             If a single node is requested, returns the degree of the node as an integer.
@@ -1120,7 +1092,6 @@ class MixedEdgeGraph:
         size : float
             The number of edges or
             (if weight keyword is provided) the total weight sum.
-
             If weight is None, returns an int. Otherwise a float
             (or more general numeric if the weights are more general).
 

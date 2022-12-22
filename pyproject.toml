@@ -70,7 +70,7 @@ optional = true
 poethepoet = "^0.16.0"
 portray = "^1.7.0"
 matplotlib = { version = "^3.5" }
-numpydoc = { version = "^1.4" }
+numpydoc = { version = "1.4" }
 pydata-sphinx-theme = { version = "^0.9.0" }
 sphinx = { version = "^5.1.1" }
 sphinxcontrib-bibtex = { version = "^2.4.2" }

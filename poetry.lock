@@ -976,7 +976,7 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "numpydoc"
-version = "1.5.0"
+version = "1.4.0"
 description = "Sphinx extension to support docstrings in Numpy format"
 category = "dev"
 optional = false
@@ -984,7 +984,7 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 Jinja2 = ">=2.10"
-sphinx = ">=4.2"
+sphinx = ">=3.0"
 
 [package.extras]
 testing = ["matplotlib", "pytest", "pytest-cov"]
@@ -2021,7 +2021,7 @@ viz = ["pygraphviz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "a2d1c43a3f0dcbf667eb7d5190db56f1da85d42d9dcd7e26e94d0ff8230d530e"
+content-hash = "3e016aebac3f9681adf9fe64b3fc8dd5306bdcc589c2abc006ac753aae631bcf"
 
 [metadata.files]
 alabaster = [
@@ -2709,8 +2709,8 @@ numpy = [
     {file = "numpy-1.24.0.tar.gz", hash = "sha256:c4ab7c9711fe6b235e86487ca74c1b092a6dd59a3cb45b63241ea0a148501853"},
 ]
 numpydoc = [
-    {file = "numpydoc-1.5.0-py3-none-any.whl", hash = "sha256:c997759fb6fc32662801cece76491eedbc0ec619b514932ffd2b270ae89c07f9"},
-    {file = "numpydoc-1.5.0.tar.gz", hash = "sha256:b0db7b75a32367a0e25c23b397842c65e344a1206524d16c8069f0a1c91b5f4c"},
+    {file = "numpydoc-1.4.0-py3-none-any.whl", hash = "sha256:fd26258868ebcc75c816fe68e1d41e3b55bd410941acfb969dee3eef6e5cf260"},
+    {file = "numpydoc-1.4.0.tar.gz", hash = "sha256:9494daf1c7612f59905fa09e65c9b8a90bbacb3804d91f7a94e778831e6fcfa5"},
 ]
 packaging = [
     {file = "packaging-22.0-py3-none-any.whl", hash = "sha256:957e2148ba0e1a3b282772e791ef1d8083648bc131c8ab0c1feba110ce1146c3"},
