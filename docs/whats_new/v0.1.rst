@@ -32,7 +32,7 @@ Changelog
 - |Feature| Implement an array API wrapper to convert between causal graphs in pywhy-graphs and causal graphs in ``causal-learn``, by `Adam Li`_ (:pr:`16`)
 - |Feature| Implement an acyclification algorithm for converting cyclic graphs to acyclic with :func:`pywhy_graphs.algorithms.acyclification`, by `Adam Li`_ (:pr:`17`)
 - |Feature| Adding a layout for the nodes positions in the :func:`pywhy_graphs.viz.draw` function, by `Julien Siebert`_ (:pr:`26`)
-- |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`128`)
+- |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`29`)
 
 Code and Documentation Contributors
 -----------------------------------
