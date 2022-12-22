@@ -1,9 +1,7 @@
 from typing import Optional
 
-import pywhy_graphs.networkx as pywhy_nx
 
-
-def draw(G: pywhy_nx.MixedEdgeGraph, direction: Optional[str] = None, pos: Optional[dict] = None):
+def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None):
     """Visualize the graph.
 
     Parameters

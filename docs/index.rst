@@ -20,7 +20,7 @@ Contents
 
    installation
    api
-   use
+   Usage<use>
    whats_new
 
 Team

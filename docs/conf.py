@@ -313,6 +313,7 @@ nitpick_ignore = [
     ("py:obj", "nx.MixedEdgeGraph"),
     ("py:obj", "networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_graphs.networkx.MixedEdgeGraph"),
+    ("py:obj", "pywhy_nx.MixedEdgeGraph"),
     ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
     ("py:class", "numpy._typing._array_like._SupportsArray"),
     ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
