@@ -488,9 +488,6 @@ class MixedEdgeGraph:
         See Also
         --------
         add_edges_from : add a collection of edges
-
-        Notes
-        -----
         """
         u, v = u_of_edge, v_of_edge
         # add nodes
