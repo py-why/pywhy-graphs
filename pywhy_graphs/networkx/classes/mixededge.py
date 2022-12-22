@@ -264,6 +264,11 @@ class MixedEdgeGraph:
         ----------
         n : node
 
+        Returns
+        -------
+        has : bool 
+            Whether or not the graph has node 'n'.
+
         Examples
         --------
         >>> G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc

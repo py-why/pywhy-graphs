@@ -39,7 +39,6 @@ class ADMG(pywhy_nx.MixedEdgeGraph, AncestralMixin):
     --------
     networkx.DiGraph
     networkx.Graph
-    networkx.MixedEdgeGraph
 
     Notes
     -----
