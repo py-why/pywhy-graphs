@@ -6,11 +6,8 @@ import networkx as nx
 from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
 from pywhy_graphs.typing import Node
 
-from .timeseries import (
-    StationaryTimeSeriesDiGraph,
-    StationaryTimeSeriesGraph,
-    StationaryTimeSeriesMixedEdgeGraph,
-)
+from .mixededge import StationaryTimeSeriesMixedEdgeGraph
+from .timeseries import StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph
 
 
 class StationaryTimeSeriesPAG(
@@ -128,7 +125,7 @@ class StationaryTimeSeriesPAG(
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
         u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
         self.remove_edge(u, v, self.circle_edge_name)
-        self.add_edge(u, v, self._directed_name)
+        self.add_edge(u, v, self._directed_name)  # type: ignore
 
     def possible_children(self, n: Node) -> Iterator[Node]:
         """Return an iterator over children of node n.

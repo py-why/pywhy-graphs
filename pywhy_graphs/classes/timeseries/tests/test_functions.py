@@ -2,7 +2,6 @@ import networkx as nx
 import numpy as np
 import pytest
 
-from pywhy_graphs import StationaryTimeSeriesDiGraph
 from pywhy_graphs.classes.timeseries.functions import (
     get_summary_graph,
     has_homologous_edges,

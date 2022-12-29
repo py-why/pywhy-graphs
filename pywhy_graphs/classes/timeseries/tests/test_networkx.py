@@ -1,4 +1,4 @@
-"""Test basic functions that have an analagous version in networkx."""
+"""Test basic functions that have an analogous version in networkx."""
 
 from itertools import combinations
 

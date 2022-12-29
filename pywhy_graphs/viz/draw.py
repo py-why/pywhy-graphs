@@ -1,6 +1,5 @@
 from typing import List, Optional, Tuple
 
-
 from pywhy_graphs.classes.timeseries import TimeSeriesDiGraph
 from pywhy_graphs.typing import Node
 

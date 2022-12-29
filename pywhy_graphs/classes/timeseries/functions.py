@@ -26,7 +26,7 @@ def complete_ts_graph(
 ) -> TimeSeriesGraph:
     """Create a complete time-series graph.
 
-    An analagous function for complete graph from networkx.
+    An analogous function for complete graph from networkx.
 
     Parameters
     ----------

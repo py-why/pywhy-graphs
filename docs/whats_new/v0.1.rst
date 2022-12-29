@@ -26,7 +26,6 @@ Version 0.1
 Changelog
 ---------
 
-- |Major Feature| Implement a graph class for time-series graphs :class:`pywhy_graphs.StationaryTimeSeriesMixedEdgeGraph`, by `Adam Li`_ (:gh:``)
 - |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:pr:`6`)
 - |Feature| Implement and test the :class:`pywhy_graphs.PAG` for PAGs, by `Adam Li`_ (:pr:`9`)
 - |Feature| Implement and test various PAG algorithms :func:`pywhy_graphs.algorithms.possible_ancestors`, :func:`pywhy_graphs.algorithms.possible_descendants`, :func:`pywhy_graphs.algorithms.discriminating_path`, :func:`pywhy_graphs.algorithms.pds`, :func:`pywhy_graphs.algorithms.pds_path`, and :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Adam Li`_ (:pr:`10`)
@@ -34,6 +33,7 @@ Changelog
 - |Feature| Implement an acyclification algorithm for converting cyclic graphs to acyclic with :func:`pywhy_graphs.algorithms.acyclification`, by `Adam Li`_ (:pr:`17`)
 - |Feature| Adding a layout for the nodes positions in the :func:`pywhy_graphs.viz.draw` function, by `Julien Siebert`_ (:pr:`26`)
 - |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`29`)
+- |Major Feature| Implement a graph class for time-series graphs :class:`pywhy_graphs.StationaryTimeSeriesMixedEdgeGraph`, by `Adam Li`_ (:gh:`21`)
 
 Code and Documentation Contributors
 -----------------------------------

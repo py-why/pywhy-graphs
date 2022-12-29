@@ -110,7 +110,6 @@ class BaseTimeSeriesNetworkxOperations:
         assert nx.is_isomorphic(G, G_copy)
 
 
-
 class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
     """Test basic node and properties of time-series graphs.
 
@@ -229,6 +228,83 @@ class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
                 assert nx.d_separated(G_copy, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {})
                 assert not nx.d_separated(double_G, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {})
 
+    def test_add_edge(self):
+        max_lag = self.max_lag
+        G = self.klass(max_lag=max_lag)
+
+        # test errors with adding edges
+        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
+            G.add_edge(1, 2)
+        with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
+            G.add_edge((1, -2, 3), (1, 0))
+        with pytest.raises(ValueError, match="All lag points should be 0, or less"):
+            G.add_edge((1, 2), (1, 0))
+
+        # now test adding/removing lagged edges
+        # stationarity should be maintained
+        G.add_edge((1, -1), (1, 0))
+        assert G.has_edge((1, -1), (1, 0))
+        to_lag = 0
+        if G.stationary:
+            for lag in range(1, max_lag):
+                assert G.has_edge((1, -lag), (1, -to_lag))
+                to_lag = lag
+        G.remove_edge((1, -1), (1, 0))
+        assert len(G.edges) == 0
+
+        if max_lag > 2:
+            G.add_edge((1, -2), (1, 0))
+            to_lag = 0
+            from_lag = 2
+            if G.stationary:
+                for lag in range(2, max_lag + 1):
+                    assert G.has_edge((1, -from_lag), (1, -to_lag))
+                    to_lag += 1
+                    from_lag += 1
+
+            G.remove_edge((1, -2), (1, 0))
+            assert len(G.edges) == 0
+
+        # now test adding/removing contemporaneous edges
+        # stationarity should be maintained
+        G.add_edge((2, 0), (1, 0))
+        assert G.has_edge((2, 0), (1, 0))
+        if G.stationary:
+            for lag in range(max_lag):
+                assert G.has_edge((2, -lag), (1, -lag))
+        G.remove_edge((2, 0), (1, 0))
+        assert len(G.edges) == 0
+
+        # when adding edges, the nodes should all be added
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+        ]
+        G = self.klass(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+        for node in ["x1", "x2", "x3"]:
+            for lag in range(max_lag + 1):
+                assert G.has_node((node, -lag))
+
+    def test_add_edges_from(self):
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x1", -1), ("x2", 0)),
+            (("x3", -1), ("x2", 0)),
+            (("x3", -1), ("x3", 0)),
+        ]
+        max_lag = self.max_lag
+        G = self.klass(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+        variables = ("x1", "x2", "x3")
+        for var in variables:
+            assert var in G.variables
+
+            for lag in range(G.max_lag + 1):
+                assert G.has_node((var, -lag))
+
     def test_remove_homologous_edges(self):
         # create our own instant
         G_func = self.klass
@@ -300,6 +376,77 @@ class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
             assert has_homologous_edges(G, ("x1", -1), ("x1", 0))
             assert len(orig_G.edges) + G.max_lag - 1 == len(G.edges)
 
+    def test_remove_backwards(self):
+        max_lag = self.max_lag
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x2", -1), ("x2", 0)),
+            (("x2", -1), ("x1", 0)),
+            (("x1", -3), ("x1", 0)),
+        ]
+        G = self.klass(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # create a copy to compare tests against
+        orig_G = G.copy()
+
+        # test backwards removal does not remove unnecessary edges
+        last_edge = (("x1", -max_lag), ("x1", -(max_lag - 1)))
+        G.remove_homologous_edges(*last_edge, direction="backwards")
+        for edge in orig_G.edges:
+            if set(edge) != set(last_edge):
+                assert edge in G.edges
+            else:
+                assert edge not in G.edges
+
+        # test backwards removal should remove all backwards edges
+        G.add_edge(*last_edge)
+        G.remove_homologous_edges(("x1", -1), ("x1", 0), direction="backwards")
+        for edge in orig_G.edges:
+            u, v = edge
+            u_lag = u[1]
+            v_lag = v[1]
+            if ((u_lag + 1 == v_lag) or (v_lag + 1 == u_lag)) and u[0] == v[0] and u[0] == "x1":
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+    def test_remove_forwards(self):
+        max_lag = self.max_lag
+        ts_edges = [
+            (("x1", -1), ("x1", 0)),
+            (("x2", -1), ("x2", 0)),
+            (("x2", -1), ("x1", 0)),
+            (("x1", -3), ("x1", 0)),
+        ]
+        G = self.klass(max_lag=max_lag)
+        G.add_edges_from(ts_edges)
+
+        # create a copy to compare tests against
+        orig_G = G.copy()
+
+        # test forwards removal does not remove unnecessary edges
+        first_edge = (("x1", -1), ("x1", 0))
+        G.remove_homologous_edges(*first_edge, direction="forward")
+        for edge in orig_G.edges:
+            if set(edge) == set(first_edge):
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
+        # test forwards removal should remove all forward edges
+        G.add_edge(*first_edge)
+        last_edge = (("x1", -max_lag), ("x1", -(max_lag - 1)))
+        G.remove_homologous_edges(*last_edge, direction="forward")
+        for edge in orig_G.edges:
+            u, v = edge
+            u_lag = u[1]
+            v_lag = v[1]
+            if ((u_lag + 1 == v_lag) or (v_lag + 1 == u_lag)) and u[0] == v[0] and u[0] == "x1":
+                assert edge not in G.edges
+            else:
+                assert edge in G.edges
+
 
 class BasicStationaryTimeSeriesGraphTester(BaseTimeSeriesGraphTester):
     def test_nodes_at(self):
@@ -336,7 +483,7 @@ class BasicStationaryTimeSeriesGraphTester(BaseTimeSeriesGraphTester):
 
 
 class TestBaseTimesSeriesGraph(BaseTimeSeriesGraphTester):
-    def setup(self):
+    def setup_method(self):
         max_lag = 3
         G = TimeSeriesGraph(max_lag=max_lag)
         ts_edges = [
@@ -354,7 +501,7 @@ class TestBaseTimesSeriesGraph(BaseTimeSeriesGraphTester):
 
 
 class TestBaseTimesSeriesDiGraph(BaseTimeSeriesGraphTester):
-    def setup(self):
+    def setup_method(self):
         max_lag = 3
         G = TimeSeriesDiGraph(max_lag=max_lag)
         ts_edges = [
@@ -374,7 +521,7 @@ class TestBaseTimesSeriesDiGraph(BaseTimeSeriesGraphTester):
 class TestStationaryDiGraph(BasicStationaryTimeSeriesGraphTester):
     """Test properties of a stationary time-series graph."""
 
-    def setup(self):
+    def setup_method(self):
         max_lag = 3
         G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
         ts_edges = [
@@ -394,7 +541,7 @@ class TestStationaryDiGraph(BasicStationaryTimeSeriesGraphTester):
 class TestStationaryGraph(BasicStationaryTimeSeriesGraphTester):
     """Test properties of a stationary time-series graph."""
 
-    def setup(self):
+    def setup_method(self):
         max_lag = 3
         G = StationaryTimeSeriesGraph(max_lag=max_lag)
         ts_edges = [

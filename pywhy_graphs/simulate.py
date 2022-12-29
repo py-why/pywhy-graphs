@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable, List, Optional
 
 import networkx as nx
 import numpy as np
@@ -6,15 +6,16 @@ import pandas as pd
 import scipy.stats
 from numpy.typing import NDArray
 
+import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.classes import StationaryTimeSeriesDiGraph
-from pywhy_graphs.typing import TsNode
+from pywhy_graphs.typing import Node
 
 
 def simulate_data_from_var(
     var_arr: NDArray,
     n_times: int = 1000,
     n_realizations: int = 1,
-    var_names: List[TsNode] = None,
+    var_names: Optional[List[Node]] = None,
     random_state: int = None,
 ):
     """Simulate data from an already set VAR process.
@@ -192,7 +193,7 @@ def simulate_linear_var_process(
 
     # we sample weights from our weight distribution to fill
     # in every non-zero index of our VAR array
-    weights = weight_dist.rvs(size=nnz)
+    weights = weight_dist.rvs(size=nnz)  # type: ignore
     ts_graph_arr[nnz_index] = weights
 
     # our resulting VAR array is the function, which we will
@@ -208,7 +209,7 @@ def simulate_linear_var_process(
 
 
 def simulate_var_process_from_summary_graph(
-    G: nx.MixedEdgeGraph, max_lag=1, n_times=1000, random_state: int = None
+    G: pywhy_nx.MixedEdgeGraph, max_lag=1, n_times=1000, random_state: int = None
 ):
     """Simulate a VAR(max_lag) process starting from a summary graph.
 

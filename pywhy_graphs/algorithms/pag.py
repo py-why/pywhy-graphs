@@ -795,11 +795,11 @@ def definite_m_separated(
     directed_edge_name="directed",
     circle_edge_name="cirlcle",
 ):
-    """Check definite m-separation among 'x' and 'y' given 'z' in mixed-edge partial ancestral graph G.
+    """Check definite m-separation among 'x' and 'y' given 'z' in partial ancestral graph G.
 
-    A partial ancestral graph (PAG) is defined with directed edges (``->``), bidirected edges (``<->``),
-    and circle-endpoint edges (``o-*``, where the ``*`` for example can mean an arrowhead from a
-    directed edge).
+    A partial ancestral graph (PAG) is defined with directed edges (``->``), bidirected edges
+    (``<->``), and circle-endpoint edges (``o-*``, where the ``*`` for example can mean an
+    arrowhead from a directed edge).
 
     This algorithm implements the definite m-separation check, which checks for the absence of
     possibly m-connecting paths between 'x' and 'y' given 'z'.
@@ -843,7 +843,7 @@ def definite_m_separated(
     subgraph comprised of only circle edges. If there is a path
     """
     if not isinstance(G, PAG):
-        raise ValueError(f"Definite m-separated is only defined for a PAG.")
+        raise ValueError("Definite m-separated is only defined for a PAG.")
 
     # this proceeds by first removing unnecessary nodes
 

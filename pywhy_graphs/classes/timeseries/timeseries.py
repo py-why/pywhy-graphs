@@ -3,10 +3,10 @@
 """
 import networkx as nx
 
-from .base import BaseTimeSeriesGraph, tsdict
+from pywhy_graphs.classes.timeseries.base import BaseTimeSeriesGraph, TsGraphEdgeMixin
 
 
-class TimeSeriesGraph(BaseTimeSeriesGraph, nx.Graph):
+class TimeSeriesGraph(BaseTimeSeriesGraph, TsGraphEdgeMixin, nx.Graph):
     """A class to imbue undirected graph with time-series structure.
 
     This should not be used directly. See ``BaseTimeSeriesGraph`` for documentation on the
@@ -43,7 +43,7 @@ class TimeSeriesGraph(BaseTimeSeriesGraph, nx.Graph):
                 )
 
 
-class TimeSeriesDiGraph(BaseTimeSeriesGraph, nx.DiGraph):
+class TimeSeriesDiGraph(BaseTimeSeriesGraph, TsGraphEdgeMixin, nx.DiGraph):
     """A class to imbue directed graph with time-series structure.
 
     See ``BaseTimeSeriesGraph`` for documentation on the
@@ -80,45 +80,6 @@ class TimeSeriesDiGraph(BaseTimeSeriesGraph, nx.DiGraph):
                 )
 
 
-class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, nx.MixedEdgeGraph):
-    """A class to imbue mixed-edge graph with time-series structure.
-
-    This should not be used directly.
-    """
-
-    # whether or not the graph should be assumed to be stationary
-    stationary: bool = False
-
-    # overloaded factory dictionary types to hold time-series nodes
-    node_dict_factory = tsdict
-    node_attr_dict_factory = tsdict
-
-    def __init__(self, graphs=None, edge_types=None, max_lag=1, **attr):
-        if max_lag is not None:
-            if graphs is not None and not all(max_lag == graph.max_lag for graph in graphs):
-                raise ValueError(
-                    f"Passing in max lag of {max_lag} to time-series mixed-edge graph, but "
-                    f"sub-graphs have max-lag of {[graph.max_lag for graph in graphs]}."
-                )
-        elif graphs is not None:
-            # infer max lag
-            max_lags = [graph.max_lag for graph in graphs]
-            if len(np.unique(max_lags)) != 1:
-                raise ValueError(f"All max lags in passed in graphs must be equal: {max_lags}.")
-        else:
-            max_lag = 1
-
-        if graphs is not None and not all(
-            issubclass(graph.__class__, (TimeSeriesGraph, TimeSeriesDiGraph)) for graph in graphs
-        ):
-            raise RuntimeError("All graphs for timeseries mixed-edge graph")
-
-        attr.update(dict(max_lag=max_lag))
-        self.graph = dict()
-        self.graph["max_lag"] = max_lag
-        super().__init__(graphs, edge_types, **attr)
-
-
 class StationaryTimeSeriesGraph(TimeSeriesGraph):
     """Stationary time-series graph without directionality on edges.
 
@@ -149,9 +110,8 @@ class StationaryTimeSeriesGraph(TimeSeriesGraph):
     def __init__(
         self, incoming_graph_data=None, max_lag: int = 1, check_time_direction: bool = True, **attr
     ):
-        attr.update(dict(max_lag=max_lag, check_time_direction=check_time_direction))
         super(StationaryTimeSeriesGraph, self).__init__(
-            incoming_graph_data=incoming_graph_data, **attr
+            incoming_graph_data=incoming_graph_data, max_lag=max_lag, **attr
         )
 
 
@@ -199,130 +159,6 @@ class StationaryTimeSeriesDiGraph(TimeSeriesDiGraph):
     def __init__(
         self, incoming_graph_data=None, max_lag: int = 1, check_time_direction: bool = True, **attr
     ):
-        attr.update(dict(max_lag=max_lag, check_time_direction=check_time_direction))
         super(StationaryTimeSeriesDiGraph, self).__init__(
-            incoming_graph_data=incoming_graph_data, **attr
+            incoming_graph_data=incoming_graph_data, max_lag=max_lag, **attr
         )
-
-
-class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
-    """A mixed-edge causal graph for stationary time-series.
-
-    Parameters
-    ----------
-    graphs : List of Graph | DiGraph
-        A list of networkx single-edge graphs.
-    edge_types : List of str
-        A list of names for each edge type.
-    max_lag : int, optional
-        The maximum lag, by default None.
-    attr : keyword arguments, optional (default= no attributes)
-        Attributes to add to graph as key=value pairs.
-    """
-
-    def __init__(self, graphs=None, edge_types=None, max_lag: int = None, **attr):
-        attr.update(dict(max_lag=max_lag))
-        super().__init__(graphs, edge_types, **attr)
-
-    def copy(self, double_max_lag=True):
-        """Returns a copy of the graph.
-
-        The copy method by default returns an independent shallow copy
-        of the graph and attributes. That is, if an attribute is a
-        container, that container is shared by the original an the copy.
-        Use Python's `copy.deepcopy` for new containers.
-
-        Notes
-        -----
-        All copies reproduce the graph structure, but data attributes
-        may be handled in different ways. There are four types of copies
-        of a graph that people might want.
-
-        Deepcopy -- A "deepcopy" copies the graph structure as well as
-        all data attributes and any objects they might contain.
-        The entire graph object is new so that changes in the copy
-        do not affect the original object. (see Python's copy.deepcopy)
-
-        Data Reference (Shallow) -- For a shallow copy the graph structure
-        is copied but the edge, node and graph attribute dicts are
-        references to those in the original graph. This saves
-        time and memory but could cause confusion if you change an attribute
-        in one graph and it changes the attribute in the other.
-        NetworkX does not provide this level of shallow copy.
-
-        Independent Shallow -- This copy creates new independent attribute
-        dicts and then does a shallow copy of the attributes. That is, any
-        attributes that are containers are shared between the new graph
-        and the original. This is exactly what ``dict.copy()`` provides.
-        You can obtain this style copy using:
-
-            >>> G = nx.path_graph(5)
-            >>> H = G.copy()
-            >>> H = G.copy(as_view=False)
-            >>> H = nx.Graph(G)
-            >>> H = G.__class__(G)
-
-        Fresh Data -- For fresh data, the graph structure is copied while
-        new empty data attribute dicts are created. The resulting graph
-        is independent of the original and it has no edge, node or graph
-        attributes. Fresh copies are not enabled. Instead use:
-
-            >>> H = G.__class__()
-            >>> H.add_nodes_from(G)
-            >>> H.add_edges_from(G.edges)
-
-        View -- Inspired by dict-views, graph-views act like read-only
-        versions of the original graph, providing a copy of the original
-        structure without requiring any memory for copying the information.
-
-        See the Python copy module for more information on shallow
-        and deep copies, https://docs.python.org/3/library/copy.html.
-
-        Parameters
-        ----------
-        as_view : bool, optional (default=False)
-            If True, the returned graph-view provides a read-only view
-            of the original graph without actually copying any data.
-
-        Returns
-        -------
-        G : Graph
-            A copy of the graph.
-
-        See Also
-        --------
-        to_directed: return a directed copy of the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> H = G.copy()
-
-        """
-        G = self.__class__()
-        G.graph.update(self.graph)
-
-        if double_max_lag:
-            G.graph["max_lag"] = G.max_lag * 2
-            for graph in G.get_graphs().values:
-                graph.graph["max_lag"] = G.max_lag
-
-        graph_attr = G.graph
-        # add all internal graphs to the copy
-        for edge_type in self.edge_types:
-            graph_func = self._internal_graph_nx_type(edge_type=edge_type)
-
-            if edge_type not in G.edge_types:
-                G.add_edge_type(graph_func(**graph_attr), edge_type)
-
-        # add all nodes and edges now
-        G.add_nodes_from((n, d.copy()) for n, d in self.nodes.items())
-        for edge_type, adj in self.adj.items():
-            for u, nbrs in adj.items():
-                for v, datadict in nbrs.items():
-                    if v[1] == 0:
-                        G.add_edge(u, v, edge_type, **datadict.copy())
-
-                    G.add_nodes_from((n, d.copy()) for n, d in self._node.items() if n[1] == 0)
-        G.set_auto_removal(None)
-        return G

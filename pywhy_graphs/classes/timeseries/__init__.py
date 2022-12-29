@@ -1,12 +1,11 @@
 from .cpdag import StationaryTimeSeriesCPDAG
+from .mixededge import StationaryTimeSeriesMixedEdgeGraph, TimeSeriesMixedEdgeGraph
 from .pag import StationaryTimeSeriesPAG
 from .timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
-    StationaryTimeSeriesMixedEdgeGraph,
     TimeSeriesDiGraph,
     TimeSeriesGraph,
-    TimeSeriesMixedEdgeGraph,
 )
 
 from .functions import (  # isort: skip

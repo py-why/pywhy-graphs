@@ -18,5 +18,6 @@ def test_array_to_lagged_links():
     expected_links = defaultdict(list)
     for idx in range(n_nodes):
         for it in range(1, max_lag):
-            expected_links[idx].append(((idx, it), 1.0))
+            # tigramite: expected that lags are stored as negative numbers
+            expected_links[idx].append(((idx, -it), 1.0))
     assert lagged_links == expected_links

@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 from copy import copy
 from typing import Dict, Iterable, Iterator, List, Optional, Set
 
@@ -76,11 +78,11 @@ class TsGraphNodeMixin:
                 nodes.add(node)
         return nodes
 
-    def add_node(self, node_name, **attr):
+    def add_node(self, node_for_adding, **attr):
         """Add node in time."""
-        self._check_ts_node(node_name)
-        super().add_node(node_name, **attr)
-        var_name, _ = node_name
+        self._check_ts_node(node_for_adding)
+        super().add_node(node_for_adding, **attr)
+        var_name, _ = node_for_adding
 
         for t in range(self._max_lag + 1):
             super().add_node((var_name, -t), **attr)
@@ -116,7 +118,7 @@ class TsGraphNodeMixin:
 
     def remove_variable(self, variable_name):
         for lag in range(self.max_lag + 1):
-            # we only remove nodes if they are within the set of noes
+            # we only remove nodes if they are within the set of nodes
             node_name = (variable_name, -lag)
             if node_name in self.nodes:
                 self.remove_node(node_name)
@@ -124,6 +126,7 @@ class TsGraphNodeMixin:
     def remove_variables_from(self, ebunch):
         for variable_name in ebunch:
             self.remove_variable(variable_name)
+
 
 class TsGraphPropertyMixin:
     """A mixin class for time-series graph properties."""
@@ -249,6 +252,7 @@ class TsGraphEdgePropertyMixin:
     as contemporaneous and lagged neighbors.
     """
 
+    stationary: bool
     graph: Dict
     edges: Iterator
 
@@ -290,7 +294,7 @@ class TsGraphEdgePropertyMixin:
             nbrs = self.neighbors(u)
         return [nbr for nbr in nbrs if nbr[1] == u[1]]
 
-    def set_max_lag(self, lag: int):
+    def set_max_lag(self: nx.Graph, lag: int):
         """Set maximum-lag in time-series graph.
 
         By modifying the max-lag, certain nodes in time and edges will
@@ -471,6 +475,8 @@ class TsGraphEdgeMixin:
                 to_t += 1
                 from_t += 1
         elif direction == "forward":
+            to_t = v_lag
+            from_t = u_lag
             # decrease lag moving forward
             for _ in range(v_lag, -1, -1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
@@ -478,6 +484,8 @@ class TsGraphEdgeMixin:
                 to_t -= 1
                 from_t -= 1
         elif direction == "backwards":
+            to_t = v_lag
+            from_t = u_lag
             for _ in range(u_lag, self._max_lag + 1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
                     super().remove_edge((u, -from_t), (v, -to_t))
@@ -525,9 +533,7 @@ class tsdict(dict):
         dict.__setitem__(self, key, val)
 
 
-class BaseTimeSeriesGraph(
-    TsGraphNodeMixin, TsGraphPropertyMixin, TsGraphEdgePropertyMixin, TsGraphEdgeMixin
-):
+class BaseTimeSeriesGraph(TsGraphNodeMixin, TsGraphPropertyMixin, TsGraphEdgePropertyMixin):
     """A mixin class to imbue networkx graphs with time-series structure.
 
     This should not be used directly.
