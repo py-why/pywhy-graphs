@@ -68,12 +68,16 @@ copybutton_prompt_is_regexp = True
 # generate autosummary even if no references
 # -- sphinx.ext.autosummary
 autosummary_generate = True
-autodoc_default_options = {"inherited-members": None}
+autodoc_default_options = {
+    "inherited-members": None,
+}
+autodoc_inherit_docstrings = True
 # autodoc_typehints = "signature"
 
 # -- numpydoc
 # Below is needed to prevent errors
-numpydoc_xref_param_type = True
+# numpydoc_xref_param_type = True
+numpydoc_show_class_members = False
 numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
 numpydoc_use_blockquotes = True
@@ -115,6 +119,10 @@ numpydoc_xref_ignore = {
     "Node",
     "circular",
     "endpoint",
+    "TsNode",
+    "tsdict",
+    "TimeSeriesGraph",
+    "TimeSeriesDiGraph",
     # networkx
     "node",
     "nodes",
@@ -136,6 +144,7 @@ numpydoc_xref_ignore = {
     "Graph",
     "sets",
     "value",
+    'edges is None', 'nodes is None', 'G = nx.DiGraph(D)',
     # shapes
     "n_times",
     "obj",
@@ -165,6 +174,9 @@ numpydoc_xref_aliases = {
     "PAG": "pywhy_graphs.PAG",
     "CPDAG": "pywhy_graphs.CPDAG",
     "pywhy_nx.MixedEdgeGraph": "pywhy_graphs.networkx.MixedEdgeGraph",
+    "TimeSeriesGraph": "pywhy_graphs.classes.timeseries.TimeSeriesGraph",
+    "TimeSeriesDiGraph": "pywhy_graphs.classes.timeseries.TimeSeriesDiGraph",
+    "TimeSeriesMixedEdgeGraph": "pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph",
     # joblib
     "joblib.Parallel": "joblib.Parallel",
     # pandas
@@ -315,9 +327,21 @@ nitpick_ignore = [
     ("py:obj", "networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_graphs.networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_nx.MixedEdgeGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesDiGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesMixedEdgeGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.StationaryTimeSeriesGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.StationaryTimeSeriesDiGraph"),
+    ("py:class", "pywhy_nx.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph"),
+    ("py:class", "pywhy_graphs.classes.timeseries.base.tsdict"),
     ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
     ("py:class", "numpy._typing._array_like._SupportsArray"),
     ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
+]
+nitpick_ignore_regex = [
+    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesGraph.*"),
+    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesDiGraph.*"),
+    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesPAG.*"),
 ]
 
 

@@ -117,7 +117,7 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         if not self.has_edge(u, v, self._undirected_name):
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
 
-        self.remove_edge(v, u, self._undirected_name)
+        self.remove_edge(u, v, self._undirected_name)
         self.add_edge(u, v, self._directed_name)
 
     def possible_children(self, n: Node) -> Iterator[Node]:

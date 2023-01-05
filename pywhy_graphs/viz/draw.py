@@ -1,15 +1,12 @@
 from typing import List, Optional, Tuple
 
-from pywhy_graphs.classes.timeseries import TimeSeriesDiGraph
-from pywhy_graphs.typing import Node
-
 
 def _draw_pag_edges(
     dot,
-    directed_edges=None,
+    directed_edges: List[Tuple] = None,
     circle_edges: List[Tuple] = None,
-    undirected_edges=None,
-    bidirected_edges=None,
+    undirected_edges: List[Tuple] = None,
+    bidirected_edges: List[Tuple] = None,
     **attrs,
 ):
     # keep track of edges with circular edges between each other because we want to
@@ -57,61 +54,7 @@ def _draw_pag_edges(
     return dot, found_circle_sibs
 
 
-def draw_tsgraph(
-    G: TimeSeriesDiGraph,
-    direction: Optional[str] = None,
-    node_order: Optional[List[Node]] = None,
-    **attrs,
-):
-    """Visualize stationary time-series graphs.
-
-    Here, time-series graph is drawn from left to right, where the left-most side
-    represents the maximum-lag nodes and edges, and then as we move towards the right,
-    the lag decreases.
-
-    Only the compact ts-DMG is visualized.
-
-    Parameters
-    ----------
-    G : BaseTimeSeriesDiGraph
-        _description_
-    direction : Optional[str], optional
-        _description_, by default None
-    """
-    from graphviz import Digraph
-
-    dot = Digraph()
-
-    max_lag = G.max_lag
-
-    # set direction from left to right if that's preferred
-    if direction == "LR":
-        dot.graph_attr["rankdir"] = direction
-
-    dot.graph_attr["ordering"] = "out"
-
-    # first define the node order if None is given
-    if node_order is None:
-        node_order = list(G.variables)
-
-    shape = "square"  # 'plaintext'
-
-    for variable in node_order:
-        # start at max-lag
-        for lag in range(max_lag, -1, -1):
-            # first draw node
-            node = f"({variable}, {-lag})"
-            dot.node(node, shape=shape, height=".5", width=".5")
-
-            # draw all lagged edges wrt this node
-            lagged_nbrs = G.lagged_neighbors((variable, -lag))
-            for nbr in lagged_nbrs:
-                parent = f"{nbr}"
-                dot.edge(parent, node, color="blue", **attrs)
-    return dot
-
-
-def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, **attrs):
+def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="square", **attrs):
     """Visualize the graph.
 
     Parameters
@@ -119,11 +62,13 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, **attrs
     G : pywhy_nx.MixedEdgeGraph
         The mixed edge graph.
     direction : str, optional
-        The direction, by default None.
+        The direction, by default None. See: https://graphviz.org/docs/attrs/rankdir/.
     pos : dict, optional
         The positions of the nodes keyed by node with (x, y) coordinates as values.
         By default None, which will
         use the default layout from graphviz.
+    shape : str
+        The shape of each node. By default 'square'. Can be 'circle', 'plaintext'.
     attrs : dict
         Any additional edge attributes (must be strings). For more
         information, see documentation for GraphViz.
@@ -140,8 +85,6 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, **attrs
     # set direction from left to right if that's preferred
     if direction == "LR":
         dot.graph_attr["rankdir"] = direction
-
-    shape = "square"  # 'plaintext'
 
     circle_edges = None
     directed_edges = None

@@ -33,7 +33,7 @@ Changelog
 - |Feature| Implement an acyclification algorithm for converting cyclic graphs to acyclic with :func:`pywhy_graphs.algorithms.acyclification`, by `Adam Li`_ (:pr:`17`)
 - |Feature| Adding a layout for the nodes positions in the :func:`pywhy_graphs.viz.draw` function, by `Julien Siebert`_ (:pr:`26`)
 - |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`29`)
-- |Major Feature| Implement a graph class for time-series graphs :class:`pywhy_graphs.StationaryTimeSeriesMixedEdgeGraph`, by `Adam Li`_ (:gh:`21`)
+- |MajorFeature| Implement a series of graph classes for time-series graphs, such as ``pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph``, by `Adam Li`_ (:pr:`21`)
 
 Code and Documentation Contributors
 -----------------------------------

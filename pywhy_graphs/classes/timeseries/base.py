@@ -577,8 +577,8 @@ class BaseTimeSeriesGraph(TsGraphNodeMixin, TsGraphPropertyMixin, TsGraphEdgePro
     if max-lag is 3 and there are edges ``[(('x', -1), ('x', 0)), (('x', -2), ('x', 0))]``,
     then there is also the edges
     ``[(('x', -2), ('x', -1)), (('x', -3), ('x', -2)), (('x', -3), ('x', -1))]`` when
-    a graph is assumed to be stationary. When edges are _added/removed_ in a stationary graph,
-    other edges are _automatically added and removed_ to keep the stationary edge structure.
+    a graph is assumed to be stationary. When edges are **added/removed** in a stationary graph,
+    other edges are **automatically added and removed** to keep the stationary edge structure.
     If you do not want this feature, then your time-series graph must have ``stationary`` property
     set to ``False``. Even if the graph is considered nonstationary, a user may still manually
     add/remove homologous edges. They may even specify the direction that this occurs.

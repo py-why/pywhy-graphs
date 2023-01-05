@@ -1,48 +1,50 @@
-from typing import Iterator
+from typing import Iterator, List
 
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs.classes.timeseries import (
-    StationaryTimeSeriesDiGraph,
-    StationaryTimeSeriesGraph,
-    TimeSeriesDiGraph,
-    TimeSeriesGraph,
-)
+from pywhy_graphs.classes.timeseries import StationaryTimeSeriesDiGraph
+from pywhy_graphs.typing import Node, TsNode
 
 
-def nodes_in_time_order(G: TimeSeriesGraph) -> Iterator:
-    """Return nodes from G in time order starting from max-lag to t=0."""
+def nodes_in_time_order(G) -> Iterator:
+    """Return nodes from G in time order starting from max-lag to t=0.
+
+    Parameters
+    ----------
+    G : TimeSeriesGraph
+        The timeseries graph.
+    """
     for t in range(G.max_lag, -1, -1):
         for node in G.nodes_at(t):
             yield node
 
 
 def complete_ts_graph(
-    variables,
+    variables: List[Node],
     max_lag: int,
     include_contemporaneous: bool = True,
-    create_using=TimeSeriesGraph,
-) -> TimeSeriesGraph:
+    create_using=StationaryTimeSeriesDiGraph,
+):
     """Create a complete time-series graph.
 
     An analogous function for complete graph from networkx.
 
     Parameters
     ----------
-    variables : _type_
-        _description_
+    variables : list
+        List of variables in the time-series graph.
     max_lag : int
-        _description_
+        The maximum lag.
     include_contemporaneous : bool, optional
         _description_, by default True
-    create_using : _type_, optional
-        _description_, by default BaseTimeSeriesGraph
+    create_using : func, optional
+        The class to create, by default StationaryTimeSeriesDiGraph.
 
     Returns
     -------
-    BaseTimeSeriesGraph
-        _description_
+    G : StationaryTimeSeriesDiGraph
+        The complete graph.
     """
     G = create_using(max_lag=max_lag)
 
@@ -73,28 +75,29 @@ def complete_ts_graph(
     return G
 
 
-def empty_ts_graph(
-    variables, max_lag, create_using=StationaryTimeSeriesGraph
-) -> StationaryTimeSeriesDiGraph:
+def empty_ts_graph(variables, max_lag, create_using=StationaryTimeSeriesDiGraph):
     G = create_using(max_lag=max_lag)
     for node in variables:
         G.add_node((node, 0))
     return G
 
 
-def get_summary_graph(G: TimeSeriesDiGraph, include_self_loops: bool = False) -> nx.DiGraph:
+def get_summary_graph(G, include_self_loops: bool = False) -> nx.DiGraph:
     """Compute the summary graph from a time-series graph.
 
     Parameters
     ----------
-    G : BaseTimeSeriesDiGraph
-        The time-series graph.
+    G : TimeSeriesDiGraph
+        The time-series directed graph. Undirected are not supported.
 
     Returns
     -------
     summary_G : nx.DiGraph
         A possibly cyclic graph.
     """
+    if not G.is_directed():
+        raise RuntimeError("Undirected graphs not supported.")
+
     # compute the summary graph
     summary_G = nx.DiGraph()
 
@@ -117,13 +120,13 @@ def get_summary_graph(G: TimeSeriesDiGraph, include_self_loops: bool = False) ->
     return summary_G
 
 
-def get_extended_summary_graph(G: TimeSeriesDiGraph) -> nx.DiGraph:
+def get_extended_summary_graph(G) -> nx.DiGraph:
     """Compute the extended summary graph from a ts-graph.
 
     Parameters
     ----------
-    G : BaseTimeSeriesDiGraph
-        The time-series graph.
+    G : TimeSeriesDiGraph
+        The time-series directed graph. Undirected not supported yet.
 
     Returns
     -------
@@ -132,6 +135,9 @@ def get_extended_summary_graph(G: TimeSeriesDiGraph) -> nx.DiGraph:
         (<variable_name>, 't'), or (<variable_name>, '-t') for the present
         and past respectively.
     """
+    if not G.is_directed():
+        raise RuntimeError("Undirected graphs not supported.")
+
     # compute the summary graph
     summary_G = nx.DiGraph()
 
@@ -156,7 +162,7 @@ def get_extended_summary_graph(G: TimeSeriesDiGraph) -> nx.DiGraph:
     return summary_G
 
 
-def has_homologous_edges(G, u_of_edge, v_of_edge):
+def has_homologous_edges(G, u_of_edge: TsNode, v_of_edge: TsNode) -> bool:
     """Check whether the graph contains all homologous edges for (u, v).
 
     Parameters
@@ -171,7 +177,8 @@ def has_homologous_edges(G, u_of_edge, v_of_edge):
 
     Returns
     -------
-    bool : Whether or not the graph contains all homologous edges.
+    has_edge : bool
+        Whether or not the graph contains all homologous edges.
 
     Notes
     -----

@@ -1,7 +1,6 @@
 from typing import List, Optional, Tuple
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 import pywhy_graphs
 from pywhy_graphs.classes.functions import edge_types
@@ -9,7 +8,7 @@ from pywhy_graphs.config import CLearnEndpoint, EdgeType
 from pywhy_graphs.typing import Node
 
 
-def _graph_to_clearn_arr(G) -> Tuple[ArrayLike, List[Node]]:
+def _graph_to_clearn_arr(G) -> Tuple[np.ndarray, List[Node]]:
     # define the array
     arr = np.zeros((G.number_of_nodes(), G.number_of_nodes()), dtype=int)
 
@@ -124,12 +123,12 @@ def _graph_to_clearn_arr(G) -> Tuple[ArrayLike, List[Node]]:
     return arr, arr_idx
 
 
-def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str):
+def clearn_arr_to_graph(arr: np.ndarray, arr_idx: List[Node], graph_type: str):
     """Convert causal-learn array to a graph object.
 
     Parameters
     ----------
-    arr : ArrayLike of shape (n_nodes, n_nodes)
+    arr : np.ndarray of shape (n_nodes, n_nodes)
         The causal-learn array encoding the endpoints between nodes.
     arr_idx : List[Node] of length (n_nodes)
         The array index, which stores the name of the n_nodes in order of their
@@ -175,6 +174,8 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str):
             f"The graph type {graph_type} is unrecognized. Please use one of "
             f"'dag', 'admg', 'cpdag', 'pag'."
         )
+
+    graph.add_nodes_from(arr_idx)
 
     # convert each non-zero array entry combination into
     # an edge in the graph
@@ -273,8 +274,8 @@ def clearn_arr_to_graph(arr: ArrayLike, arr_idx: List[Node], graph_type: str):
 def graph_to_arr(
     G,
     format: str = "causal-learn",
-    node_order: Optional[ArrayLike] = None,
-) -> Tuple[ArrayLike, List[Node]]:
+    node_order: Optional[np.ndarray] = None,
+) -> Tuple[np.ndarray, List[Node]]:
     """Convert a graph to a structured numpy array.
 
     Parameters
@@ -284,13 +285,13 @@ def graph_to_arr(
     format : str
         The format of the numpy array. One of 'causal-learn'. Default
         is 'causal-learn'.
-    node_order : ArrayLike of shape (n_nodes,)
+    node_order : np.ndarray of shape (n_nodes,)
         The array of nodes in which we would like the order of the output array to
         be. See Notes for more information.
 
     Returns
     -------
-    arr : ArrayLike of shape (n_nodes, n_nodes)
+    arr : np.ndarray of shape (n_nodes, n_nodes)
         The graph represented as a numpy array. See Notes for
         more information.
     arr_idx : List of length (n_nodes)

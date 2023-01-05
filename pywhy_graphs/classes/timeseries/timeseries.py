@@ -92,12 +92,13 @@ class StationaryTimeSeriesGraph(TimeSeriesGraph):
 
     Parameters
     ----------
-    incoming_graph_data : _type_, optional
-        _description_, by default None
+    incoming_graph_data : iterable, optional
+        The graph data to set, by default None.
     max_lag : int, optional
-        _description_, by default 1
+        Maximum lag, by default 1.
     check_time_direction : bool, optional
-        _description_, by default True
+        Whether or not to check time directionality is valid, by default True.
+        May set to False for undirected graphs.
 
     See Also
     --------

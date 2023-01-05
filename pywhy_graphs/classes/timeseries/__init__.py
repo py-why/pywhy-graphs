@@ -1,3 +1,4 @@
+from .base import BaseTimeSeriesGraph
 from .cpdag import StationaryTimeSeriesCPDAG
 from .mixededge import StationaryTimeSeriesMixedEdgeGraph, TimeSeriesMixedEdgeGraph
 from .pag import StationaryTimeSeriesPAG
