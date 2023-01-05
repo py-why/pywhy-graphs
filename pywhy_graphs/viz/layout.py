@@ -14,7 +14,7 @@ def timeseries_layout(G, variable_order=None, scale=5, center=None, aspect_ratio
         would be a random order.
     scale : int, optional
         Scale factor for positions, by default 5.
-    center : array, optional
+    center : ArrayLike, optional
         The 2D array of the center, by default None, which will plot around the point (0, 0).
     aspect_ratio : float, optional
         The ratio of the width to the height of the layout, by default 4/3.

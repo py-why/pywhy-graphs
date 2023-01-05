@@ -93,6 +93,10 @@ The following are useful functions that operate specifically on time-series grap
    has_homologous_edges
    nodes_in_time_order
 
+.. currentmodule:: pywhy_graphs.classes.timeseries
+.. autosummary:: TimeSeriesGraph
+.. autosummary:: TimeSeriesDiGraph
+.. autosummary:: TimeSeriesMixedEdgeGraph
 
 Visualization of causal graphs
 ==============================

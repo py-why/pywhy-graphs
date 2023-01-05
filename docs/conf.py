@@ -57,6 +57,7 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
     "sphinx_copybutton",
+    # 'sphinx.ext.napoleon',
     "numpydoc",
     # "IPython.sphinxext.ipython_console_highlighting",
 ]
@@ -112,7 +113,6 @@ numpydoc_xref_ignore = {
     "no",
     "attributes",
     "dictionary",
-    "ArrayLike",
     "pywhy_nx.MixedEdgeGraph",
     # pywhy-graphs
     "causal",
@@ -168,7 +168,7 @@ numpydoc_xref_aliases = {
     "nx.MultiDiGraph": "networkx.MultiDiGraph",
     "NetworkXError": "networkx.NetworkXError",
     "pgmpy.models.BayesianNetwork": "pgmpy.models.BayesianNetwork",
-    "ArrayLike": "numpy.ndarray",
+    "ArrayLike": "numpy.typing.ArrayLike",
     # pywhy-graphs
     "ADMG": "pywhy_graphs.ADMG",
     "PAG": "pywhy_graphs.PAG",
@@ -211,15 +211,18 @@ source_suffix = [".rst", ".md"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "numpy": ("https://numpy.org/devdocs", None),
-    "scipy": ("https://scipy.github.io/devdocs", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "neps": ("https://numpy.org/neps", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
     "networkx": ("https://networkx.org/documentation/latest/", None),
     "nx-guides": ("https://networkx.org/nx-guides/", None),
     "matplotlib": ("https://matplotlib.org/stable", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/dev", None),
-    "pgmpy": ("https://pgmpy.org", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
     "joblib": ("https://joblib.readthedocs.io/en/latest", None),
+    "pygraphviz": ("https://pygraphviz.github.io/documentation/stable/", None),
+    "graphviz": ("https://graphviz.readthedocs.io/en/stable/", None),
+    "sphinx-gallery": ("https://sphinx-gallery.github.io/stable/", None),
 }
 intersphinx_timeout = 5
 
@@ -327,6 +330,8 @@ nitpick_ignore = [
     ("py:obj", "networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_graphs.networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_nx.MixedEdgeGraph"),
+    ("py:class", "optional"),
+    ("py:class", "array"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesGraph"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesDiGraph"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesMixedEdgeGraph"),

@@ -75,7 +75,7 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="
 
     Returns
     -------
-    dot : graphviz Digraph
+    dot : graphviz.Digraph
         DOT language representation of the graph.
     """
     from graphviz import Digraph
