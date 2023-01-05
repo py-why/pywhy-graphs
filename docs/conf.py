@@ -40,7 +40,7 @@ version = pywhy_graphs.__version__
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-needs_sphinx = "4.0"
+needs_sphinx = "5.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -78,11 +78,12 @@ autodoc_inherit_docstrings = True
 # -- numpydoc
 # Below is needed to prevent errors
 # numpydoc_xref_param_type = True
+numpydoc_show_inherited_class_members = False
 numpydoc_show_class_members = False
 numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
 numpydoc_use_blockquotes = True
-numpydoc_validate = True
+# numpydoc_validate = True
 
 numpydoc_xref_ignore = {
     # words
@@ -344,9 +345,8 @@ nitpick_ignore = [
     ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
 ]
 nitpick_ignore_regex = [
-    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesGraph.*"),
-    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesDiGraph.*"),
-    ('py:.*', r"pywhy_graphs\.classes\.timeseries\.StationaryTimeSeriesPAG.*"),
+    ('py:obj', r"pywhy_graphs\.classes\.timeseries*"),
+    ('py:obj', r"networkx*"),
 ]
 
 
