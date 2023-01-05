@@ -208,7 +208,7 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
         "matplotlib",
         "pandas",
         "pygraphviz",
-        "causallearn",
+        # "causallearn",  # no version
         # "tigramite",  # no version
         "joblib",
         "",
