@@ -30,6 +30,23 @@ Visualization of causal graphs
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will cho...">
+
+.. only:: html
+
+  .. image:: /auto_examples/visualization/images/thumb/sphx_glr_plot_timeseries_graphs_thumb.png
+    :alt: Drawing timeseries graphs and setting their layout
+
+  :ref:`sphx_glr_auto_examples_visualization_plot_timeseries_graphs.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Drawing timeseries graphs and setting their layout</div>
+    </div>
+
+
+.. raw:: html
+
     </div>
 
 
@@ -37,4 +54,5 @@ Visualization of causal graphs
    :hidden:
 
    /auto_examples/visualization/draw_and_compare_graphs_with_same_layout
+   /auto_examples/visualization/plot_timeseries_graphs
 

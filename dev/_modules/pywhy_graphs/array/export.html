@@ -189,7 +189,6 @@
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">import</span> <span class="nn">pywhy_graphs</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.classes.functions</span> <span class="kn">import</span> <span class="n">edge_types</span>
@@ -197,7 +196,7 @@
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
 
 
-<span class="k">def</span> <span class="nf">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
     <span class="c1"># define the array</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -246,7 +245,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Unrecognizd edge type </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2">. Use one of &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">EdgeType</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">edge</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">EdgeType</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
                     <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">uv_edge_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">uv_edge_types</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
@@ -312,12 +311,12 @@
     <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span>
 
 
-<div class="viewcode-block" id="clearn_arr_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_arr_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert causal-learn array to a graph object.</span>
+<div class="viewcode-block" id="clearn_arr_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_arr_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert causal-learn array to a graph object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    arr : ArrayLike of shape (n_nodes, n_nodes)</span>
+<span class="sd">    arr : np.ndarray of shape (n_nodes, n_nodes)</span>
 <span class="sd">        The causal-learn array encoding the endpoints between nodes.</span>
 <span class="sd">    arr_idx : List[Node] of length (n_nodes)</span>
 <span class="sd">        The array index, which stores the name of the n_nodes in order of their</span>
@@ -363,6 +362,8 @@
             <span class="sa">f</span><span class="s2">&quot;The graph type </span><span class="si">{</span><span class="n">graph_type</span><span class="si">}</span><span class="s2"> is unrecognized. Please use one of &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;&#39;dag&#39;, &#39;admg&#39;, &#39;cpdag&#39;, &#39;pag&#39;.&quot;</span>
         <span class="p">)</span>
+
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">arr_idx</span><span class="p">)</span>
 
     <span class="c1"># convert each non-zero array entry combination into</span>
     <span class="c1"># an edge in the graph</span>
@@ -461,9 +462,9 @@
 <div class="viewcode-block" id="graph_to_arr"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr">[docs]</a><span class="k">def</span> <span class="nf">graph_to_arr</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;causal-learn&quot;</span><span class="p">,</span>
-    <span class="n">node_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Convert a graph to a structured numpy array.</span>
+    <span class="n">node_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a graph to a structured numpy array.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -472,13 +473,13 @@
 <span class="sd">    format : str</span>
 <span class="sd">        The format of the numpy array. One of &#39;causal-learn&#39;. Default</span>
 <span class="sd">        is &#39;causal-learn&#39;.</span>
-<span class="sd">    node_order : ArrayLike of shape (n_nodes,)</span>
+<span class="sd">    node_order : np.ndarray of shape (n_nodes,)</span>
 <span class="sd">        The array of nodes in which we would like the order of the output array to</span>
 <span class="sd">        be. See Notes for more information.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    arr : ArrayLike of shape (n_nodes, n_nodes)</span>
+<span class="sd">    arr : np.ndarray of shape (n_nodes, n_nodes)</span>
 <span class="sd">        The graph represented as a numpy array. See Notes for</span>
 <span class="sd">        more information.</span>
 <span class="sd">    arr_idx : List of length (n_nodes)</span>

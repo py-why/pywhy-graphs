@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.viz.draw &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -46,8 +46,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="How to use pywhy-graphs with examples and tutorials" href="../use.html" />
-    <link rel="prev" title="pywhy_graphs.networkx.m_separated" href="pywhy_graphs.networkx.m_separated.html" />
+    <link rel="next" title="pywhy_graphs.viz.timeseries_layout" href="pywhy_graphs.viz.timeseries_layout.html" />
+    <link rel="prev" title="pywhy_graphs.classes.timeseries.nodes_in_time_order" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -253,10 +253,49 @@
   </a>
  </li>
 </ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -325,27 +364,36 @@
 <h1>pywhy_graphs.viz.draw<a class="headerlink" href="#pywhy-graphs-viz-draw" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pywhy_graphs.viz.draw">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.viz.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/viz/draw.html#draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.viz.draw" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.viz.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'square'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/viz/draw.html#draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.viz.draw" title="Permalink to this definition">#</a></dt>
 <dd><p>Visualize the graph.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_nx.MixedEdgeGraph</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> : pywhy_nx.MixedEdgeGraph</p>
 <blockquote>
 <div><p>The mixed edge graph.</p>
 </div></blockquote>
-<p><strong>direction</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, optional</p>
+<p><strong>direction</strong> : str, optional</p>
 <blockquote>
-<div><p>The direction, by default None.</p>
+<div><p>The direction, by default None. See: <a class="reference external" href="https://graphviz.org/docs/attrs/rankdir/">https://graphviz.org/docs/attrs/rankdir/</a>.</p>
 </div></blockquote>
-<p><strong>pos</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>, optional</p>
+<p><strong>pos</strong> : dict, optional</p>
 <blockquote>
 <div><p>The positions of the nodes keyed by node with (x, y) coordinates as values.
 By default None, which will
 use the default layout from graphviz.</p>
 </div></blockquote>
+<p><strong>shape</strong> : str</p>
+<blockquote>
+<div><p>The shape of each node. By default ‘square’. Can be ‘circle’, ‘plaintext’.</p>
+</div></blockquote>
+<p><strong>attrs</strong> : dict</p>
+<blockquote>
+<div><p>Any additional edge attributes (must be strings). For more
+information, see documentation for GraphViz.</p>
+</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dot</strong> : graphviz Digraph</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dot</strong> : graphviz.Digraph</p>
 <blockquote>
 <div><p>DOT language representation of the graph.</p>
 </div></blockquote>
@@ -361,6 +409,9 @@ use the default layout from graphviz.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
 <p><a class="reference internal" href="../auto_examples/visualization/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-visualization-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
   <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will cho..."><img alt="Drawing timeseries graphs and setting their layout" src="../_images/sphx_glr_plot_timeseries_graphs_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/visualization/plot_timeseries_graphs.html#sphx-glr-auto-examples-visualization-plot-timeseries-graphs-py"><span class="std std-ref">Drawing timeseries graphs and setting their layout</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Drawing timeseries graphs and setting their layout</div>
 </div></div><div style='clear:both'></div></section>
 </section>
 
@@ -372,17 +423,17 @@ use the default layout from graphviz.</p>
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.networkx.m_separated.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.networkx.m_separated</p>
+          <p class="prev-next-title">pywhy_graphs.classes.timeseries.nodes_in_time_order</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../use.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.viz.timeseries_layout.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">How to use pywhy-graphs with examples and tutorials</p>
+      <p class="prev-next-title">pywhy_graphs.viz.timeseries_layout</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

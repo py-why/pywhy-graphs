@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.algorithms.is_valid_mec_graph &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -255,8 +255,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -321,19 +360,19 @@
 at most one edge between them and the internal graph of directed edges
 do not form cycles.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAG</span></code></a> | <a class="reference internal" href="pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CPDAG</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> : PAG | CPDAG</p>
 <blockquote>
 <div><p>The PAG or CPDAG.</p>
 </div></blockquote>
-<p><strong>on_error</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>on_error</strong> : str</p>
 <blockquote>
 <div><p>Whether to raise an error if the graph is non-compliant. Default is ‘raise’.
 Other options are ‘ignore’.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 <blockquote>
 <div><p>Whether G is a valid PAG or CPDAG.</p>
 </div></blockquote>

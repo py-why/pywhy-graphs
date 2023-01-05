@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>API &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -255,8 +255,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -284,8 +323,8 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#most-used-classes">
-   Most-used classes
+  <a class="reference internal nav-link" href="#causal-graph-classes">
+   Causal graph classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -304,8 +343,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#timeseries">
+   Timeseries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#visualization-of-causal-graphs">
    Visualization of causal graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#utilities-for-debugging">
+   Utilities for debugging
   </a>
  </li>
 </ul>
@@ -334,15 +383,11 @@
 for classes (<code class="docutils literal notranslate"><span class="pre">CamelCase</span></code> names) and functions
 (<code class="docutils literal notranslate"><span class="pre">underscore_case</span></code> names) of pywhy-graphs, grouped thematically by analysis
 stage.</p>
-<section id="most-used-classes">
-<h2>Most-used classes<a class="headerlink" href="#most-used-classes" title="Permalink to this heading">#</a></h2>
+<section id="causal-graph-classes">
+<h2>Causal graph classes<a class="headerlink" href="#causal-graph-classes" title="Permalink to this heading">#</a></h2>
 <p>These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature.</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADMG</span></code></a>([incoming_directed_edges, ...])</p></td>
 <td><p>Acyclic directed mixed graph (ADMG).</p></td>
@@ -363,10 +408,6 @@ Equivalence class graphs in causality generally consist of more than one type of
 edge. These algorithms are common algorithms used in a variety of different
 causal graph operations.</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph" title="pywhy_graphs.algorithms.is_valid_mec_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid_mec_graph</span></code></a>(G[, on_error])</p></td>
 <td><p>Check G is a valid PAG.</p></td>
@@ -402,10 +443,6 @@ implement various causal inference procedures, but encode a causal graph object
 differently. This submodule converts between those causal graph data structures
 and corresponding causal graphs in pywhy-graphs.</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr" title="pywhy_graphs.array.graph_to_arr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_arr</span></code></a>(G[, format, node_order])</p></td>
 <td><p>Convert a graph to a structured numpy array.</p></td>
@@ -424,10 +461,6 @@ following represent functionality that we intend to PR eventually into
 networkx. They are included in pywhy-graphs as a temporary bridge. We
 welcome feedback.</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MixedEdgeGraph</span></code></a>([graphs, edge_types])</p></td>
 <td><p>Base class for mixed-edge graphs.</p></td>
@@ -441,19 +474,51 @@ welcome feedback.</p>
 </tbody>
 </table>
 </section>
+<section id="timeseries">
+<h2>Timeseries<a class="headerlink" href="#timeseries" title="Permalink to this heading">#</a></h2>
+<p>The following are useful functions that operate specifically on time-series graphs.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.complete_ts_graph.html#pywhy_graphs.classes.timeseries.complete_ts_graph" title="pywhy_graphs.classes.timeseries.complete_ts_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complete_ts_graph</span></code></a>(variables, max_lag[, ...])</p></td>
+<td><p>Create a complete time-series graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.empty_ts_graph.html#pywhy_graphs.classes.timeseries.empty_ts_graph" title="pywhy_graphs.classes.timeseries.empty_ts_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">empty_ts_graph</span></code></a>(variables, max_lag[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.get_summary_graph.html#pywhy_graphs.classes.timeseries.get_summary_graph" title="pywhy_graphs.classes.timeseries.get_summary_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_summary_graph</span></code></a>(G[, include_self_loops])</p></td>
+<td><p>Compute the summary graph from a time-series graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.has_homologous_edges.html#pywhy_graphs.classes.timeseries.has_homologous_edges" title="pywhy_graphs.classes.timeseries.has_homologous_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_homologous_edges</span></code></a>(G, u_of_edge, v_of_edge)</p></td>
+<td><p>Check whether the graph contains all homologous edges for (u, v).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.nodes_in_time_order.html#pywhy_graphs.classes.timeseries.nodes_in_time_order" title="pywhy_graphs.classes.timeseries.nodes_in_time_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes_in_time_order</span></code></a>(G)</p></td>
+<td><p>Return nodes from G in time order starting from max-lag to t=0.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="visualization-of-causal-graphs">
 <h2>Visualization of causal graphs<a class="headerlink" href="#visualization-of-causal-graphs" title="Permalink to this heading">#</a></h2>
 <p>Visualization of causal graphs is different compared to networkx because causal graphs
 can consist of mixed-edges. We implement an API that wraps <code class="docutils literal notranslate"><span class="pre">graphviz</span></code> and <code class="docutils literal notranslate"><span class="pre">pygraphviz</span></code>
 to perform modular visualization of nodes and edges.</p>
 <table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>(G[, direction, pos])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>(G[, direction, pos, shape])</p></td>
 <td><p>Visualize the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeseries_layout</span></code></a>(G[, variable_order, ...])</p></td>
+<td><p>Position nodes in a time-series layout from left to right with lags as columns.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="utilities-for-debugging">
+<h2>Utilities for debugging<a class="headerlink" href="#utilities-for-debugging" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.sys_info.html#pywhy_graphs.sys_info" title="pywhy_graphs.sys_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys_info</span></code></a>([fid, show_paths, dependencies])</p></td>
+<td><p>Print the system information for debugging.</p></td>
 </tr>
 </tbody>
 </table>

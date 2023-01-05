@@ -192,10 +192,11 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">PAG</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">single_source_shortest_mixed_path</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
 
@@ -206,11 +207,13 @@
     <span class="s2">&quot;pds&quot;</span><span class="p">,</span>
     <span class="s2">&quot;pds_path&quot;</span><span class="p">,</span>
     <span class="s2">&quot;uncovered_pd_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pds_t&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pds_t_path&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_possibly_directed</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check that path is possibly directed.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that path is possibly directed.</span>
 
 <span class="sd">    A possibly directed path is one of the form:</span>
 <span class="sd">    - ``i -&gt; j``</span>
@@ -254,7 +257,7 @@
 
 
 <div class="viewcode-block" id="possible_ancestors"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.possible_ancestors.html#pywhy_graphs.algorithms.possible_ancestors">[docs]</a><span class="k">def</span> <span class="nf">possible_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Possible ancestors of a source node.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Possible ancestors of a source node.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -275,7 +278,7 @@
 
 
 <div class="viewcode-block" id="possible_descendants"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.possible_descendants.html#pywhy_graphs.algorithms.possible_descendants">[docs]</a><span class="k">def</span> <span class="nf">possible_descendants</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Possible descendants of a source node.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Possible descendants of a source node.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -296,7 +299,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_definite_collider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite collider.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite collider.</span>
 
 <span class="sd">    I.e. node1 *-&gt; node2 &lt;-* node3.</span>
 
@@ -327,7 +330,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_definite_noncollider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</span>
 
 <span class="sd">    I.e. node1 *-* node2 -&gt; node3, or node1 &lt;- node2 *-* node3</span>
 
@@ -357,7 +360,7 @@
 <div class="viewcode-block" id="discriminating_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path">[docs]</a><span class="k">def</span> <span class="nf">discriminating_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Find the discriminating path for &lt;..., a, u, c&gt;.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the discriminating path for &lt;..., a, u, c&gt;.</span>
 
 <span class="sd">    A discriminating path, p = &lt;v, ..., a, u, c&gt;, is one</span>
 <span class="sd">    where:</span>
@@ -438,7 +441,7 @@
         <span class="c1"># check distance criterion to prevent checking very long paths</span>
         <span class="n">distance</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">max_path_length</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Did not finish checking discriminating path in </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="s2"> because the path &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;length exceeded </span><span class="si">{</span><span class="n">max_path_length</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
@@ -504,7 +507,7 @@
     <span class="n">first_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">second_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Compute uncovered potentially directed path from u to c.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute uncovered potentially directed path from u to c.</span>
 
 <span class="sd">    An uncovered pd path is one where: u o-&gt; ... -&gt; c. There are no</span>
 <span class="sd">    bidirected arrows, bidirected circle arrows, or opposite arrows.</span>
@@ -594,7 +597,7 @@
         <span class="c1"># check distance criterion to prevent checking very long paths</span>
         <span class="n">distance</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">max_path_length</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Did not finish checking discriminating path in </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="s2"> because the path &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;length exceeded </span><span class="si">{</span><span class="n">max_path_length</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
@@ -646,7 +649,7 @@
 <div class="viewcode-block" id="pds"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds">[docs]</a><span class="k">def</span> <span class="nf">pds</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Find all PDS sets between node_x and node_y.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all PDS sets between node_x and node_y.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -667,7 +670,7 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Possibly d-separting (PDS) sets are nodes V, along an adjacency paths from</span>
+<span class="sd">    Possibly d-separating (PDS) sets are nodes V, along an adjacency paths from</span>
 <span class="sd">    &#39;node_x&#39; to some &#39;V&#39;, which has the following characteristics for every</span>
 <span class="sd">    subpath triple &lt;X, Y, Z&gt; on the path:</span>
 
@@ -801,7 +804,7 @@
 <div class="viewcode-block" id="pds_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path">[docs]</a><span class="k">def</span> <span class="nf">pds_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating set path.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating set path.</span>
 
 <span class="sd">    Returns the PDS_path set defined in definition 3.4 of :footcite:`Colombo2012`.</span>
 
@@ -827,6 +830,8 @@
 <span class="sd">    This is a smaller subset compared to possibly-d-separating sets. It takes</span>
 <span class="sd">    the PDS set and intersects it with the biconnected components of the adjacency</span>
 <span class="sd">    graph that contains the edge (node_x, node_y).</span>
+
+<span class="sd">    The current implementation calls `pds` and then restricts the nodes that it returns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get the adjacency graph to perform path searches over</span>
     <span class="n">adj_graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
@@ -852,6 +857,193 @@
     <span class="n">pds_path</span> <span class="o">=</span> <span class="n">pds_set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">found_component</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pds_path</span></div>
+
+
+<span class="k">def</span> <span class="nf">pds_t</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
+    <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
+    <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
+    <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating set over time.</span>
+
+<span class="sd">    Returns the &#39;pdst&#39; set defined in :footcite:`Malinsky18a_svarfci`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    graph : StationaryTimeSeriesPAG</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The starting node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The ending node</span>
+<span class="sd">    max_path_length : int, optional</span>
+<span class="sd">        The maximum length of a path to search on for PDS set, by default None, which</span>
+<span class="sd">        sets it to 1000.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pds_t_set : set</span>
+<span class="sd">        The set of nodes in the possibly d-separating path set.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a smaller subset compared to possibly-d-separating sets.</span>
+
+<span class="sd">    This consists of nodes, &#39;x&#39;, in the PDS set of (node_x, node_y), with the</span>
+<span class="sd">    time-lag of &#39;x&#39; being less than the max time-lag among node_x and and node_y.</span>
+
+<span class="sd">    The current implementation calls `pds` and then restricts the nodes that it returns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_ts_node</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+    <span class="n">_check_ts_node</span><span class="p">(</span><span class="n">node_y</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x_lag</span> <span class="o">=</span> <span class="n">node_x</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">y_lag</span> <span class="o">=</span> <span class="n">node_y</span>
+
+    <span class="n">max_lag</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_lag</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_lag</span><span class="p">))</span>
+
+    <span class="c1"># compute the PDS set</span>
+    <span class="n">pds_set</span> <span class="o">=</span> <span class="n">pds</span><span class="p">(</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">node_x</span><span class="o">=</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="o">=</span><span class="n">node_y</span><span class="p">,</span> <span class="n">max_path_length</span><span class="o">=</span><span class="n">max_path_length</span>
+    <span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">pds_t_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># only keep nodes with max-lag less than or equal to max(x_lag, y_lag)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">pds_set</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_lag</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+            <span class="n">pds_t_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pds_t_set</span>
+
+
+<span class="k">def</span> <span class="nf">pds_t_path</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
+    <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
+    <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
+    <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating path set over time.</span>
+
+<span class="sd">    Returns the &#39;pdst_path&#39; set defined in :footcite:`Malinsky18a_svarfci` with the</span>
+<span class="sd">    additional restriction that any nodes must be on a path between the two endpoints.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    graph : StationaryTimeSeriesPAG</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The starting node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The ending node</span>
+<span class="sd">    max_path_length : int, optional</span>
+<span class="sd">        The maximum length of a path to search on for PDS set, by default None, which</span>
+<span class="sd">        sets it to 1000.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pds_t_set : set</span>
+<span class="sd">        The set of nodes in the possibly d-separating path set.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a smaller subset compared to possibly-d-separating sets.</span>
+
+<span class="sd">    This consists of nodes, &#39;x&#39;, in the PDS set of (node_x, node_y), with the</span>
+<span class="sd">    time-lag of &#39;x&#39; being less than the max time-lag among node_x and and node_y.</span>
+
+<span class="sd">    The current implementation calls `pds` and then restricts the nodes that it returns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_ts_node</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+    <span class="n">_check_ts_node</span><span class="p">(</span><span class="n">node_y</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x_lag</span> <span class="o">=</span> <span class="n">node_x</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">y_lag</span> <span class="o">=</span> <span class="n">node_y</span>
+
+    <span class="n">max_lag</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_lag</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_lag</span><span class="p">))</span>
+
+    <span class="c1"># compute the PDS set</span>
+    <span class="n">pds_set</span> <span class="o">=</span> <span class="n">pds_path</span><span class="p">(</span>
+        <span class="n">graph</span><span class="p">,</span> <span class="n">node_x</span><span class="o">=</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="o">=</span><span class="n">node_y</span><span class="p">,</span> <span class="n">max_path_length</span><span class="o">=</span><span class="n">max_path_length</span>
+    <span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">pds_t_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># only keep nodes with max-lag less than or equal to max(x_lag, y_lag)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">pds_set</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_lag</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+            <span class="n">pds_t_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pds_t_set</span>
+
+
+<span class="k">def</span> <span class="nf">definite_m_separated</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">z</span><span class="p">,</span>
+    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+    <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+    <span class="n">circle_edge_name</span><span class="o">=</span><span class="s2">&quot;cirlcle&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check definite m-separation among &#39;x&#39; and &#39;y&#39; given &#39;z&#39; in partial ancestral graph G.</span>
+
+<span class="sd">    A partial ancestral graph (PAG) is defined with directed edges (``-&gt;``), bidirected edges</span>
+<span class="sd">    (``&lt;-&gt;``), and circle-endpoint edges (``o-*``, where the ``*`` for example can mean an</span>
+<span class="sd">    arrowhead from a directed edge).</span>
+
+<span class="sd">    This algorithm implements the definite m-separation check, which checks for the absence of</span>
+<span class="sd">    possibly m-connecting paths between &#39;x&#39; and &#39;y&#39; given &#39;z&#39;.</span>
+
+<span class="sd">    This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge</span>
+<span class="sd">    of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After</span>
+<span class="sd">    that, an undirected graph composed from the directed and bidirected edges amongst the</span>
+<span class="sd">    remaining nodes is created. Then, x is independent of y given z if x is disconnected from y</span>
+<span class="sd">    in this new graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : mixed-edge-graph</span>
+<span class="sd">        Mixed edge causal graph.</span>
+<span class="sd">    x : set</span>
+<span class="sd">        First set of nodes in ``G``.</span>
+<span class="sd">    y : set</span>
+<span class="sd">        Second set of nodes in ``G``.</span>
+<span class="sd">    z : set</span>
+<span class="sd">        Set of conditioning nodes in ``G``. Can be empty set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    b : bool</span>
+<span class="sd">        A boolean that is true if ``x`` is definite m-separated from ``y`` given ``z`` in ``G``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. footbibliography::</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    d_separated</span>
+<span class="sd">    m_separated</span>
+<span class="sd">    PAG</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    There is no known optimal algorithm for checking definite m-separation to our knowledge, so</span>
+<span class="sd">    the algorithm proceeds by enumerating paths between &#39;x&#39; and &#39;y&#39;. This first checks the</span>
+<span class="sd">    subgraph comprised of only circle edges. If there is a path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">PAG</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Definite m-separated is only defined for a PAG.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># this proceeds by first removing unnecessary nodes</span>
+
+
+<span class="k">def</span> <span class="nf">_check_ts_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;All nodes in time series DAG must be a 2-tuple of the form (&lt;node&gt;, &lt;lag&gt;). &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;You passed in </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All lag points should be 0, or less. You passed in </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 </pre></div>
 
               </article>

@@ -197,7 +197,7 @@
 
 
 <div class="viewcode-block" id="CPDAG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG">[docs]</a><span class="k">class</span> <span class="nc">CPDAG</span><span class="p">(</span><span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">AncestralMixin</span><span class="p">,</span> <span class="n">ConservativeMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Completed partially directed acyclic graphs (CPDAG).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Completed partially directed acyclic graphs (CPDAG).</span>
 
 <span class="sd">    CPDAGs generalize causal DAGs by allowing undirected edges.</span>
 <span class="sd">    Undirected edges imply uncertainty in the orientation of the causal</span>
@@ -262,34 +262,34 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Name of the undirected edge internal graph.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the undirected edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Name of the directed edge internal graph.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the directed edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the undirected edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the directed edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
 <div class="viewcode-block" id="CPDAG.sub_directed_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.sub_directed_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Sub-graph of just the directed edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CPDAG.sub_undirected_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.sub_undirected_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Sub-graph of just the undirected edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CPDAG.orient_uncertain_edge"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.orient_uncertain_edge">[docs]</a>    <span class="k">def</span> <span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
 
 <span class="sd">        If there is an undirected edge u - v, then the arrowhead</span>
 <span class="sd">        will orient u -&gt; v. If the correct order is v &lt;- u, then</span>
@@ -305,11 +305,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There is no undirected edge between </span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CPDAG.possible_children"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.possible_children">[docs]</a>    <span class="k">def</span> <span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
 
 <span class="sd">        Children of node &#39;n&#39; are nodes with a directed</span>
 <span class="sd">        edge from &#39;n&#39; to that node. For example,</span>
@@ -330,7 +330,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_undirected_graph</span><span class="p">()</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CPDAG.possible_parents"><a class="viewcode-back" href="../../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG.possible_parents">[docs]</a>    <span class="k">def</span> <span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Return an iterator over parents of node n.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over parents of node n.</span>
 
 <span class="sd">        Parents of node &#39;n&#39; are nodes with a directed</span>
 <span class="sd">        edge from &#39;n&#39; to that node. For example,</span>

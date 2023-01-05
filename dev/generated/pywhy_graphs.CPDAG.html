@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.CPDAG &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -255,8 +255,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -775,22 +814,22 @@ Undirected edges imply uncertainty in the orientation of the causal
 relationship. For example, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B</span></code>, can be <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-&gt;</span> <span class="pre">B</span></code> or <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;-</span> <span class="pre">B</span></code>,
 allowing for a Markov equivalence class of DAGs for each CPDAG.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#input" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a> directed <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a> (optional, default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize directed edges. All arguments that are accepted
 by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
 </div></blockquote>
-<p><strong>incoming_undirected_edges</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#input" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a> undirected <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a> (optional, default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>)</p>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize undirected edges. All arguments that are accepted
 by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
 </div></blockquote>
-<p><strong>directed_edge_name</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
 <div><p>The name for the directed edges. By default ‘directed’.</p>
 </div></blockquote>
-<p><strong>undirected_edge_name</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>undirected_edge_name</strong> : str</p>
 <blockquote>
 <div><p>The name for the directed edges. By default ‘undirected’.</p>
 </div></blockquote>
@@ -815,198 +854,6 @@ causal sufficiency, where there is no unobserved latent confounder. This allows 
 to be learned from score-based (such as the “GES” algorithm) and constraint-based
 (such as the PC algorithm) approaches for causal structure learning.</p>
 <p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
-<dl class="field-list">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pywhy_graphs.CPDAG.directed_edge_name" title="pywhy_graphs.CPDAG.directed_edge_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">directed_edge_name</span></code></a></p>
-<blockquote>
-<div><p>Name of the directed edge internal graph.</p>
-</div></blockquote>
-<p><a class="reference internal" href="#pywhy_graphs.CPDAG.directed_edges" title="pywhy_graphs.CPDAG.directed_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">directed_edges</span></code></a></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">EdgeView</span></code> of the directed edges.</p>
-</div></blockquote>
-<dl class="simple">
-<dt><strong>edge_types</strong></dt><dd></dd>
-</dl>
-<p><a class="reference internal" href="#pywhy_graphs.CPDAG.excluded_triples" title="pywhy_graphs.CPDAG.excluded_triples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excluded_triples</span></code></a></p>
-<blockquote>
-<div><p>Unfaithful triples.</p>
-</div></blockquote>
-<p><a class="reference internal" href="#pywhy_graphs.CPDAG.name" title="pywhy_graphs.CPDAG.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p>
-<blockquote>
-<div><p>String identifier of the graph.</p>
-</div></blockquote>
-<p><a class="reference internal" href="#pywhy_graphs.CPDAG.undirected_edge_name" title="pywhy_graphs.CPDAG.undirected_edge_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">undirected_edge_name</span></code></a></p>
-<blockquote>
-<div><p>Name of the undirected edge internal graph.</p>
-</div></blockquote>
-<p><a class="reference internal" href="#pywhy_graphs.CPDAG.undirected_edges" title="pywhy_graphs.CPDAG.undirected_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">undirected_edges</span></code></a></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">EdgeView</span></code> of the undirected edges.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.add_edge" title="pywhy_graphs.CPDAG.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a>(u_of_edge, v_of_edge[, edge_type])</p></td>
-<td><p>Add an edge between u and v.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.add_edges_from" title="pywhy_graphs.CPDAG.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a>(ebunch_to_add, edge_type, **attr)</p></td>
-<td><p>Add all the edges in ebunch_to_add.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.children" title="pywhy_graphs.CPDAG.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a>(n)</p></td>
-<td><p>Return an iterator over children of node n.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.clear_edge_types" title="pywhy_graphs.CPDAG.clear_edge_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edge_types</span></code></a>()</p></td>
-<td><p>Clear all edge types from graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.copy" title="pywhy_graphs.CPDAG.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Returns a copy of the graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.degree" title="pywhy_graphs.CPDAG.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a>([nbunch, weight])</p></td>
-<td><p>A DegreeView for the Graph as G.degree or G.degree().</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>([nbunch, data, default])</p></td>
-<td><p>A dictionary of EdgeViews of the Graph as G.edges or G.edges().</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.get_edge_data" title="pywhy_graphs.CPDAG.get_edge_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code></a>(u, v[, default])</p></td>
-<td><p>Returns the attribute dictionary associated with edge (u, v).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.get_graphs" title="pywhy_graphs.CPDAG.get_graphs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_graphs</span></code></a>([edge_type])</p></td>
-<td><p>Get graphs representing the mixed-edges.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.graph_attr_dict_factory" title="pywhy_graphs.CPDAG.graph_attr_dict_factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_attr_dict_factory</span></code></a></p></td>
-<td><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.has_edge" title="pywhy_graphs.CPDAG.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(u, v[, edge_type])</p></td>
-<td><p>Returns True if the edge (u, v) is in the graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.has_node" title="pywhy_graphs.CPDAG.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a>(n)</p></td>
-<td><p>Returns True if the graph contains the node n.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.is_directed" title="pywhy_graphs.CPDAG.is_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code></a>()</p></td>
-<td><p>Returns True if graph is directed, False otherwise.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.is_multigraph" title="pywhy_graphs.CPDAG.is_multigraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code></a>()</p></td>
-<td><p>Returns True if graph is a multigraph, False otherwise.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.mark_unfaithful_triple" title="pywhy_graphs.CPDAG.mark_unfaithful_triple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_unfaithful_triple</span></code></a>(v_i, u, v_j)</p></td>
-<td><p>Mark an unfaithful triple.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.nbunch_iter" title="pywhy_graphs.CPDAG.nbunch_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code></a>([nbunch])</p></td>
-<td><p>Returns an iterator over nodes contained in nbunch that are also in the graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.node_attr_dict_factory" title="pywhy_graphs.CPDAG.node_attr_dict_factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_attr_dict_factory</span></code></a></p></td>
-<td><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.node_dict_factory" title="pywhy_graphs.CPDAG.node_dict_factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_dict_factory</span></code></a></p></td>
-<td><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.number_of_edge_types" title="pywhy_graphs.CPDAG.number_of_edge_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edge_types</span></code></a>()</p></td>
-<td><p>The number of edge types.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.number_of_edges" title="pywhy_graphs.CPDAG.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>([u, v, edge_type])</p></td>
-<td><p>Returns the number of edges between two nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.number_of_nodes" title="pywhy_graphs.CPDAG.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a>()</p></td>
-<td><p>Returns the number of nodes in the graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.order" title="pywhy_graphs.CPDAG.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a>()</p></td>
-<td><p>Returns the number of nodes in the graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.orient_uncertain_edge" title="pywhy_graphs.CPDAG.orient_uncertain_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_uncertain_edge</span></code></a>(u, v)</p></td>
-<td><p>Orient undirected edge into an arrowhead.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.parents" title="pywhy_graphs.CPDAG.parents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parents</span></code></a>(n)</p></td>
-<td><p>Return an iterator over parents of node n.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.possible_children" title="pywhy_graphs.CPDAG.possible_children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_children</span></code></a>(n)</p></td>
-<td><p>Return an iterator over children of node n.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.possible_parents" title="pywhy_graphs.CPDAG.possible_parents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_parents</span></code></a>(n)</p></td>
-<td><p>Return an iterator over parents of node n.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.predecessors" title="pywhy_graphs.CPDAG.predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code></a>(source)</p></td>
-<td><p>Ancestors of 'source' node with directed path.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.remove_edge" title="pywhy_graphs.CPDAG.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a>(u, v, edge_type)</p></td>
-<td><p>Remove an edge between u and v.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.remove_edges_from" title="pywhy_graphs.CPDAG.remove_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code></a>(ebunch, edge_type)</p></td>
-<td><p>Remove all edges specified in ebunch.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.size" title="pywhy_graphs.CPDAG.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a>([weight, edge_type])</p></td>
-<td><p>Returns the number of edges or total of all edge weights.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.sub_directed_graph" title="pywhy_graphs.CPDAG.sub_directed_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_directed_graph</span></code></a>()</p></td>
-<td><p>Sub-graph of just the directed edges.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.sub_undirected_graph" title="pywhy_graphs.CPDAG.sub_undirected_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_undirected_graph</span></code></a>()</p></td>
-<td><p>Sub-graph of just the undirected edges.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.subgraph" title="pywhy_graphs.CPDAG.subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code></a>(nodes)</p></td>
-<td><p>Returns a SubGraph view of the subgraph induced on <code class="docutils literal notranslate"><span class="pre">nodes</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.successors" title="pywhy_graphs.CPDAG.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a>(source)</p></td>
-<td><p>Descendants of 'source' node with directed path.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.to_directed" title="pywhy_graphs.CPDAG.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a>()</p></td>
-<td><p>Returns a directed representation of the graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.to_undirected" title="pywhy_graphs.CPDAG.to_undirected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code></a>()</p></td>
-<td><p>Returns an undirected representation of the digraph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pywhy_graphs.CPDAG.update" title="pywhy_graphs.CPDAG.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([edges, nodes, edge_type])</p></td>
-<td><p>Update the graph using nodes/edges/graphs as input.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="table">
-<colgroup>
-<col style="width: 70%" />
-<col style="width: 30%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>add_edge_type</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>add_edge_types_from</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>add_node</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>add_nodes_from</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>clear</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>clear_edges</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>is_mixed</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>neighbors</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>remove_edge_type</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>remove_node</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>remove_nodes_from</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.__contains__">
 <span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.__contains__" title="Permalink to this definition">#</a></dt>
@@ -1080,13 +927,13 @@ not already in the graph.</p>
 <p>Edge attributes can be specified with keywords or by directly
 accessing the edge’s attribute dictionary. See examples below.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>u_for_edge, v_for_edge</strong> : nodes</p>
 <blockquote>
 <div><p>Nodes can be, for example, strings or numbers.
 Nodes must be hashable (and not None) Python objects.</p>
 </div></blockquote>
-<p><strong>edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>edge_type</strong> : str</p>
 <blockquote>
 <div><p>The edge type.</p>
 </div></blockquote>
@@ -1111,8 +958,8 @@ keyword arguments.</p>
 <span class="sig-name descname"><span class="pre">add_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.add_edges_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.add_edges_from" title="Permalink to this definition">#</a></dt>
 <dd><p>Add all the edges in ebunch_to_add.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ebunch_to_add</strong> : container of <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ebunch_to_add</strong> : container of edges</p>
 <blockquote>
 <div><p>Each edge given in the container will be added to the
 graph. The edges must be given as 2-tuples (u, v) or
@@ -1168,7 +1015,7 @@ for loop.</p>
 returns a dictionary of adjacency views, so neighbors can be queried within
 each edge type.</p>
 <dl class="field-list">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>adj</strong> : dictionary of AdjacencyView</p>
 <blockquote>
 <div><p>A dictionary of edge types and their corresponding adjacency view objects.</p>
@@ -1179,7 +1026,7 @@ each edge type.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.children" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.children" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator over children of node n.</p>
 <p>Children of node ‘n’ are nodes with a directed
 edge from ‘n’ to that node. For example,
@@ -1187,14 +1034,14 @@ edge from ‘n’ to that node. For example,
 via a bidirected edge are not considered children:
 ‘n’ &lt;-&gt; ‘y’.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> : node</p>
 <blockquote>
 <div><p>A node in the causal DAG.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>children</strong> : <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterator</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>children</strong> : Iterator</p>
 <blockquote>
 <div><p>An iterator of the children of node ‘n’.</p>
 </div></blockquote>
@@ -1217,15 +1064,15 @@ of the graph and attributes. That is, if an attribute is a
 container, that container is shared by the original an the copy.
 Use Python’s <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a> for new containers.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>as_view</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a>, optional (default=False)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>as_view</strong> : bool, optional (default=False)</p>
 <blockquote>
 <div><p>If True, the returned graph-view provides a read-only view
 of the original graph without actually copying any data.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>G</strong> : Graph</p>
 <blockquote>
 <div><p>A copy of the graph.</p>
 </div></blockquote>
@@ -1290,20 +1137,20 @@ and deep copies, <a class="reference external" href="https://docs.python.org/3/l
 <span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.degree" title="Permalink to this definition">#</a></dt>
 <dd><p>A DegreeView for the Graph as G.degree or G.degree().</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes (default= <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
 <blockquote>
 <div><p>The view will only report edges incident to these nodes.</p>
 </div></blockquote>
-<p><strong>weight</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, optional (default=None)</p>
+<p><strong>weight</strong> : string or None, optional (default=None)</p>
 <blockquote>
 <div><p>The name of an edge attribute that holds the numerical value used
 as a weight.  If None, then each edge has weight 1.
 The degree is the sum of the edge weights adjacent to the node.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>deg_dicts</strong> : dictionary of DegreeView | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>deg_dicts</strong> : dictionary of DegreeView | int</p>
 <blockquote>
 <div><p>If multiple nodes are requested (the default), returns a <code class="docutils literal notranslate"><span class="pre">DegreeView</span></code>
 mapping nodes to their degree.
@@ -1332,12 +1179,12 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 <p>Each edge type has an EdgeView object associated with it. For more information
 on the EdgeView object itself, see the documentation in <code class="docutils literal notranslate"><span class="pre">networkx.Graph.edges</span></code>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes (default= <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
 <blockquote>
 <div><p>The view will only report edges from these nodes.</p>
 </div></blockquote>
-<p><strong>data</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a>, optional (default=False)</p>
+<p><strong>data</strong> : string or bool, optional (default=False)</p>
 <blockquote>
 <div><p>The edge attribute returned in 3-tuple (u, v, ddict[data]).
 If True, return edge attribute dict in 3-tuple (u, v, ddict).
@@ -1349,7 +1196,7 @@ If False, return 2-tuple (u, v).</p>
 Only relevant if data is not True or False.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>edges</strong> : dictionary of EdgeView</p>
 <blockquote>
 <div><p>A dictionary of EdgeViews.</p>
@@ -1374,7 +1221,7 @@ For directed graphs this returns the out-edges.</p>
 <p>This is identical to <code class="docutils literal notranslate"><span class="pre">G[u][v]</span></code> except the default is returned
 instead of an exception if the edge doesn’t exist.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>u, v</strong><span class="classifier">nodes</span></dt><dd></dd>
 </dl>
@@ -1383,7 +1230,7 @@ instead of an exception if the edge doesn’t exist.</p>
 <div><p>Value to return if the edge (u, v) is not found.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>edge_dict</strong> : dictionary</p>
 <blockquote>
 <div><p>The edge attribute dictionary.</p>
@@ -1422,21 +1269,21 @@ But it is safe to assign attributes <code class="docutils literal notranslate"><
 <span class="sig-name descname"><span class="pre">get_graphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.get_graphs" title="Permalink to this definition">#</a></dt>
 <dd><p>Get graphs representing the mixed-edges.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, optional</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edge_type</strong> : str, optional</p>
 <blockquote>
 <div><p>The graph of the edge type to return, by default ‘all’, which
 will then return a list of all edge graphs.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>graph</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a> | dictionary of <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>graph</strong> : Graph | dictionary of Graph</p>
 <blockquote>
 <div><p>The graph representing a specific type of edge, or all edges.</p>
 </div></blockquote>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ValueError</p>
 <blockquote>
 <div><p>_description_</p>
 </div></blockquote>
@@ -1456,20 +1303,20 @@ will then return a list of all edge graphs.</p>
 <dd><p>Returns True if the edge (u, v) is in the graph.</p>
 <p>This is the same as <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">in</span> <span class="pre">G[u]</span></code> without KeyError exceptions.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>u, v</strong> : nodes</p>
 <blockquote>
 <div><p>Nodes can be, for example, strings or numbers.
 Nodes must be hashable (and not None) Python objects.</p>
 </div></blockquote>
-<p><strong>edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>edge_type</strong> : str</p>
 <blockquote>
 <div><p>Specifies a specific edge type. If ‘any’ (default), then
 will check if any edge exists between <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>edge_ind</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>edge_ind</strong> : bool</p>
 <blockquote>
 <div><p>True if edge is in the graph, False otherwise.</p>
 </div></blockquote>
@@ -1502,14 +1349,14 @@ will check if any edge exists between <code class="docutils literal notranslate"
 <dd><p>Returns True if the graph contains the node n.</p>
 <p>Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code></p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> : node</p>
 <blockquote>
 <div><p>The node to query. Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code>.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>has</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>has</strong> : bool</p>
 <blockquote>
 <div><p>Whether or not the graph has node ‘n’.</p>
 </div></blockquote>
@@ -1542,10 +1389,10 @@ will check if any edge exists between <code class="docutils literal notranslate"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.mark_unfaithful_triple">
-<span class="sig-name descname"><span class="pre">mark_unfaithful_triple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.mark_unfaithful_triple" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">mark_unfaithful_triple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.mark_unfaithful_triple" title="Permalink to this definition">#</a></dt>
 <dd><p>Mark an unfaithful triple.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>v_i</strong> : node</p>
 <blockquote>
 <div><p>The first node in a triple.</p>
@@ -1579,21 +1426,21 @@ also in the graph.</p>
 <p>The nodes in nbunch are checked for membership in the graph
 and if not are silently ignored.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes (default= <a class="reference external" href="https://docs.python.org/3/library/functions.html#all" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a> nodes)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
 <blockquote>
 <div><p>The view will only report edges incident to these nodes.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>niter</strong> : iterator</p>
 <blockquote>
 <div><p>An iterator over nodes in nbunch that are also in the graph.
 If nbunch is None, iterate over all nodes in the graph.</p>
 </div></blockquote>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NetworkXError</p>
 <blockquote>
 <div><p>If nbunch is not a node or sequence of nodes.
 If a node in nbunch is not hashable.</p>
@@ -1631,19 +1478,19 @@ If a node in nbunch is not hashable.</p>
 <span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.number_of_edges" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of edges between two nodes.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>u, v</strong> : nodes, optional (default=all <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>u, v</strong> : nodes, optional (default=all edges)</p>
 <blockquote>
 <div><p>If u and v are specified, return the number of edges between
 u and v. Otherwise return the total number of all edges.</p>
 </div></blockquote>
-<p><strong>edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, optional</p>
+<p><strong>edge_type</strong> : str, optional</p>
 <blockquote>
 <div><p>The edge type to query for number of edges.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>nedges</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nedges</strong> : int</p>
 <blockquote>
 <div><p>The number of edges in the graph.  If nodes <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> are
 specified return the number of edges between those nodes. If
@@ -1727,13 +1574,13 @@ directed edges from <code class="docutils literal notranslate"><span class="pre"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.orient_uncertain_edge">
-<span class="sig-name descname"><span class="pre">orient_uncertain_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.orient_uncertain_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.orient_uncertain_edge" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">orient_uncertain_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.orient_uncertain_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.orient_uncertain_edge" title="Permalink to this definition">#</a></dt>
 <dd><p>Orient undirected edge into an arrowhead.</p>
 <p>If there is an undirected edge u - v, then the arrowhead
 will orient u -&gt; v. If the correct order is v &lt;- u, then
 simply pass the arguments in different order.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>u</strong> : node</p>
 <blockquote>
 <div><p>The parent node</p>
@@ -1748,7 +1595,7 @@ simply pass the arguments in different order.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.parents">
-<span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.parents" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.parents" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator over parents of node n.</p>
 <p>Parents of node ‘n’ are nodes with a directed
 edge from ‘n’ to that node. For example,
@@ -1756,14 +1603,14 @@ edge from ‘n’ to that node. For example,
 via a bidirected edge are not considered parents:
 ‘n’ &lt;-&gt; ‘y’.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> : node</p>
 <blockquote>
 <div><p>A node in the causal DAG.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>parents</strong> : <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterator</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>parents</strong> : Iterator</p>
 <blockquote>
 <div><p>An iterator of the parents of node ‘n’.</p>
 </div></blockquote>
@@ -1773,7 +1620,7 @@ via a bidirected edge are not considered parents:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.possible_children">
-<span class="sig-name descname"><span class="pre">possible_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.possible_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.possible_children" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">possible_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.possible_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.possible_children" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator over children of node n.</p>
 <p>Children of node ‘n’ are nodes with a directed
 edge from ‘n’ to that node. For example,
@@ -1781,14 +1628,14 @@ edge from ‘n’ to that node. For example,
 via a bidirected edge are not considered children:
 ‘n’ &lt;-&gt; ‘y’.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> : node</p>
 <blockquote>
 <div><p>A node in the causal DAG.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>children</strong> : <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterator</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>children</strong> : Iterator</p>
 <blockquote>
 <div><p>An iterator of the children of node ‘n’.</p>
 </div></blockquote>
@@ -1798,7 +1645,7 @@ via a bidirected edge are not considered children:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.possible_parents">
-<span class="sig-name descname"><span class="pre">possible_parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.possible_parents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.possible_parents" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">possible_parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/cpdag.html#CPDAG.possible_parents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.CPDAG.possible_parents" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator over parents of node n.</p>
 <p>Parents of node ‘n’ are nodes with a directed
 edge from ‘n’ to that node. For example,
@@ -1806,14 +1653,14 @@ edge from ‘n’ to that node. For example,
 via a bidirected edge are not considered parents:
 ‘n’ &lt;-&gt; ‘y’.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> : node</p>
 <blockquote>
 <div><p>A node in the causal DAG.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>parents</strong> : <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterator</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>parents</strong> : Iterator</p>
 <blockquote>
 <div><p>An iterator of the parents of node ‘n’.</p>
 </div></blockquote>
@@ -1823,7 +1670,7 @@ via a bidirected edge are not considered parents:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.predecessors">
-<span class="sig-name descname"><span class="pre">predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.predecessors" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.predecessors" title="Permalink to this definition">#</a></dt>
 <dd><p>Ancestors of ‘source’ node with directed path.</p>
 </dd></dl>
 
@@ -1832,18 +1679,18 @@ via a bidirected edge are not considered parents:
 <span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.remove_edge" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove an edge between u and v.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>u, v</strong> : nodes</p>
 <blockquote>
 <div><p>Remove an edge between nodes u and v.</p>
 </div></blockquote>
-<p><strong>edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>edge_type</strong> : str</p>
 <blockquote>
 <div><p>The edge type.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://networkx.org/documentation/latest/reference/exceptions.html#networkx.NetworkXError" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkXError</span></code></a></p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>NetworkXError</p>
 <blockquote>
 <div><p>If there is not an edge between u and v, or
 if there is no edge with the specified key.</p>
@@ -1864,7 +1711,7 @@ if there is no edge with the specified key.</p>
 <span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.remove_edges_from" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove all edges specified in ebunch.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ebunch: list or container of edge tuples</strong></p>
 <blockquote>
 <div><p>Each edge given in the list or container will be removed
@@ -1900,15 +1747,15 @@ from the graph. The edges can be:</p>
 <span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.size" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of edges or total of all edge weights.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>weight</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, optional (default=None)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>weight</strong> : string or None, optional (default=None)</p>
 <blockquote>
 <div><p>The edge attribute that holds the numerical value used
 as a weight. If None, then each edge has weight 1.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>size</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>size</strong> : float</p>
 <blockquote>
 <div><p>The number of edges or
 (if weight keyword is provided) the total weight sum.
@@ -1959,13 +1806,13 @@ If weight is None, returns an int. Otherwise a float
 <p>The induced subgraph of the graph contains the nodes in <code class="docutils literal notranslate"><span class="pre">nodes</span></code>
 and the edges between those nodes.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nodes</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/glossary.html#term-iterable" title="(in Python v3.11)"><span>iterable</span></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> : list, iterable</p>
 <blockquote>
 <div><p>A container of nodes which will be iterated through once.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>G</strong> : MixedEdgeGraph</p>
 <blockquote>
 <div><p>A copy of the graph with only the nodes.</p>
@@ -1976,7 +1823,7 @@ and the edges between those nodes.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.successors">
-<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.successors" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.CPDAG.successors" title="Permalink to this definition">#</a></dt>
 <dd><p>Descendants of ‘source’ node with directed path.</p>
 </dd></dl>
 
@@ -1985,8 +1832,8 @@ and the edges between those nodes.</p>
 <span class="sig-name descname"><span class="pre">to_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.to_directed" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a directed representation of the graph.</p>
 <dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiGraph</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> : DiGraph</p>
 <blockquote>
 <div><p>A directed graph with the same name, same nodes, and with
 each edge (u, v, data) replaced by two directed edges
@@ -2028,8 +1875,8 @@ DiGraph created by this method.</p>
 <span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.CPDAG.to_undirected" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an undirected representation of the digraph.</p>
 <dl class="field-list">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> : Graph</p>
 <blockquote>
 <div><p>An undirected graph with the same name and nodes and
 with edge (u, v, data) if either (u, v, data) or (v, u, data)
@@ -2087,8 +1934,8 @@ To specify only nodes the keyword <code class="docutils literal notranslate"><sp
 the add_edges_from/add_nodes_from methods. When iterated, they
 should yield 2-tuples (u, v) or 3-tuples (u, v, datadict).</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>edges</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nx.Graph</span></code></a> object, collection of <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edges</strong> : nx.Graph object, collection of edges, or None</p>
 <blockquote>
 <div><p>The first parameter can be a graph or some edges. If it has
 attributes <code class="docutils literal notranslate"><span class="pre">nodes</span></code> and <a class="reference internal" href="#pywhy_graphs.CPDAG.edges" title="pywhy_graphs.CPDAG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, then it is taken to be a
@@ -2098,7 +1945,7 @@ If the first parameter does not have those attributes, it is
 treated as a collection of edges and added to the graph.
 If the first argument is None, no edges are added.</p>
 </div></blockquote>
-<p><strong>nodes</strong> : collection of nodes, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<p><strong>nodes</strong> : collection of nodes, or None</p>
 <blockquote>
 <div><p>The second parameter is treated as a collection of nodes
 to be added to the graph unless it is None.

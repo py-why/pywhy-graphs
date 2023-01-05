@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.algorithms.acyclification &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -256,8 +256,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -318,48 +357,47 @@
 <dt class="sig sig-object py" id="pywhy_graphs.algorithms.acyclification">
 <span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">acyclification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.classes.mixededge.MixedEdgeGraph"><span class="pre">MixedEdgeGraph</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.classes.mixededge.MixedEdgeGraph"><span class="pre">MixedEdgeGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/cyclic.html#acyclification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.acyclification" title="Permalink to this definition">#</a></dt>
 <dd><p>Acyclify a cyclic graph.</p>
-<p>Applies the acyclification procedure presented in <a class="footnote-reference brackets" href="#footcite-mooij2020cyclic" id="id1">1</a>.
+<p>Applies the acyclification procedure presented in <a class="footnote-reference brackets" href="#footcite-mooij2020cyclic" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
 This converts to G to what is called <span class="math notranslate nohighlight">\(G^{acy}\)</span> in the reference.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> : <a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_nx.MixedEdgeGraph</span></code></a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> : pywhy_nx.MixedEdgeGraph</p>
 <blockquote>
 <div><p>A graph with cycles.</p>
 </div></blockquote>
-<p><strong>directed_edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>directed_edge_type</strong> : str</p>
 <blockquote>
 <div><p>The name of the sub-graph of directed edges.</p>
 </div></blockquote>
-<p><strong>bidirected_edge_type</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>bidirected_edge_type</strong> : str</p>
 <blockquote>
 <div><p>The name of the sub-graph of bidirected edges.</p>
 </div></blockquote>
-<p><strong>copy</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<p><strong>copy</strong> : bool</p>
 <blockquote>
 <div><p>Whether to operate on the graph in place, or make a copy.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>G</strong> : <a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_nx.MixedEdgeGraph</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>G</strong> : pywhy_nx.MixedEdgeGraph</p>
 <blockquote>
 <div><p>The acyclified graph.</p>
 </div></blockquote>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This takes
-This replaces all strongly connected components of G by fully connected
+<p>This replaces all strongly connected components of G by fully connected
 bidirected components without any directed edges. Then any node with an
 edge pointing into the SC (i.e. a directed edge, or bidirected edge) is
 made fully connected with the nodes of the SC either with a directed, or
 bidirected edge.</p>
 <p class="rubric">References</p>
 <div class="docutils container" id="id2">
-<dl class="footnote brackets">
-<dt class="label" id="footcite-mooij2020cyclic"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Joris M. Mooij and Tom Claassen. Constraint-based causal discovery using partial ancestral graphs in the presence of cycles. In Jonas Peters and David Sontag, editors, <em>Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence (UAI)</em>, volume 124 of Proceedings of Machine Learning Research, 1159–1168. PMLR, 03–06 Aug 2020. URL: <a class="reference external" href="https://proceedings.mlr.press/v124/m-mooij20a.html">https://proceedings.mlr.press/v124/m-mooij20a.html</a>.</p>
-</dd>
-</dl>
+<aside class="footnote brackets" id="footcite-mooij2020cyclic" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Joris M. Mooij and Tom Claassen. Constraint-based causal discovery using partial ancestral graphs in the presence of cycles. In Jonas Peters and David Sontag, editors, <em>Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence (UAI)</em>, volume 124 of Proceedings of Machine Learning Research, 1159–1168. PMLR, 03–06 Aug 2020. URL: <a class="reference external" href="https://proceedings.mlr.press/v124/m-mooij20a.html">https://proceedings.mlr.press/v124/m-mooij20a.html</a>.</p>
+</aside>
+</aside>
 </div>
 </dd></dl>
 

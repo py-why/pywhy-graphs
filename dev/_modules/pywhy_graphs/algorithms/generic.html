@@ -190,7 +190,7 @@
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
 
 <span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">EdgeType</span>
 <span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
@@ -204,7 +204,7 @@
 
 
 <span class="k">def</span> <span class="nf">is_node_common_cause</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if a node is a common cause within the graph.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a node is a common cause within the graph.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -234,7 +234,7 @@
 
 
 <span class="k">def</span> <span class="nf">set_nodes_as_latent_confounders</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">ADMG</span><span class="p">],</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ADMG</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Set nodes as latent unobserved confounders.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set nodes as latent unobserved confounders.</span>
 
 <span class="sd">    Note that this only works if the original node is a common cause</span>
 <span class="sd">    of some variables in the graph.</span>
@@ -295,7 +295,7 @@
 
 
 <div class="viewcode-block" id="is_valid_mec_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph">[docs]</a><span class="k">def</span> <span class="nf">is_valid_mec_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check G is a valid PAG.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check G is a valid PAG.</span>
 
 <span class="sd">    A valid CPDAG/PAG is one where each pair of nodes have</span>
 <span class="sd">    at most one edge between them and the internal graph of directed edges</span>
@@ -314,10 +314,10 @@
 <span class="sd">    bool</span>
 <span class="sd">        Whether G is a valid PAG or CPDAG.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">):</span>
         <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_cpdag_edge</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">PAG</span><span class="p">):</span>
-        <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_pag_edge</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">PAG</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">):</span>
+        <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_pag_edge</span>
 
     <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">edgeview</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edgeview</span><span class="p">:</span>
@@ -333,7 +333,7 @@
 
 
 <span class="k">def</span> <span class="nf">_check_adding_cpdag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -370,7 +370,7 @@
 
 
 <span class="k">def</span> <span class="nf">_check_adding_pag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -424,7 +424,7 @@
 
 
 <span class="k">def</span> <span class="nf">single_source_shortest_mixed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute shortest mixed-edge path between source and all other nodes.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute shortest mixed-edge path between source and all other nodes.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -479,7 +479,7 @@
 
 
 <span class="k">def</span> <span class="nf">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">firstlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return shortest paths.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return shortest paths.</span>
 
 <span class="sd">    Shortest Path helper function.</span>
 

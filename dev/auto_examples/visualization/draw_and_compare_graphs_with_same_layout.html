@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Drawing graphs and setting their layout for visual comparison &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -46,7 +46,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Release History" href="../../whats_new.html" />
+    <link rel="next" title="Drawing timeseries graphs and setting their layout" href="plot_timeseries_graphs.html" />
     <link rel="prev" title="Visualization of causal graphs" href="index.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
@@ -215,6 +215,11 @@
      Drawing graphs and setting their layout for visual comparison
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plot_timeseries_graphs.html">
+     Drawing timeseries graphs and setting their layout
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -271,6 +276,12 @@ and pass this to other graphs so that the nodes positions
 are the same for the nodes with the same labels.</p>
 <p>Alternatively, one can create their own positions manually, or using software,
 such as <a class="reference external" href="http://dagitty.net">Dagitty</a>.</p>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_001.png" srcset="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_001.png" alt="draw and compare graphs with same layout" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_002.png" srcset="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_002.png" alt="draw and compare graphs with same layout" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_003.png" srcset="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_003.png" alt="draw and compare graphs with same layout" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_004.png" srcset="../../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_004.png" alt="draw and compare graphs with same layout" class = "sphx-glr-multi-img"/></li>
+</ul>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;x&#39;: array([-1.        ,  0.15471958]), &#39;y&#39;: array([-0.42925134, -0.7990356 ]), &#39;z&#39;: array([0.90151211, 0.36916753]), &#39;w&#39;: array([ 0.62354034, -0.6548282 ]), &#39;xy&#39;: array([-0.09580111,  0.92997669])}
 
 &#39;pag.png&#39;
@@ -307,19 +318,24 @@ such as <a class="reference external" href="http://dagitty.net">Dagitty</a>.</p>
 
 <span class="c1"># draw the graphs (i.e., generate a graphviz object that can be rendered)</span>
 <span class="c1"># each time we call draw() we pass the layout position of G</span>
-<span class="n">dot_G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
-<span class="n">dot_admg</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
-<span class="n">dot_cpdag</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
-<span class="n">dot_pag</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="networkx.DiGraph" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">G</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_admg</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">admg</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_cpdag</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.CPDAG.html#pywhy_graphs.CPDAG" title="pywhy_graphs.CPDAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cpdag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_pag</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
 
 <span class="c1"># render the graphs using graphviz render() function</span>
-<span class="n">dot_G</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
-<span class="n">dot_admg</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;admg.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
-<span class="n">dot_cpdag</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;cpdag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
-<span class="n">dot_pag</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_G</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_admg</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;admg.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_cpdag</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;cpdag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_pag</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+
+<span class="c1"># .. note::</span>
+<span class="c1"># The &#39;neato&#39; engine is required in order to leverage the positions</span>
+<span class="c1"># specified in the `draw` function. For more information, see the documentation</span>
+<span class="c1"># on graphviz engines: https://graphviz.org/docs/layouts/neato/.</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.369 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.420 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-visualization-draw-and-compare-graphs-with-same-layout-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
@@ -347,10 +363,10 @@ such as <a class="reference external" href="http://dagitty.net">Dagitty</a>.</p>
           <p class="prev-next-title">Visualization of causal graphs</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../../whats_new.html" title="next page">
+  <a class='right-next' id="next-link" href="plot_timeseries_graphs.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Release History</p>
+      <p class="prev-next-title">Drawing timeseries graphs and setting their layout</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.networkx.m_separated &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -46,7 +46,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.viz.draw" href="pywhy_graphs.viz.draw.html" />
+    <link rel="next" title="pywhy_graphs.classes.timeseries.complete_ts_graph" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html" />
     <link rel="prev" title="pywhy_graphs.networkx.bidirected_to_unobserved_confounder" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
@@ -255,8 +255,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -335,26 +374,26 @@ that, an undirected graph composed from the directed and bidirected edges amongs
 remaining nodes is created. Then, x is independent of y given z if x is disconnected from y
 in this new graph.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>G</strong> : mixed-edge-graph</p>
 <blockquote>
 <div><p>Mixed edge causal graph.</p>
 </div></blockquote>
-<p><strong>x</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p>
+<p><strong>x</strong> : set</p>
 <blockquote>
 <div><p>First set of nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>y</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p>
+<p><strong>y</strong> : set</p>
 <blockquote>
 <div><p>Second set of nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>z</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p>
+<p><strong>z</strong> : set</p>
 <blockquote>
 <div><p>Set of conditioning nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>. Can be empty set.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>b</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.11)"><span class="xref std std-ref">bool</span></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>b</strong> : bool</p>
 <blockquote>
 <div><p>A boolean that is true if <code class="docutils literal notranslate"><span class="pre">x</span></code> is m-separated from <code class="docutils literal notranslate"><span class="pre">y</span></code> given <code class="docutils literal notranslate"><span class="pre">z</span></code> in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
@@ -370,12 +409,13 @@ in this new graph.</p>
 <p>This wraps the networkx implementation, which only allows DAGs. Since
 <code class="docutils literal notranslate"><span class="pre">ADMG</span></code> is not represented.</p>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r23c6b73ac81f-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Darwiche, A.  (2009).  Modeling and reasoning with Bayesian networks.
+<div role="list" class="citation-list">
+<div class="citation" id="r23c6b73ac81f-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Darwiche, A.  (2009).  Modeling and reasoning with Bayesian networks.
 Cambridge: Cambridge University Press.</p>
-</dd>
-</dl>
+</div>
+</div>
 </dd></dl>
 
 <section id="examples-using-pywhy-graphs-networkx-m-separated">
@@ -401,10 +441,10 @@ Cambridge: Cambridge University Press.</p>
           <p class="prev-next-title">pywhy_graphs.networkx.bidirected_to_unobserved_confounder</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.viz.draw.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.viz.draw</p>
+      <p class="prev-next-title">pywhy_graphs.classes.timeseries.complete_ts_graph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

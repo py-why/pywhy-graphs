@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="PAG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG">[docs]</a><span class="k">class</span> <span class="nc">PAG</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">ConservativeMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Partial ancestral graph (PAG).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Partial ancestral graph (PAG).</span>
 
 <span class="sd">    PAGs are a Markov equivalence class with mixed edges of directed,</span>
 <span class="sd">    bidirected, undirected and edges with circle endpoints. In terms</span>
@@ -286,15 +286,15 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">circle_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;``EdgeView`` of the circle edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the circle edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
 <div class="viewcode-block" id="PAG.sub_circle_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.sub_circle_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_circle_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Sub-graph of just the circle edges.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the circle edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PAG.orient_uncertain_edge"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge">[docs]</a>    <span class="k">def</span> <span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
 
 <span class="sd">        If there is an undirected edge u - v, then the arrowhead</span>
 <span class="sd">        will orient u -&gt; v. If the correct order is v &lt;- u, then</span>
@@ -334,7 +334,7 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The current PAG is invalid.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PAG.possible_children"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_children">[docs]</a>    <span class="k">def</span> <span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
 
 <span class="sd">        Possible children of &#39;n&#39; are nodes with an edge like</span>
 <span class="sd">        &#39;n&#39; o-&gt; &#39;x&#39;. Nodes with &#39;n&#39; o-o &#39;x&#39; are not considered</span>
@@ -353,7 +353,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PAG.possible_parents"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_parents">[docs]</a>    <span class="k">def</span> <span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return an iterator over possible parents of node n.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over possible parents of node n.</span>
 
 <span class="sd">        Possible parents of &#39;n&#39; are nodes with an edge like</span>
 <span class="sd">        &#39;n&#39; &lt;-o &#39;x&#39;. Nodes with &#39;n&#39; o-o &#39;x&#39; are not considered</span>
@@ -372,7 +372,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PAG.parents"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.parents">[docs]</a>    <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the definite parents of node &#39;n&#39; in a PAG.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite parents of node &#39;n&#39; in a PAG.</span>
 
 <span class="sd">        Definite parents are parents of node &#39;n&#39; with only</span>
 <span class="sd">        a directed edge between them from &#39;n&#39; &lt;- &#39;x&#39;. For example,</span>
@@ -400,7 +400,7 @@
                 <span class="k">yield</span> <span class="n">node</span></div>
 
 <div class="viewcode-block" id="PAG.children"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.children">[docs]</a>    <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the definite children of node &#39;n&#39; in a PAG.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite children of node &#39;n&#39; in a PAG.</span>
 
 <span class="sd">        Definite children are children of node &#39;n&#39; with only</span>
 <span class="sd">        a directed edge between them from &#39;n&#39; -&gt; &#39;x&#39;. For example,</span>

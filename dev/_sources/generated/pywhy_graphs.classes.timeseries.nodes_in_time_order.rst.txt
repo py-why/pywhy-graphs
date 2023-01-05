@@ -1,0 +1,12 @@
+﻿pywhy_graphs.classes.timeseries.nodes_in_time_order
+===================================================
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+
+.. autofunction:: nodes_in_time_order
+
+.. include:: pywhy_graphs.classes.timeseries.nodes_in_time_order.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

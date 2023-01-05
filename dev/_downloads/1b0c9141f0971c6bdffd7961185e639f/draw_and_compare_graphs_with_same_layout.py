@@ -11,7 +11,6 @@ in that case graphviz will choose how to place the nodes.
 In this example, we demonstrate how to visualize various different graphs with a fixed layout
 for the nodes, so that they are easily comparable.
 
-
 This examples shows how to create a position layout for all the nodes (using networkx)
 and pass this to other graphs so that the nodes positions
 are the same for the nodes with the same labels.
@@ -58,3 +57,8 @@ dot_G.render(outfile="G.png", view=True, engine="neato")
 dot_admg.render(outfile="admg.png", view=True, engine="neato")
 dot_cpdag.render(outfile="cpdag.png", view=True, engine="neato")
 dot_pag.render(outfile="pag.png", view=True, engine="neato")
+
+# .. note::
+# The 'neato' engine is required in order to leverage the positions
+# specified in the `draw` function. For more information, see the documentation
+# on graphviz engines: https://graphviz.org/docs/layouts/neato/.

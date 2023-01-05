@@ -20,5 +20,5 @@
 .. |API| replace:: :raw-html:`<span class="badge badge-warning">API Change</span>` :raw-latex:`{\small\sc [API Change]}`
 
 
-.. _Adam Li: https://py-why.github.io
+.. _Adam Li: https://github.com/adam2392
 .. _Julien Siebert: https://github.com/siebert-julien

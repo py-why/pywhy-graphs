@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>pywhy_graphs.networkx.bidirected_to_unobserved_confounder &#8212; pywhy-graphs v0.0.0</title>
 <script>
@@ -255,8 +255,47 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
+   pywhy_graphs.classes.timeseries.complete_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
+   pywhy_graphs.classes.timeseries.empty_ts_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
+   pywhy_graphs.classes.timeseries.get_summary_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
+   pywhy_graphs.classes.timeseries.has_homologous_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
+   pywhy_graphs.classes.timeseries.nodes_in_time_order
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
+   pywhy_graphs.viz.timeseries_layout
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.sys_info.html">
+   pywhy_graphs.sys_info
   </a>
  </li>
 </ul>
@@ -318,26 +357,26 @@
 <span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">bidirected_to_unobserved_confounder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uc_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Unobserved</span> <span class="pre">Confounders'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/convert.html#bidirected_to_unobserved_confounder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.bidirected_to_unobserved_confounder" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert all bidirected edges to unobserved confounders.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>G</strong> : MixedEdgeGraph</p>
 <blockquote>
 <div><p>A causal graph with bidirected edges.</p>
 </div></blockquote>
-<p><strong>directed_edge_name</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
 <div><p>The name of the graph representing directed edges in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>bidirected_edge_name</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>bidirected_edge_name</strong> : str</p>
 <blockquote>
 <div><p>The name of the graph representing bidirected edges in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>uc_label</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<p><strong>uc_label</strong> : str</p>
 <blockquote>
 <div><p>The <code class="docutils literal notranslate"><span class="pre">label</span></code> of the unobserved variables that are added in.</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>G_copy</strong> : <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiGraph</span></code></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>G_copy</strong> : DiGraph</p>
 <blockquote>
 <div><p>A networkx DiGraph that is a fully specified DAG with unobserved
 variables added in place of bidirected edges.</p>
