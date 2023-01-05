@@ -143,24 +143,28 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
     Running this function with no arguments prints an output that is
     useful when submitting bug reports::
 
-        >>> import pywhy_graphs
-        >>> pywhy_graphs.sys_info() # doctest: +SKIP
-        Platform:      Linux-4.15.0-1067-aws-x86_64-with-glibc2.2.5
-        Python:        3.8.1 (default, Feb  2 2020, 08:37:37)  [GCC 8.3.0]
-        Executable:    /usr/local/bin/python
-        CPU:           : 36 cores
-        Memory:        68.7 GB
+    >>> import pywhy_graphs
+    >>> pywhy_graphs.sys_info() # doctest: +SKIP
+    Platform:      Linux-4.15.0-1067-aws-x86_64-with-glibc2.2.5
+    Python:        3.8.1 (default, Feb  2 2020, 08:37:37)  [GCC 8.3.0]
+    Executable:    /usr/local/bin/python
+    CPU:           : 36 cores
+    Memory:        68.7 GB
 
-        numpy:         1.19.0 {blas=openblas, lapack=openblas}
-        scipy:         1.5.1
-        pandas:        1.0.5
-        networkx:      2.8.8
-        matplotlib:    3.2.2 {backend=Qt5Agg}
-        sklearn:       0.23.1
+    numpy:            1.21.5 {OpenBLAS 0.3.17 with 8 threads}
+    scipy:            1.8.0
+    networkx:         2.8.8
 
-        pywhy-graphs:  0.0.0
-        dodiscover:    0.0.0
-        dowhy:         0.8.0
+    sklearn:          1.2.0
+    matplotlib:       3.6.2 {backend=MacOSX}
+    pandas:           1.5.2
+    pygraphviz:       Not found
+    causal-learn:     Not found
+    joblib:           1.2.0
+
+    pywhy_graphs:     0.0.0
+    dodiscover:       Not found
+    dowhy:            0.8
     """  # noqa: E501
     # _check_option('dependencies', dependencies, ('user', 'developer'))
     ljust = 21 if dependencies == "developer" else 18
@@ -206,7 +210,7 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
         "pandas",
         "pygraphviz",
         "causal-learn",
-        "tigramite",
+        # "tigramite",  # no version
         "joblib",
         "",
         "pywhy_graphs",
