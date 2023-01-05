@@ -106,3 +106,13 @@ to perform modular visualization of nodes and edges.
 
    draw
    timeseries_layout
+
+Utilities for debugging
+=======================
+.. currentmodule:: pywhy_graphs
+
+.. autosummary::
+   :toctree: generated/
+
+   sys_info
+
