@@ -180,7 +180,11 @@ filterwarnings = []
 branch = true
 cover_pylib = false
 source = ['pywhy_graphs']
-omit = ['**/__init__.py', '**/tests/**']
+omit = [
+    '**/__init__.py',
+    'pywhy_graphs/config.py',
+    '**/tests/**',
+]
 
 [tool.coverage.report]
 exclude_lines = ['pragma: no cover', 'if __name__ == .__main__.:']
