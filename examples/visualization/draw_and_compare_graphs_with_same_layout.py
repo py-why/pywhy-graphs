@@ -58,6 +58,7 @@ dot_admg.render(outfile="admg.png", view=True, engine="neato")
 dot_cpdag.render(outfile="cpdag.png", view=True, engine="neato")
 dot_pag.render(outfile="pag.png", view=True, engine="neato")
 
-# Note: The 'neato' engine is required in order to leverage the positions
+# .. note::
+# The 'neato' engine is required in order to leverage the positions
 # specified in the `draw` function. For more information, see the documentation
 # on graphviz engines: https://graphviz.org/docs/layouts/neato/.

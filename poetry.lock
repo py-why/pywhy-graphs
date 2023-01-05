@@ -1360,7 +1360,7 @@ name = "pygraphviz"
 version = "1.10"
 description = "Python interface to Graphviz"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.8"
 
 [[package]]
@@ -2011,7 +2011,7 @@ viz = ["pygraphviz"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "df8ce5ae13e79250264d65db30d7f0668d9620641da7d84921b53a95834dcea9"
+content-hash = "2984395b483f427780c822fc91b205a318cf8932dd156552375a5d5f290b6a00"
 
 [metadata.files]
 alabaster = [
