@@ -2,13 +2,16 @@ from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
-import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
+from pywhy_graphs.typing import Node
 
-from ..typing import Node
-from .base import AncestralMixin, ConservativeMixin
+from .mixededge import StationaryTimeSeriesMixedEdgeGraph
+from .timeseries import StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph
 
 
-class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
+class StationaryTimeSeriesCPDAG(
+    StationaryTimeSeriesMixedEdgeGraph, AncestralMixin, ConservativeMixin
+):
     """Completed partially directed acyclic graphs (CPDAG).
 
     CPDAGs generalize causal DAGs by allowing undirected edges.
@@ -57,8 +60,10 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         **attr,
     ):
         super().__init__(**attr)
-        self.add_edge_type(nx.DiGraph(incoming_directed_edges), directed_edge_name)
-        self.add_edge_type(nx.Graph(incoming_undirected_edges), undirected_edge_name)
+        self.add_edge_type(StationaryTimeSeriesDiGraph(incoming_directed_edges), directed_edge_name)
+        self.add_edge_type(
+            StationaryTimeSeriesGraph(incoming_undirected_edges), undirected_edge_name
+        )
 
         self._directed_name = directed_edge_name
         self._undirected_name = undirected_edge_name
@@ -116,7 +121,7 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         """
         if not self.has_edge(u, v, self._undirected_name):
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
-
+        u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
         self.remove_edge(u, v, self._undirected_name)
         self.add_edge(u, v, self._directed_name)
 

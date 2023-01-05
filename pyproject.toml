@@ -6,7 +6,7 @@ name = "pywhy_graphs"
 #
 version = "0.0.0"
 description = "Causal Graphs for Python"
-authors = ["PyWhy Community <adam.li@columbia.com>"]
+authors = ["PyWhy Community <adam.li@columbia.edu>"]
 license = "MIT"
 documentation = "https://py-why.github.io/pywhy-graphs"
 repository = "https://github.com/py-why/pywhy-graphs"
@@ -36,8 +36,8 @@ exclude = ['*tests']
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-numpy = "^1.23.0"
-scipy = "^1.9.0"
+numpy = "^1.21.0"
+scipy = "^1.8.0"
 networkx = "^2.8.8"
 importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
@@ -50,13 +50,14 @@ pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 memory_profiler = { version = "^0.60.0" }
 causal-learn = { version = "^0.1.2.8" }
+tigramite = { version = "^5.1" }
 
 [tool.poetry.group.style]
 optional = true
 [tool.poetry.group.style.dependencies]
 poethepoet = "^0.16.0"
 mypy = "^0.971"
-black = "^22.6.0"
+black = {extras = ["jupyter"], version = "^22.12.0"}
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 bandit = "^1.7.4"
@@ -77,11 +78,11 @@ sphinxcontrib-bibtex = { version = "^2.4.2" }
 sphinx-issues = { version = "^3.0.1" }
 sphinx-copybutton = { version = "^0.5.0" }
 sphinx-gallery = { version = "^0.11.0" }
-sphinx_rtd_theme = { version = "^1.0.0" }
 graphviz = { version = "^0.20.1" }
 ipython = { version = "^7.4.0" }
 nbsphinx = { version = "^0.8" }
 dowhy = { version = "^0.8" }
+pygraphviz = { version = "*" }
 memory_profiler = { version = "*" }
 scikit-learn = { version = "^1.1.0" }         # needed in dowhy's package
 pandas = { version = "^1.1" }                 # needed in dowhy's package
@@ -109,9 +110,9 @@ _changelog = 'semversioner changelog > CHANGELOG.md'
 _apply_version = 'semversioner release'
 
 type_check = 'mypy -p pywhy_graphs --config-file pyproject.toml'
-unit_test = 'pytest ./pywhy_graphs ./tests --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
-integration_test = 'pytest tests/integration_tests'
-build_docs = 'make build-docs'
+unit_test = 'pytest ./pywhy_graphs ./integration_tests --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
+integration_test = 'pytest ./integration_tests'
+build_docs = 'make -C docs clean html'
 
 [[tool.poe.tasks.lint]]
 sequence = ['_flake8', '_bandit', '_codespell', '_pydocstyle']

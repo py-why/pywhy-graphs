@@ -1,3 +1,5 @@
+# type: ignore
+
 from copy import deepcopy
 from functools import cached_property
 
@@ -551,7 +553,10 @@ class MixedEdgeGraph:
         --------
         remove_edges_from : remove a collection of edges
         """
-        self._get_internal_graph(edge_type).remove_edge(u, v)
+        if edge_type == "all":
+            self._apply_to_all_graphs("remove_edge", u, v)
+        else:
+            self._get_internal_graph(edge_type).remove_edge(u, v)
 
     def remove_edges_from(self, ebunch, edge_type):
         """Remove all edges specified in ebunch.
@@ -579,7 +584,10 @@ class MixedEdgeGraph:
         >>> ebunch = [(1, 2), (2, 3)]
         >>> G.remove_edges_from(ebunch)
         """
-        self._get_internal_graph(edge_type).remove_edges_from(ebunch)
+        if edge_type == "all":
+            self._apply_to_all_graphs("remove_edges_from", ebunch)
+        else:
+            self._get_internal_graph(edge_type).remove_edges_from(ebunch)
 
     def copy(self):
         """Returns a copy of the graph.

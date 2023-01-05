@@ -12,10 +12,14 @@ Note: The API is subject to change without deprecation cycles due to the current
 
 ## Why?
 
-Representation of causal inference models in Python are severely lacking. Moreover, sampling from causal models is non-trivial. However, sampling from simulations is a requirement to benchmark different structural learning, causal ID, or other causal related algorithms.
+Representation of causal graphical models in Python are severely lacking.
 
 PyWhy-Graphs implements a graphical API layer for ADMG, CPDAG and PAG. For causal DAGs, we recommend using the `networkx.DiGraph` class and
 ensuring acylicity via `networkx.is_directed_acyclic_graph` function.
+
+Existing packages that aim to represent causal graphs either break from the networkX API, or only implement a subset of the relevant causal graphs. By keeping in-line with the robust NetworkX API, we aim to ensure a consistent user experience and a gentle introduction to causal graphical models.
+
+Moreover, sampling from causal models is non-trivial, but a requirement for benchmarking many causal algorithms in discovery, ID, estimation and more. We aim to provide simulation modules that are easily connected with causal graphs to provide a simple robust API for modeling causal graphs and then simulating data.
 
 # Documentation
 
@@ -46,9 +50,6 @@ If you already have a working installation of numpy, scipy and networkx, the eas
 To install the package from github, clone the repository and then `cd` into the directory. You can then use `poetry` to install:
 
     poetry install
-
-    # for time-series graph functionality
-    poetry install --extras ts
 
     # for vizualizing graph functionality
     poetry install --extras viz

@@ -1,68 +1,47 @@
+from copy import deepcopy
 from typing import Dict, FrozenSet, Iterator, Mapping
 
 import networkx as nx
 
-import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
+from pywhy_graphs.typing import Node
 
-from ..typing import Node
-from .base import AncestralMixin, ConservativeMixin
+from .mixededge import StationaryTimeSeriesMixedEdgeGraph
+from .timeseries import StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph
 
 
-class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
-    """Completed partially directed acyclic graphs (CPDAG).
-
-    CPDAGs generalize causal DAGs by allowing undirected edges.
-    Undirected edges imply uncertainty in the orientation of the causal
-    relationship. For example, ``A - B``, can be ``A -> B`` or ``A <- B``,
-    allowing for a Markov equivalence class of DAGs for each CPDAG.
-
-    Parameters
-    ----------
-    incoming_directed_edges : input directed edges (optional, default: None)
-        Data to initialize directed edges. All arguments that are accepted
-        by `networkx.DiGraph` are accepted.
-    incoming_undirected_edges : input undirected edges (optional, default: None)
-        Data to initialize undirected edges. All arguments that are accepted
-        by `networkx.Graph` are accepted.
-    directed_edge_name : str
-        The name for the directed edges. By default 'directed'.
-    undirected_edge_name : str
-        The name for the directed edges. By default 'undirected'.
-    attr : keyword arguments, optional (default= no attributes)
-        Attributes to add to graph as key=value pairs.
-
-    See Also
-    --------
-    networkx.DiGraph
-    networkx.Graph
-    ADMG
-
-    Notes
-    -----
-    CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
-    these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
-    causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
-    to be learned from score-based (such as the "GES" algorithm) and constraint-based
-    (such as the PC algorithm) approaches for causal structure learning.
-
-    One should not use CPDAGs if they suspect their data has unobserved latent confounders.
-    """
-
+class StationaryTimeSeriesPAG(
+    StationaryTimeSeriesMixedEdgeGraph, AncestralMixin, ConservativeMixin
+):
     def __init__(
         self,
+        incoming_circle_edges=None,
         incoming_directed_edges=None,
+        incoming_bidirected_edges=None,
         incoming_undirected_edges=None,
+        circle_edge_name: str = "circle",
         directed_edge_name: str = "directed",
+        bidirected_edge_name: str = "bidirected",
         undirected_edge_name: str = "undirected",
         **attr,
     ):
         super().__init__(**attr)
-        self.add_edge_type(nx.DiGraph(incoming_directed_edges), directed_edge_name)
-        self.add_edge_type(nx.Graph(incoming_undirected_edges), undirected_edge_name)
+        self.add_edge_type(StationaryTimeSeriesDiGraph(incoming_directed_edges), directed_edge_name)
+        self.add_edge_type(
+            StationaryTimeSeriesDiGraph(incoming_circle_edges, check_time_direction=False),
+            circle_edge_name,
+        )
+        self.add_edge_type(
+            StationaryTimeSeriesGraph(incoming_undirected_edges), undirected_edge_name
+        )
+        self.add_edge_type(
+            StationaryTimeSeriesGraph(incoming_bidirected_edges), bidirected_edge_name
+        )
 
         self._directed_name = directed_edge_name
         self._undirected_name = undirected_edge_name
-
+        self._circle_name = circle_edge_name
+        self._bidirected_name = bidirected_edge_name
         from pywhy_graphs import is_valid_mec_graph
 
         # check that construction of PAG was valid
@@ -83,14 +62,34 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         return self._directed_name
 
     @property
+    def bidirected_edge_name(self) -> str:
+        """Name of the bidirected edge internal graph."""
+        return self._bidirected_name
+
+    @property
+    def circle_edge_name(self) -> str:
+        """Name of the bidirected edge internal graph."""
+        return self._circle_name
+
+    @property
     def undirected_edges(self) -> Mapping:
         """``EdgeView`` of the undirected edges."""
         return self.get_graphs(self._undirected_name).edges
 
     @property
+    def bidirected_edges(self) -> Mapping:
+        """``EdgeView`` of the bidirected edges."""
+        return self.get_graphs(self._bidirected_name).edges
+
+    @property
     def directed_edges(self) -> Mapping:
         """``EdgeView`` of the directed edges."""
         return self.get_graphs(self._directed_name).edges
+
+    @property
+    def circle_edges(self) -> Mapping:
+        """``EdgeView`` of the directed edges."""
+        return self.get_graphs(self.circle_edge_name).edges
 
     def sub_directed_graph(self) -> nx.DiGraph:
         """Sub-graph of just the directed edges."""
@@ -99,6 +98,14 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
     def sub_undirected_graph(self) -> nx.Graph:
         """Sub-graph of just the undirected edges."""
         return self._get_internal_graph(self._undirected_name)
+
+    def sub_bidirected_graph(self) -> nx.Graph:
+        """Sub-graph of just the bidirected edges."""
+        return self._get_internal_graph(self._bidirected_name)
+
+    def sub_circle_graph(self) -> nx.Graph:
+        """Sub-graph of just the circle edges."""
+        return self._get_internal_graph(self.circle_edge_name)
 
     def orient_uncertain_edge(self, u: Node, v: Node) -> None:
         """Orient undirected edge into an arrowhead.
@@ -116,9 +123,9 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         """
         if not self.has_edge(u, v, self._undirected_name):
             raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
-
-        self.remove_edge(u, v, self._undirected_name)
-        self.add_edge(u, v, self._directed_name)
+        u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
+        self.remove_edge(u, v, self.circle_edge_name)
+        self.add_edge(u, v, self._directed_name)  # type: ignore
 
     def possible_children(self, n: Node) -> Iterator[Node]:
         """Return an iterator over children of node n.
@@ -162,19 +169,17 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
         """
         return self.sub_undirected_graph().neighbors(n)
 
-    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
-        from pywhy_graphs.algorithms.generic import _check_adding_cpdag_edge
+    def to_ts_undirected(self):
+        graph_class = StationaryTimeSeriesGraph
 
-        _check_adding_cpdag_edge(
-            self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type
+        # deepcopy when not a view
+        G = graph_class()
+        G.graph.update(deepcopy(self.graph))
+        G.add_nodes_from((n, 0) for n in self.variables)
+        G.add_edges_from(
+            (u, v, deepcopy(d))
+            for _, edge_adj in self.adj.items()
+            for u, nbrs in edge_adj.items()
+            for v, d in nbrs.items()
         )
-        return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
-
-    def add_edges_from(self, ebunch_to_add, edge_type, **attr):
-        from pywhy_graphs.algorithms.generic import _check_adding_cpdag_edge
-
-        for u_of_edge, v_of_edge in ebunch_to_add:
-            _check_adding_cpdag_edge(
-                self, u_of_edge=u_of_edge, v_of_edge=v_of_edge, edge_type=edge_type
-            )
-        return super().add_edges_from(ebunch_to_add, edge_type, **attr)
+        return G

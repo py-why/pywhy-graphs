@@ -4,10 +4,11 @@ from itertools import chain
 from typing import List, Optional, Set, Tuple
 
 import networkx as nx
+import numpy as np
 
-from pywhy_graphs import PAG
+from pywhy_graphs import PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
-from pywhy_graphs.typing import Node
+from pywhy_graphs.typing import Node, TsNode
 
 logger = logging.getLogger()
 
@@ -18,6 +19,8 @@ __all__ = [
     "pds",
     "pds_path",
     "uncovered_pd_path",
+    "pds_t",
+    "pds_t_path",
 ]
 
 
@@ -250,7 +253,7 @@ def discriminating_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            logger.warning(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
@@ -406,7 +409,7 @@ def uncovered_pd_path(
         # check distance criterion to prevent checking very long paths
         distance += 1
         if distance > 0 and distance > max_path_length:
-            logger.warn(
+            logger.warning(
                 f"Did not finish checking discriminating path in {graph} because the path "
                 f"length exceeded {max_path_length}."
             )
@@ -479,7 +482,7 @@ def pds(
 
     Notes
     -----
-    Possibly d-separting (PDS) sets are nodes V, along an adjacency paths from
+    Possibly d-separating (PDS) sets are nodes V, along an adjacency paths from
     'node_x' to some 'V', which has the following characteristics for every
     subpath triple <X, Y, Z> on the path:
 
@@ -639,6 +642,8 @@ def pds_path(
     This is a smaller subset compared to possibly-d-separating sets. It takes
     the PDS set and intersects it with the biconnected components of the adjacency
     graph that contains the edge (node_x, node_y).
+
+    The current implementation calls `pds` and then restricts the nodes that it returns.
     """
     # get the adjacency graph to perform path searches over
     adj_graph = graph.to_undirected()
@@ -664,3 +669,190 @@ def pds_path(
     pds_path = pds_set.intersection(found_component)
 
     return pds_path
+
+
+def pds_t(
+    graph: StationaryTimeSeriesPAG,
+    node_x: TsNode,
+    node_y: TsNode,
+    max_path_length: Optional[int] = None,
+) -> Set:
+    """Compute the possibly-d-separating set over time.
+
+    Returns the 'pdst' set defined in :footcite:`Malinsky18a_svarfci`.
+
+    Parameters
+    ----------
+    graph : StationaryTimeSeriesPAG
+        The graph.
+    node_x : node
+        The starting node.
+    node_y : node
+        The ending node
+    max_path_length : int, optional
+        The maximum length of a path to search on for PDS set, by default None, which
+        sets it to 1000.
+
+    Returns
+    -------
+    pds_t_set : set
+        The set of nodes in the possibly d-separating path set.
+
+    Notes
+    -----
+    This is a smaller subset compared to possibly-d-separating sets.
+
+    This consists of nodes, 'x', in the PDS set of (node_x, node_y), with the
+    time-lag of 'x' being less than the max time-lag among node_x and and node_y.
+
+    The current implementation calls `pds` and then restricts the nodes that it returns.
+    """
+    _check_ts_node(node_x)
+    _check_ts_node(node_y)
+    _, x_lag = node_x
+    _, y_lag = node_y
+
+    max_lag = max(np.abs(x_lag), np.abs(y_lag))
+
+    # compute the PDS set
+    pds_set = pds(
+        graph, node_x=node_x, node_y=node_y, max_path_length=max_path_length
+    )  # type: ignore
+    pds_t_set = set()
+
+    # only keep nodes with max-lag less than or equal to max(x_lag, y_lag)
+    for node in pds_set:
+        if np.abs(node[1]) <= max_lag:  # type: ignore
+            pds_t_set.add(node)
+
+    return pds_t_set
+
+
+def pds_t_path(
+    graph: StationaryTimeSeriesPAG,
+    node_x: TsNode,
+    node_y: TsNode,
+    max_path_length: Optional[int] = None,
+) -> Set:
+    """Compute the possibly-d-separating path set over time.
+
+    Returns the 'pdst_path' set defined in :footcite:`Malinsky18a_svarfci` with the
+    additional restriction that any nodes must be on a path between the two endpoints.
+
+    Parameters
+    ----------
+    graph : StationaryTimeSeriesPAG
+        The graph.
+    node_x : node
+        The starting node.
+    node_y : node
+        The ending node
+    max_path_length : int, optional
+        The maximum length of a path to search on for PDS set, by default None, which
+        sets it to 1000.
+
+    Returns
+    -------
+    pds_t_set : set
+        The set of nodes in the possibly d-separating path set.
+
+    Notes
+    -----
+    This is a smaller subset compared to possibly-d-separating sets.
+
+    This consists of nodes, 'x', in the PDS set of (node_x, node_y), with the
+    time-lag of 'x' being less than the max time-lag among node_x and and node_y.
+
+    The current implementation calls `pds` and then restricts the nodes that it returns.
+    """
+    _check_ts_node(node_x)
+    _check_ts_node(node_y)
+    _, x_lag = node_x
+    _, y_lag = node_y
+
+    max_lag = max(np.abs(x_lag), np.abs(y_lag))
+
+    # compute the PDS set
+    pds_set = pds_path(
+        graph, node_x=node_x, node_y=node_y, max_path_length=max_path_length
+    )  # type: ignore
+    pds_t_set = set()
+
+    # only keep nodes with max-lag less than or equal to max(x_lag, y_lag)
+    for node in pds_set:
+        if np.abs(node[1]) <= max_lag:  # type: ignore
+            pds_t_set.add(node)
+
+    return pds_t_set
+
+
+def definite_m_separated(
+    G,
+    x,
+    y,
+    z,
+    bidirected_edge_name="bidirected",
+    directed_edge_name="directed",
+    circle_edge_name="cirlcle",
+):
+    """Check definite m-separation among 'x' and 'y' given 'z' in partial ancestral graph G.
+
+    A partial ancestral graph (PAG) is defined with directed edges (``->``), bidirected edges
+    (``<->``), and circle-endpoint edges (``o-*``, where the ``*`` for example can mean an
+    arrowhead from a directed edge).
+
+    This algorithm implements the definite m-separation check, which checks for the absence of
+    possibly m-connecting paths between 'x' and 'y' given 'z'.
+
+    This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge
+    of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After
+    that, an undirected graph composed from the directed and bidirected edges amongst the
+    remaining nodes is created. Then, x is independent of y given z if x is disconnected from y
+    in this new graph.
+
+    Parameters
+    ----------
+    G : mixed-edge-graph
+        Mixed edge causal graph.
+    x : set
+        First set of nodes in ``G``.
+    y : set
+        Second set of nodes in ``G``.
+    z : set
+        Set of conditioning nodes in ``G``. Can be empty set.
+
+    Returns
+    -------
+    b : bool
+        A boolean that is true if ``x`` is definite m-separated from ``y`` given ``z`` in ``G``.
+
+    References
+    ----------
+    .. footbibliography::
+
+    See Also
+    --------
+    d_separated
+    m_separated
+    PAG
+
+    Notes
+    -----
+    There is no known optimal algorithm for checking definite m-separation to our knowledge, so
+    the algorithm proceeds by enumerating paths between 'x' and 'y'. This first checks the
+    subgraph comprised of only circle edges. If there is a path
+    """
+    if not isinstance(G, PAG):
+        raise ValueError("Definite m-separated is only defined for a PAG.")
+
+    # this proceeds by first removing unnecessary nodes
+
+
+def _check_ts_node(node):
+    if not isinstance(node, tuple) or len(node) != 2:
+        raise ValueError(
+            f"All nodes in time series DAG must be a 2-tuple of the form (<node>, <lag>). "
+            f"You passed in {node}."
+        )
+    if node[1] > 0:
+        raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")

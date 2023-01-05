@@ -13,8 +13,8 @@ for classes (``CamelCase`` names) and functions
 (``underscore_case`` names) of pywhy-graphs, grouped thematically by analysis
 stage.
 
-Most-used classes
-=================
+Causal graph classes
+====================
 These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature. 
 
@@ -78,7 +78,21 @@ welcome feedback.
    MixedEdgeGraph
    bidirected_to_unobserved_confounder
    m_separated
-   
+
+Timeseries
+==========
+The following are useful functions that operate specifically on time-series graphs.
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+.. autosummary::
+   :toctree: generated/
+
+   complete_ts_graph
+   empty_ts_graph
+   get_summary_graph
+   has_homologous_edges
+   nodes_in_time_order
+
 Visualization of causal graphs
 ==============================
 Visualization of causal graphs is different compared to networkx because causal graphs
@@ -91,3 +105,14 @@ to perform modular visualization of nodes and edges.
    :toctree: generated/
 
    draw
+   timeseries_layout
+
+Utilities for debugging
+=======================
+.. currentmodule:: pywhy_graphs
+
+.. autosummary::
+   :toctree: generated/
+
+   sys_info
+

@@ -1,0 +1,59 @@
+.. _classes:
+
+***********
+Graph types
+***********
+
+Pywhy-graphs provides data structures and methods for storing causal graphs.
+
+The classes heavily rely on NetworkX and follows a similar API.
+
+The choice of graph class depends on the structure of the
+graph you want to represent.
+
+Which graph class should I use?
+===============================
+
++-------------------+----------------------------------+-----------------------+
+| Pywhy_graph Class | Edge Types                       | Latent confounders    |
++===================+==================================+=======================+
+| ADMG              | directed, bidirected, undirected | Yes                   |
++-------------------+------------+--------------------+------------------------+
+
+We also represent common equivalence classes of causal graphs.
+
++-------------------+----------------------------------+-----------------------+
+| Pywhy_graph Class | Edge Types                       | Latent confounders    |
++===================+==================================+=======================+
+| CPDAG             | directed, undirected             | No                    |
++-------------------+----------------------------------+-----------------------+
+| PAG               | directed, bidirected, undirected | Yes                   |
++-------------------+---------------------------------+------------------------+
+| MultiDiGraph      | directed   | Yes                | Yes                    |
++-------------------+------------+--------------------+------------------------+
+
+Causal graph types
+==================
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+.. autoclass:: TimeSeriesGraph
+    :inherited-members:
+.. autoclass:: TimeSeriesDiGraph
+    :inherited-members:
+.. autoclass:: TimeSeriesMixedEdgeGraph
+    :inherited-members:
+.. autoclass:: StationaryTimeSeriesCPDAG
+    :inherited-members:
+.. autoclass:: StationaryTimeSeriesDiGraph
+    :inherited-members:
+.. autoclass:: StationaryTimeSeriesGraph
+    :inherited-members:
+.. autoclass:: StationaryTimeSeriesMixedEdgeGraph
+    :inherited-members:
+.. autoclass:: StationaryTimeSeriesPAG
+    :inherited-members:
+
+.. note:: NetworkX uses `dicts` to store the nodes and neighbors in a graph.
+   So the reporting of nodes and edges for the base graph classes may not
+   necessarily be consistent across versions and platforms; however, the reporting
+   for CPython is consistent across platforms and versions after 3.6.

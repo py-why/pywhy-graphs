@@ -1,1 +1,1 @@
-from .mixededge import MixedEdgeGraph
+from .mixededge import MixedEdgeGraph  # type: ignore

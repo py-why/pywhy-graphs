@@ -2,7 +2,7 @@ from typing import List, Union
 
 import networkx as nx
 
-from pywhy_graphs import ADMG, CPDAG, PAG
+from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesCPDAG, StationaryTimeSeriesPAG
 
 from ..config import EdgeType
 from ..typing import Node
@@ -126,10 +126,10 @@ def is_valid_mec_graph(G, on_error: str = "raise") -> bool:
     bool
         Whether G is a valid PAG or CPDAG.
     """
-    if isinstance(G, CPDAG):
+    if isinstance(G, CPDAG) or isinstance(G, StationaryTimeSeriesCPDAG):
         check_func = _check_adding_cpdag_edge
-    elif isinstance(G, PAG):
-        check_func = _check_adding_pag_edge  # type: ignore
+    elif isinstance(G, PAG) or isinstance(G, StationaryTimeSeriesPAG):
+        check_func = _check_adding_pag_edge
 
     for edge_type, edgeview in G.edges().items():
         for u, v in edgeview:
