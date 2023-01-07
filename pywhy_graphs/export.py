@@ -4,14 +4,7 @@ import networkx as nx
 import numpy as np
 
 import pywhy_graphs.networkx as pywhy_nx
-
-EDGE_TO_VALUE_MAPPING = {
-    None: 0,
-    "directed": 1,
-    "undirected": 2,
-    "bidirected": 3,
-    "circle": 4,
-}
+from pywhy_graphs.config import EDGE_TO_VALUE_MAPPING
 
 
 def to_digraph(graph: pywhy_nx.MixedEdgeGraph):

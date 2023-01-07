@@ -66,6 +66,15 @@ extensions = [
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
 
+# -- Warnings management -----------------------------------------------------
+def setup(app):
+    # Ignore .ipynb files
+    app.registry.source_suffix.pop(".ipynb", None)
+
+warnings.filterwarnings(
+    "ignore", category=UserWarning
+)
+
 # generate autosummary even if no references
 # -- sphinx.ext.autosummary
 autosummary_generate = True
@@ -77,13 +86,13 @@ autodoc_inherit_docstrings = True
 
 # -- numpydoc
 # Below is needed to prevent errors
-# numpydoc_xref_param_type = True
+numpydoc_xref_param_type = False
 numpydoc_show_inherited_class_members = False
 numpydoc_show_class_members = False
 numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
 numpydoc_use_blockquotes = True
-# numpydoc_validate = True
+numpydoc_validate = False
 
 numpydoc_xref_ignore = {
     # words
@@ -186,6 +195,7 @@ numpydoc_xref_aliases = {
     "column": "pandas.DataFrame.columns",
 }
 
+
 default_role = "obj"
 
 # Tell myst-parser to assign header anchors for h1-h3.
@@ -280,7 +290,7 @@ sphinx_gallery_conf = {
     "reference_url": {
         "pywhy_graphs": None,
     },
-    "backreferences_dir": "generated",
+    "backreferences_dir": "./generated",
     "plot_gallery": "True",  # Avoid annoying Unicode/bool default warning
     "examples_dirs": ["../examples"],
     "gallery_dirs": ["auto_examples"],
@@ -322,17 +332,15 @@ html_context = {
     },
 }
 
-# Enable nitpicky mode - which ensures that all references in the docs
+# Enable/Disable nitpicky mode - which ensures that all references in the docs
 # resolve.
 
-nitpicky = False
+nitpicky = True
 nitpick_ignore = [
     ("py:obj", "nx.MixedEdgeGraph"),
     ("py:obj", "networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_graphs.networkx.MixedEdgeGraph"),
     ("py:obj", "pywhy_nx.MixedEdgeGraph"),
-    ("py:class", "optional"),
-    ("py:class", "array"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesGraph"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesDiGraph"),
     ("py:class", "pywhy_nx.classes.timeseries.TimeSeriesMixedEdgeGraph"),
@@ -341,18 +349,8 @@ nitpick_ignore = [
     ("py:class", "pywhy_nx.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph"),
     ("py:class", "pywhy_graphs.classes.timeseries.base.tsdict"),
     ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
-    ("py:class", "numpy._typing._array_like._SupportsArray"),
-    ("py:class", "numpy._typing._nested_sequence._NestedSequence"),
 ]
 nitpick_ignore_regex = [
-    ('py:obj', r"pywhy_graphs\.classes\.timeseries*"),
+    ('py:obj', r'pywhy_graphs.*timeseries.*'),
     ('py:obj', r"networkx*"),
 ]
-
-
-# -- Warnings management -----------------------------------------------------
-def setup(app):
-    # Ignore .ipynb files
-    app.registry.source_suffix.pop(".ipynb", None)
-
-warnings.filterwarnings("ignore", category=UserWarning)

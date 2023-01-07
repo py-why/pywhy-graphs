@@ -4,15 +4,109 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import scipy.stats
-from numpy.typing import NDArray
 
 import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.classes import StationaryTimeSeriesDiGraph
+from pywhy_graphs.classes.timeseries import numpy_to_tsgraph, tsgraph_to_numpy
 from pywhy_graphs.typing import Node
 
 
+def simulate_random_er_dag(
+    n_nodes: int, p: float = 0.5, seed: int = None, ensure_acyclic: bool = False
+):
+    """Simulate a random Erdos-Renyi graph.
+
+    Parameters
+    ----------
+    n_nodes : int
+        _description_
+    p : float, optional
+        _description_, by default 0.5
+    seed : int, optional
+        _description_, by default None
+    ensure_acyclic : bool
+        Whether or not to ensure the resulting graph is acyclic (default is False).
+        If True, then we will only keep edges in their topological order starting
+        from the original simulated ER-graph that may be cyclic.
+
+    Returns
+    -------
+    graph : nx.DiGraph
+        The resulting graph.
+    """
+    # Generate graph using networkx package
+    G = nx.gnp_random_graph(n=n_nodes, p=p, seed=seed, directed=True)
+
+    # Convert generated graph to DAG
+    if ensure_acyclic:
+        graph = nx.DiGraph()
+        graph.add_nodes_from(G)
+        graph.add_edges_from([(u, v, {}) for (u, v) in G.edges() if u < v])
+        if not nx.is_directed_acyclic_graph(graph):
+            raise RuntimeError("The resulting random graph should be a DAG...")
+    else:
+        graph = G
+    return graph
+
+
+def simulate_random_tsgraph(
+    n_variables, max_lag, p_time_self=0.5, p_time_vars=0.5, p_contemporaneous=0.5, random_state=None
+):
+    """Simulate a random time-series graph.
+
+    Parameters
+    ----------
+    n_variables : _type_
+        _description_
+    max_lag : _type_
+        _description_
+    p_time_self : float, optional
+        _description_, by default 0.5
+    p_time_vars : float, optional
+        _description_, by default 0.5
+    p_contemporaneous : float, optional
+        _description_, by default 0.5
+    random_state : _type_, optional
+        _description_, by default None
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
+    rng = np.random.default_rng(random_state)
+
+    # first we sample the time-series graph
+    node_names = list(range(n_variables))
+    G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
+    G.add_variables_from(node_names)
+
+    # loop through all possible edge combinations from (x, 0) to (x', -lag)
+    # for lag up to max_lag
+    for non_lag_node in G.nodes_at(t=0):
+        for lag in range(max_lag + 1):
+            for lag_node in G.nodes_at(t=lag):
+                # then we are looking at a auto-lag nbr in the same variable
+                if non_lag_node[1] == lag_node[1] and p_contemporaneous > 0:
+                    if rng.binomial(n=1, p=p_contemporaneous, size=None) == 1:
+                        G.add_edge(lag_node, non_lag_node)
+
+                    # check that the addition of this edge does not result in a cyclic
+                    # causal relationship
+                    if not nx.is_directed_acyclic_graph(G.subgraph(G.nodes_at(t=0))):
+                        G.remove_edge(lag_node, non_lag_node)
+                elif non_lag_node[0] == lag_node[0] and p_time_self > 0:
+                    # sample binomial distribution with probability p_time_self
+                    if rng.binomial(n=1, p=p_time_self, size=None) == 1:
+                        G.add_edge(lag_node, non_lag_node)
+                elif p_time_vars > 0:
+                    if rng.binomial(n=1, p=p_time_vars, size=None) == 1:
+                        G.add_edge(lag_node, non_lag_node)
+    return G
+
+
 def simulate_data_from_var(
-    var_arr: NDArray,
+    var_arr: np.ndarray,
     n_times: int = 1000,
     n_realizations: int = 1,
     var_names: Optional[List[Node]] = None,
@@ -22,11 +116,14 @@ def simulate_data_from_var(
 
     Parameters
     ----------
-    var_arr : ndarray of shape (n_variables, n_variables, max_lag)
-        The stationary time-series vector-auto-regressive process.
+    var_arr : ArrayLike of shape (n_variables, n_variables, max_lag + 1)
+        The stationary time-series vector-auto-regressive process. The 3rd dimension
+        is the lag and we assume that there are lag points ``(t=0, ..., t=-max_lag)``.
     n_times : int, optional
         Number of observations (time points) to simulate, this includes the initial
         observations to start the autoregressive process. By default 1000.
+    n_realizations : int, optional
+        The number of independent realizations to generate the VAR process, by default 1.
     var_names : list of nodes, optional
         The variable names. If passed in, then must have length equal ``n_variables``. If passed in,
         then the output will be converted to a pandas DataFrame with ``var_names`` as the
@@ -36,7 +133,8 @@ def simulate_data_from_var(
 
     Returns
     -------
-    x : NDArray of shape (n_variables, n_times), or pandas.DataFrame of shape (n_times, n_variables)
+    x : ArrayLike of shape (n_variables, n_times * n_realizations), or
+    pandas.DataFrame of shape (n_times * n_realizations, n_variables)
         The simulated data. If ``node_names`` are passed in, then the output will be
         converted to a pandas DataFrame.
 
@@ -57,6 +155,9 @@ def simulate_data_from_var(
             f"(n_variables, n_variables, max_lag). Your array dimensions are {var_arr.shape}."
         )
     n_vars, _, max_lag = var_arr.shape
+
+    # the 3rd dimension of the VAR array
+    max_lag = max_lag - 1
 
     if var_names is not None and len(var_names) != n_vars:
         raise ValueError(f"The passed in node names {var_names} should have {n_vars} variables.")
@@ -98,7 +199,7 @@ def simulate_linear_var_process(
     n_realizations: int = 1,
     weight_dist: Callable = scipy.stats.norm,
     random_state: int = None,
-) -> NDArray:
+):
     """Simulate a linear VAR process of a "stationary" causal graph.
 
     Parameters
@@ -128,7 +229,7 @@ def simulate_linear_var_process(
 
     Returns
     -------
-    data : NDArray of shape (n_nodes, n_times * n_realizations)
+    data : ArrayLike of shape (n_nodes, n_times * n_realizations)
         The simulated data.
     var_model : StationaryTimeSeriesDiGraph of shape (n_nodes, n_nodes, max_lag)
         The resulting time-series causal graph.
@@ -145,46 +246,21 @@ def simulate_linear_var_process(
     one can simply simulate the full VAR process and then delete the simulated time-series data
     from the latent variable.
     """
-    rng = np.random.default_rng(random_state)
-
     # first we sample the time-series graph
-    node_names = list(range(n_variables))
-    G = StationaryTimeSeriesDiGraph(max_lag=max_lag)
-    G.add_variables_from(node_names)
-
-    # loop through all possible edge combinations from (x, 0) to (x', -lag)
-    # for lag up to max_lag
-    for non_lag_node in G.nodes_at(t=0):
-        for lag in range(1, max_lag + 1):
-            for lag_node in G.nodes_at(t=lag):
-                # then we are looking at a auto-lag nbr in the same variable
-                if non_lag_node[1] == lag_node[1] and p_contemporaneous > 0:
-                    if rng.binomial(n=1, p=p_contemporaneous, size=None) == 1:
-                        G.add_edge(lag_node, non_lag_node)
-
-                    # check that the addition of this edge does not result in a cyclic
-                    # causal relationship
-                    if not nx.is_directed_acyclic_graph(G.subgraph(G.nodes_at(t=0))):
-                        G.remove_edge(lag_node, non_lag_node)
-                elif non_lag_node[0] == lag_node[0] and p_time_self > 0:
-                    # sample binomial distribution with probability p_time_self
-                    if rng.binomial(n=1, p=p_time_self, size=None) == 1:
-                        G.add_edge(lag_node, non_lag_node)
-                elif p_time_vars > 0:
-                    if rng.binomial(n=1, p=p_time_vars, size=None) == 1:
-                        G.add_edge(lag_node, non_lag_node)
+    G = simulate_random_tsgraph(
+        n_variables,
+        max_lag=max_lag,
+        p_time_self=p_time_self,
+        p_time_vars=p_time_vars,
+        p_contemporaneous=p_contemporaneous,
+        random_state=random_state,
+    )
 
     # then we convert this into an array of 1's and 0's
     # we maintain a lagged-order of the nodes, so that way
     # reshaping into a 3D array works properly
     var_order = list(G.variables)
-    ts_graph_arr = np.zeros((n_variables, n_variables, max_lag + 1))
-
-    for node_idx, node_x in enumerate(var_order):
-        for node_jdx, node_y in enumerate(var_order):
-            for lag in range(max_lag + 1):
-                if G.has_edge((node_x, -lag), (node_y, 0)):
-                    ts_graph_arr[node_idx, node_jdx, lag] = 1
+    ts_graph_arr = tsgraph_to_numpy(G, var_order=var_order)
 
     # reshape the array to the correct shape
     # graph_arr = graph_arr.reshape((n_variables, n_variables, max_lag + 1))
@@ -228,10 +304,10 @@ def simulate_var_process_from_summary_graph(
 
     Returns
     -------
-    var_arr : ndarray of shape (n_nodes, n_nodes, max_lag)
-        The stationary time-series graph.
     x_df : pandas DataFrame of shape (n_nodes, n_times)
         The sampled dataset.
+    var_arr : ArrayLike of shape (n_nodes, n_nodes, max_lag)
+        The stationary time-series graph.
 
     Notes
     -----
@@ -239,40 +315,32 @@ def simulate_var_process_from_summary_graph(
     """
     rng = np.random.default_rng(random_state)
     n_nodes = G.number_of_nodes()
-    var_arr = np.zeros((n_nodes, n_nodes, max_lag))
+    var_arr = np.zeros((n_nodes, n_nodes, max_lag + 1))
 
     # get the non-zeros
     # undir_graph = G.to_undirected()
 
     # simulate weights of the weight matrix
-    # n_edges = G.number_of_edges()
     summary_arr = np.zeros((n_nodes, n_nodes))
+    nodelist = list(G.nodes)
     for _, graph in G.get_graphs().items():
         # get the graph array
-        graph_arr = nx.to_numpy_array(graph, weight="weight")
+        graph_arr = nx.to_numpy_array(graph, nodelist=nodelist, weight="weight")
         non_zero_index = np.nonzero(graph_arr)
         weights = rng.normal(size=(len(non_zero_index[0]),))
 
         # set the weights in the summary graph
         summary_arr[non_zero_index] = weights
-    # TODO: generalize to directional weights
-    # extract the array and set the weights
-    # undir_arr = nx.to_numpy_array(undir_graph, weight="weight")
-    # non_zero_index = np.nonzero(undir_arr)
-    # weights = rng.normal(size=(n_edges * 2,))
-    # print(undir_graph)
-    # print(len(weights))
-    # print(n_edges)
-    # print(undir_arr.shape)
-    # print(non_zero_index)
-    # undir_arr[non_zero_index] = weights
 
     # Now simulate across time-points. First initialize such that
     # the edge between every time-point is there and reflective of the
     # summary graph.
     # Assume that every variable has an edge between time points
-    for i in range(max_lag):
+    for i in range(max_lag + 1):
         var_arr[..., i] = summary_arr
+
+    # convert VAR array to stationary time-series graph
+    G = numpy_to_tsgraph(var_arr, var_order=nodelist, create_using=StationaryTimeSeriesDiGraph)
 
     # simulate initial conditions data
     x0 = rng.standard_normal(size=(n_nodes, max_lag))
@@ -286,6 +354,6 @@ def simulate_var_process_from_summary_graph(
             ygen += np.dot(var_arr[..., pdx], x[:, tdx - pdx - 1].T).T
 
     # convert to a DataFrame
-    x_df = pd.DataFrame(x.T, columns=list(G.nodes))
+    x_df = pd.DataFrame(x.T, columns=nodelist)
 
-    return var_arr, x_df
+    return x_df, G

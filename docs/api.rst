@@ -93,6 +93,7 @@ The following are useful functions that operate specifically on time-series grap
    has_homologous_edges
    nodes_in_time_order
 
+
 Visualization of causal graphs
 ==============================
 Visualization of causal graphs is different compared to networkx because causal graphs
@@ -116,3 +117,9 @@ Utilities for debugging
 
    sys_info
 
+Simulation
+==========
+.. toctree::
+   :maxdepth: 1
+
+   reference/simulation/index
