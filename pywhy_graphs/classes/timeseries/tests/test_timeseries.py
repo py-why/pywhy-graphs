@@ -85,6 +85,9 @@ class TimeSeriesMixedEdgeGraphTester:
         assert ("x", 0) not in G.neighbors(("x", -1))
         assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
+    def test_add_homologous_edges(self):
+        pass
+
     def test_m_sep_complete_graph(self):
         variables = self.G.variables
         max_lag = self.G.max_lag

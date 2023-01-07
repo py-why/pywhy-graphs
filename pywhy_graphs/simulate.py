@@ -19,11 +19,11 @@ def simulate_random_er_dag(
     Parameters
     ----------
     n_nodes : int
-        _description_
+        The number of nodes.
     p : float, optional
-        _description_, by default 0.5
+        The probability of an edge, by default 0.5.
     seed : int, optional
-        _description_, by default None
+        Random seed, by default None.
     ensure_acyclic : bool
         Whether or not to ensure the resulting graph is acyclic (default is False).
         If True, then we will only keep edges in their topological order starting
@@ -56,23 +56,23 @@ def simulate_random_tsgraph(
 
     Parameters
     ----------
-    n_variables : _type_
-        _description_
-    max_lag : _type_
-        _description_
+    n_variables : int
+        The number of variables.
+    max_lag : int
+        The maximum lag.
     p_time_self : float, optional
-        _description_, by default 0.5
+        Probability of auto-connection, by default 0.5.
     p_time_vars : float, optional
-        _description_, by default 0.5
+        Probability of connection between variables, by default 0.5.
     p_contemporaneous : float, optional
-        _description_, by default 0.5
-    random_state : _type_, optional
-        _description_, by default None
+        Probability of contemporaneous edge, by default 0.5.
+    random_state : int, optional
+        Random seed, by default None.
 
     Returns
     -------
-    _type_
-        _description_
+    G : StationaryTimeSeriesDiGraph
+        The stationary time series graph.
     """
     rng = np.random.default_rng(random_state)
 
