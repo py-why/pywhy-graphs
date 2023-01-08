@@ -367,7 +367,7 @@
 <span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">m_separated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/m_separation.html#m_separated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.m_separated" title="Permalink to this definition">#</a></dt>
 <dd><p>Check m-separation among ‘x’ and ‘y’ given ‘z’ in mixed-edge causal graph G.</p>
 <p>This algorithm adapts the linear time algorithm presented in <a class="reference internal" href="#r23c6b73ac81f-1" id="id1">[1]</a> currently implemented in
-<a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/d_separation.html#module-networkx.algorithms.d_separation" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation</span></code></a> to work for mixed-edge causal graphs.</p>
+<a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/d_separation.html#module-networkx.algorithms.d_separation" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation</span></code></a> to work for mixed-edge causal graphs.</p>
 <p>This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge
 of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After
 that, an undirected graph composed from the directed and bidirected edges amongst the
@@ -402,7 +402,7 @@ in this new graph.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/generated/networkx.algorithms.d_separation.d_separated.html#networkx.algorithms.d_separation.d_separated" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation.d_separated</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/generated/networkx.algorithms.d_separation.d_separated.html#networkx.algorithms.d_separation.d_separated" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation.d_separated</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>

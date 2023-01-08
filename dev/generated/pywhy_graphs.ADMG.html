@@ -800,17 +800,17 @@ latent confounder.</p>
 <dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize directed edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
+by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
 </div></blockquote>
 <p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize bidirected edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
+by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
 </div></blockquote>
 <p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize undirected edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
+by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
 </div></blockquote>
 <p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
@@ -833,8 +833,8 @@ by <a class="reference external" href="https://networkx.org/documentation/latest
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>
@@ -844,9 +844,9 @@ edges and directed edges. Non-directed edges in an ADMG can be present as
 bidirected edges standing for latent confounders, or undirected edges
 standing for selection bias.</p>
 <ul class="simple">
-<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></p></li>
-<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
-<li><p>Undirected edges (–, indicating selection bias) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
+<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></p></li>
+<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
+<li><p>Undirected edges (–, indicating selection bias) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
 </ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.__contains__">
@@ -997,7 +997,7 @@ attributes specified via keyword arguments.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.adj" title="Permalink to this definition">#</a></dt>
 <dd><p>Dictionary of graph adjacency objects holding the neighbors of each node.</p>
 <p>Each edge type has an adjacency object associated with it. For more information
-on the adjacency object itself, see the documentation in <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.Graph.adj.html#networkx.Graph.adj" title="(in NetworkX v3.0rc2.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph.adj</span></code></a>.</p>
+on the adjacency object itself, see the documentation in <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.Graph.adj.html#networkx.Graph.adj" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph.adj</span></code></a>.</p>
 <p>Iterating over G.adj behaves like a dict. Useful idioms include the following
 for loop.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">adj</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1706,19 +1706,19 @@ If weight is None, returns an int. Otherwise a float
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.sub_bidirected_graph">
-<span class="sig-name descname"><span class="pre">sub_bidirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_bidirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_bidirected_graph" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sub_bidirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_bidirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_bidirected_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Sub-graph of just the bidirected edges.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.sub_directed_graph">
-<span class="sig-name descname"><span class="pre">sub_directed_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.0rc2.dev0)"><span class="pre">DiGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_directed_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_directed_graph" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sub_directed_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><span class="pre">DiGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_directed_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_directed_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Sub-graph of just the directed edges.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.sub_undirected_graph">
-<span class="sig-name descname"><span class="pre">sub_undirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.0rc2.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_undirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_undirected_graph" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sub_undirected_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><span class="pre">Graph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/admg.html#ADMG.sub_undirected_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.ADMG.sub_undirected_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Sub-graph of just the undirected edges.</p>
 </dd></dl>
 
