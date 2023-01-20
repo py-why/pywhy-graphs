@@ -1,4 +1,5 @@
 from .base import BaseTimeSeriesGraph
+from .conversion import numpy_to_tsgraph, tsgraph_to_numpy
 from .cpdag import StationaryTimeSeriesCPDAG
 from .mixededge import StationaryTimeSeriesMixedEdgeGraph, TimeSeriesMixedEdgeGraph
 from .pag import StationaryTimeSeriesPAG

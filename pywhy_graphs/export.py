@@ -2,25 +2,17 @@ from copy import deepcopy
 
 import networkx as nx
 import numpy as np
-from networkx import MixedEdgeGraph
 
-from pywhy_graphs import ADMG
-
-EDGE_TO_VALUE_MAPPING = {
-    None: 0,
-    "directed": 1,
-    "undirected": 2,
-    "bidirected": 3,
-    "circle": 4,
-}
+import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.config import EDGE_TO_VALUE_MAPPING
 
 
-def to_digraph(graph: MixedEdgeGraph):
+def to_digraph(graph: pywhy_nx.MixedEdgeGraph):
     """Convert causal graph to a uni-edge networkx directed graph.
 
     Parameters
     ----------
-    graph : MixedEdgeGraph
+    graph : pywhy_nx.MixedEdgeGraph
         A causal mixed-edge graph.
 
     Returns
@@ -83,9 +75,6 @@ def to_numpy(causal_graph):
     Circle endpoints can be symmetric, but they can also contain a tail, or a directed
     edge at the other end.
     """
-    if isinstance(causal_graph, ADMG):
-        raise RuntimeError("Converting ADMG to numpy format is not supported.")
-
     # master list of nodes is in the internal dag
     node_list = causal_graph.nodes
     n_nodes = len(node_list)

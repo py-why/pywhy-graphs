@@ -7,6 +7,16 @@ from functools import partial
 
 import numpy as np
 
+# internal edge type to value mapping for numpy array representation
+EDGE_TO_VALUE_MAPPING = {
+    None: 0,
+    "directed": 1,
+    "undirected": 2,
+    "bidirected": 3,
+    "circle": 4,
+}
+VALUE_TO_EDGE_MAPPING = {val: key for key, val in EDGE_TO_VALUE_MAPPING.items()}
+
 
 class MetaEnum(EnumMeta):
     """Meta enumeration to make 'in' keyword work."""

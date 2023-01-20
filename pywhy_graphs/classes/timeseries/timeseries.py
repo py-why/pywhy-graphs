@@ -96,9 +96,6 @@ class StationaryTimeSeriesGraph(TimeSeriesGraph):
         The graph data to set, by default None.
     max_lag : int, optional
         Maximum lag, by default 1.
-    check_time_direction : bool, optional
-        Whether or not to check time directionality is valid, by default True.
-        May set to False for undirected graphs.
 
     See Also
     --------
@@ -108,9 +105,7 @@ class StationaryTimeSeriesGraph(TimeSeriesGraph):
     # whether or not the graph should be assumed to be stationary
     stationary: bool = True
 
-    def __init__(
-        self, incoming_graph_data=None, max_lag: int = 1, check_time_direction: bool = True, **attr
-    ):
+    def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
         super(StationaryTimeSeriesGraph, self).__init__(
             incoming_graph_data=incoming_graph_data, max_lag=max_lag, **attr
         )
@@ -141,6 +136,14 @@ class StationaryTimeSeriesDiGraph(TimeSeriesDiGraph):
     attr : keyword arguments, optional (default= no attributes)
         Attributes to add to graph as key=value pairs.
 
+    Attributes
+    ----------
+    stationary : bool
+        Whether or not the graph is stationary.
+    check_time_direction : bool
+        Whether or not to check time directionality is valid, by default True.
+        May set to False for undirected graphs.
+
     Notes
     -----
     A stationary time-series graph is one in which edges over time are repeated.
@@ -157,9 +160,7 @@ class StationaryTimeSeriesDiGraph(TimeSeriesDiGraph):
     # whether or not the graph should be assumed to be stationary
     stationary: bool = True
 
-    def __init__(
-        self, incoming_graph_data=None, max_lag: int = 1, check_time_direction: bool = True, **attr
-    ):
+    def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
         super(StationaryTimeSeriesDiGraph, self).__init__(
             incoming_graph_data=incoming_graph_data, max_lag=max_lag, **attr
         )

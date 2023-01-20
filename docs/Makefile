@@ -51,6 +51,7 @@ clean:
 	-rm -rf auto_examples/
 	-rm -rf generated/*
 	-rm -rf modules/generated/*
+	-rm -rf reference/simulation/generated/*
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
