@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.simulate &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../use.html">
+  Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.simulate</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+
+<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.classes</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries</span> <span class="kn">import</span> <span class="n">numpy_to_tsgraph</span><span class="p">,</span> <span class="n">tsgraph_to_numpy</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="simulate_random_er_dag"><a class="viewcode-back" href="../../reference/simulation/index.html#pywhy_graphs.simulate.simulate_random_er_dag">[docs]</a><span class="k">def</span> <span class="nf">simulate_random_er_dag</span><span class="p">(</span>
+    <span class="n">n_nodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ensure_acyclic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a random Erdos-Renyi graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_nodes : int</span>
+<span class="sd">        The number of nodes.</span>
+<span class="sd">    p : float, optional</span>
+<span class="sd">        The probability of an edge, by default 0.5.</span>
+<span class="sd">    seed : int, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+<span class="sd">    ensure_acyclic : bool</span>
+<span class="sd">        Whether or not to ensure the resulting graph is acyclic (default is False).</span>
+<span class="sd">        If True, then we will only keep edges in their topological order starting</span>
+<span class="sd">        from the original simulated ER-graph that may be cyclic.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    graph : nx.DiGraph</span>
+<span class="sd">        The resulting graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate graph using networkx package</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">gnp_random_graph</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Convert generated graph to DAG</span>
+    <span class="k">if</span> <span class="n">ensure_acyclic</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{})</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The resulting random graph should be a DAG...&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">G</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="simulate_random_tsgraph"><a class="viewcode-back" href="../../reference/simulation/index.html#pywhy_graphs.simulate.simulate_random_tsgraph">[docs]</a><span class="k">def</span> <span class="nf">simulate_random_tsgraph</span><span class="p">(</span>
+    <span class="n">n_variables</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">,</span> <span class="n">p_time_self</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">p_time_vars</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">p_contemporaneous</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a random time-series graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_variables : int</span>
+<span class="sd">        The number of variables.</span>
+<span class="sd">    max_lag : int</span>
+<span class="sd">        The maximum lag.</span>
+<span class="sd">    p_time_self : float, optional</span>
+<span class="sd">        Probability of auto-connection, by default 0.5.</span>
+<span class="sd">    p_time_vars : float, optional</span>
+<span class="sd">        Probability of connection between variables, by default 0.5.</span>
+<span class="sd">    p_contemporaneous : float, optional</span>
+<span class="sd">        Probability of contemporaneous edge, by default 0.5.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    G : StationaryTimeSeriesDiGraph</span>
+<span class="sd">        The stationary time series graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="c1"># first we sample the time-series graph</span>
+    <span class="n">node_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">))</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_variables_from</span><span class="p">(</span><span class="n">node_names</span><span class="p">)</span>
+
+    <span class="c1"># loop through all possible edge combinations from (x, 0) to (x&#39;, -lag)</span>
+    <span class="c1"># for lag up to max_lag</span>
+    <span class="k">for</span> <span class="n">non_lag_node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes_at</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">lag_node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes_at</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">lag</span><span class="p">):</span>
+                <span class="c1"># then we are looking at a auto-lag nbr in the same variable</span>
+                <span class="k">if</span> <span class="n">non_lag_node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">lag_node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_contemporaneous</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p_contemporaneous</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">lag_node</span><span class="p">,</span> <span class="n">non_lag_node</span><span class="p">)</span>
+
+                    <span class="c1"># check that the addition of this edge does not result in a cyclic</span>
+                    <span class="c1"># causal relationship</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes_at</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">))):</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">lag_node</span><span class="p">,</span> <span class="n">non_lag_node</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">non_lag_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">lag_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p_time_self</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># sample binomial distribution with probability p_time_self</span>
+                    <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p_time_self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">lag_node</span><span class="p">,</span> <span class="n">non_lag_node</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">p_time_vars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p_time_vars</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">lag_node</span><span class="p">,</span> <span class="n">non_lag_node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+<div class="viewcode-block" id="simulate_data_from_var"><a class="viewcode-back" href="../../reference/simulation/index.html#pywhy_graphs.simulate.simulate_data_from_var">[docs]</a><span class="k">def</span> <span class="nf">simulate_data_from_var</span><span class="p">(</span>
+    <span class="n">var_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">n_times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_realizations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">var_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate data from an already set VAR process.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    var_arr : ArrayLike of shape (n_variables, n_variables, max_lag + 1)</span>
+<span class="sd">        The stationary time-series vector-auto-regressive process. The 3rd dimension</span>
+<span class="sd">        is the lag and we assume that there are lag points ``(t=0, ..., t=-max_lag)``.</span>
+<span class="sd">    n_times : int, optional</span>
+<span class="sd">        Number of observations (time points) to simulate, this includes the initial</span>
+<span class="sd">        observations to start the autoregressive process. By default 1000.</span>
+<span class="sd">    n_realizations : int, optional</span>
+<span class="sd">        The number of independent realizations to generate the VAR process, by default 1.</span>
+<span class="sd">    var_names : list of nodes, optional</span>
+<span class="sd">        The variable names. If passed in, then must have length equal ``n_variables``. If passed in,</span>
+<span class="sd">        then the output will be converted to a pandas DataFrame with ``var_names`` as the</span>
+<span class="sd">        columns. By default, None.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        The random state, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : ArrayLike of shape (n_variables, n_times * n_realizations), or</span>
+<span class="sd">    pandas.DataFrame of shape (n_times * n_realizations, n_variables)</span>
+<span class="sd">        The simulated data. If ``node_names`` are passed in, then the output will be</span>
+<span class="sd">        converted to a pandas DataFrame.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The simulated ``x`` array consists of multiple &quot;instances&quot; of the underlying stationary</span>
+<span class="sd">    VAR process. For example, if ``n_times`` is 1000, and ``max_lag = 2``, then technically you</span>
+<span class="sd">    have 500 realizations of the time-series graph occurring over this multivariate time-series.</span>
+<span class="sd">    However, each realization is dependent on the previous realizations in this case.</span>
+
+<span class="sd">    In order to start from a completely independent initial conditions, then one can modify the</span>
+<span class="sd">    ``n_realizations`` parameter instead. To generate 500 independent realizations in the</span>
+<span class="sd">    above example, one would set ``n_realizations = 500`` and ``n_times=2``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The shape of the VAR array should be &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(n_variables, n_variables, max_lag). Your array dimensions are </span><span class="si">{</span><span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">n_vars</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">max_lag</span> <span class="o">=</span> <span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># the 3rd dimension of the VAR array</span>
+    <span class="n">max_lag</span> <span class="o">=</span> <span class="n">max_lag</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">var_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_vars</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The passed in node names </span><span class="si">{</span><span class="n">var_names</span><span class="si">}</span><span class="s2"> should have </span><span class="si">{</span><span class="n">n_vars</span><span class="si">}</span><span class="s2"> variables.&quot;</span><span class="p">)</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="c1"># initialize the final data array for speed</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_vars</span><span class="p">,</span> <span class="n">n_realizations</span> <span class="o">*</span> <span class="n">n_times</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_realizations</span><span class="p">):</span>
+        <span class="c1"># sample the initial conditions</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_vars</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">))</span>
+        <span class="n">x</span><span class="p">[:,</span> <span class="p">:</span><span class="n">max_lag</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+
+        <span class="c1"># simulate forward in time</span>
+        <span class="k">for</span> <span class="n">tdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span><span class="p">,</span> <span class="n">n_times</span><span class="p">):</span>
+            <span class="c1"># note that for a single realization, this is just &#39;tdx&#39;</span>
+            <span class="n">starting_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tdx</span>
+            <span class="n">ygen</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">starting_point</span><span class="p">]</span>
+
+            <span class="c1"># loop over the lags to generate the next sample as a linear</span>
+            <span class="c1"># combination of previous lag data points</span>
+            <span class="k">for</span> <span class="n">pdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span><span class="p">):</span>
+                <span class="n">ygen</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">var_arr</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">pdx</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">tdx</span> <span class="o">-</span> <span class="n">pdx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># convert to a DataFrame, if node names are explicitly passed in</span>
+    <span class="k">if</span> <span class="n">var_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">var_names</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="simulate_linear_var_process"><a class="viewcode-back" href="../../reference/simulation/index.html#pywhy_graphs.simulate.simulate_linear_var_process">[docs]</a><span class="k">def</span> <span class="nf">simulate_linear_var_process</span><span class="p">(</span>
+    <span class="n">n_variables</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">p_time_self</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">p_time_vars</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">p_contemporaneous</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_realizations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">weight_dist</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a linear VAR process of a &quot;stationary&quot; causal graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_variables : int, optional</span>
+<span class="sd">        The number of variables to included in the final simulation, by default 5.</span>
+<span class="sd">    p_time_self : float, optional</span>
+<span class="sd">        The probability for an edge across time for the same variable, by default 0.5.</span>
+<span class="sd">    p_time_vars : float, optional</span>
+<span class="sd">        The probability for an edge across time for different variables, by default 0.5.</span>
+<span class="sd">    p_contemporaneous : float, optional</span>
+<span class="sd">        The probability for a contemporaneous edge among different variables, by default 0.5.</span>
+<span class="sd">        Can be set to 0 to specify that the underlying causal process has no instantaneous</span>
+<span class="sd">        effects.</span>
+<span class="sd">    max_lag : int, optional</span>
+<span class="sd">        The maximum lag allowed in the resulting process, by default 1.</span>
+<span class="sd">    n_times : int, optional</span>
+<span class="sd">        The number of time points to generate per realization, by default 1000. See</span>
+<span class="sd">        `simulate_data_from_var` for more information.</span>
+<span class="sd">    n_realizations : int, optional</span>
+<span class="sd">        The number of independent realizations, by default 1. See `simulate_data_from_var` for</span>
+<span class="sd">        more information.</span>
+<span class="sd">    weight_dist : Callable, optional</span>
+<span class="sd">        The distribution of weights for connections, by default None.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        The random state, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : ArrayLike of shape (n_nodes, n_times * n_realizations)</span>
+<span class="sd">        The simulated data.</span>
+<span class="sd">    var_model : StationaryTimeSeriesDiGraph of shape (n_nodes, n_nodes, max_lag)</span>
+<span class="sd">        The resulting time-series causal graph.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    In stationary time-series graphs without latent confounders, there is never a worry</span>
+<span class="sd">    about acyclicity among &quot;lagged nodes&quot; in the graph. However, if we model the situation</span>
+<span class="sd">    where there are instantaenous, or contemporaneous effects, then those edges may form</span>
+<span class="sd">    a cycle when simulating the graph. Therefore, if ``p_contemporaneous &gt; 0``, then an</span>
+<span class="sd">    additional check for DAG among the contemporaneous edge network is checked.</span>
+
+<span class="sd">    To simulate VAR process with latent confounders (i.e. missing variable time-series), then</span>
+<span class="sd">    one can simply simulate the full VAR process and then delete the simulated time-series data</span>
+<span class="sd">    from the latent variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first we sample the time-series graph</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">simulate_random_tsgraph</span><span class="p">(</span>
+        <span class="n">n_variables</span><span class="p">,</span>
+        <span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">,</span>
+        <span class="n">p_time_self</span><span class="o">=</span><span class="n">p_time_self</span><span class="p">,</span>
+        <span class="n">p_time_vars</span><span class="o">=</span><span class="n">p_time_vars</span><span class="p">,</span>
+        <span class="n">p_contemporaneous</span><span class="o">=</span><span class="n">p_contemporaneous</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># then we convert this into an array of 1&#39;s and 0&#39;s</span>
+    <span class="c1"># we maintain a lagged-order of the nodes, so that way</span>
+    <span class="c1"># reshaping into a 3D array works properly</span>
+    <span class="n">var_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+    <span class="n">ts_graph_arr</span> <span class="o">=</span> <span class="n">tsgraph_to_numpy</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">var_order</span><span class="o">=</span><span class="n">var_order</span><span class="p">)</span>
+
+    <span class="c1"># reshape the array to the correct shape</span>
+    <span class="c1"># graph_arr = graph_arr.reshape((n_variables, n_variables, max_lag + 1))</span>
+    <span class="n">nnz_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">ts_graph_arr</span><span class="p">)</span>
+    <span class="n">nnz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">ts_graph_arr</span><span class="p">)</span>
+
+    <span class="c1"># we sample weights from our weight distribution to fill</span>
+    <span class="c1"># in every non-zero index of our VAR array</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">weight_dist</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">nnz</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">ts_graph_arr</span><span class="p">[</span><span class="n">nnz_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="c1"># our resulting VAR array is the function, which we will</span>
+    <span class="c1"># simulate our data, starting from random Gaussian initial conditions.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">simulate_data_from_var</span><span class="p">(</span>
+        <span class="n">var_arr</span><span class="o">=</span><span class="n">ts_graph_arr</span><span class="p">,</span>
+        <span class="n">n_times</span><span class="o">=</span><span class="n">n_times</span><span class="p">,</span>
+        <span class="n">n_realizations</span><span class="o">=</span><span class="n">n_realizations</span><span class="p">,</span>
+        <span class="n">var_names</span><span class="o">=</span><span class="n">var_order</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">G</span></div>
+
+
+<div class="viewcode-block" id="simulate_var_process_from_summary_graph"><a class="viewcode-back" href="../../reference/simulation/index.html#pywhy_graphs.simulate.simulate_var_process_from_summary_graph">[docs]</a><span class="k">def</span> <span class="nf">simulate_var_process_from_summary_graph</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">:</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a VAR(max_lag) process starting from a summary graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : nx.MixedEdgeGraph</span>
+<span class="sd">        A time-series summary graph.</span>
+<span class="sd">    max_lag : int, optional</span>
+<span class="sd">        The maximum time-lag to consider, by default 1, which corresponds</span>
+<span class="sd">        to a VAR(1) process.</span>
+<span class="sd">    n_times : int</span>
+<span class="sd">        Number of observations (time points) to simulate, this includes the initial</span>
+<span class="sd">        observations to start the autoregressive process. By default 1000.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        The random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x_df : pandas DataFrame of shape (n_nodes, n_times)</span>
+<span class="sd">        The sampled dataset.</span>
+<span class="sd">    var_arr : ArrayLike of shape (n_nodes, n_nodes, max_lag)</span>
+<span class="sd">        The stationary time-series graph.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Right now, it is assumed that the summary graph is just a DAG.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+    <span class="n">var_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">,</span> <span class="n">max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># get the non-zeros</span>
+    <span class="c1"># undir_graph = G.to_undirected()</span>
+
+    <span class="c1"># simulate weights of the weight matrix</span>
+    <span class="n">summary_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">))</span>
+    <span class="n">nodelist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># get the graph array</span>
+        <span class="n">graph_arr</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">nodelist</span><span class="o">=</span><span class="n">nodelist</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+        <span class="n">non_zero_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">graph_arr</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">non_zero_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]),))</span>
+
+        <span class="c1"># set the weights in the summary graph</span>
+        <span class="n">summary_arr</span><span class="p">[</span><span class="n">non_zero_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="c1"># Now simulate across time-points. First initialize such that</span>
+    <span class="c1"># the edge between every time-point is there and reflective of the</span>
+    <span class="c1"># summary graph.</span>
+    <span class="c1"># Assume that every variable has an edge between time points</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">var_arr</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary_arr</span>
+
+    <span class="c1"># convert VAR array to stationary time-series graph</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">numpy_to_tsgraph</span><span class="p">(</span><span class="n">var_arr</span><span class="p">,</span> <span class="n">var_order</span><span class="o">=</span><span class="n">nodelist</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">StationaryTimeSeriesDiGraph</span><span class="p">)</span>
+
+    <span class="c1"># simulate initial conditions data</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">n_times</span><span class="p">))</span>
+    <span class="n">x</span><span class="p">[:,</span> <span class="p">:</span><span class="n">max_lag</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+
+    <span class="c1"># simulate forward in time</span>
+    <span class="k">for</span> <span class="n">tdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span><span class="p">,</span> <span class="n">n_times</span><span class="p">):</span>
+        <span class="n">ygen</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">tdx</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">pdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_lag</span><span class="p">):</span>
+            <span class="n">ygen</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">var_arr</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">pdx</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">tdx</span> <span class="o">-</span> <span class="n">pdx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># convert to a DataFrame</span>
+    <span class="n">x_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nodelist</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x_df</span><span class="p">,</span> <span class="n">G</span></div>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

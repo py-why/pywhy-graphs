@@ -45,12 +45,6 @@ in causal inference, and their differences from traditional graphs.
     from pywhy_graphs.viz import draw
 
 
-
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 25-48
 
 Structural Causal Models: Simulating some data
@@ -156,38 +150,6 @@ Here, we will simulate some data to understand causal graphs in the context of S
     draw(G)
 
 
-
-
-.. image-sg:: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_001.png
-   :alt: intro causal graphs
-   :srcset: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_001.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Fitting causal models:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node x:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node y:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node z:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node w:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00<00:00, 1320.29it/s]
-       z  ...  y
-    0  1  ...  1
-    1  1  ...  3
-    2  1  ...  2
-    3  1  ...  1
-    4  1  ...  1
-
-    [5 rows x 5 columns]
-    z           [1, 0]
-    xy          [1, 0]
-    w        [1, 2, 0]
-    x        [1, 2, 0]
-    y     [1, 3, 2, 0]
-    dtype: object
-
-    <graphviz.graphs.Digraph object at 0x7fccfa284af0>
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 123-128
 
 Causal Directed Ayclic Graphs (DAG): Also known as Causal Bayesian Networks
@@ -215,22 +177,6 @@ assumption, where there are no unobserved confounders in the graph.
 
     # Conditioning on the collider, opens up the path
     print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, {'y'})}")
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    DiGraph with 5 nodes and 5 edges
-    ['x', 'z', 'xy']
-    ['x', 'y']
-    'z' is d-separated from 'x': True
-    'z' is d-separated from 'x' given 'y': False
-
-
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 145-150
@@ -289,27 +235,6 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
     # details on causal discovery (i.e. structure learning algorithms), please see that repo.
 
 
-
-
-.. image-sg:: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_002.png
-   :alt: intro causal graphs
-   :srcset: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_002.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    ['z', 'x']
-    The ADMG has confounded-components: [{'y', 'x'}, {'z'}, {'w'}]
-    'z' is d-separated from 'x': True
-    'z' is d-separated from 'x' given 'y': False
-    'z' is d-separated from 'x': False
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 194-203
 
 Completed Partially Directed Ayclic Graph (CPDAG)
@@ -339,23 +264,6 @@ Typically, CPDAGs are learnt using some variant of the PC algorithm :footcite:`S
 
     dot_graph = draw(cpdag)
     dot_graph.render(outfile="cpdag.png", view=True)
-
-
-
-
-.. image-sg:: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_003.png
-   :alt: intro causal graphs
-   :srcset: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_003.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    'cpdag.png'
-
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 218-232
@@ -395,23 +303,6 @@ Typically, PAGs are learnt using some variant of the FCI algorithm :footcite:`Sp
     dot_graph.render(outfile="pag.png", view=True)
 
 
-
-
-.. image-sg:: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_004.png
-   :alt: intro causal graphs
-   :srcset: /auto_examples/intro/images/sphx_glr_intro_causal_graphs_004.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    'pag.png'
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 248-251
 
 References
@@ -421,9 +312,9 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.201 seconds)
+   **Total running time of the script:** ( 0 minutes  0.000 seconds)
 
-**Estimated memory usage:**  101 MB
+**Estimated memory usage:**  0 MB
 
 
 .. _sphx_glr_download_auto_examples_intro_intro_causal_graphs.py:

@@ -195,6 +195,16 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="c1"># internal edge type to value mapping for numpy array representation</span>
+<span class="n">EDGE_TO_VALUE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="kc">None</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;directed&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;undirected&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;bidirected&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;circle&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">VALUE_TO_EDGE_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="n">val</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">EDGE_TO_VALUE_MAPPING</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
 
 <span class="k">class</span> <span class="nc">MetaEnum</span><span class="p">(</span><span class="n">EnumMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Meta enumeration to make &#39;in&#39; keyword work.&quot;&quot;&quot;</span>
