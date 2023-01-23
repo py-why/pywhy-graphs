@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-# from pywhy_graphs import StationaryTimeSeriesPAG
+from pywhy_graphs import StationaryTimeSeriesPAG, StationaryTimeSeriesCPDAG
 
 
 class TimeSeriesMECGraphTester:
@@ -81,14 +81,27 @@ class TimeSeriesMECGraphTester:
         # edges forward in time
 
 
-# # class TestTimeSeriesPAG(BaseGraph):
-#     def setup_method(self):
-#         # start every graph with the confounded graph
-#         # 0 -> 1, 0 -> 2; 0 -- 3
-#         # self.Graph = CPDAG
-#         incoming_uncertain_data = [(0, 3)]
+class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+    def setup_method(self):
+        # start every graph with the confounded graph
+        # 0 -> 1, 0 -> 2; 0 -- 3
+        self.Graph = StationaryTimeSeriesCPDAG
+        incoming_uncertain_data = [(0, 3)]
 
-#         # build dict-of-dict-of-dict K3
-#         ed2 = {}
-#         incoming_graph_data = {0: {1: {}, 2: ed2}}
-#         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+        # build dict-of-dict-of-dict K3
+        ed2 = {}
+        incoming_graph_data = {0: {1: {}, 2: ed2}}
+        self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+
+
+class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+    def setup_method(self):
+        # start every graph with the confounded graph
+        # 0 -> 1, 0 -> 2; 0 -- 3
+        self.Graph = StationaryTimeSeriesPAG
+        incoming_uncertain_data = [(0, 3)]
+
+        # build dict-of-dict-of-dict K3
+        ed2 = {}
+        incoming_graph_data = {0: {1: {}, 2: ed2}}
+        self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
