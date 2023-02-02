@@ -11,6 +11,7 @@ from pywhy_graphs.algorithms import (
     possible_ancestors,
     possible_descendants,
     uncovered_pd_path,
+    uncovered_circle_path,
 )
 
 
@@ -174,6 +175,51 @@ def test_discriminating_path():
         pag, "x3", "x2", "x6", max_path_length=100
     )
     assert found_discriminating_path
+
+
+def test_uncovered_circle_path():
+    # Construct an uncovered circle path A o-o B o-o C
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "B", G.circle_edge_name)
+    G.add_edge("B", "A", G.circle_edge_name)
+    G.add_edge("B", "C", G.circle_edge_name)
+    G.add_edge("C", "B", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_circle_path(G, "B", "C", 10, "A")
+
+    assert found_uncovered_circle_path
+    assert uncov_circle_path == ["A", "B", "C"]
+
+    # Construct a non-circle path A o-o u o-o B o-> C
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "u", G.circle_edge_name)
+    G.add_edge("u", "A", G.circle_edge_name)
+    G.add_edge("B", "u", G.circle_edge_name)
+    G.add_edge("u", "B", G.circle_edge_name)
+    G.add_edge("B", "C", G.directed_edge_name)
+    G.add_edge("C", "B", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_circle_path(G, "u", "C", 10, "A")
+
+    assert not found_uncovered_circle_path
+
+    # Construct a potentially directed path
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.directed_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    G.add_edges_from(
+        [("A", "u"), ("u", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    G.add_edge("y", "x", G.circle_edge_name)
+
+    # create a pd path from A to C through v
+    G.add_edges_from(
+        [("A", "v"), ("v", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    # with the bidirected edge, v,x,y is a shielded triple
+    G.add_edge("v", "y", G.bidirected_edge_name)
+
+    # check that this is asserted as not a circle path
+    _, found_uncovered_circle_path = uncovered_circle_path(G, "u", "C", 100, "A")
+    assert not found_uncovered_circle_path
 
 
 def test_uncovered_pd_path():
