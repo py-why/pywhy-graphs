@@ -10,8 +10,8 @@ from pywhy_graphs.algorithms import (
     pds_path,
     possible_ancestors,
     possible_descendants,
-    uncovered_pd_path,
     uncovered_circle_path,
+    uncovered_pd_path,
 )
 
 
