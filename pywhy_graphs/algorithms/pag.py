@@ -326,6 +326,7 @@ def uncovered_pd_path(
     bidirected arrows, bidirected circle arrows, or opposite arrows.
     In addition, every node beside the endpoints are unshielded,
     meaning V(i-1) and V(i+1) are not adjacent.
+
     Parameters
     ----------
     graph : PAG
