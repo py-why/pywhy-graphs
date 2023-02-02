@@ -429,7 +429,8 @@ def _uncovered_path(
 
     The first type is uncovered pd paths, where: u o-> ... -> c. There are no
     bidirected arrows, bidirected circle arrows, or opposite arrows.
-    The second type is uncovered circle paths, where: u o-o ... o-o c. There are no bidirected arrows, potentially directed arrows, or directed arrows.
+    The second type is uncovered circle paths, where: u o-o ... o-o c.
+    There are no bidirected arrows, potentially directed arrows, or directed arrows.
 
     In addition, every node beside the endpoints are unshielded,
     meaning V(i-1) and V(i+1) are not adjacent.
@@ -454,7 +455,8 @@ def _uncovered_path(
         The node after 'u' that the path must traverse. Both 'first_node'
         and 'second_node' cannot be passed.
     force_circle: bool
-        Whether to search for circle paths (u o-o ... o-o c) or potentially directed paths. By default False, which searches only for potentially directed paths.
+        Whether to search for circle paths (u o-o ... o-o c) or potentially directed paths.
+        By default False, which searches only for potentially directed paths.
 
 
     Notes
