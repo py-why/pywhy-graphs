@@ -332,7 +332,8 @@ def uncovered_pd_path(
     In addition, the path is uncovered, meaning every node beside the endpoints are unshielded,
     meaning V(i-1) and V(i+1) are not adjacent.
 
-    A special case of a uncovered pd path is an uncovered circle path, which appears as u o-o ... o-o c.
+    A special case of a uncovered pd path is an uncovered circle path, which appears
+    as u o-o ... o-o c.
 
     Parameters
     ----------
@@ -354,8 +355,9 @@ def uncovered_pd_path(
         The node after 'u' that the path must traverse. Both 'first_node'
         and 'second_node' cannot be passed.
     force_circle: bool
-        Whether to search for only circle paths (u o-o ... o-o c) or all potentially directed paths.
-        By default False, which searches for all potentially directed paths.
+        Whether to search for only circle paths (u o-o ... o-o c) or all
+        potentially directed paths. By default False, which searches for all potentially
+        directed paths.
     forbid_node: node, optional
         A node after 'u' which is forbidden to immediately traverse when searching for a path.
 
