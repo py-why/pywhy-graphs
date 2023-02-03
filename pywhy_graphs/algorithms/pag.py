@@ -369,6 +369,11 @@ def uncovered_pd_path(
     in one use case within the FCI algorithm, it is defined relative
     to an adjacent third node that comes before 'u'.
 
+    In certain cases (e.g. R5 of FCI) an uncovered pd path must be found between two variables,
+    but these variables are already adjacent and connected by a trivial uncovered pd path.
+    To prevent the function from returning this trivial path, the `forbid_node` argument can be
+    used.
+
     References
     ----------
     .. footbibliography::
