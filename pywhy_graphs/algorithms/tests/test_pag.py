@@ -204,7 +204,18 @@ def test_uncovered_pd_path_circle_path_only():
 
     assert not found_uncovered_circle_path
 
-    # Construct a potentially directed path that is not a circle path, and check that it does
+    # Construct A o-o C, forbid C as the first node from A, and check that
+    # no circle path was found
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.circle_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_pd_path(
+        G, "A", "C", 10, force_circle=True, forbid_node="C"
+    )
+
+    assert not found_uncovered_circle_path
+
+    # Construct a potentially directed path that is not a circle path, and check that it
     # is not detected if force_circle=True
     G = pywhy_graphs.PAG()
     G.add_edge("A", "C", G.directed_edge_name)
