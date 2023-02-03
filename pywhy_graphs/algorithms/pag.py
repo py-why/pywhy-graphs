@@ -19,7 +19,6 @@ __all__ = [
     "pds",
     "pds_path",
     "uncovered_pd_path",
-    "uncovered_circle_path",
     "pds_t",
     "pds_t_path",
 ]
@@ -319,122 +318,21 @@ def uncovered_pd_path(
     max_path_length: Optional[int] = None,
     first_node: Optional[Node] = None,
     second_node: Optional[Node] = None,
+    force_circle: bool = False,
+    forbid_node: Optional[Node] = None,
 ) -> Tuple[List[Node], bool]:
-    """Compute uncovered potentially directed path from u to c.
+    """Compute uncovered potentially directed (pd) paths from u to c.
 
-    An uncovered pd path is one where: u o-> ... -> c. There are no
-    bidirected arrows, bidirected circle arrows, or opposite arrows.
-    In addition, every node beside the endpoints are unshielded,
+
+    In a pd path, the edge between V(i) and V(i+1) is not an arrowhead into V(i)
+    or a tail from V(i+1). An intuitive explanation given in :footcite:`Zhang2008`
+    notes that a pd path could be oriented into a directed path by changing circles
+    into tails or arrowheads.
+
+    In addition, the path is uncovered, meaning every node beside the endpoints are unshielded,
     meaning V(i-1) and V(i+1) are not adjacent.
 
-    Parameters
-    ----------
-    graph : PAG
-        PAG to orient.
-    u : node
-        A node in the graph to start the uncovered path.
-    c : node
-        A node in the graph.
-    max_path_length : optional, int
-        The maximum distance to check in the graph. By default None, which sets
-        it to 1000.
-    first_node : node, optional
-        The node previous to 'u'. If it is before 'u', then we will check
-        that 'u' is unshielded. If it is not passed, then 'u' is considered
-        the first node in the path and hence does not need to be unshielded.
-        Both 'first_node' and 'second_node' cannot be passed.
-    second_node : node, optional
-        The node after 'u' that the path must traverse. Both 'first_node'
-        and 'second_node' cannot be passed.
-
-    Notes
-    -----
-    Typically uncovered potentially directed paths are defined by two nodes. However,
-    in its common use case within the FCI algorithm, it is usually defined relative
-    to an adjacent third node that comes before 'u'.
-    """
-    return _uncovered_path(
-        graph=graph,
-        u=u,
-        c=c,
-        max_path_length=max_path_length,
-        first_node=first_node,
-        second_node=second_node,
-        force_circle=False,
-    )
-
-
-def uncovered_circle_path(
-    graph: PAG,
-    u: Node,
-    c: Node,
-    max_path_length: Optional[int] = None,
-    first_node: Optional[Node] = None,
-    second_node: Optional[Node] = None,
-) -> Tuple[List[Node], bool]:
-    """Compute uncovered circle path from u to c.
-
-    An uncovered circle path is one where: u o-o ... o-o c. There are no
-    bidirected arrows, potentially directed arrows, or directed arrows.
-    In addition, every node beside the endpoints are unshielded,
-    meaning V(i-1) and V(i+1) are not adjacent.
-    Parameters
-    ----------
-    graph : PAG
-        PAG to orient.
-    u : node
-        A node in the graph to start the uncovered path.
-    c : node
-        A node in the graph.
-    max_path_length : optional, int
-        The maximum distance to check in the graph. By default None, which sets
-        it to 1000.
-    first_node : node, optional
-        The node previous to 'u'. If it is before 'u', then we will check
-        that 'u' is unshielded. If it is not passed, then 'u' is considered
-        the first node in the path and hence does not need to be unshielded.
-        Both 'first_node' and 'second_node' cannot be passed.
-    second_node : node, optional
-        The node after 'u' that the path must traverse. Both 'first_node'
-        and 'second_node' cannot be passed.
-
-    Notes
-    -----
-    Typically uncovered potentially directed paths are defined by two nodes. However,
-    in its common use case within the FCI algorithm, it is usually defined relative
-    to an adjacent third node that comes before 'u'.
-    """
-    return _uncovered_path(
-        graph=graph,
-        u=u,
-        c=c,
-        max_path_length=max_path_length,
-        first_node=first_node,
-        second_node=second_node,
-        force_circle=True,
-    )
-
-
-def _uncovered_path(
-    graph: PAG,
-    u: Node,
-    c: Node,
-    force_circle: bool,
-    max_path_length: Optional[int] = None,
-    first_node: Optional[Node] = None,
-    second_node: Optional[Node] = None,
-) -> Tuple[List[Node], bool]:
-    """Compute uncovered paths from u to c.
-
-    Two uncovered paths are considered:
-
-    The first type is uncovered pd paths, where: u o-> ... -> c. There are no
-    bidirected arrows, bidirected circle arrows, or opposite arrows.
-    The second type is uncovered circle paths, where: u o-o ... o-o c.
-    There are no bidirected arrows, potentially directed arrows, or directed arrows.
-
-    In addition, every node beside the endpoints are unshielded,
-    meaning V(i-1) and V(i+1) are not adjacent.
+    A special case of a uncovered pd path is an uncovered circle path, which appears as u o-o ... o-o c.
 
     Parameters
     ----------
@@ -456,15 +354,22 @@ def _uncovered_path(
         The node after 'u' that the path must traverse. Both 'first_node'
         and 'second_node' cannot be passed.
     force_circle: bool
-        Whether to search for circle paths (u o-o ... o-o c) or potentially directed paths.
-        By default False, which searches only for potentially directed paths.
-
+        Whether to search for only circle paths (u o-o ... o-o c) or all potentially directed paths.
+        By default False, which searches for all potentially directed paths.
+    forbid_node: node, optional
+        A node after 'u' which is forbidden to immediately traverse when searching for a path.
 
     Notes
     -----
+    The definition of an uncovered pd path is taken from :footcite:`Zhang2008`.
+
     Typically uncovered potentially directed paths are defined by two nodes. However,
-    in its common use case within the FCI algorithm, it is usually defined relative
+    in one use case within the FCI algorithm, it is defined relative
     to an adjacent third node that comes before 'u'.
+
+    References
+    ----------
+    .. footbibliography::
     """
     if first_node is not None and second_node is not None:
         raise RuntimeError(
@@ -531,6 +436,11 @@ def _uncovered_path(
 
         # get all adjacent nodes to 'this_node'
         for next_node in graph.neighbors(this_node):
+            if this_node == start_node:
+                if forbid_node is not None:
+                    if next_node == forbid_node:
+                        continue
+
             # if we have already explored this neighbor, then ignore
             if next_node in explored_nodes:
                 continue
@@ -542,10 +452,12 @@ def _uncovered_path(
 
             # now check that the triple is potentially directed, else
             # we skip this node
+            condition = graph.has_edge(this_node, next_node, graph.circle_edge_name)
             if not force_circle:
-                condition = graph.has_edge(this_node, next_node, graph.directed_edge_name)
-            else:
-                condition = graph.has_edge(this_node, next_node, graph.circle_edge_name)
+                # If we do not restrict to circle paths then directed edges are also OK
+                condition = condition or graph.has_edge(
+                    this_node, next_node, graph.directed_edge_name
+                )
             if not condition:
                 continue
 
