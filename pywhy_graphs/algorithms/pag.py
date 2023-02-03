@@ -371,7 +371,7 @@ def uncovered_pd_path(
 
     In certain cases (e.g. R5 of FCI) an uncovered pd path must be found between two variables,
     but these variables are already adjacent and connected by a trivial uncovered pd path.
-    To prevent the function from returning this trivial path, the `forbid_node` argument can be
+    To prevent the function from returning this trivial path, the 'forbid_node' argument can be
     used.
 
     References
