@@ -506,13 +506,22 @@
     <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">first_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">second_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">force_circle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">forbid_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute uncovered potentially directed path from u to c.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute uncovered potentially directed (pd) paths from u to c.</span>
 
-<span class="sd">    An uncovered pd path is one where: u o-&gt; ... -&gt; c. There are no</span>
-<span class="sd">    bidirected arrows, bidirected circle arrows, or opposite arrows.</span>
-<span class="sd">    In addition, every node beside the endpoints are unshielded,</span>
+
+<span class="sd">    In a pd path, the edge between V(i) and V(i+1) is not an arrowhead into V(i)</span>
+<span class="sd">    or a tail from V(i+1). An intuitive explanation given in :footcite:`Zhang2008`</span>
+<span class="sd">    notes that a pd path could be oriented into a directed path by changing circles</span>
+<span class="sd">    into tails or arrowheads.</span>
+
+<span class="sd">    In addition, the path is uncovered, meaning every node beside the endpoints are unshielded,</span>
 <span class="sd">    meaning V(i-1) and V(i+1) are not adjacent.</span>
+
+<span class="sd">    A special case of a uncovered pd path is an uncovered circle path, which appears</span>
+<span class="sd">    as u o-o ... o-o c.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -533,12 +542,29 @@
 <span class="sd">    second_node : node, optional</span>
 <span class="sd">        The node after &#39;u&#39; that the path must traverse. Both &#39;first_node&#39;</span>
 <span class="sd">        and &#39;second_node&#39; cannot be passed.</span>
+<span class="sd">    force_circle: bool</span>
+<span class="sd">        Whether to search for only circle paths (u o-o ... o-o c) or all</span>
+<span class="sd">        potentially directed paths. By default False, which searches for all potentially</span>
+<span class="sd">        directed paths.</span>
+<span class="sd">    forbid_node: node, optional</span>
+<span class="sd">        A node after &#39;u&#39; which is forbidden to immediately traverse when searching for a path.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
+<span class="sd">    The definition of an uncovered pd path is taken from :footcite:`Zhang2008`.</span>
+
 <span class="sd">    Typically uncovered potentially directed paths are defined by two nodes. However,</span>
-<span class="sd">    in its common use case within the FCI algorithm, it is usually defined relative</span>
+<span class="sd">    in one use case within the FCI algorithm, it is defined relative</span>
 <span class="sd">    to an adjacent third node that comes before &#39;u&#39;.</span>
+
+<span class="sd">    In certain cases (e.g. R5 of FCI) an uncovered pd path must be found between two variables,</span>
+<span class="sd">    but these variables are already adjacent and connected by a trivial uncovered pd path.</span>
+<span class="sd">    To prevent the function from returning this trivial path, the &#39;forbid_node&#39; argument can be</span>
+<span class="sd">    used.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. footbibliography::</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">first_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">second_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -605,6 +631,10 @@
 
         <span class="c1"># get all adjacent nodes to &#39;this_node&#39;</span>
         <span class="k">for</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">this_node</span><span class="p">):</span>
+            <span class="c1"># check that this is the starting node and whether or not we are on a forbidden path</span>
+            <span class="k">if</span> <span class="n">this_node</span> <span class="o">==</span> <span class="n">start_node</span> <span class="ow">and</span> <span class="n">forbid_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">next_node</span> <span class="o">==</span> <span class="n">forbid_node</span><span class="p">:</span>
+                <span class="k">continue</span>
+
             <span class="c1"># if we have already explored this neighbor, then ignore</span>
             <span class="k">if</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="n">explored_nodes</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -616,7 +646,13 @@
 
             <span class="c1"># now check that the triple is potentially directed, else</span>
             <span class="c1"># we skip this node</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">this_node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">):</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">this_node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">force_circle</span><span class="p">:</span>
+                <span class="c1"># If we do not restrict to circle paths then directed edges are also OK</span>
+                <span class="n">condition</span> <span class="o">=</span> <span class="n">condition</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                    <span class="n">this_node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">condition</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="c1"># now this next node is potentially directed, does not</span>
