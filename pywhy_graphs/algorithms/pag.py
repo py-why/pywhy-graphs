@@ -443,9 +443,8 @@ def uncovered_pd_path(
 
         # get all adjacent nodes to 'this_node'
         for next_node in graph.neighbors(this_node):
-            if this_node == start_node:
-                if forbid_node is not None:
-                    if next_node == forbid_node:
+            # check that this is the starting node and whether or not we are on a forbidden path
+            if this_node == start_node and forbid_node is not None and next_node == forbid_node:
                         continue
 
             # if we have already explored this neighbor, then ignore
