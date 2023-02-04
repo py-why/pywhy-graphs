@@ -5,7 +5,8 @@ import networkx as nx
 import pytest
 from networkx.utils import edges_equal, nodes_equal
 
-from pywhy_graphs.classes.timeseries import TimeSeriesMixedEdgeGraph
+import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.classes.timeseries import TimeSeriesMixedEdgeGraph, TimeSeriesDiGraph, TimeSeriesGraph
 
 
 class BaseTimeSeriesMixedEdgeGraphTester:
@@ -185,23 +186,9 @@ class BaseTimeSeriesMixedEdgeGraphTester:
         assert id(G.nodes) != id(old_nodes)
 
 
-class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
-    def setup_method(self):
-        self.Graph = pywhy_nx.MixedEdgeGraph
-        self._graph_func = nx.Graph
-
-        # build dict-of-dict-of-dict K3
-        ed1, ed2, ed3 = ({}, {}, {})
-        self.k3adj = {0: {1: ed1, 2: ed2}, 1: {0: ed1, 2: ed3}, 2: {0: ed2, 1: ed3}}
-        self.k3edges = [(0, 1), (0, 2), (1, 2)]
-        self.k3nodes = [0, 1, 2]
-        self.K3_edge_type = "undirected"
-        self.K3 = self.Graph()
-        self.K3.add_edge_type(nx.Graph(), self.K3_edge_type)
-        self.K3.add_edges_from(self.k3edges, edge_type=self.K3_edge_type)
-
+class ComplexTimeSeriesMixedEdgeGraphTester:
     def test_init(self):
-        directed_edges = nx.DiGraph(
+        directed_edges = TimeSeriesDiGraph(
             [
                 ("x8", "x2"),
                 ("x9", "x2"),
@@ -381,3 +368,24 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         # No inputs -> exception
         with pytest.raises(nx.NetworkXError):
             nx.Graph().update()
+
+
+class TestTimeSeriesMixedEdgeGraph(BaseTimeSeriesMixedEdgeGraphTester):
+    def setup_method(self):
+        self.Graph = TimeSeriesMixedEdgeGraph
+        self._graph_func = TimeSeriesGraph
+
+        # build dict-of-dict-of-dict K3 with contemporaneous edges
+        self.k3edges = [
+            ((0, 0), (1, 0)),
+            ((0, 0), (2, 0)),
+            ((1, 0), (2, 0)),  # collider at (2, 0)
+        ]
+        self.max_lag = 2
+        self.k3variables = [0, 1, 2]
+        self.K3_edge_type = "undirected"
+
+        self.K3 = self.Graph()
+        self.K3.add_edge_type(TimeSeriesGraph, self.K3_edge_type)
+        self.K3.add_edges_from(self.k3edges, edge_type=self.K3_edge_type)
+

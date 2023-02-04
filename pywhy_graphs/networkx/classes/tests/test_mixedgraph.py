@@ -221,6 +221,12 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         for _, graph in G.get_graphs().items():
             assert set(G.nodes) == set(graph.nodes)
 
+    def test_add_edge_type(self):
+        # test adding edge type with empty graph
+
+        # test adding edge type with some nodes already
+        pass
+
     def test_add_edge(self):
         edge_type = "bidirected"
         G = self.Graph()

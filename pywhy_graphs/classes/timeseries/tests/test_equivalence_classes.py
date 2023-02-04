@@ -90,18 +90,20 @@ class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
 
         # build dict-of-dict-of-dict K3
         ed2 = {}
-        incoming_graph_data = {0: {1: {}, 2: ed2}}
-        self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+        incoming_graph_data = [(0, 1), (0, 2)]
+        self.G = self.Graph()
+        self.G.add_edges_from(incoming_graph_data, edge_type='directed')
+        self.G.add_edges_from(incoming_uncertain_data, edge_type='undirected')
 
 
-class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
-    def setup_method(self):
-        # start every graph with the confounded graph
-        # 0 -> 1, 0 -> 2; 0 -- 3
-        self.Graph = StationaryTimeSeriesPAG
-        incoming_uncertain_data = [(0, 3)]
+# class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+#     def setup_method(self):
+#         # start every graph with the confounded graph
+#         # 0 -> 1, 0 -> 2; 0 -- 3
+#         self.Graph = StationaryTimeSeriesPAG
+#         incoming_uncertain_data = [(0, 3)]
 
-        # build dict-of-dict-of-dict K3
-        ed2 = {}
-        incoming_graph_data = {0: {1: {}, 2: ed2}}
-        self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+#         # build dict-of-dict-of-dict K3
+#         ed2 = {}
+#         incoming_graph_data = {0: {1: {}, 2: ed2}}
+#         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)

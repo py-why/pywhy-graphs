@@ -702,9 +702,10 @@ class MixedEdgeGraph:
             raise ValueError(f"edge_type {edge_type} is already in the graph.")
 
         # ensure new graph type has all nodes
-        graph.add_nodes_from(self._node)
         self._edge_graphs[edge_type] = graph
-        self.add_nodes_from(graph.nodes)
+        if self._node:
+            graph.add_nodes_from(self._node)
+            self.add_nodes_from(graph.nodes)
 
     def add_edge_types_from(self, graphs, edge_types):
         if len(graphs) != len(edge_types):
