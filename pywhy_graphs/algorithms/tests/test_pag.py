@@ -176,6 +176,67 @@ def test_discriminating_path():
     assert found_discriminating_path
 
 
+def test_uncovered_pd_path_circle_path_only():
+    # Construct an uncovered circle path A o-o B o-o C
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "B", G.circle_edge_name)
+    G.add_edge("B", "A", G.circle_edge_name)
+    G.add_edge("B", "C", G.circle_edge_name)
+    G.add_edge("C", "B", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_pd_path(
+        G, "B", "C", 10, "A", force_circle=True
+    )
+
+    assert found_uncovered_circle_path
+    assert uncov_circle_path == ["A", "B", "C"]
+
+    # Construct a non-circle path A o-o u o-o B o-> C
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "u", G.circle_edge_name)
+    G.add_edge("u", "A", G.circle_edge_name)
+    G.add_edge("B", "u", G.circle_edge_name)
+    G.add_edge("u", "B", G.circle_edge_name)
+    G.add_edge("B", "C", G.directed_edge_name)
+    G.add_edge("C", "B", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_pd_path(
+        G, "u", "C", 10, "A", force_circle=True
+    )
+
+    assert not found_uncovered_circle_path
+
+    # Construct A o-o C, forbid C as the first node from A, and check that
+    # no circle path was found
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.circle_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    uncov_circle_path, found_uncovered_circle_path = uncovered_pd_path(
+        G, "A", "C", 10, force_circle=True, forbid_node="C"
+    )
+
+    assert not found_uncovered_circle_path
+
+    # Construct a potentially directed path that is not a circle path, and check that it
+    # is not detected if force_circle=True
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.directed_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    G.add_edges_from(
+        [("A", "u"), ("u", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    G.add_edge("y", "x", G.circle_edge_name)
+
+    # create a pd path from A to C through v
+    G.add_edges_from(
+        [("A", "v"), ("v", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    # with the bidirected edge, v,x,y is a shielded triple
+    G.add_edge("v", "y", G.bidirected_edge_name)
+
+    # check that this is asserted as not a circle path
+    _, found_uncovered_circle_path = uncovered_pd_path(G, "u", "C", 100, "A", force_circle=True)
+    assert not found_uncovered_circle_path
+
+
 def test_uncovered_pd_path():
     """Test basic uncovered partially directed path."""
     # If A o-> C and there is an undirected pd path
@@ -213,6 +274,16 @@ def test_uncovered_pd_path():
     uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 100, "A")
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
+
+    # Check that a circle path A o-o u o-o C is identified as an uncovered pd path
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "u", G.circle_edge_name)
+    G.add_edge("u", "A", G.circle_edge_name)
+    G.add_edge("u", "C", G.circle_edge_name)
+    G.add_edge("C", "u", G.circle_edge_name)
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 10)
+    assert found_uncovered_pd_path
+    assert uncov_pd_path == ["A", "u", "C"]
 
     # check errors for running uncovered pd path
     with pytest.raises(RuntimeError, match="Both first and second"):
