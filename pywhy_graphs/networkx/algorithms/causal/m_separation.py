@@ -57,7 +57,7 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
             'you have a directed graph, use "d_separated" function instead.'
         )
     if any(
-        edge_type not in G.edge_types for edge_type in [bidirected_edge_name, directed_edge_name]
+        edge_type not in [bidirected_edge_name, directed_edge_name] for edge_type in G.edge_types
     ):
         raise nx.NetworkXError(
             f"m-separation only works on graphs with directed and bidirected edges. "
@@ -66,20 +66,29 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
             f"bidirected edges named {bidirected_edge_name}."
         )
 
-    if not nx.is_directed_acyclic_graph(G.get_graphs(directed_edge_name)):
+    # check the directed edge subgraph in G
+    G_copy = G
+    if directed_edge_name in G_copy.edge_types and not nx.is_directed_acyclic_graph(
+        G.get_graphs(directed_edge_name)
+    ):
         raise nx.NetworkXError("directed edge graph should be directed acyclic")
+    elif directed_edge_name not in G_copy.edge_types:
+        # make a copy if we need to alter the graph, by adding the empty directed
+        # edge subgraph into the mixededgegraph.
+        G_copy = G.copy()
+        G_copy.add_edge_type(nx.DiGraph(), edge_type=directed_edge_name)
 
     union_xyz = x.union(y).union(z)
 
     # get directed edges
     G_directed = nx.DiGraph()
-    G_directed.add_nodes_from((n, deepcopy(d)) for n, d in G.nodes.items())
-    G_directed.add_edges_from(G.get_graphs(edge_type=directed_edge_name).edges)
+    G_directed.add_nodes_from((n, deepcopy(d)) for n, d in G_copy.nodes.items())
+    G_directed.add_edges_from(G_copy.get_graphs(edge_type=directed_edge_name).edges)
 
     # get bidirected edges subgraph
     G_bidirected = nx.Graph()
-    G_bidirected.add_nodes_from((n, deepcopy(d)) for n, d in G.nodes.items())
-    G_bidirected.add_edges_from(G.get_graphs(edge_type=bidirected_edge_name).edges)
+    G_bidirected.add_nodes_from((n, deepcopy(d)) for n, d in G_copy.nodes.items())
+    G_bidirected.add_edges_from(G_copy.get_graphs(edge_type=bidirected_edge_name).edges)
 
     # get ancestral subgraph of x | y | z by removing leaves in directed graph that are not
     # in x | y | z until no more leaves can be removed.

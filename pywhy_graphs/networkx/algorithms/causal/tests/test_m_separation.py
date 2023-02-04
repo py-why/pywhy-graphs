@@ -43,3 +43,10 @@ def test_m_separation():
 
     # conditioning on a descendant of a collider via bidirected edge opens the collider
     assert not pywhy_nx.m_separated(G, {0}, {3}, {4})
+
+
+def test_m_separation_bidirected_graph():
+    # a bidirected graph should be m-separated without conditioning on anything
+    bigraph = nx.Graph([(1, 2), (2, 3)])
+    G = pywhy_nx.MixedEdgeGraph([bigraph], ["bidirected"])
+    assert pywhy_nx.m_separated(G, {1}, {3}, set())
