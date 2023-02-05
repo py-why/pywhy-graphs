@@ -197,17 +197,36 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;m_separated&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="m_separated"><a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated">[docs]</a><span class="k">def</span> <span class="nf">m_separated</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check m-separation among &#39;x&#39; and &#39;y&#39; given &#39;z&#39; in mixed-edge causal graph G.</span>
+<div class="viewcode-block" id="m_separated"><a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated">[docs]</a><span class="k">def</span> <span class="nf">m_separated</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">z</span><span class="p">,</span>
+    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+    <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+    <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check m-separation among &#39;x&#39; and &#39;y&#39; given &#39;z&#39; in mixed-edge causal graph G, which may</span>
+<span class="sd">    contain directed, bidirected, and undirected edges.</span>
 
 <span class="sd">    This algorithm adapts the linear time algorithm presented in [1]_ currently implemented in</span>
-<span class="sd">    `networkx.algorithms.d_separation` to work for mixed-edge causal graphs.</span>
+<span class="sd">    `networkx.algorithms.d_separation` to work for mixed-edge causal graphs, using m-separation</span>
+<span class="sd">    logic detailed in [2]_.</span>
 
-<span class="sd">    This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge</span>
-<span class="sd">    of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After</span>
-<span class="sd">    that, an undirected graph composed from the directed and bidirected edges amongst the</span>
-<span class="sd">    remaining nodes is created. Then, x is independent of y given z if x is disconnected from y</span>
-<span class="sd">    in this new graph.</span>
+<span class="sd">    This algorithm works by retaining select edges in each of the directed, bidirected, and</span>
+<span class="sd">    undirected edge subgraphs (if supplied). Then, an undirected graph is created from</span>
+<span class="sd">    the union of allsuch retained edges (without direction information), and then</span>
+<span class="sd">    m-separation of x and y givenz is determined if x is disconnected from y in this graph.</span>
+
+<span class="sd">    In the directed edge subgraph, nodes and associated edges are removed if they are childless</span>
+<span class="sd">    and not in x | y | z; this process is repeated until no such nodes remain. Then, outgoing</span>
+<span class="sd">    edges from z are removed. The remaining edges are retained.</span>
+
+<span class="sd">    In the bidirected edge subgraph, nodes and associated edges are removed if they are not</span>
+<span class="sd">    in x | y | z. The remaining edges are retained.</span>
+
+<span class="sd">    In the undirected edge subgraph, all edges involving z are removed. The remaining edges are</span>
+<span class="sd">    retained.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -219,6 +238,12 @@
 <span class="sd">        Second set of nodes in ``G``.</span>
 <span class="sd">    z : set</span>
 <span class="sd">        Set of conditioning nodes in ``G``. Can be empty set.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        Name of the directed edge, default is directed.</span>
+<span class="sd">    bidirected_edge_name : str</span>
+<span class="sd">        Name of the bidirected edge, default is bidirected.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        Name of the undirected edge, default is undirected.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -229,6 +254,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    .. [1] Darwiche, A.  (2009).  Modeling and reasoning with Bayesian networks.</span>
 <span class="sd">       Cambridge: Cambridge University Press.</span>
+<span class="sd">    .. [2] Spirtes, P. and Richardson, T.S.. (1997). A Polynomial Time Algorithm</span>
+<span class="sd">       for Determining DAG Equivalence in the Presence of Latent Variables and Selection</span>
+<span class="sd">       Bias. Proceedings of the Sixth International Workshop on Artificial Intelligence and</span>
+<span class="sd">       Statistics, in Proceedings of Machine Learning Research</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -236,60 +265,92 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This wraps the networkx implementation, which only allows DAGs. Since</span>
-<span class="sd">    ``ADMG`` is not represented.</span>
+<span class="sd">    This wraps the networkx implementation, which only allows DAGs and does</span>
+<span class="sd">    not have an ``ADMG`` representation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span>
             <span class="s2">&quot;m-separation should only be run on a MixedEdgeGraph. If &quot;</span>
             <span class="s1">&#39;you have a directed graph, use &quot;d_separated&quot; function instead.&#39;</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-        <span class="n">edge_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span> <span class="k">for</span> <span class="n">edge_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">bidirected_edge_name</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
+        <span class="p">{</span><span class="n">directed_edge_name</span><span class="p">,</span> <span class="n">bidirected_edge_name</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="p">}</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;m-separation only works on graphs with directed and bidirected edges. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;m-separation only works on graphs with directed, bidirected, and undirected edges. &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Your graph passed in has the following edge types: </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="si">}</span><span class="s2">, whereas &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;the function is expecting directed edges named </span><span class="si">{</span><span class="n">directed_edge_name</span><span class="si">}</span><span class="s2"> and &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;bidirected edges named </span><span class="si">{</span><span class="n">bidirected_edge_name</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;the function is expecting directed edges named </span><span class="si">{</span><span class="n">directed_edge_name</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;bidirected edges named </span><span class="si">{</span><span class="n">bidirected_edge_name</span><span class="si">}</span><span class="s2">, and undirected edges &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;named </span><span class="si">{</span><span class="n">undirected_edge_name</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">directed_edge_name</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;directed edge graph should be directed acyclic&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">directed_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">directed_edge_name</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span><span class="s2">&quot;directed edge graph should be directed acyclic&quot;</span><span class="p">)</span>
 
     <span class="n">union_xyz</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
     <span class="c1"># get directed edges</span>
-    <span class="n">G_directed</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-    <span class="n">G_directed</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-    <span class="n">G_directed</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">has_directed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">directed_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="p">:</span>
+        <span class="n">has_directed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">G_directed</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        <span class="n">G_directed</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">G_directed</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="c1"># get bidirected edges subgraph</span>
-    <span class="n">G_bidirected</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-    <span class="n">G_bidirected</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-    <span class="n">G_bidirected</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">bidirected_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">has_bidirected</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">bidirected_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="p">:</span>
+        <span class="n">has_bidirected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">G_bidirected</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="n">G_bidirected</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">G_bidirected</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">bidirected_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+
+    <span class="c1"># get undirected edges subgraph</span>
+    <span class="n">has_undirected</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">undirected_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span><span class="p">:</span>
+        <span class="n">has_undirected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">G_undirected</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="n">G_undirected</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">G_undirected</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">undirected_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="c1"># get ancestral subgraph of x | y | z by removing leaves in directed graph that are not</span>
     <span class="c1"># in x | y | z until no more leaves can be removed.</span>
-    <span class="n">leaves</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">leaves</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">leaf</span> <span class="o">=</span> <span class="n">leaves</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">leaf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">union_xyz</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">leaf</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">leaves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-            <span class="n">G_directed</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
-            <span class="n">G_bidirected</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">has_directed</span><span class="p">:</span>
+        <span class="n">leaves</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">leaves</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">leaf</span> <span class="o">=</span> <span class="n">leaves</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">leaf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">union_xyz</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">leaf</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">leaves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">G_directed</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
 
-    <span class="c1"># remove outgoing directed edges in z</span>
-    <span class="n">edges_to_remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G_directed</span><span class="o">.</span><span class="n">out_edges</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
-    <span class="n">G_directed</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">edges_to_remove</span><span class="p">)</span>
+        <span class="c1"># remove outgoing directed edges in z</span>
+        <span class="n">edges_to_remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G_directed</span><span class="o">.</span><span class="n">out_edges</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        <span class="n">G_directed</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">edges_to_remove</span><span class="p">)</span>
 
-    <span class="c1"># make new undirected graph from remaining directed and bidirected edges</span>
+    <span class="c1"># remove nodes in bidirected graph that are not in x | y | z (since they will be</span>
+    <span class="c1"># independent due to colliders)</span>
+    <span class="k">if</span> <span class="n">has_bidirected</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G_bidirected</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">union_xyz</span><span class="p">:</span>
+                <span class="n">G_bidirected</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="c1"># remove nodes in undirected graph that are in z to block m-connecting paths</span>
+    <span class="k">if</span> <span class="n">has_undirected</span><span class="p">:</span>
+        <span class="n">edges_to_remove</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G_undirected</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        <span class="n">G_undirected</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">edges_to_remove</span><span class="p">)</span>
+
+    <span class="c1"># make new undirected graph from remaining directed, bidirected, and undirected edges</span>
     <span class="n">G_final</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-    <span class="n">G_final</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G_final</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-    <span class="n">G_final</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G_directed</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-    <span class="n">G_final</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G_bidirected</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">has_directed</span><span class="p">:</span>
+        <span class="n">G_final</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G_directed</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">has_bidirected</span><span class="p">:</span>
+        <span class="n">G_final</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G_bidirected</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">has_undirected</span><span class="p">:</span>
+        <span class="n">G_final</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G_undirected</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="n">disjoint_set</span> <span class="o">=</span> <span class="n">UnionFind</span><span class="p">(</span><span class="n">G_final</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">G_final</span><span class="p">):</span>

@@ -371,15 +371,23 @@
 <h1>pywhy_graphs.networkx.m_separated<a class="headerlink" href="#pywhy-graphs-networkx-m-separated" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pywhy_graphs.networkx.m_separated">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">m_separated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/m_separation.html#m_separated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.m_separated" title="Permalink to this definition">#</a></dt>
-<dd><p>Check m-separation among ‘x’ and ‘y’ given ‘z’ in mixed-edge causal graph G.</p>
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">m_separated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'undirected'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/m_separation.html#m_separated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.m_separated" title="Permalink to this definition">#</a></dt>
+<dd><p>Check m-separation among ‘x’ and ‘y’ given ‘z’ in mixed-edge causal graph G, which may
+contain directed, bidirected, and undirected edges.</p>
 <p>This algorithm adapts the linear time algorithm presented in <a class="reference internal" href="#r23c6b73ac81f-1" id="id1">[1]</a> currently implemented in
-<a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/d_separation.html#module-networkx.algorithms.d_separation" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation</span></code></a> to work for mixed-edge causal graphs.</p>
-<p>This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge
-of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After
-that, an undirected graph composed from the directed and bidirected edges amongst the
-remaining nodes is created. Then, x is independent of y given z if x is disconnected from y
-in this new graph.</p>
+<a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/d_separation.html#module-networkx.algorithms.d_separation" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation</span></code></a> to work for mixed-edge causal graphs, using m-separation
+logic detailed in <a class="reference internal" href="#r23c6b73ac81f-2" id="id2">[2]</a>.</p>
+<p>This algorithm works by retaining select edges in each of the directed, bidirected, and
+undirected edge subgraphs (if supplied). Then, an undirected graph is created from
+the union of allsuch retained edges (without direction information), and then
+m-separation of x and y givenz is determined if x is disconnected from y in this graph.</p>
+<p>In the directed edge subgraph, nodes and associated edges are removed if they are childless
+and not in x | y | z; this process is repeated until no such nodes remain. Then, outgoing
+edges from z are removed. The remaining edges are retained.</p>
+<p>In the bidirected edge subgraph, nodes and associated edges are removed if they are not
+in x | y | z. The remaining edges are retained.</p>
+<p>In the undirected edge subgraph, all edges involving z are removed. The remaining edges are
+retained.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>G</strong> : mixed-edge-graph</p>
@@ -398,6 +406,18 @@ in this new graph.</p>
 <blockquote>
 <div><p>Set of conditioning nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>. Can be empty set.</p>
 </div></blockquote>
+<p><strong>directed_edge_name</strong> : str</p>
+<blockquote>
+<div><p>Name of the directed edge, default is directed.</p>
+</div></blockquote>
+<p><strong>bidirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>Name of the bidirected edge, default is bidirected.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>Name of the undirected edge, default is undirected.</p>
+</div></blockquote>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>b</strong> : bool</p>
@@ -413,14 +433,21 @@ in this new graph.</p>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>This wraps the networkx implementation, which only allows DAGs. Since
-<code class="docutils literal notranslate"><span class="pre">ADMG</span></code> is not represented.</p>
+<p>This wraps the networkx implementation, which only allows DAGs and does
+not have an <code class="docutils literal notranslate"><span class="pre">ADMG</span></code> representation.</p>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
 <div class="citation" id="r23c6b73ac81f-1" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Darwiche, A.  (2009).  Modeling and reasoning with Bayesian networks.
 Cambridge: Cambridge University Press.</p>
+</div>
+<div class="citation" id="r23c6b73ac81f-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Spirtes, P. and Richardson, T.S.. (1997). A Polynomial Time Algorithm
+for Determining DAG Equivalence in the Presence of Latent Variables and Selection
+Bias. Proceedings of the Sixth International Workshop on Artificial Intelligence and
+Statistics, in Proceedings of Machine Learning Research</p>
 </div>
 </div>
 </dd></dl>
