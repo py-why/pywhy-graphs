@@ -26,7 +26,7 @@ Version 0.1
 Changelog
 ---------
 
-- |Feature| Add support for undirected edges in m-separation :func:`pywhy_graphs.networkx.algorithms.causal.m_separated`, by `Jaron Lee`_ (:pr:`46`)
+- |Feature| Add support for undirected edges in m-separation :func:`pywhy_graphs.networkx.m_separated`, by `Jaron Lee`_ (:pr:`46`)
 - |Feature| Implement uncovered circle path finding inside the :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Jaron Lee`_ (:pr:`42`)
 - |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:pr:`6`)
 - |Feature| Implement and test the :class:`pywhy_graphs.PAG` for PAGs, by `Adam Li`_ (:pr:`9`)
