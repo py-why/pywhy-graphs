@@ -26,9 +26,9 @@ def m_separated(
     logic detailed in [2]_.
 
     This algorithm works by retaining select edges in each of the directed, bidirected, and
-    undirected edge subgraphs (if supplied). Then, an undirected graph is created from the union of all
-    such retained edges (without direction information), and then m-separation of x and y given
-    z is determined if x is disconnected from y in this graph.
+    undirected edge subgraphs (if supplied). Then, an undirected graph is created from
+    the union of allsuch retained edges (without direction information), and then
+    m-separation of x and y givenz is determined if x is disconnected from y in this graph.
 
     In the directed edge subgraph, nodes and associated edges are removed if they are childless
     and not in x | y | z; this process is repeated until no such nodes remain. Then, outgoing
@@ -92,7 +92,8 @@ def m_separated(
             f"m-separation only works on graphs with directed, bidirected, and undirected edges. "
             f"Your graph passed in has the following edge types: {G.edge_types}, whereas "
             f"the function is expecting directed edges named {directed_edge_name}, "
-            f"bidirected edges named {bidirected_edge_name}, and undirected edges named {undirected_edge_name}."
+            f"bidirected edges named {bidirected_edge_name}, and undirected edges "
+            f"named {undirected_edge_name}."
         )
 
     if directed_edge_name in G.edge_types:
