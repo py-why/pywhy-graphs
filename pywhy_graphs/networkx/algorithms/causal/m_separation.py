@@ -22,8 +22,12 @@ def m_separated(
     """Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G, which may
     contain directed, bidirected, and undirected edges.
 
-    This implements the m-separation algorithm TESTSEP presented in [1]_, with additional
-    checks to ensure that it works for non-ancestral mixed graphs (e.g. ADMGs).
+    This implements the m-separation algorithm TESTSEP presented in [1]_ for ancestral mixed
+    graphs, which is itself adapted from [2]_. Further checks have ensure that it works
+    for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
+    over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
+    collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
+    has runtime O(|E| + |V|) for number of edges |E| and number of vertices |V|.
 
 
     Parameters
@@ -54,10 +58,8 @@ def m_separated(
        Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
        Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
 
-    .. [2] Spirtes, P. and Richardson, T.S.. (1997). A Polynomial Time Algorithm
-       for Determining DAG Equivalence in the Presence of Latent Variables and Selection
-       Bias. Proceedings of the Sixth International Workshop on Artificial Intelligence and
-       Statistics, in Proceedings of Machine Learning Research
+    .. [2]
+
 
     See Also
     --------
