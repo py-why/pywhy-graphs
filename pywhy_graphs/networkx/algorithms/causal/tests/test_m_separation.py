@@ -1,3 +1,5 @@
+import logging
+
 import networkx as nx
 import pytest
 from networkx.exception import NetworkXError
@@ -6,6 +8,8 @@ import pywhy_graphs.networkx as pywhy_nx
 
 
 def test_m_separation():
+    logging.getLogger().setLevel(logging.DEBUG)
+
     digraph = nx.path_graph(4, create_using=nx.DiGraph)
     digraph.add_edge(2, 4)
     bigraph = nx.Graph([(2, 3)])
@@ -51,7 +55,8 @@ def test_m_separation():
     assert pywhy_nx.m_separated(G, {1}, {3}, set())
     assert not pywhy_nx.m_separated(G, {1}, {3}, {2})
 
-    # check that 1 _|_ 5 in graph 1 - 2 -> 3 <- 4 <-> 5
+    # check that m-sep in graph with all kinds of edges
+    # e.g. 1 _|_ 5 in graph 1 - 2 -> 3 <- 4 <-> 5
     digraph = nx.DiGraph()
     digraph.add_nodes_from([1, 2, 3, 4, 5])
     digraph.add_edge(2, 3)
@@ -66,7 +71,26 @@ def test_m_separation():
 
     assert pywhy_nx.m_separated(G, {1}, {4}, set())
 
-    # check that 1 not _|_ 3 in graph 1 - 2 - 3
+    # e.g. 1 _|_ 5 | 7 in 1 - 2 -> 3 <-> 4 - 5, 3 -> 6, 2 - 7 <-> 5
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from([1, 2, 3, 4, 5, 6, 7])
+    digraph.add_edges_from([(2, 3), (3, 6)])
+    bigraph = nx.Graph([(3, 4), (7, 5)])
+    bigraph.add_nodes_from(digraph)
+    ungraph = nx.Graph([(1, 2), (4, 5), (2, 7)])
+    ungraph.add_nodes_from(digraph)
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, bigraph, ungraph], ["directed", "bidirected", "undirected"]
+    )
+
+    assert pywhy_nx.m_separated(G, {1}, {5}, {7})
+    assert not pywhy_nx.m_separated(G, {1}, {5}, set())
+    assert not pywhy_nx.m_separated(G, {1}, {5}, {6})
+    print(G.edges())
+    assert not pywhy_nx.m_separated(G, {1}, {5}, {6, 7})
+
+    # check m-sep works in undirected graphs:
+    # e.g. that 1 not _|_ 3 in graph 1 - 2 - 3
     ungraph = nx.Graph([(1, 2), (2, 3)])
     G = pywhy_nx.MixedEdgeGraph([ungraph], ["undirected"])
 
@@ -91,3 +115,59 @@ def test_m_separation():
 
     assert pywhy_nx.m_separated(G, {1}, {3}, {2})
     assert pywhy_nx.m_separated(G, {1}, {2}, set())
+
+    # check fig 6 of Zhang 2008
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("A", "C")
+    digraph.add_edge("C", "D")
+    digraph.add_edge("B", "D")
+    bigraph = nx.Graph()
+    bigraph.add_edge("A", "B")
+    G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
+    assert not pywhy_nx.m_separated(G, {"A"}, {"D"}, {"C"})
+    assert pywhy_nx.m_separated(G, {"A"}, {"D"}, {"B", "C"})
+
+    assert pywhy_nx.m_separated(G, {"B"}, {"C"}, {"A"})
+    assert not pywhy_nx.m_separated(G, {"B"}, {"C"}, {"A", "D"})
+    assert not pywhy_nx.m_separated(G, {"B"}, {"C"}, set())
+
+    # check more complicated ADMGs
+
+    # check inducing paths behave correctly
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("B", "C")
+    digraph.add_edge("C", "D")
+    bigraph = nx.Graph()
+    bigraph.add_edge("A", "B")
+    bigraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
+
+    assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, {"B"})
+    assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, set())
+    assert not pywhy_nx.m_separated(G, {"A"}, {"D"}, set())
+
+    # check conditioning on collider of descendant in bidirected graph works
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("B", "D")
+    digraph.add_edge("A", "B")
+    digraph.add_edge("C", "B")
+
+    G = pywhy_nx.MixedEdgeGraph([digraph], ["directed"])
+
+    assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, {"D"})
+    assert pywhy_nx.m_separated(G, {"A"}, {"C"}, set())
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("B", "D")
+    digraph.add_edge("A", "B")
+    bigraph = nx.Graph()
+    bigraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
+
+    assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, {"D"})
+    assert pywhy_nx.m_separated(G, {"A"}, {"C"}, set())
