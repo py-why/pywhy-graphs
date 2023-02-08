@@ -27,7 +27,7 @@ def m_separated(
     for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
     over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
     collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
-    has runtime O(|E| + |V|) for number of edges |E| and number of vertices |V|.
+    has runtime ``O(|E| + |V|)`` for number of edges |E| and number of vertices ``|V|``.
 
 
     Parameters
