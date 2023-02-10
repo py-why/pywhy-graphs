@@ -1,5 +1,7 @@
-from dataclasses import dataclass
-from typing import Iterable, List, Set, Tuple, get_args
+from abc import abstractmethod
+from typing import Dict, Iterable, List, Optional, Set
+
+from networkx.classes.reportviews import NodeView
 
 from pywhy_graphs.typing import Node
 
@@ -10,6 +12,20 @@ from .pag import PAG
 class InterventionMixin:
     known_targets: bool
     graph: dict
+    nodes: NodeView
+
+    @abstractmethod
+    def add_edge(self, u, v, edge_type: Optional[str]):
+        pass
+
+    @abstractmethod
+    def add_node(self, u):
+        pass
+
+    @abstractmethod
+    @property
+    def directed_edge_name(self) -> str:
+        pass
 
     def _verify_fnode_dict(self):
         # verify validity of F nodes
@@ -26,21 +42,22 @@ class InterventionMixin:
         Parameters
         ----------
         intervention_set : Set[Node]
-            A set of regulard nodes that already exist in the causal graph.
+            A set of regular nodes that already exist in the causal graph.
         """
         if isinstance(intervention_set, str) or not isinstance(intervention_set, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
 
         # check that there are no duplicates and perform set conversion
         orig_len = len(intervention_set)
-        intervention_set = frozenset(intervention_set)
+        intervention_set = frozenset(intervention_set)  # type: ignore
         if len(intervention_set) != orig_len:
             raise RuntimeError("The intervention set must be a set of unique nodes.")
 
         # check that the F-node intervention set has variables within the graph
         if intervention_set in self.intervention_sets:
             raise RuntimeError(
-                f"You cannot add an F-node for {intervention_set} because there is already an F-node."
+                f"You cannot add an F-node for {intervention_set} because "
+                f"there is already an F-node."
             )
         for node in intervention_set:
             if self.known_targets and node not in self.nodes:
@@ -94,7 +111,8 @@ class AugmentedGraph(ADMG, InterventionMixin):
 
     An augmented graph is one where interventions are represented by F-nodes.
     See :footcite:`pearl_aspects_1993`, where they were first introduced. They
-    allow one to
+    allow one to model hard and soft interventions as an explicit "F-node" added
+    to the existing causal graph. For more information, see <TBD user guide>.
 
     Parameters
     ----------
@@ -138,8 +156,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
     is just a random index number. Each F-node is mapped to the intervention-set that they
     are applied on. For example in the graph :math:`('F', 0) \righatrrow X \rightarrow Y`,
     ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
-    is a set of regulard nodes in the causal graph. For more information, see
-    <TBD user guide>.
+    is a set of regular nodes in the causal graph.
 
     References
     ----------

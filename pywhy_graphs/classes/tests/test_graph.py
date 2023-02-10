@@ -65,7 +65,7 @@ class InterventionTester:
             G.add_f_node({1})
 
         if self.G.known_targets:
-            with pytest.raises(RuntimeError, match=f"All intervention sets must be nodes already"):
+            with pytest.raises(RuntimeError, match="All intervention sets must be nodes already"):
                 G.add_f_node({"blah"})
 
         # adding F-node for intervention set on multiple variables is
