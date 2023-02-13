@@ -154,7 +154,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
 
     F-nodes are represented in pywhy-graphs as a tuple as ``('F', <index>)``, where ``index``
     is just a random index number. Each F-node is mapped to the intervention-set that they
-    are applied on. For example in the graph :math:`('F', 0) \righatrrow X \rightarrow Y`,
+    are applied on. For example in the graph :math:`('F', 0) \\righatrrow X \\rightarrow Y`,
     ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
     is a set of regular nodes in the causal graph.
 
@@ -251,7 +251,7 @@ class IPAG(PAG, InterventionMixin):
     represent an "augmentation" of the original causal graph to handle
     interventions. Each F-node is mapped to a 2-tuple representing the
     index pair of unknown interventions. Since intervention targets are known,
-    then the 2-tuple contains nodes in the graph. This is called :math:`\sigma`
+    then the 2-tuple contains nodes in the graph. This is called :math:`\\sigma`
     in :footcite:`Jaber2020causal`.
 
     Since F-nodes in an IPAG is defined by its source pair of interventions.
@@ -352,7 +352,7 @@ class PsiPAG(PAG, InterventionMixin):
     interventions. Each F-node is mapped to a 2-tuple representing the
     index pair of unknown interventions. Since intervention targets are unknown,
     then the 2-tuple contains integer indices representing the index of
-    an interventional distribution. This is called :math:`\sigma` in
+    an interventional distribution. This is called :math:`\\sigma` in
     :footcite:`Jaber2020causal`.
 
     References
