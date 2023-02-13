@@ -86,7 +86,6 @@ def test_m_separation():
     assert pywhy_nx.m_separated(G, {1}, {5}, {7})
     assert not pywhy_nx.m_separated(G, {1}, {5}, set())
     assert not pywhy_nx.m_separated(G, {1}, {5}, {6})
-    print(G.edges())
     assert not pywhy_nx.m_separated(G, {1}, {5}, {6, 7})
 
     # check m-sep works in undirected graphs:
@@ -171,3 +170,17 @@ def test_m_separation():
 
     assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, {"D"})
     assert pywhy_nx.m_separated(G, {"A"}, {"C"}, set())
+
+
+def test_anterior():
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("B", "A")
+    ungraph = nx.Graph()
+    ungraph.add_edge("A", "D")
+    ungraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([digraph, ungraph], ["directed", "undirected"])
+
+    result = pywhy_nx.algorithms.m_separation._anterior(G, {"A"})
+
+    assert result == {"A", "B", "C", "D"}

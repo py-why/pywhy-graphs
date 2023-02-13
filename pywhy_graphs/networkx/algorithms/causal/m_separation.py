@@ -27,7 +27,7 @@ def m_separated(
     for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
     over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
     collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
-    has runtime ``O(|E| + |V|)`` for number of edges ``|E|`` and number of vertices ``|V|``.
+    has runtime :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices :math:`|V|`.
 
 
     Parameters
@@ -57,8 +57,6 @@ def m_separated(
     .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
        Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
        Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
-
-    .. [2]
 
 
     See Also
@@ -179,3 +177,110 @@ def m_separated(
                             forward_deque.append(x)
 
     return True
+
+
+def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_name="undirected"):
+    """Breadth-first search on mixed edge graphs with directed and undirected
+    edges
+
+
+
+    """
+
+    queue = deque(start_nodes)
+    visited = set()
+
+    has_undirected = undirected_edge_name in G.edge_types
+    if has_undirected:
+        G_undirected = G.get_graphs(edge_type=undirected_edge_name)
+    has_directed = directed_edge_name in G.edge_types
+    if has_directed:
+        G_directed = G.get_graphs(edge_type=directed_edge_name)
+
+    while queue:
+        m = queue.popleft()
+        if has_directed:
+            for x, _ in G_directed.in_edges(nbunch=m):
+                if x not in visited:
+                    queue.append(x)
+                    visited.add(x)
+        if has_undirected:
+            for x in G_undirected.neighbors(m):
+                if x not in visited:
+                    queue.append(x)
+                    visited.add(x)
+
+    return visited
+
+
+def minimal_m_separator(
+    G,
+    x,
+    y,
+    i,
+    r,
+    directed_edge_name="directed",
+    bidirected_edge_name="bidirected",
+    undirected_edge_name="undirected",
+):
+    """Find a minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G, which may
+    contain directed, bidirected, and undirected edges.
+
+    This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed
+    graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
+    number of vertices :math:`|V|`.
+
+    Parameters
+    ----------
+    G : mixed-edge-graph
+        Mixed edge causal graph.
+    x : node
+        Node in ``G``.
+    y : node
+        Node in ``G``.
+    i : set
+        Set of nodes which are always included in the found separating set.
+    r : set
+        Largest set of nodes which may be included in the found separating set.
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    bidirected_edge_name : str
+        Name of the bidirected edge, default is bidirected.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
+
+    Returns
+    -------
+    z : set
+        A set of nodes which m-separates ``x`` and ``y``, valid if ``set_exists`` is True.
+    set_exists : bool
+        Indicates if an m-separating set exists.
+
+    References
+    ----------
+    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
+       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
+       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
+    """
+
+    G_p = _anterior(G, x.union(y).union(i))
+    aug_G_p = nx.mixed_edge_moral_graph(
+        G,
+        directed_edge_name=directed_edge_name,
+        bidirected_edge_name=bidirected_edge_name,
+        undirected_edge_name=undirected_edge_name,
+    )
+    for node in i:
+        aug_G_p.remove_node(node)
+
+    z_prime = r.intersection(
+        _anterior(G, x.union(y), directed_edge_name, undirected_edge_name)
+    ) - x.union(y)
+
+    z_dprime = nx.algorithms.d_separated._bfs_with_marks(aug_G_a, x, z_prime)
+    z = nx.algorithms.d_separated._bfs_with_marks(aug_G_a, y, z_dprime)
+
+    if not m_separated(G, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name):
+        return False
+
+    return z
