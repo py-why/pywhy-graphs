@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Iterable, List, Optional, Set
+from typing import Iterable, List, Optional, Set
 
 from networkx.classes.reportviews import NodeView
 
@@ -22,8 +22,8 @@ class InterventionMixin:
     def add_node(self, u):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def directed_edge_name(self) -> str:
         pass
 
