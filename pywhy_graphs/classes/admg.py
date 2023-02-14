@@ -42,15 +42,32 @@ class ADMG(pywhy_nx.MixedEdgeGraph, AncestralMixin):
 
     Notes
     -----
+    **Edge Type Subgraphs**
+
     The data structure underneath the hood is stored in two networkx graphs:
     ``networkx.Graph`` and ``networkx.DiGraph`` to represent the non-directed
     edges and directed edges. Non-directed edges in an ADMG can be present as
     bidirected edges standing for latent confounders, or undirected edges
     standing for selection bias.
 
-    - Normal directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
+    - Directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
+        The subgraph of directed edges may be accessed by the
+        :meth:`sub_directed_graph`. Their edges in networkx format can be
+        accessed by :attr:`directed_edges` and the corresponding name of the
+        edge type by :attr:`directed_edge_name`.
     - Bidirected edges (<->, indicating latent confounder) = `networkx.Graph`
+        The subgraph of bidirected edges may be accessed by the
+        :meth:`sub_bidirected_graph`. Their edges in networkx format can be
+        accessed by :attr:`bidirected_edges` and the corresponding name of the
+        edge type by :attr:`bidirected_edge_name`.
     - Undirected edges (--, indicating selection bias) = `networkx.Graph`
+        The subgraph of undirected edges may be accessed by the
+        :meth:`sub_undirected_graph`. Their edges in networkx format can be
+        accessed by :attr:`undirected_edges` and the corresponding name of the
+        edge type by :attr:`undirected_edge_name`.
+
+    By definition, no cycles may exist due to the directed edges. However, beyond
+    that multiple types of edges between the same pairs of nodes are possible.
     """
 
     def __init__(

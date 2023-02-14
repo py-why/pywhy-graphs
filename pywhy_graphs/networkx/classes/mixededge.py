@@ -1032,6 +1032,7 @@ class MixedEdgeGraph:
     def subgraph(self, nodes):
         """Returns a SubGraph view of the subgraph induced on ``nodes``.
 
+        TODO: this does not work as expected with subclasses
         The induced subgraph of the graph contains the nodes in ``nodes``
         and the edges between those nodes.
 
@@ -1049,7 +1050,7 @@ class MixedEdgeGraph:
 
         # initialize list of empty internal graphs
         graph_classes = [self._internal_graph_nx_type(edge_type)() for edge_type in self.edge_types]
-        graph = self.__class__(graph_classes, edge_types=self.edge_types)
+        graph = self.__class__(graphs=graph_classes, edge_types=self.edge_types)
         graph.add_nodes_from(induced_nodes)
 
         # now add the edges for each edge type

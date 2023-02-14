@@ -50,9 +50,71 @@ class PAG(ADMG, ConservativeMixin):
     -----
     PAGs are Markov equivalence class of causal ADMGs. The implicit assumption in
     these causal graphs are the Structural Causal Model (or SCM) is Semi-Markovian, such
-    that latent confounders may be present. This allows PAGs
-    to be learned from constraint-based
-    (such as the FCI algorithm) approaches for causal structure learning.
+    that latent confounders may be present. This allows PAGs to be learned from
+    constraint-based (such as the FCI algorithm) approaches for causal structure learning.
+
+    **Edge Type Subgraphs**
+
+    The data structure underneath the hood is stored in two types of networkx graphs:
+    ``networkx.Graph`` and ``networkx.DiGraph``.
+
+    - Directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
+        The subgraph of directed edges may be accessed by the
+        :meth:`sub_directed_graph`. Their edges in networkx format can be
+        accessed by :attr:`directed_edges` and the corresponding name of the
+        edge type by :attr:`directed_edge_name`.
+    - Bidirected edges (<->, indicating latent confounder) = `networkx.Graph`
+        The subgraph of bidirected edges may be accessed by the
+        :meth:`sub_bidirected_graph`. Their edges in networkx format can be
+        accessed by :attr:`bidirected_edges` and the corresponding name of the
+        edge type by :attr:`bidirected_edge_name`.
+    - Undirected edges (--, indicating selection bias) = `networkx.Graph`
+        The subgraph of undirected edges may be accessed by the
+        :meth:`sub_undirected_graph`. Their edges in networkx format can be
+        accessed by :attr:`undirected_edges` and the corresponding name of the
+        edge type by :attr:`undirected_edge_name`.
+    - Circle edges (*-o, o-*, indicating uncertainty) = `networkx.DiGraph`
+        The subgraph of undirected edges may be accessed by the
+        :meth:`sub_circle_graph`. Their edges in networkx format can be
+        accessed by :attr:`circle_edges` and the corresponding name of the
+        edge type by :attr:`circle_edge_name`.
+
+    **How different edges are represented in the PAG**
+
+    Compared to an :class:`pywhy_graphs.ADMG` and :class:`pywhy_graphs.CPDAG` and a
+    :class:`nx.DiGraph`, a PAG is more complex in that it generalizes endpoints an edge can
+    take, exponentially increasing the number of possible edges that can occur between two
+    nodes. The main complication arises in edges with circle endpoints. Rather than store all
+    possible edges as separate networkx graphs, we have a set of rules that map a combination
+    of the above edge-type subgraphs to a certain edge.
+
+    Bidirected and undirected edges are represented by one networkx graph (`nx.Graph`). They are
+    simple in that they do not require pairing with another edge-type subgraph.
+
+    - ``x <-> y``: is a bidirected edge present? (Note by definition of a PAG no other edge
+        can be present between x and y)
+    - ``x - y``: is an undirected present? (Note no other edge should be present in any
+        other direction, so an undirected edge is similar to a bidirected edge in that it
+        represents only one kind of edge)
+
+    Edges with arrowheads, tails and circular endpoints are represented by another networkx
+    graph (`nx.DiGraph`). They complicate matters because the :meth:`sub_directed_graph` and
+    :meth:`sub_circle_graph` can be combined in different ways to result in different edges
+    between x and y.
+
+    Without loss of generality, we will be dealing with the ordered tuple (x, y). If you want
+    the other direction of the edge, you can just flip the order of x and y. For example,
+    ``x <- y`` would just be ``y -> x``, so we will only discuss the ``->`` edge. The following
+    rules dictate what sort of edge we are dealing with:
+
+    - ``x o-o y``: is circle edge present in both directions? There are **only** edges present
+        in the :meth:`sub_circle_graph` between x and y.
+    - ``x o-> y``: is circle edge one way and directed edge another way? There is an edge from
+        the :meth:`sub_circle_graph` and the :meth:`sub_directed_graph` between x and y in opposite
+        directions.
+    - ``x o- y``: is there only one circle edge? In this special case, we do not use the
+        :meth:`sub_undirected_graph` to represent the tail endpoint at y. There is **only**
+        one edge in the :meth:`sub_circle_graph` between x and y.
     """
 
     def __init__(
