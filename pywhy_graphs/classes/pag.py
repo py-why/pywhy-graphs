@@ -82,13 +82,13 @@ class PAG(ADMG, ConservativeMixin):
     **How different edges are represented in the PAG**
 
     Compared to an :class:`pywhy_graphs.ADMG` and :class:`pywhy_graphs.CPDAG` and a
-    :class:`nx.DiGraph`, a PAG is more complex in that it generalizes endpoints an edge can
+    :class:`networkx.DiGraph`, a PAG is more complex in that it generalizes endpoints an edge can
     take, exponentially increasing the number of possible edges that can occur between two
     nodes. The main complication arises in edges with circle endpoints. Rather than store all
     possible edges as separate networkx graphs, we have a set of rules that map a combination
     of the above edge-type subgraphs to a certain edge.
 
-    Bidirected and undirected edges are represented by one networkx graph (`nx.Graph`). They are
+    Bidirected and undirected edges are represented by one networkx graph (`networkx.Graph`). They are
     simple in that they do not require pairing with another edge-type subgraph.
 
     - ``x <-> y``: is a bidirected edge present? (Note by definition of a PAG no other edge
@@ -98,7 +98,7 @@ class PAG(ADMG, ConservativeMixin):
         represents only one kind of edge)
 
     Edges with arrowheads, tails and circular endpoints are represented by another networkx
-    graph (`nx.DiGraph`). They complicate matters because the :meth:`sub_directed_graph` and
+    graph (`networkx.DiGraph`). They complicate matters because the :meth:`sub_directed_graph` and
     :meth:`sub_circle_graph` can be combined in different ways to result in different edges
     between x and y.
 
@@ -154,6 +154,7 @@ class PAG(ADMG, ConservativeMixin):
 
     @property
     def circle_edge_name(self) -> str:
+        """Name of the circle edge subgraph."""
         return self._circle_name
 
     @property
