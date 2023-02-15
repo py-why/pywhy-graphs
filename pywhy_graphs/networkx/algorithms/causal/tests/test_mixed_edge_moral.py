@@ -1,5 +1,4 @@
 import networkx as nx
-import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
 

@@ -27,7 +27,8 @@ def m_separated(
     for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
     over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
     collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
-    has runtime :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices :math:`|V|`.
+    has runtime :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices
+    :math:`|V|`.
 
 
     Parameters
@@ -186,7 +187,8 @@ def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_nam
     and undirected edges.
 
     All directed paths are ancestral and anterior. A path is also anterior if undirected edges
-    could be replaced by directed edges to form a directed path.
+    could be replaced by directed edges to form a directed path. By definition, the anterior
+    set includes the start nodes.
 
     Parameters
     ----------
@@ -202,9 +204,7 @@ def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_nam
     Returns
     -------
     visited : set
-        A set of nodes which m-separates ``x`` and ``y``, valid if ``set_exists`` is True.
-    set_exists : bool
-        Indicates if an m-separating set exists.
+        The anterior set of nodes
 
     References
     ----------
@@ -239,7 +239,7 @@ def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_nam
                     queue.append(x)
                     visited.add(x)
 
-    return visited
+    return visited.union(start_nodes)
 
 
 def is_minimal_m_separator(
@@ -265,8 +265,8 @@ def minimal_m_separator(
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
-    """Find a minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G, which may
-    contain directed, bidirected, and undirected edges.
+    """Find a minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G,
+    which may contain directed, bidirected, and undirected edges.
 
     This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed
     graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
@@ -311,11 +311,14 @@ def minimal_m_separator(
     if r is None:
         r = set(G.nodes())
 
+    G_copy = G.copy()
+
     nodeset = {x, y}.union(i)
 
-    G_p = _anterior(G, nodeset)
+    anterior_nodes_G = _anterior(G_copy, nodeset)
+    G_copy.remove_nodes_from(set(G.nodes()) - anterior_nodes_G)
     aug_G_p = pywhy_nx.mixed_edge_moral_graph(
-        G,
+        G_copy,
         directed_edge_name=directed_edge_name,
         bidirected_edge_name=bidirected_edge_name,
         undirected_edge_name=undirected_edge_name,

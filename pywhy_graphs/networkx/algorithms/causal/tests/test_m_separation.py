@@ -214,7 +214,14 @@ def test_minimal_m_separator():
     G = pywhy_nx.MixedEdgeGraph([bigraph], ["bidirected"])
 
     result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == set()
 
+    digraph = nx.DiGraph()
+    digraph.add_edge("A", "B")
+    digraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([digraph], ["directed"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
     assert result == set()
 
     # Assert adjacent nodes are not m-separated by any set
@@ -242,3 +249,29 @@ def test_minimal_m_separator():
     result = pywhy_nx.minimal_m_separator(G, "A", "C")
 
     assert result == {"E", "B"}
+
+    # Test a version of Fig. 5 in Van der Zander, 2019
+    nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(nodes)
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(nodes)
+    bigraph = nx.Graph()
+    bigraph.add_nodes_from(nodes)
+
+    digraph.add_edge("V_1", "X")
+    digraph.add_edge("Z_1", "X")
+    digraph.add_edge("X", "V_2")
+    digraph.add_edge("Y", "V_2")
+    bigraph.add_edge("Z_2", "Y")
+    bigraph.add_edge("Z_2", "Y")
+    ungraph.add_edge("Z_2", "Z_1")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    result = pywhy_nx.minimal_m_separator(G, "X", "Y")
+
+    assert result == {"Z_1"} or result == {"Z_2"}
