@@ -184,3 +184,61 @@ def test_anterior():
     result = pywhy_nx.algorithms.m_separation._anterior(G, {"A"})
 
     assert result == {"A", "B", "C", "D"}
+
+
+def test_minimal_m_separator():
+    # Test fork graph
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C"])
+    digraph.add_edge("B", "A")
+    digraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([digraph], ["directed"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == {"B"}
+
+    # Test undirected chain
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(["A", "B", "C"])
+    ungraph.add_edge("B", "A")
+    ungraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([ungraph], ["undirected"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == {"B"}
+
+    # Test collider is separated by empty set
+    bigraph = nx.Graph()
+    bigraph.add_edge("A", "B")
+    bigraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([bigraph], ["bidirected"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+
+    assert result == set()
+
+    # Assert adjacent nodes are not m-separated by any set
+    ungraph = nx.Graph()
+    ungraph.add_edge("A", "B")
+    G = pywhy_nx.MixedEdgeGraph([ungraph], ["undirected"])
+    result = pywhy_nx.minimal_m_separator(G, "A", "B")
+    assert result is None
+
+    # Assert that mixed edge paths are handled correctly
+    ungraph = nx.Graph()
+    bigraph = nx.Graph()
+    digraph = nx.DiGraph()
+    ungraph.add_edge("A", "B")
+    digraph.add_edge("B", "C")
+    bigraph.add_edge("A", "D")
+    digraph.add_edge("C", "D")
+    digraph.add_edge("A", "E")
+    ungraph.add_edge("E", "C")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+
+    assert result == {"E", "B"}

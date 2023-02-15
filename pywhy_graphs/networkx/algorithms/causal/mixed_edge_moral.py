@@ -1,4 +1,5 @@
 import itertools
+
 import networkx as nx
 
 __all__ = ["mixed_edge_moral_graph"]

@@ -5,7 +5,7 @@ import networkx as nx
 
 import pywhy_graphs.networkx as pywhy_nx
 
-__all__ = ["m_separated"]
+__all__ = ["m_separated", "minimal_m_separator"]
 
 logger = logging.getLogger(__name__)
 
@@ -180,8 +180,37 @@ def m_separated(
 
 
 def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_name="undirected"):
-    """Breadth-first search on mixed edge graphs with directed and undirected
-    edges
+    """Computes the anterior of a set of nodes in a graph with directed and undirected edges.
+
+    This algorithm works through breadth-first search on mixed edge graphs with directed
+    and undirected edges.
+
+    All directed paths are ancestral and anterior. A path is also anterior if undirected edges
+    could be replaced by directed edges to form a directed path.
+
+    Parameters
+    ----------
+    G : mixed-edge-graph
+        Mixed edge causal graph.
+    start_nodes : set
+        Set of nodes which are always included in the found separating set.
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
+
+    Returns
+    -------
+    visited : set
+        A set of nodes which m-separates ``x`` and ``y``, valid if ``set_exists`` is True.
+    set_exists : bool
+        Indicates if an m-separating set exists.
+
+    References
+    ----------
+    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
+       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
+       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
 
 
 
@@ -213,12 +242,25 @@ def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_nam
     return visited
 
 
+def is_minimal_m_separator(
+    G,
+    x,
+    y,
+    z,
+    i,
+    directed_edge_name="directed",
+    bidirected_edge_name="bidirected",
+    undirected_edge_name="undirected",
+):
+    pass
+
+
 def minimal_m_separator(
     G,
     x,
     y,
-    i,
-    r,
+    i=None,
+    r=None,
     directed_edge_name="directed",
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
@@ -239,9 +281,11 @@ def minimal_m_separator(
     y : node
         Node in ``G``.
     i : set
-        Set of nodes which are always included in the found separating set.
+        Set of nodes which are always included in the found separating set,
+        default is None, which is later set to empty set.
     r : set
-        Largest set of nodes which may be included in the found separating set.
+        Largest set of nodes which may be included in the found separating set,
+        default is None, which is later set to all vertices in ``G``.
     directed_edge_name : str
         Name of the directed edge, default is directed.
     bidirected_edge_name : str
@@ -251,10 +295,9 @@ def minimal_m_separator(
 
     Returns
     -------
-    z : set
-        A set of nodes which m-separates ``x`` and ``y``, valid if ``set_exists`` is True.
-    set_exists : bool
-        Indicates if an m-separating set exists.
+    z : set | None
+        If a separating set exists, returns a set of nodes which m-separates ``x``
+        and ``y``, otherwise returns None.
 
     References
     ----------
@@ -263,8 +306,15 @@ def minimal_m_separator(
        Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
     """
 
-    G_p = _anterior(G, x.union(y).union(i))
-    aug_G_p = nx.mixed_edge_moral_graph(
+    if i is None:
+        i = set()
+    if r is None:
+        r = set(G.nodes())
+
+    nodeset = {x, y}.union(i)
+
+    G_p = _anterior(G, nodeset)
+    aug_G_p = pywhy_nx.mixed_edge_moral_graph(
         G,
         directed_edge_name=directed_edge_name,
         bidirected_edge_name=bidirected_edge_name,
@@ -273,14 +323,58 @@ def minimal_m_separator(
     for node in i:
         aug_G_p.remove_node(node)
 
-    z_prime = r.intersection(
-        _anterior(G, x.union(y), directed_edge_name, undirected_edge_name)
-    ) - x.union(y)
+    z_prime = r.intersection(_anterior(G, {x, y}, directed_edge_name, undirected_edge_name)) - {
+        x,
+        y,
+    }
 
-    z_dprime = nx.algorithms.d_separated._bfs_with_marks(aug_G_a, x, z_prime)
-    z = nx.algorithms.d_separated._bfs_with_marks(aug_G_a, y, z_dprime)
+    z_dprime = _bfs_with_marks(aug_G_p, x, z_prime)
+    z = _bfs_with_marks(aug_G_p, y, z_dprime)
 
-    if not m_separated(G, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name):
-        return False
+    if not m_separated(G, x, y, z, bidirected_edge_name, directed_edge_name, undirected_edge_name):
+        return None
 
     return z
+
+
+def _bfs_with_marks(G, start_node, check_set):
+    """Breadth-first-search with markings.
+    Performs BFS starting from ``start_node`` and whenever a node
+    inside ``check_set`` is met, it is "marked". Once a node is marked,
+    BFS does not continue along that path. The resulting marked nodes
+    are returned.
+
+    Parameters
+    ----------
+    G : nx.Graph
+        An undirected graph.
+    start_node : node
+        The start of the BFS.
+    check_set : set
+        The set of nodes to check against.
+
+    Returns
+    -------
+    marked : set
+        A set of nodes that were marked.
+    """
+    visited = dict()
+    marked = set()
+    queue = []
+
+    visited[start_node] = None
+    queue.append(start_node)
+    while queue:
+        m = queue.pop(0)
+
+        for nbr in G.neighbors(m):
+            if nbr not in visited:
+                # memoize where we visited so far
+                visited[nbr] = None
+
+                # mark the node in Z' and do not continue along that path
+                if nbr in check_set:
+                    marked.add(nbr)
+                else:
+                    queue.append(nbr)
+    return marked
