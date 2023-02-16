@@ -142,15 +142,12 @@ class AugmentedGraph(ADMG, InterventionMixin):
 
     Notes
     -----
-    The data structure underneath the hood is stored in two networkx graphs:
-    ``networkx.Graph`` and ``networkx.DiGraph`` to represent the non-directed
-    edges and directed edges. Non-directed edges in an ADMG can be present as
-    bidirected edges standing for latent confounders, or undirected edges
-    standing for selection bias.
+    **Edge Type Subgraphs**
 
-    - Normal directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
-    - Bidirected edges (<->, indicating latent confounder) = `networkx.Graph`
-    - Undirected edges (--, indicating selection bias) = `networkx.Graph`
+    Different edge types in an I-PAG are represented exactly as they are in a
+    :class:`pywhy_graphs.PAG`.
+
+    **F-nodes**
 
     F-nodes are represented in pywhy-graphs as a tuple as ``('F', <index>)``, where ``index``
     is just a random index number. Each F-node is mapped to the intervention-set that they
@@ -244,6 +241,7 @@ class IPAG(PAG, InterventionMixin):
     See Also
     --------
     PsiPAG
+    PAG
 
     Notes
     -----
@@ -255,6 +253,19 @@ class IPAG(PAG, InterventionMixin):
     in :footcite:`Jaber2020causal`.
 
     Since F-nodes in an IPAG is defined by its source pair of interventions.
+
+    **Edge Type Subgraphs**
+
+    Different edge types in an I-PAG are represented exactly as they are in a
+    :class:`pywhy_graphs.PAG`.
+
+    **F-nodes**
+
+    F-nodes are represented in pywhy-graphs as a tuple as ``('F', <index>)``, where ``index``
+    is just a random index number. Each F-node is mapped to the intervention-set that they
+    are applied on. For example in the graph :math:`('F', 0) \\righatrrow X \\rightarrow Y`,
+    ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
+    is a set of regular nodes in the causal graph.
 
     References
     ----------
@@ -354,6 +365,19 @@ class PsiPAG(PAG, InterventionMixin):
     then the 2-tuple contains integer indices representing the index of
     an interventional distribution. This is called :math:`\\sigma` in
     :footcite:`Jaber2020causal`.
+
+    **Edge Type Subgraphs**
+
+    Different edge types in an I-PAG are represented exactly as they are in a
+    :class:`pywhy_graphs.PAG`.
+
+    **F-nodes**
+
+    F-nodes are represented in pywhy-graphs as a tuple as ``('F', <index>)``, where ``index``
+    is just a random index number. Each F-node is mapped to the intervention-set that they
+    are applied on. For example in the graph :math:`('F', 0) \\righatrrow X \\rightarrow Y`,
+    ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
+    is a set of regular nodes in the causal graph.
 
     References
     ----------
