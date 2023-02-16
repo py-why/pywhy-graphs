@@ -255,7 +255,8 @@ def is_minimal_m_separator(
 ):
     """Check if a set 'z' is a i-minimal m-separator between 'x' and 'y' in mixed-edge causal
     graph G. The function will first check if 'z' is a m-separator, and then check if it
-    is minimal.
+    is minimal. An i-minimal m-separating set is a minimal m-separator that contains i.
+
 
     This implements the algorithm TESTSEP presented in [1]_ for ancestral mixed graphs, but has
     been tested to work with non-ancestral graphs.
@@ -322,19 +323,15 @@ def is_minimal_m_separator(
     for node in i:
         aug_G_p.remove_node(node)
 
-    r_x = _bfs_with_marks(aug_G_p, x, z)
-    if r_x is None:
-        r_x = z - i
+    r_x = _bfs_with_marks(aug_G_p, x, z, False)
 
     # Note: we check z - i != r_x instead of z != r_x since
     # all nodes in i are removed from graph and so x will never have a path
     # to i. Appears to be bug in the original algorithm.
     if z - i != r_x:
         return False
-    r_y = _bfs_with_marks(aug_G_p, y, z)
+    r_y = _bfs_with_marks(aug_G_p, y, z, False)
 
-    if r_y is None:
-        r_y = z - i
     # Note: we check z - i != r_y for similar reasons as above.
     if z - i != r_y:
         return False
@@ -352,8 +349,9 @@ def minimal_m_separator(
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
-    """Find a minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G,
-    which may contain directed, bidirected, and undirected edges.
+    """Find a i-minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G,
+    which may contain directed, bidirected, and undirected edges. An i-minimal m-separating set
+    is a minimal m-separator that contains i.
 
     This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed
     graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
@@ -414,6 +412,8 @@ def minimal_m_separator(
     )
     for node in i:
         aug_G_p.remove_node(node)
+    for node in i:
+        G_p.remove_node(node)
 
     z_prime = r.intersection(
         _anterior(G_copy, {x, y}, directed_edge_name, undirected_edge_name)
@@ -421,21 +421,13 @@ def minimal_m_separator(
         x,
         y,
     }
-    print("z_prime", z_prime)
 
     z_dprime = _bfs_with_marks(aug_G_p, x, z_prime, False)
-    # if z_dprime is None:
-    #    z_dprime = z_prime
-    print("z_dprime", z_dprime)
     z = _bfs_with_marks(aug_G_p, y, z_dprime, False)
-    # if z is None:
-    #    z = z_dprime
-    print("z", z)
 
     if not m_separated(
         G_p, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name
     ):
-        print(f"not m-separated: {x} _|_ {y} | {z}")
         return None
 
     return z.union(i)
@@ -443,7 +435,7 @@ def minimal_m_separator(
 
 # XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can
 # depend on that implementation
-def _bfs_with_marks(G, start_node, check_set, check_bfs_fail=True):
+def _bfs_with_marks(G, start_node, check_set):
     """Breadth-first-search with markings.
     Performs BFS starting from ``start_node`` and whenever a node
     inside ``check_set`` is met, it is "marked". Once a node is marked,
@@ -485,7 +477,4 @@ def _bfs_with_marks(G, start_node, check_set, check_bfs_fail=True):
                 else:
                     queue.append(nbr)
 
-    if check_bfs_fail:
-        if not marked:
-            return None
     return marked

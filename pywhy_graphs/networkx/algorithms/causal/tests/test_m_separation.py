@@ -220,9 +220,8 @@ def test_is_minimal_m_separator(fig5_vanderzander):
     assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", set())
     assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1"})
     with pytest.raises(AssertionError):
-        assert not pywhy_nx.is_minimal_m_separator(
-            fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_1", "Z_2"}
-        )
+        pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_1", "Z_2"})
+        pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"X_1"}, i={"V_1"})
     assert pywhy_nx.is_minimal_m_separator(
         fig5_vanderzander, "X", "Y", {"Z_1", "Z_2"}, i={"Z_1", "Z_2"}
     )
@@ -230,9 +229,10 @@ def test_is_minimal_m_separator(fig5_vanderzander):
 
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_2"})
 
-    print("final")
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1", "Z_2"}, i={"V_1"})
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1", "Z_1"}, i={"V_1"})
+
+    assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1"}, i={"V_1"})
 
 
 def test_minimal_m_separator(fig5_vanderzander):
@@ -304,8 +304,7 @@ def test_minimal_m_separator(fig5_vanderzander):
     result = pywhy_nx.minimal_m_separator(G, "X", "Y")
     assert result == {"Z_1"} or result == {"Z_2"}
 
-    assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1", "Z_2"}) is None
+    assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1", "Z_2"}) == {"Z_1", "Z_2"}
 
-    print("Failing test - possible bug with algorithm?")
     assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1"}) == {"Z_1"}
     assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_2"}) == {"Z_2"}
