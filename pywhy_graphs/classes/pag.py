@@ -88,8 +88,8 @@ class PAG(ADMG, ConservativeMixin):
     possible edges as separate networkx graphs, we have a set of rules that map a combination
     of the above edge-type subgraphs to a certain edge.
 
-    Bidirected and undirected edges are represented by one networkx graph (`networkx.Graph`). They are
-    simple in that they do not require pairing with another edge-type subgraph.
+    Bidirected and undirected edges are represented by one networkx graph (`networkx.Graph`).
+    They are simple in that they do not require pairing with another edge-type subgraph.
 
     - ``x <-> y``: is a bidirected edge present? (Note by definition of a PAG no other edge
         can be present between x and y)
