@@ -340,6 +340,7 @@ def minimal_m_separator(
     return z
 
 
+# XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can depend on that implementation
 def _bfs_with_marks(G, start_node, check_set):
     """Breadth-first-search with markings.
     Performs BFS starting from ``start_node`` and whenever a node
