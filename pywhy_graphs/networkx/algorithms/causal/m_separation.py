@@ -5,7 +5,7 @@ import networkx as nx
 
 import pywhy_graphs.networkx as pywhy_nx
 
-__all__ = ["m_separated", "minimal_m_separator"]
+__all__ = ["m_separated", "minimal_m_separator", "is_minimal_m_separator"]
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +15,8 @@ def m_separated(
     x,
     y,
     z,
-    bidirected_edge_name="bidirected",
     directed_edge_name="directed",
+    bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
     """Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G, which may
@@ -247,12 +247,99 @@ def is_minimal_m_separator(
     x,
     y,
     z,
-    i,
+    i=None,
+    r=None,
     directed_edge_name="directed",
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
-    pass
+    """Check if a set 'z' is a i-minimal m-separator between 'x' and 'y' in mixed-edge causal
+    graph G. The function will first check if 'z' is a m-separator, and then check if it
+    is minimal.
+
+    This implements the algorithm TESTSEP presented in [1]_ for ancestral mixed graphs, but has
+    been tested to work with non-ancestral graphs.
+
+    Parameters
+    ----------
+    G : mixed-edge-graph
+        Mixed edge causal graph.
+    x : node
+        Node in ``G``.
+    y : node
+        Node in ``G``.
+    z : set
+        Set of nodes in ``G`` representing the candidate minimal m-separator of ``x`` and ``y``.
+    i : set
+        Set of nodes which are always included in the found separating set,
+        default is None, which is later set to empty set.
+    r : set
+        Largest set of nodes which may be included in the found separating set,
+        default is None, which is later set to all vertices in ``G``.
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    bidirected_edge_name : str
+        Name of the bidirected edge, default is bidirected.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
+
+    Returns
+    -------
+    is_minimal_m_sep : bool
+        If the set ``z`` is a minimal m-separator, returns True, else returns False.
+
+    References
+    ----------
+    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
+       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
+       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
+
+    """
+    if i is None:
+        i = set()
+    if r is None:
+        r = set(G.nodes())
+    assert i <= z, f"Minimal set {i} should be no larger than proposed separating set {z}"
+    assert z <= r, f"Separating set {z} should be no larger than maximum set {r}"
+
+    if z - _anterior(G, {x, y}.union(i)) != set() or not z <= r:
+        return False
+    if not m_separated(G, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name):
+        return False
+
+    G_copy = G.copy()
+
+    nodeset = {x, y}.union(i)
+
+    anterior_nodes_G = _anterior(G_copy, nodeset)
+    G_copy.remove_nodes_from(set(G.nodes()) - anterior_nodes_G)
+    aug_G_p = pywhy_nx.mixed_edge_moral_graph(
+        G_copy,
+        directed_edge_name=directed_edge_name,
+        bidirected_edge_name=bidirected_edge_name,
+        undirected_edge_name=undirected_edge_name,
+    )
+    for node in i:
+        aug_G_p.remove_node(node)
+
+    r_x = _bfs_with_marks(aug_G_p, x, z)
+    if r_x is None:
+        r_x = z - i
+
+    # Note: we check z - i != r_x instead of z != r_x since
+    # all nodes in i are removed from graph and so x will never have a path
+    # to i. Appears to be bug in the original algorithm.
+    if z - i != r_x:
+        return False
+    r_y = _bfs_with_marks(aug_G_p, y, z)
+
+    if r_y is None:
+        r_y = z - i
+    # Note: we check z - i != r_y for similar reasons as above.
+    if z - i != r_y:
+        return False
+
+    return True
 
 
 def minimal_m_separator(
@@ -310,13 +397,15 @@ def minimal_m_separator(
         i = set()
     if r is None:
         r = set(G.nodes())
+    assert i <= r, f"Minimal set {i} should be no larger than maximal set {r}"
 
     G_copy = G.copy()
 
     nodeset = {x, y}.union(i)
 
     anterior_nodes_G = _anterior(G_copy, nodeset)
-    G_copy.remove_nodes_from(set(G.nodes()) - anterior_nodes_G)
+    G_copy.remove_nodes_from(set(G_copy.nodes()) - anterior_nodes_G)
+    G_p = G_copy.copy()
     aug_G_p = pywhy_nx.mixed_edge_moral_graph(
         G_copy,
         directed_edge_name=directed_edge_name,
@@ -326,22 +415,35 @@ def minimal_m_separator(
     for node in i:
         aug_G_p.remove_node(node)
 
-    z_prime = r.intersection(_anterior(G, {x, y}, directed_edge_name, undirected_edge_name)) - {
+    z_prime = r.intersection(
+        _anterior(G_copy, {x, y}, directed_edge_name, undirected_edge_name)
+    ) - {
         x,
         y,
     }
+    print("z_prime", z_prime)
 
-    z_dprime = _bfs_with_marks(aug_G_p, x, z_prime)
-    z = _bfs_with_marks(aug_G_p, y, z_dprime)
+    z_dprime = _bfs_with_marks(aug_G_p, x, z_prime, False)
+    # if z_dprime is None:
+    #    z_dprime = z_prime
+    print("z_dprime", z_dprime)
+    z = _bfs_with_marks(aug_G_p, y, z_dprime, False)
+    # if z is None:
+    #    z = z_dprime
+    print("z", z)
 
-    if not m_separated(G, x, y, z, bidirected_edge_name, directed_edge_name, undirected_edge_name):
+    if not m_separated(
+        G_p, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name
+    ):
+        print(f"not m-separated: {x} _|_ {y} | {z}")
         return None
 
-    return z
+    return z.union(i)
 
 
-# XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can depend on that implementation
-def _bfs_with_marks(G, start_node, check_set):
+# XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can
+# depend on that implementation
+def _bfs_with_marks(G, start_node, check_set, check_bfs_fail=True):
     """Breadth-first-search with markings.
     Performs BFS starting from ``start_node`` and whenever a node
     inside ``check_set`` is met, it is "marked". Once a node is marked,
@@ -359,8 +461,9 @@ def _bfs_with_marks(G, start_node, check_set):
 
     Returns
     -------
-    marked : set
-        A set of nodes that were marked.
+    marked : set | None
+        A set of nodes that were marked, or None if BFS failed to find
+        any paths from ``start_node`` to ``check_set``
     """
     visited = dict()
     marked = set()
@@ -381,4 +484,8 @@ def _bfs_with_marks(G, start_node, check_set):
                     marked.add(nbr)
                 else:
                     queue.append(nbr)
+
+    if check_bfs_fail:
+        if not marked:
+            return None
     return marked

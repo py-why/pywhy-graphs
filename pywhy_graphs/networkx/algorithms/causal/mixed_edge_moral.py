@@ -64,9 +64,9 @@ def mixed_edge_moral_graph(
 
         for u, v in itertools.combinations(component, 2):
             G_a.add_edge(u, v)
-        all_parents = [parent for node in component for parent in G_directed.predecessors(node)]
+        all_parents = {parent for node in component for parent in G_directed.predecessors(node)}
         for node in component:
-            for parent in all_parents:
+            for parent in all_parents - {node}:
                 G_a.add_edge(node, parent)
 
     return G_a
