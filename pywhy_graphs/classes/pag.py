@@ -149,7 +149,7 @@ class PAG(ADMG, ConservativeMixin):
         """Return an iterator over children of node n.
 
         Possible children of 'n' are nodes with an edge like
-        'n' o-> 'x'. Nodes with 'n' <-* 'x'
+        ``'n' o-> 'x'``. Nodes with ``'n' <-* 'x'``
         are not considered possible children.
 
         Parameters
@@ -174,7 +174,7 @@ class PAG(ADMG, ConservativeMixin):
         """Return an iterator over possible parents of node n.
 
         Possible parents of 'n' are nodes with an edge like
-        'n' <-* 'x'. Nodes with 'n' *-> 'x' are not considered
+        ``'n' <-* 'x'``. Nodes with ``'n' *-> 'x'`` are not considered
         possible parents.
 
         Parameters
