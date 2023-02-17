@@ -223,9 +223,23 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
 
     def test_add_edge_type(self):
         # test adding edge type with empty graph
+        G = self.Graph()
+
+        with pytest.raises(
+            RuntimeError, match="must be an instantiated instance of a base networkx graph"
+        ):
+            G.add_edge_type(nx.Graph, edge_type="undirected")
+
+        G.add_edge_type(nx.Graph(), edge_type="undirected")
+
+        with pytest.raises(ValueError, match="is already in the graph"):
+            G.add_edge_type(nx.Graph(), edge_type="undirected")
 
         # test adding edge type with some nodes already
-        pass
+        complete_G = nx.complete_graph(5, create_using=nx.DiGraph)
+        G.add_edge_type(complete_G, edge_type="directed")
+        for _, sub_graph in G.get_graphs().items():
+            assert sub_graph.nodes == complete_G.nodes
 
     def test_add_edge(self):
         edge_type = "bidirected"

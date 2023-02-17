@@ -92,6 +92,9 @@ class TsGraphNodeMixin:
         for node in nodes_for_adding:
             newdict = attr.copy()
 
+            if node is None:
+                raise ValueError("None cannot be a node")
+
             if isinstance(node[0], tuple):
                 ndict = node[1]
                 node = node[0]

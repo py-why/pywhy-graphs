@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-from pywhy_graphs import StationaryTimeSeriesPAG, StationaryTimeSeriesCPDAG
+from pywhy_graphs import StationaryTimeSeriesCPDAG
 
 
 class TimeSeriesMECGraphTester:
@@ -92,8 +92,8 @@ class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
         ed2 = {}
         incoming_graph_data = [(0, 1), (0, 2)]
         self.G = self.Graph()
-        self.G.add_edges_from(incoming_graph_data, edge_type='directed')
-        self.G.add_edges_from(incoming_uncertain_data, edge_type='undirected')
+        self.G.add_edges_from(incoming_graph_data, edge_type="directed")
+        self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
 
 
 # class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
