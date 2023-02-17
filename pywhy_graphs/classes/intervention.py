@@ -195,7 +195,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
             raise RuntimeError("Adding edges to F-nodes is not allowed.")
         return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
 
-    def remove_edge(self, u, v, edge_type):
+    def remove_edge(self, u, v, edge_type="all"):
         if u in self.f_nodes or v in self.f_nodes:
             raise RuntimeError(
                 "Removing edges from F-nodes is not allowed. "
@@ -310,7 +310,7 @@ class IPAG(PAG, InterventionMixin):
             raise RuntimeError("Adding edges to F-nodes is not allowed.")
         return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
 
-    def remove_edge(self, u, v, edge_type):
+    def remove_edge(self, u, v, edge_type="all"):
         if u in self.f_nodes or v in self.f_nodes:
             raise RuntimeError(
                 "Removing edges from F-nodes is not allowed. "
@@ -422,7 +422,7 @@ class PsiPAG(PAG, InterventionMixin):
             raise RuntimeError("Adding edges to F-nodes is not allowed.")
         return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
 
-    def remove_edge(self, u, v, edge_type):
+    def remove_edge(self, u, v, edge_type="all"):
         if u in self.f_nodes or v in self.f_nodes:
             raise RuntimeError(
                 "Removing edges from F-nodes is not allowed. "

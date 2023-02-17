@@ -193,8 +193,12 @@ class MixedEdgeGraph:
         return_vals = []
         for graph in self._edge_graphs.values():
             graph_func = getattr(graph, func_str)
-            return_val = graph_func(*args, **kwargs)
-            return_vals.append(return_val)
+            try:
+                return_val = graph_func(*args, **kwargs)
+                return_vals.append(return_val)
+            except NetworkXError as e:
+                if KeyError == e.__cause__:
+                    raise NetworkXError(e)
         return return_vals
 
     def _get_internal_graph(self, edge_type):
@@ -533,7 +537,7 @@ class MixedEdgeGraph:
                 self.add_node(v)
         self._get_internal_graph(edge_type).add_edges_from(ebunch_to_add, **attr)
 
-    def remove_edge(self, u, v, edge_type):
+    def remove_edge(self, u, v, edge_type="all"):
         """Remove an edge between u and v.
 
         Parameters
@@ -558,7 +562,7 @@ class MixedEdgeGraph:
         else:
             self._get_internal_graph(edge_type).remove_edge(u, v)
 
-    def remove_edges_from(self, ebunch, edge_type):
+    def remove_edges_from(self, ebunch, edge_type="all"):
         """Remove all edges specified in ebunch.
 
         Parameters
