@@ -1,3 +1,7 @@
+.. Places parent toc into the sidebar
+
+:parenttoc: True
+
 .. _simulation:
 
 *****************
@@ -9,12 +13,17 @@ causal graph. This is useful for testing causal discovery algorithms, which assu
 an underlying graph exists and then data is generated faithful to that graph.
 
 
-Time-series simulations
-=======================
-
 .. automodule:: pywhy_graphs.simulate
-.. autosummary::
+   :no-members:
+   :no-inherited-members:
 
-   simulate_linear_var_process
-   simulate_data_from_var
-   simulate_var_process_from_summary_graph
+:mod:`pywhy_graphs.simulate`: Causal graphical model simulations
+================================================================
+.. currentmodule:: pywhy_graphs
+
+.. autosummary::
+   :toctree: ../../generated/
+
+   simulate.simulate_linear_var_process
+   simulate.simulate_data_from_var
+   simulate.simulate_var_process_from_summary_graph
