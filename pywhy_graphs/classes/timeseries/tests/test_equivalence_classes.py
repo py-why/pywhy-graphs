@@ -90,13 +90,34 @@ class TestTimeSeriesCPDAG(TimeSeriesMECGraphTester):
         incoming_uncertain_data = [((0, -3), (0, -2))]
 
         # build dict-of-dict-of-dict K3
-        incoming_graph_data = [((0, -2), (0, -1))]
+        incoming_graph_data = [((2, -2), (0, -1))]
         self.G = self.Graph(max_lag=self.max_lag)
         self.G.add_edges_from(incoming_graph_data, edge_type="directed")
         self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
 
         self.k3nodes = self.G.nodes
-        self.variables = [0]
+        self.variables = [0, 2]
+
+    def test_orient_uncertain_edge(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        G.orient_uncertain_edge((1, 0), (0, 0))
+        assert G.has_edge((1, 0), (0, 0), G.directed_edge_name)
+        assert not G.has_edge((0, 0), (1, 0), G.undirected_edge_name)
+
+    def test_possible_parents(self):
+        G = self.G.copy()
+
+        assert set(G.possible_parents((0, 0))) == set([(0, -1), (2, -1)])
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        assert set(G.possible_parents((0, 0))) == set(((1, 0), (0, -1), (2, -1)))
+
+    def test_possible_children(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        assert set(G.possible_children((1, 0))) == set([(0, 0)])
 
 
 class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
@@ -109,8 +130,33 @@ class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
         # build dict-of-dict-of-dict K3
         incoming_graph_data = [((0, -2), (0, -1))]
         self.G = self.Graph(max_lag=self.max_lag)
-        self.G.add_edges_from(incoming_graph_data, edge_type="directed")
-        self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
+        self.G.add_edges_from(incoming_graph_data, edge_type=self.G.directed_edge_name)
+        self.G.add_edges_from(incoming_uncertain_data, edge_type=self.G.circle_edge_name)
 
         self.k3nodes = self.G.nodes
         self.variables = [0]
+
+    def test_orient_uncertain_edge(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        G.add_edge((0, 0), (1, 0), G.circle_edge_name)
+        G.orient_uncertain_edge((1, 0), (0, 0))
+        assert G.has_edge((1, 0), (0, 0), G.directed_edge_name)
+        assert G.has_edge((0, 0), (1, 0), G.circle_edge_name)
+
+    def test_possible_parents(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        G.add_edge((0, 0), (1, 0), G.circle_edge_name)
+        assert set(G.possible_parents((0, 0))) == set(((1, 0), (0, -1)))
+
+    def test_possible_children(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        assert set(G.possible_children((1, 0))) == set([(0, 0)])
+
+        G.add_edge((0, 0), (1, 0), G.directed_edge_name)
+        assert set(G.possible_children((1, 0))) == set()

@@ -146,7 +146,9 @@ class StationaryTimeSeriesCPDAG(
         children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            if not self.has_edge(nbr, n, self.directed_edge_name):
+                yield nbr
 
     def possible_parents(self, n: Node) -> Iterator[Node]:
         """Return an iterator over parents of node n.
@@ -167,7 +169,9 @@ class StationaryTimeSeriesCPDAG(
         parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            if not self.has_edge(n, nbr, self.directed_edge_name):
+                yield nbr
 
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
         from pywhy_graphs.algorithms.generic import _check_adding_cpdag_edge

@@ -123,8 +123,8 @@ class StationaryTimeSeriesPAG(
         v : node
             The node that 'u' points to in the graph.
         """
-        if not self.has_edge(u, v, self._undirected_name):
-            raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
+        if not self.has_edge(u, v, self.circle_edge_name):
+            raise RuntimeError(f"There is no circle edge between {u} and {v}.")
         u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
         self.remove_edge(u, v, self.circle_edge_name)
         self.add_edge(u, v, self._directed_name)  # type: ignore
@@ -148,7 +148,13 @@ class StationaryTimeSeriesPAG(
         children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            if (
+                not self.has_edge(nbr, n, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def possible_parents(self, n: Node) -> Iterator[Node]:
         """Return an iterator over parents of node n.
@@ -169,7 +175,19 @@ class StationaryTimeSeriesPAG(
         parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            print(
+                nbr,
+                self.has_edge(n, nbr, self.directed_edge_name),
+                self.has_edge(nbr, n, self.bidirected_edge_name),
+                self.has_edge(nbr, n, self.undirected_edge_name),
+            )
+            if (
+                not self.has_edge(n, nbr, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def to_ts_undirected(self):
         graph_class = StationaryTimeSeriesGraph

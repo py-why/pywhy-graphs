@@ -133,10 +133,6 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         G.graph.update(self.graph)
         graph_attr = G.graph
 
-        print(G.max_lag)
-        for graph in G.get_graphs().values():
-            print(graph.max_lag)
-
         # add all internal graphs to the copy
         for edge_type in self.edge_types:
             graph_func = self._internal_graph_nx_type(edge_type=edge_type)
