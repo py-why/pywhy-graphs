@@ -37,6 +37,7 @@ Changelog
 - |Feature| Adding a layout for the nodes positions in the :func:`pywhy_graphs.viz.draw` function, by `Julien Siebert`_ (:pr:`26`)
 - |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`29`)
 - |MajorFeature| Implement a series of graph classes for time-series graphs, such as ``pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph``, by `Adam Li`_ (:pr:`21`)
+- |Feature| Add a glossary and user guide viewable on docs page, by `Adam Li`_ (:pr:`54`)
 
 Code and Documentation Contributors
 -----------------------------------
