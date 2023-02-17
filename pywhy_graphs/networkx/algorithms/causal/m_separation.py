@@ -1,25 +1,34 @@
+import logging
 from collections import deque
-from copy import deepcopy
 
 import networkx as nx
-from networkx.utils import UnionFind
 
 import pywhy_graphs.networkx as pywhy_nx
 
 __all__ = ["m_separated"]
 
+logger = logging.getLogger(__name__)
 
-def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_name="directed"):
-    """Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G.
 
-    This algorithm adapts the linear time algorithm presented in [1]_ currently implemented in
-    `networkx.algorithms.d_separation` to work for mixed-edge causal graphs.
+def m_separated(
+    G,
+    x,
+    y,
+    z,
+    bidirected_edge_name="bidirected",
+    directed_edge_name="directed",
+    undirected_edge_name="undirected",
+):
+    """Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G, which may
+    contain directed, bidirected, and undirected edges.
 
-    This algorithm first obtains the ancestral subgraph of x | y | z which only requires knowledge
-    of the directed edges. Then, all outgoing directed edges from nodes in z are deleted. After
-    that, an undirected graph composed from the directed and bidirected edges amongst the
-    remaining nodes is created. Then, x is independent of y given z if x is disconnected from y
-    in this new graph.
+    This implements the m-separation algorithm TESTSEP presented in [1]_ for ancestral mixed
+    graphs, which is itself adapted from [2]_. Further checks have ensure that it works
+    for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
+    over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
+    collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
+    has runtime ``O(|E| + |V|)`` for number of edges ``|E|`` and number of vertices ``|V|``.
+
 
     Parameters
     ----------
@@ -31,6 +40,12 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
         Second set of nodes in ``G``.
     z : set
         Set of conditioning nodes in ``G``. Can be empty set.
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    bidirected_edge_name : str
+        Name of the bidirected edge, default is bidirected.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
 
     Returns
     -------
@@ -39,8 +54,12 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
 
     References
     ----------
-    .. [1] Darwiche, A.  (2009).  Modeling and reasoning with Bayesian networks.
-       Cambridge: Cambridge University Press.
+    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
+       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
+       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
+
+    .. [2]
+
 
     See Also
     --------
@@ -48,68 +67,115 @@ def m_separated(G, x, y, z, bidirected_edge_name="bidirected", directed_edge_nam
 
     Notes
     -----
-    This wraps the networkx implementation, which only allows DAGs. Since
-    ``ADMG`` is not represented.
+    This wraps the networkx implementation, which only allows DAGs and does
+    not have an ``ADMG`` representation.
     """
     if not isinstance(G, pywhy_nx.MixedEdgeGraph):
         raise nx.NetworkXError(
             "m-separation should only be run on a MixedEdgeGraph. If "
             'you have a directed graph, use "d_separated" function instead.'
         )
-    if any(
-        edge_type not in G.edge_types for edge_type in [bidirected_edge_name, directed_edge_name]
+    if not set(G.edge_types).issubset(
+        {directed_edge_name, bidirected_edge_name, undirected_edge_name}
     ):
         raise nx.NetworkXError(
-            f"m-separation only works on graphs with directed and bidirected edges. "
+            f"m-separation only works on graphs with directed, bidirected, and undirected edges. "
             f"Your graph passed in has the following edge types: {G.edge_types}, whereas "
-            f"the function is expecting directed edges named {directed_edge_name} and "
-            f"bidirected edges named {bidirected_edge_name}."
+            f"the function is expecting directed edges named {directed_edge_name}, "
+            f"bidirected edges named {bidirected_edge_name}, and undirected edges "
+            f"named {undirected_edge_name}."
         )
 
-    if not nx.is_directed_acyclic_graph(G.get_graphs(directed_edge_name)):
-        raise nx.NetworkXError("directed edge graph should be directed acyclic")
+    if directed_edge_name in G.edge_types:
+        if not nx.is_directed_acyclic_graph(G.get_graphs(directed_edge_name)):
+            raise nx.NetworkXError("directed edge graph should be directed acyclic")
 
-    union_xyz = x.union(y).union(z)
+    # contains -> and <-> edges from starting node T
+    forward_deque = deque([])
+    forward_visited = set()
 
-    # get directed edges
-    G_directed = nx.DiGraph()
-    G_directed.add_nodes_from((n, deepcopy(d)) for n, d in G.nodes.items())
-    G_directed.add_edges_from(G.get_graphs(edge_type=directed_edge_name).edges)
+    # contains <- and - edges from starting node T
+    backward_deque = deque(x)
+    backward_visited = set()
+    has_undirected = undirected_edge_name in G.edge_types
+    if has_undirected:
+        G_undirected = G.get_graphs(edge_type=undirected_edge_name)
+    has_directed = directed_edge_name in G.edge_types
 
-    # get bidirected edges subgraph
-    G_bidirected = nx.Graph()
-    G_bidirected.add_nodes_from((n, deepcopy(d)) for n, d in G.nodes.items())
-    G_bidirected.add_edges_from(G.get_graphs(edge_type=bidirected_edge_name).edges)
+    an_z = z
+    if has_directed:
+        G_directed = G.get_graphs(edge_type=directed_edge_name)
+        an_z = set().union(*[nx.ancestors(G_directed, x) for x in z]).union(z)
 
-    # get ancestral subgraph of x | y | z by removing leaves in directed graph that are not
-    # in x | y | z until no more leaves can be removed.
-    leaves = deque([n for n in G_directed.nodes if G_directed.out_degree[n] == 0])
-    while len(leaves) > 0:
-        leaf = leaves.popleft()
-        if leaf not in union_xyz:
-            for p in G_directed.predecessors(leaf):
-                if G_directed.out_degree[p] == 1:
-                    leaves.append(p)
-            G_directed.remove_node(leaf)
-            G_bidirected.remove_node(leaf)
+    has_bidirected = bidirected_edge_name in G.edge_types
+    if has_bidirected:
+        G_bidirected = G.get_graphs(edge_type=bidirected_edge_name)
 
-    # remove outgoing directed edges in z
-    edges_to_remove = list(G_directed.out_edges(z))
-    G_directed.remove_edges_from(edges_to_remove)
+    while forward_deque or backward_deque:
 
-    # make new undirected graph from remaining directed and bidirected edges
-    G_final = nx.Graph()
-    G_final.add_nodes_from((n, deepcopy(d)) for n, d in G_final.nodes.items())
-    G_final.add_edges_from(G_directed.edges)
-    G_final.add_edges_from(G_bidirected.edges)
+        if backward_deque:
+            node = backward_deque.popleft()
+            backward_visited.add(node)
+            if node in y:
+                return False
+            if node in z:
+                continue
 
-    disjoint_set = UnionFind(G_final.nodes())
-    for component in nx.connected_components(G_final):
-        disjoint_set.union(*component)
-    disjoint_set.union(*x)
-    disjoint_set.union(*y)
+            # add - edges to forward deque
+            if has_undirected:
+                for nbr in G_undirected.neighbors(node):
+                    if nbr not in backward_visited:
+                        backward_deque.append(nbr)
 
-    if x and y and disjoint_set[next(iter(x))] == disjoint_set[next(iter(y))]:
-        return False
-    else:
-        return True
+            if has_directed:
+                # add <- edges to backward deque
+                for x, _ in G_directed.in_edges(nbunch=node):
+                    if x not in backward_visited:
+                        backward_deque.append(x)
+
+                # add -> edges to forward deque
+                for _, x in G_directed.out_edges(nbunch=node):
+                    if x not in forward_visited:
+                        forward_deque.append(x)
+
+            # add <-> edge to forward deque
+            if has_bidirected:
+                for nbr in G_bidirected.neighbors(node):
+                    if nbr not in forward_visited:
+                        forward_deque.append(nbr)
+
+        if forward_deque:
+            node = forward_deque.popleft()
+            forward_visited.add(node)
+            if node in y:
+                return False
+
+            # Consider if *-> node <-* is opened due to conditioning on collider,
+            # or descendant of collider
+            if node in an_z:
+
+                if has_directed:
+                    # add <- edges to backward deque
+                    for x, _ in G_directed.in_edges(nbunch=node):
+                        if x not in backward_visited:
+                            backward_deque.append(x)
+
+                # add <-> edge to backward deque
+                if has_bidirected:
+                    for nbr in G_bidirected.neighbors(node):
+                        if nbr not in forward_visited:
+                            forward_deque.append(nbr)
+
+            if node not in z:
+                if has_undirected:
+                    for nbr in G_undirected.neighbors(node):
+                        if nbr not in backward_visited:
+                            backward_deque.append(nbr)
+
+                if has_directed:
+                    # add -> edges to forward deque
+                    for _, x in G_directed.out_edges(nbunch=node):
+                        if x not in forward_visited:
+                            forward_deque.append(x)
+
+    return True

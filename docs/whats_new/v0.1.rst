@@ -26,6 +26,9 @@ Version 0.1
 Changelog
 ---------
 
+- |Feature| Implement m-separation :func:`pywhy_graphs.networkx.m_separated` with the BallTree approach, by `Jaron Lee`_ (:pr:`48`)
+- |Feature| Add support for undirected edges in m-separation :func:`pywhy_graphs.networkx.m_separated`, by `Jaron Lee`_ (:pr:`46`)
+- |Feature| Implement uncovered circle path finding inside the :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Jaron Lee`_ (:pr:`42`)
 - |Feature| Implement and test the :class:`pywhy_graphs.CPDAG` for CPDAGs, by `Adam Li`_ (:pr:`6`)
 - |Feature| Implement and test the :class:`pywhy_graphs.PAG` for PAGs, by `Adam Li`_ (:pr:`9`)
 - |Feature| Implement and test various PAG algorithms :func:`pywhy_graphs.algorithms.possible_ancestors`, :func:`pywhy_graphs.algorithms.possible_descendants`, :func:`pywhy_graphs.algorithms.discriminating_path`, :func:`pywhy_graphs.algorithms.pds`, :func:`pywhy_graphs.algorithms.pds_path`, and :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Adam Li`_ (:pr:`10`)
@@ -43,3 +46,4 @@ the project since version inception, including:
 
 * `Adam Li`_
 * `Julien Siebert`_
+* `Jaron Lee`_
