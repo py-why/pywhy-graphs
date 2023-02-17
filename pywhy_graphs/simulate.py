@@ -315,7 +315,7 @@ def simulate_var_process_from_summary_graph(
     Right now, it is assumed that the summary graph is just a DAG.
     """
     import pandas as pd
-    
+
     rng = np.random.default_rng(random_state)
     n_nodes = G.number_of_nodes()
     var_arr = np.zeros((n_nodes, n_nodes, max_lag + 1))
