@@ -1,4 +1,5 @@
 import logging
+
 import networkx as nx
 import pytest
 from networkx.exception import NetworkXError
