@@ -14,3 +14,4 @@ from .array import export
 from .config import sys_info
 
 from . import networkx
+from . import simulate

@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-from pywhy_graphs import StationaryTimeSeriesCPDAG
+from pywhy_graphs import StationaryTimeSeriesCPDAG, StationaryTimeSeriesPAG
 
 
 class TimeSeriesMECGraphTester:
@@ -44,11 +44,12 @@ class TimeSeriesMECGraphTester:
             assert not G.has_node(("newx", -lag))
 
     def test_add_edges(self):
-        G = self.G.copy()
+        G = self.Graph(max_lag=self.max_lag)
 
         # initial graph should have no edges
         for graph in G.get_graphs().values():
             assert set(graph.edges) == set()
+        G.add_edge(("x", 0), ("y", 0))
         assert ("x", 0) not in G.neighbors(("x", -1))
 
         # test addition of edges
@@ -57,7 +58,7 @@ class TimeSeriesMECGraphTester:
         assert all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
         # only adding edges in a subgraph
-        G.remove_edge(("x", -1), ("x", 0), "bidirected")
+        G.remove_edge(("x", -1), ("x", 0), "undirected")
         G.add_edge(("x", -1), ("x", 0), "directed")
         assert ("x", 0) in G.neighbors(("x", -1))
         assert not all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
@@ -81,29 +82,35 @@ class TimeSeriesMECGraphTester:
         # edges forward in time
 
 
-class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+class TestTimeSeriesCPDAG(TimeSeriesMECGraphTester):
     def setup_method(self):
-        # start every graph with the confounded graph
-        # 0 -> 1, 0 -> 2; 0 -- 3
+        # start with a single time-series and graph over lags
         self.Graph = StationaryTimeSeriesCPDAG
-        incoming_uncertain_data = [(0, 3)]
+        self.max_lag = 3
+        incoming_uncertain_data = [((0, -3), (0, -2))]
 
         # build dict-of-dict-of-dict K3
-        ed2 = {}
-        incoming_graph_data = [(0, 1), (0, 2)]
-        self.G = self.Graph()
+        incoming_graph_data = [((0, -2), (0, -1))]
+        self.G = self.Graph(max_lag=self.max_lag)
         self.G.add_edges_from(incoming_graph_data, edge_type="directed")
         self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
 
+        self.k3nodes = self.G.nodes
+        self.variables = [0]
 
-# class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
-#     def setup_method(self):
-#         # start every graph with the confounded graph
-#         # 0 -> 1, 0 -> 2; 0 -- 3
-#         self.Graph = StationaryTimeSeriesPAG
-#         incoming_uncertain_data = [(0, 3)]
 
-#         # build dict-of-dict-of-dict K3
-#         ed2 = {}
-#         incoming_graph_data = {0: {1: {}, 2: ed2}}
-#         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+    def setup_method(self):
+        # start with a single time-series and graph over lags
+        self.Graph = StationaryTimeSeriesPAG
+        self.max_lag = 3
+        incoming_uncertain_data = [((0, -3), (0, -2))]
+
+        # build dict-of-dict-of-dict K3
+        incoming_graph_data = [((0, -2), (0, -1))]
+        self.G = self.Graph(max_lag=self.max_lag)
+        self.G.add_edges_from(incoming_graph_data, edge_type="directed")
+        self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
+
+        self.k3nodes = self.G.nodes
+        self.variables = [0]

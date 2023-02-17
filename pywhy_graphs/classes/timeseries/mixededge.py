@@ -120,7 +120,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
 
         See Also
         --------
-        to_directed: return a directed copy of the graph.
+        :meth:`pywhy_graphs.networkx.MixedEdgeGraph.to_directed`: return a
+            directed copy of the graph.
 
         Examples
         --------
@@ -128,9 +129,13 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         >>> H = G.copy()
 
         """
-        G = self.__class__()
+        G = self.__class__(max_lag=self.max_lag)
         G.graph.update(self.graph)
         graph_attr = G.graph
+
+        print(G.max_lag)
+        for graph in G.get_graphs().values():
+            print(graph.max_lag)
 
         # add all internal graphs to the copy
         for edge_type in self.edge_types:
@@ -290,5 +295,5 @@ class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
     graph_types = (StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph)
 
     def __init__(self, graphs=None, edge_types=None, max_lag: int = None, **attr):
-        attr.update(dict(max_lag=max_lag))
-        super().__init__(graphs, edge_types, **attr)
+        # attr.update(dict(max_lag=max_lag))
+        super().__init__(graphs, edge_types, max_lag=max_lag, **attr)

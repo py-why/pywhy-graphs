@@ -38,7 +38,7 @@ class StationaryTimeSeriesCPDAG(
     --------
     networkx.DiGraph
     networkx.Graph
-    ADMG
+    pywhy_graphs.ADMG
 
     Notes
     -----
@@ -60,9 +60,11 @@ class StationaryTimeSeriesCPDAG(
         **attr,
     ):
         super().__init__(**attr)
-        self.add_edge_type(StationaryTimeSeriesDiGraph(incoming_directed_edges), directed_edge_name)
         self.add_edge_type(
-            StationaryTimeSeriesGraph(incoming_undirected_edges), undirected_edge_name
+            StationaryTimeSeriesDiGraph(incoming_directed_edges, **attr), directed_edge_name
+        )
+        self.add_edge_type(
+            StationaryTimeSeriesGraph(incoming_undirected_edges, **attr), undirected_edge_name
         )
 
         self._directed_name = directed_edge_name
