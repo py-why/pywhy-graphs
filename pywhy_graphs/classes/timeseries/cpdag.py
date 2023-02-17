@@ -38,7 +38,7 @@ class StationaryTimeSeriesCPDAG(
     --------
     networkx.DiGraph
     networkx.Graph
-    ADMG
+    pywhy_graphs.ADMG
 
     Notes
     -----

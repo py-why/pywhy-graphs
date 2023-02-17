@@ -16,3 +16,4 @@ User Guide
 
    reference/classes/index
    reference/simulation/index
+   glossary

@@ -120,7 +120,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
 
         See Also
         --------
-        to_directed: return a directed copy of the graph.
+        pywhy_graphs.networkx.MixedEdgeGraph.to_directed: return a directed
+            copy of the graph.
 
         Examples
         --------
