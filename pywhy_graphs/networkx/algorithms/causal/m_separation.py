@@ -257,9 +257,15 @@ def is_minimal_m_separator(
     graph G. The function will first check if 'z' is a m-separator, and then check if it
     is minimal. An i-minimal m-separating set is a minimal m-separator that contains i.
 
-
-    This implements the algorithm TESTSEP presented in [1]_ for ancestral mixed graphs, but has
+    This implements the algorithm TESTMINSEP presented in [1]_ for ancestral mixed graphs, but has
     been tested to work with non-ancestral graphs.
+
+    This implementation differs from the specification of TESTMINSEP in [1]_ in that we replace
+    the check in line 6 with :math:`z - i \neq R_x`, and similarly in line 8 with
+    :math:`z - i \neq R_y`. This change was deemed necessary because in line 4 all nodes in ``i``
+    are removed, so there cannot be paths from ``x`` to ``i`` in the augmented moralized graph,
+    causing the algorithm to return false when a minimal m-separator existed.
+
 
     Parameters
     ----------
@@ -356,6 +362,12 @@ def minimal_m_separator(
     This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed
     graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
     number of vertices :math:`|V|`.
+
+
+    This implementation differs from the specification of FINDMINSEP in [1]_ in that all
+    nodes in ``i`` are removed from the anterior graph :math:`G'`, in between lines 3 and 4.
+    This change was deemed necessary because otherwise the TESTSEP call in line 7 would fail
+    even if the union of ``z`` and ``i`` was a valid i-minimal m-separating set.
 
     Parameters
     ----------

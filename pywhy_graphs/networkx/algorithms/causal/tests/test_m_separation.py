@@ -22,7 +22,32 @@ def fig5_vanderzander():
     digraph.add_edge("Z_1", "X")
     digraph.add_edge("X", "V_2")
     digraph.add_edge("Y", "V_2")
-    # bigraph.add_edge("Z_2", "Y")
+    digraph.add_edge("Z_2", "Y")
+    digraph.add_edge("Z_2", "Z_1")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    return G
+
+
+@pytest.fixture
+def modified_fig5_vanderzander():
+
+    nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(nodes)
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(nodes)
+    bigraph = nx.Graph()
+    bigraph.add_nodes_from(nodes)
+
+    digraph.add_edge("V_1", "X")
+    digraph.add_edge("Z_1", "X")
+    digraph.add_edge("X", "V_2")
+    digraph.add_edge("Y", "V_2")
     digraph.add_edge("Z_2", "Y")
     digraph.add_edge("Z_2", "Z_1")
 
@@ -299,7 +324,7 @@ def test_minimal_m_separator(fig5_vanderzander):
 
     assert result == {"E", "B"}
 
-    # Test a version of Fig. 5 in Van der Zander, 2019
+    # Test Fig. 5 in Van der Zander, 2019
     G = fig5_vanderzander
     result = pywhy_nx.minimal_m_separator(G, "X", "Y")
     assert result == {"Z_1"} or result == {"Z_2"}
