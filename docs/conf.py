@@ -79,9 +79,9 @@ warnings.filterwarnings(
 # -- sphinx.ext.autosummary
 autosummary_generate = True
 autodoc_default_options = {
-    "inherited-members": None,
+    "inherited-members": False,
 }
-autodoc_inherit_docstrings = True
+autodoc_inherit_docstrings = False
 # autodoc_typehints = "signature"
 
 # -- numpydoc
@@ -196,7 +196,7 @@ numpydoc_xref_aliases = {
 }
 
 
-default_role = "obj"
+default_role = "literal"
 
 # Tell myst-parser to assign header anchors for h1-h3.
 # myst_heading_anchors = 3

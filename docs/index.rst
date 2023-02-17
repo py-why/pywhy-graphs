@@ -6,10 +6,16 @@ Directed Mixed Graphs (ADMG), also known as causal DAGs and Partial Ancestral Gr
 We build on top of ``networkx's`` ``MixedEdgeGraph`` such that we maintain all the well-tested and efficient
 algorithms and data structures of ``networkx``. 
 
-See our examples for walk-throughs of how to use the package.
-
 We encourage you to use the package for your causal inference research and also build on top
 with relevant Pull Requests. Also, see our `contributing guide <https://github.com/mne-tools/mne-icalabel/blob/main/CONTRIBUTING.md>`_.
+
+See our examples for walk-throughs of how to use the package.
+
+Please refer to our :ref:`user_guide` for details on all the tools that we
+provide. You can also find an exhaustive list of the public API in the
+:ref:`api_ref`. You can also look at our numerous :ref:`examples <general_examples>`
+that illustrate the use of ``pywhy_graphs`` in many different contexts.
+
 
 Contents
 --------
@@ -19,8 +25,9 @@ Contents
    :caption: Getting started:
 
    installation
-   api
+   Reference API<api>
    Usage<use>
+   User Guide<user_guide>
    whats_new
 
 Team
