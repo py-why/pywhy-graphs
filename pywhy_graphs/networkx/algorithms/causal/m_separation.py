@@ -329,14 +329,14 @@ def is_minimal_m_separator(
     for node in i:
         aug_G_p.remove_node(node)
 
-    r_x = _bfs_with_marks(aug_G_p, x, z, False)
+    r_x = _bfs_with_marks(aug_G_p, x, z)
 
     # Note: we check z - i != r_x instead of z != r_x since
     # all nodes in i are removed from graph and so x will never have a path
     # to i. Appears to be bug in the original algorithm.
     if z - i != r_x:
         return False
-    r_y = _bfs_with_marks(aug_G_p, y, z, False)
+    r_y = _bfs_with_marks(aug_G_p, y, z)
 
     # Note: we check z - i != r_y for similar reasons as above.
     if z - i != r_y:
@@ -434,8 +434,8 @@ def minimal_m_separator(
         y,
     }
 
-    z_dprime = _bfs_with_marks(aug_G_p, x, z_prime, False)
-    z = _bfs_with_marks(aug_G_p, y, z_dprime, False)
+    z_dprime = _bfs_with_marks(aug_G_p, x, z_prime)
+    z = _bfs_with_marks(aug_G_p, y, z_dprime)
 
     if not m_separated(
         G_p, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name
