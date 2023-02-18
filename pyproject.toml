@@ -112,7 +112,7 @@ _apply_version = 'semversioner release'
 type_check = 'mypy -p pywhy_graphs --config-file pyproject.toml'
 unit_test = 'pytest ./pywhy_graphs ./integration_tests --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
 integration_test = 'pytest ./integration_tests'
-build_docs = 'make -C docs clean html-noplot'
+build_docs = 'make -C docs clean html'
 
 [[tool.poe.tasks.lint]]
 sequence = ['_flake8', '_bandit', '_codespell', '_pydocstyle']
