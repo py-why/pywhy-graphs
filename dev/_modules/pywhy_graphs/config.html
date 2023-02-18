@@ -42,7 +42,7 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
@@ -100,13 +100,19 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../api.html">
-  API
+  Reference API
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../use.html">
   Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide.html">
+  User Guide
  </a>
 </li>
 
@@ -357,7 +363,7 @@
 <span class="sd">        matplotlib:       3.6.2 {backend=MacOSX}</span>
 <span class="sd">        pandas:           1.5.2</span>
 <span class="sd">        pygraphviz:       Not found</span>
-<span class="sd">        causal-learn:     Not found</span>
+<span class="sd">        causal-learn:     no version info</span>
 <span class="sd">        joblib:           1.2.0</span>
 
 <span class="sd">        pywhy_graphs:     0.0.0</span>
@@ -406,7 +412,7 @@
         <span class="s2">&quot;matplotlib&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pandas&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pygraphviz&quot;</span><span class="p">,</span>
-        <span class="c1"># &quot;causallearn&quot;,  # no version</span>
+        <span class="s2">&quot;causallearn&quot;</span><span class="p">,</span>  <span class="c1"># no version</span>
         <span class="c1"># &quot;tigramite&quot;,  # no version</span>
         <span class="s2">&quot;joblib&quot;</span><span class="p">,</span>
         <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -437,7 +443,10 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">out</span><span class="p">(</span><span class="s2">&quot;Not found</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">out</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mod_name</span> <span class="o">==</span> <span class="s2">&quot;causallearn&quot;</span><span class="p">:</span>
+                <span class="n">out</span><span class="p">(</span><span class="s2">&quot;no version info&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mod_name</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span><span class="p">:</span>
                 <span class="n">out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="se">{{</span><span class="si">{</span><span class="n">libs</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">mod_name</span> <span class="o">==</span> <span class="s2">&quot;matplotlib&quot;</span><span class="p">:</span>

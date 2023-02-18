@@ -43,7 +43,7 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pywhy_graphs.CPDAG" href="pywhy_graphs.CPDAG.html" />
@@ -103,13 +103,19 @@
 
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../api.html">
-  API
+  Reference API
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../use.html">
   Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide.html">
+  User Guide
  </a>
 </li>
 
@@ -282,6 +288,67 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesDiGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
+   2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
+   2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+   2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
   </a>
@@ -300,10 +367,32 @@
  </li>
 </ul>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../reference/simulation/index.html">
-   Simulation module
+   2. Simulation module
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
+     2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
+     2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+     2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -339,69 +428,6 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.__contains__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.__contains__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.__getitem__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.__getitem__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.__iter__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.__iter__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.__len__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.__len__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.add_edge">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.add_edge()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.add_edges_from">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.add_edges_from()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.adj">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.adj
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.bidirected_edge_name">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -429,42 +455,6 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.children">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.children()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.clear_edge_types">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.clear_edge_types()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.copy">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.copy()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.degree">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.degree()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.directed_edge_name">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -478,195 +468,6 @@
      <code class="docutils literal notranslate">
       <span class="pre">
        ADMG.directed_edges
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.edges">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.edges()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.get_edge_data">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.get_edge_data()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.get_graphs">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.get_graphs()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.graph_attr_dict_factory">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.graph_attr_dict_factory
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.has_edge">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.has_edge()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.has_node">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.has_node()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.is_directed">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.is_directed()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.is_multigraph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.is_multigraph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.name">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.name
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.nbunch_iter">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.nbunch_iter()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.node_attr_dict_factory">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.node_attr_dict_factory
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.node_dict_factory">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.node_dict_factory
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.number_of_edge_types">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.number_of_edge_types()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.number_of_edges">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.number_of_edges()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.number_of_nodes">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.number_of_nodes()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.order">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.order()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.parents">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.parents()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.predecessors">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.predecessors()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.remove_edge">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.remove_edge()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.remove_edges_from">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.remove_edges_from()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.size">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.size()
       </span>
      </code>
     </a>
@@ -699,42 +500,6 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.subgraph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.subgraph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.successors">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.successors()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.to_directed">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.to_directed()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.to_undirected">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.to_undirected()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.undirected_edge_name">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -748,15 +513,6 @@
      <code class="docutils literal notranslate">
       <span class="pre">
        ADMG.undirected_edges
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pywhy_graphs.ADMG.update">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ADMG.update()
       </span>
      </code>
     </a>
@@ -797,17 +553,17 @@ latent confounder.</p>
 <dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize directed edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> are accepted.</p>
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
 </div></blockquote>
 <p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize bidirected edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
 </div></blockquote>
 <p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
 <blockquote>
 <div><p>Data to initialize undirected edges. All arguments that are accepted
-by <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a> are accepted.</p>
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
 </div></blockquote>
 <p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
@@ -841,180 +597,10 @@ edges and directed edges. Non-directed edges in an ADMG can be present as
 bidirected edges standing for latent confounders, or undirected edges
 standing for selection bias.</p>
 <ul class="simple">
-<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></p></li>
-<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
-<li><p>Undirected edges (–, indicating selection bias) = <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></p></li>
+<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></p></li>
+<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
+<li><p>Undirected edges (–, indicating selection bias) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
 </ul>
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.__contains__">
-<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.__contains__" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if n is a node, False otherwise. Use: ‘n in G’.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span> <span class="ow">in</span> <span class="n">G</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.__getitem__" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a dict of neighbors of node n.  Use: ‘G[n]’.</p>
-<p>The adjacency dictionary for nodes connected to n.</p>
-<p class="rubric">Notes</p>
-<p>G[n] is the same as G.adj[n] and similar to G.neighbors(n)
-(which is an iterator over G.adj[n])</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">AtlasView({1: {}})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.__iter__">
-<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.__iter__" title="Permalink to this definition">#</a></dt>
-<dd><p>Iterate over the nodes. Use: ‘for n in G’.</p>
-<p>An iterator over all nodes in the graph.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="p">]</span>
-<span class="go">[0, 1, 2, 3]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-<span class="go">[0, 1, 2, 3]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of nodes in the graph. Use: ‘len(G)’.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.number_of_nodes" title="pywhy_graphs.ADMG.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></dt><dd><p>identical method</p>
-</dd>
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.order" title="pywhy_graphs.ADMG.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></dt><dd><p>identical method</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-<span class="go">4</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.add_edge">
-<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_of_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_of_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.add_edge" title="Permalink to this definition">#</a></dt>
-<dd><p>Add an edge between u and v.</p>
-<p>The nodes u and v will be automatically added if they are
-not already in the graph.</p>
-<p>Edge attributes can be specified with keywords or by directly
-accessing the edge’s attribute dictionary. See examples below.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>u_for_edge, v_for_edge</strong> : nodes</p>
-<blockquote>
-<div><p>Nodes can be, for example, strings or numbers.
-Nodes must be hashable (and not None) Python objects.</p>
-</div></blockquote>
-<p><strong>edge_type</strong> : str</p>
-<blockquote>
-<div><p>The edge type.</p>
-</div></blockquote>
-<p><strong>attr</strong> : keyword arguments, optional</p>
-<blockquote>
-<div><p>Edge data (or labels or objects) can be assigned using
-keyword arguments.</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.add_edges_from" title="pywhy_graphs.ADMG.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a></dt><dd><p>add a collection of edges</p>
-</dd>
-</dl>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.add_edges_from">
-<span class="sig-name descname"><span class="pre">add_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.add_edges_from" title="Permalink to this definition">#</a></dt>
-<dd><p>Add all the edges in ebunch_to_add.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ebunch_to_add</strong> : container of edges</p>
-<blockquote>
-<div><p>Each edge given in the container will be added to the
-graph. The edges must be given as 2-tuples (u, v) or
-3-tuples (u, v, d) where d is a dictionary containing edge data.</p>
-</div></blockquote>
-<p><strong>attr</strong> : keyword arguments, optional</p>
-<blockquote>
-<div><p>Edge data (or labels or objects) can be assigned using
-keyword arguments.</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.add_edge" title="pywhy_graphs.ADMG.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a></dt><dd><p>add a single edge</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>Adding the same edge twice has no effect but any edge data
-will be updated when each duplicate edge is added.</p>
-<p>Edge attributes specified in an ebunch take precedence over
-attributes specified via keyword arguments.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>  <span class="c1"># using a list of edge tuples</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  <span class="c1"># Add the path graph 0-1-2-3</span>
-</pre></div>
-</div>
-<p>Associate data to edges</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;WN2898&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.adj">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.adj" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of graph adjacency objects holding the neighbors of each node.</p>
-<p>Each edge type has an adjacency object associated with it. For more information
-on the adjacency object itself, see the documentation in <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.Graph.adj.html#networkx.Graph.adj" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph.adj</span></code></a>.</p>
-<p>Iterating over G.adj behaves like a dict. Useful idioms include the following
-for loop.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">adj</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">datadict</span> <span class="ow">in</span> <span class="n">adj</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>         <span class="o">...</span>
-</pre></div>
-</div>
-<p>The main difference from non-mixed edge graph types is that <code class="docutils literal notranslate"><span class="pre">adj</span></code> here
-returns a dictionary of adjacency views, so neighbors can be queried within
-each edge type.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adj</strong> : dictionary of AdjacencyView</p>
-<blockquote>
-<div><p>A dictionary of edge types and their corresponding adjacency view objects.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.bidirected_edge_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bidirected_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.bidirected_edge_name" title="Permalink to this definition">#</a></dt>
@@ -1043,142 +629,6 @@ edges is the node themself.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.ADMG.children" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an iterator over children of node n.</p>
-<p>Children of node ‘n’ are nodes with a directed
-edge from ‘n’ to that node. For example,
-‘n’ -&gt; ‘x’, ‘n’ -&gt; ‘y’. Nodes only connected
-via a bidirected edge are not considered children:
-‘n’ &lt;-&gt; ‘y’.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>n</strong> : node</p>
-<blockquote>
-<div><p>A node in the causal DAG.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>children</strong> : Iterator</p>
-<blockquote>
-<div><p>An iterator of the children of node ‘n’.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.clear_edge_types">
-<span class="sig-name descname"><span class="pre">clear_edge_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.clear_edge_types" title="Permalink to this definition">#</a></dt>
-<dd><p>Clear all edge types from graph.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.copy" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a copy of the graph.</p>
-<p>The copy method by default returns an independent shallow copy
-of the graph and attributes. That is, if an attribute is a
-container, that container is shared by the original an the copy.
-Use Python’s <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a> for new containers.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>as_view</strong> : bool, optional (default=False)</p>
-<blockquote>
-<div><p>If True, the returned graph-view provides a read-only view
-of the original graph without actually copying any data.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>G</strong> : Graph</p>
-<blockquote>
-<div><p>A copy of the graph.</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.to_directed" title="pywhy_graphs.ADMG.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a></dt><dd><p>return a directed copy of the graph.</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>All copies reproduce the graph structure, but data attributes
-may be handled in different ways. There are four types of copies
-of a graph that people might want.</p>
-<p>Deepcopy – A “deepcopy” copies the graph structure as well as
-all data attributes and any objects they might contain.
-The entire graph object is new so that changes in the copy
-do not affect the original object. (see Python’s copy.deepcopy)</p>
-<p>Data Reference (Shallow) – For a shallow copy the graph structure
-is copied but the edge, node and graph attribute dicts are
-references to those in the original graph. This saves
-time and memory but could cause confusion if you change an attribute
-in one graph and it changes the attribute in the other.
-NetworkX does not provide this level of shallow copy.</p>
-<p>Independent Shallow – This copy creates new independent attribute
-dicts and then does a shallow copy of the attributes. That is, any
-attributes that are containers are shared between the new graph
-and the original. This is exactly what <code class="docutils literal notranslate"><span class="pre">dict.copy()</span></code> provides.
-You can obtain this style copy using:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">as_view</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Fresh Data – For fresh data, the graph structure is copied while
-new empty data attribute dicts are created. The resulting graph
-is independent of the original and it has no edge, node or graph
-attributes. Fresh copies are not enabled. Instead use:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>View – Inspired by dict-views, graph-views act like read-only
-versions of the original graph, providing a copy of the original
-structure without requiring any memory for copying the information.</p>
-<p>See the Python copy module for more information on shallow
-and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.degree">
-<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.degree" title="Permalink to this definition">#</a></dt>
-<dd><p>A DegreeView for the Graph as G.degree or G.degree().</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
-<blockquote>
-<div><p>The view will only report edges incident to these nodes.</p>
-</div></blockquote>
-<p><strong>weight</strong> : string or None, optional (default=None)</p>
-<blockquote>
-<div><p>The name of an edge attribute that holds the numerical value used
-as a weight.  If None, then each edge has weight 1.
-The degree is the sum of the edge weights adjacent to the node.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>deg_dicts</strong> : dictionary of DegreeView | int</p>
-<blockquote>
-<div><p>If multiple nodes are requested (the default), returns a <code class="docutils literal notranslate"><span class="pre">DegreeView</span></code>
-mapping nodes to their degree.
-If a single node is requested, returns the degree of the node as an integer.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.directed_edge_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">directed_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.directed_edge_name" title="Permalink to this definition">#</a></dt>
@@ -1189,516 +639,6 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.directed_edges">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">directed_edges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><span class="pre">Mapping</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.directed_edges" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">EdgeView</span></code> of the directed edges.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.edges">
-<span class="sig-name descname"><span class="pre">edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.edges" title="Permalink to this definition">#</a></dt>
-<dd><p>A dictionary of EdgeViews of the Graph as G.edges or G.edges().</p>
-<p>Each edge type has an EdgeView object associated with it. For more information
-on the EdgeView object itself, see the documentation in <code class="docutils literal notranslate"><span class="pre">networkx.Graph.edges</span></code>.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
-<blockquote>
-<div><p>The view will only report edges from these nodes.</p>
-</div></blockquote>
-<p><strong>data</strong> : string or bool, optional (default=False)</p>
-<blockquote>
-<div><p>The edge attribute returned in 3-tuple (u, v, ddict[data]).
-If True, return edge attribute dict in 3-tuple (u, v, ddict).
-If False, return 2-tuple (u, v).</p>
-</div></blockquote>
-<p><strong>default</strong> : value, optional (default=None)</p>
-<blockquote>
-<div><p>Value used for edges that don’t have the requested attribute.
-Only relevant if data is not True or False.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>edges</strong> : dictionary of EdgeView</p>
-<blockquote>
-<div><p>A dictionary of EdgeViews.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Nodes in nbunch that are not in the graph will be (quietly) ignored.
-For directed graphs this returns the out-edges.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.get_edge_data">
-<span class="sig-name descname"><span class="pre">get_edge_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.get_edge_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the attribute dictionary associated with edge (u, v).</p>
-<p>This is identical to <code class="docutils literal notranslate"><span class="pre">G[u][v]</span></code> except the default is returned
-instead of an exception if the edge doesn’t exist.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>u, v</strong><span class="classifier">nodes</span></dt><dd></dd>
-</dl>
-<p><strong>default:  any Python object (default=None)</strong></p>
-<blockquote>
-<div><p>Value to return if the edge (u, v) is not found.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>edge_dict</strong> : dictionary</p>
-<blockquote>
-<div><p>The edge attribute dictionary.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">{}</span>
-</pre></div>
-</div>
-<p>Warning: Assigning to <code class="docutils literal notranslate"><span class="pre">G[u][v]</span></code> is not permitted.
-But it is safe to assign attributes <code class="docutils literal notranslate"><span class="pre">G[u][v]['foo']</span></code></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
-<span class="go">7</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
-<span class="go">7</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># default edge data is {}</span>
-<span class="go">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>  <span class="c1"># tuple form</span>
-<span class="go">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># edge not in graph, return 0</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.get_graphs">
-<span class="sig-name descname"><span class="pre">get_graphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.get_graphs" title="Permalink to this definition">#</a></dt>
-<dd><p>Get graphs representing the mixed-edges.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>edge_type</strong> : str, optional</p>
-<blockquote>
-<div><p>The graph of the edge type to return, by default ‘all’, which
-will then return a list of all edge graphs.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>graph</strong> : Graph | dictionary of Graph</p>
-<blockquote>
-<div><p>The graph representing a specific type of edge, or all edges.</p>
-</div></blockquote>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ValueError</p>
-<blockquote>
-<div><p>_description_</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.graph_attr_dict_factory">
-<span class="sig-name descname"><span class="pre">graph_attr_dict_factory</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.graph_attr_dict_factory" title="Permalink to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.has_edge">
-<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'any'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.has_edge" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if the edge (u, v) is in the graph.</p>
-<p>This is the same as <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">in</span> <span class="pre">G[u]</span></code> without KeyError exceptions.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>u, v</strong> : nodes</p>
-<blockquote>
-<div><p>Nodes can be, for example, strings or numbers.
-Nodes must be hashable (and not None) Python objects.</p>
-</div></blockquote>
-<p><strong>edge_type</strong> : str</p>
-<blockquote>
-<div><p>Specifies a specific edge type. If ‘any’ (default), then
-will check if any edge exists between <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>edge_ind</strong> : bool</p>
-<blockquote>
-<div><p>True if edge is in the graph, False otherwise.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># using two nodes</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>  <span class="c1">#  e is a 2-tuple (u, v)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># e is a 3-tuple (u, v, data_dictionary)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>The following syntax are equivalent:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># though this gives KeyError if 0 not in G</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.has_node">
-<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.has_node" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if the graph contains the node n.</p>
-<p>Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code></p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>n</strong> : node</p>
-<blockquote>
-<div><p>The node to query. Identical to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">in</span> <span class="pre">G</span></code>.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>has</strong> : bool</p>
-<blockquote>
-<div><p>Whether or not the graph has node ‘n’.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>It is more readable and simpler to use</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">0</span> <span class="ow">in</span> <span class="n">G</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.is_directed">
-<span class="sig-name descname"><span class="pre">is_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.is_directed" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if graph is directed, False otherwise.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.is_multigraph">
-<span class="sig-name descname"><span class="pre">is_multigraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.is_multigraph" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns True if graph is a multigraph, False otherwise.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.name" title="Permalink to this definition">#</a></dt>
-<dd><p>String identifier of the graph.</p>
-<p>This graph attribute appears in the attribute dict G.graph
-keyed by the string <code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code>. as well as an attribute (technically
-a property) <code class="docutils literal notranslate"><span class="pre">G.name</span></code>. This is entirely user controlled.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.nbunch_iter">
-<span class="sig-name descname"><span class="pre">nbunch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.nbunch_iter" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns an iterator over nodes contained in nbunch that are
-also in the graph.</p>
-<p>The nodes in nbunch are checked for membership in the graph
-and if not are silently ignored.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nbunch</strong> : single node, container, or all nodes (default= all nodes)</p>
-<blockquote>
-<div><p>The view will only report edges incident to these nodes.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>niter</strong> : iterator</p>
-<blockquote>
-<div><p>An iterator over nodes in nbunch that are also in the graph.
-If nbunch is None, iterate over all nodes in the graph.</p>
-</div></blockquote>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NetworkXError</p>
-<blockquote>
-<div><p>If nbunch is not a node or sequence of nodes.
-If a node in nbunch is not hashable.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.node_attr_dict_factory">
-<span class="sig-name descname"><span class="pre">node_attr_dict_factory</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.node_attr_dict_factory" title="Permalink to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.node_dict_factory">
-<span class="sig-name descname"><span class="pre">node_dict_factory</span></span><a class="headerlink" href="#pywhy_graphs.ADMG.node_dict_factory" title="Permalink to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.number_of_edge_types">
-<span class="sig-name descname"><span class="pre">number_of_edge_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.number_of_edge_types" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of edge types.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.number_of_edges">
-<span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.number_of_edges" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of edges between two nodes.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>u, v</strong> : nodes, optional (default=all edges)</p>
-<blockquote>
-<div><p>If u and v are specified, return the number of edges between
-u and v. Otherwise return the total number of all edges.</p>
-</div></blockquote>
-<p><strong>edge_type</strong> : str, optional</p>
-<blockquote>
-<div><p>The edge type to query for number of edges.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>nedges</strong> : int</p>
-<blockquote>
-<div><p>The number of edges in the graph.  If nodes <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> are
-specified return the number of edges between those nodes. If
-the graph is directed, this only returns the number of edges
-from <code class="docutils literal notranslate"><span class="pre">u</span></code> to <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.size" title="pywhy_graphs.ADMG.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></dt><dd></dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<p>For undirected graphs, this method counts the total number of
-edges in the graph:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<p>If you specify two nodes, this counts the total number of edges
-joining the two nodes:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">1</span>
-</pre></div>
-</div>
-<p>For directed graphs, this method can count the total number of
-directed edges from <code class="docutils literal notranslate"><span class="pre">u</span></code> to <code class="docutils literal notranslate"><span class="pre">v</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">1</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.number_of_nodes">
-<span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.number_of_nodes" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of nodes in the graph.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.order" title="pywhy_graphs.ADMG.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></dt><dd><p>identical method</p>
-</dd>
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.__len__" title="pywhy_graphs.ADMG.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a></dt><dd><p>identical method</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.order">
-<span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.order" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of nodes in the graph.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.number_of_nodes" title="pywhy_graphs.ADMG.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></dt><dd><p>identical method</p>
-</dd>
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.__len__" title="pywhy_graphs.ADMG.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a></dt><dd><p>identical method</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">order</span><span class="p">()</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.parents">
-<span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="headerlink" href="#pywhy_graphs.ADMG.parents" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an iterator over parents of node n.</p>
-<p>Parents of node ‘n’ are nodes with a directed
-edge from ‘n’ to that node. For example,
-‘n’ &lt;- ‘x’, ‘n’ &lt;- ‘y’. Nodes only connected
-via a bidirected edge are not considered parents:
-‘n’ &lt;-&gt; ‘y’.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>n</strong> : node</p>
-<blockquote>
-<div><p>A node in the causal DAG.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>parents</strong> : Iterator</p>
-<blockquote>
-<div><p>An iterator of the parents of node ‘n’.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.predecessors">
-<span class="sig-name descname"><span class="pre">predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.ADMG.predecessors" title="Permalink to this definition">#</a></dt>
-<dd><p>Ancestors of ‘source’ node with directed path.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.remove_edge">
-<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.remove_edge" title="Permalink to this definition">#</a></dt>
-<dd><p>Remove an edge between u and v.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>u, v</strong> : nodes</p>
-<blockquote>
-<div><p>Remove an edge between nodes u and v.</p>
-</div></blockquote>
-<p><strong>edge_type</strong> : str</p>
-<blockquote>
-<div><p>The edge type.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p>NetworkXError</p>
-<blockquote>
-<div><p>If there is not an edge between u and v, or
-if there is no edge with the specified key.</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.remove_edges_from" title="pywhy_graphs.ADMG.remove_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code></a></dt><dd><p>remove a collection of edges</p>
-</dd>
-</dl>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.remove_edges_from">
-<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.remove_edges_from" title="Permalink to this definition">#</a></dt>
-<dd><p>Remove all edges specified in ebunch.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ebunch: list or container of edge tuples</strong></p>
-<blockquote>
-<div><p>Each edge given in the list or container will be removed
-from the graph. The edges can be:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>2-tuples (u, v) edge between u and v.</p></li>
-<li><p>3-tuples (u, v, k) where k is ignored.</p></li>
-</ul>
-</div></blockquote>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.remove_edge" title="pywhy_graphs.ADMG.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a></dt><dd><p>remove a single edge</p>
-</dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>Will fail silently if an edge in ebunch is not in the graph.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ebunch</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">ebunch</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.size">
-<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.size" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the number of edges or total of all edge weights.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>weight</strong> : string or None, optional (default=None)</p>
-<blockquote>
-<div><p>The edge attribute that holds the numerical value used
-as a weight. If None, then each edge has weight 1.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>size</strong> : float</p>
-<blockquote>
-<div><p>The number of edges or
-(if weight keyword is provided) the total weight sum.
-If weight is None, returns an int. Otherwise a float
-(or more general numeric if the weights are more general).</p>
-</div></blockquote>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="#pywhy_graphs.ADMG.number_of_edges" title="pywhy_graphs.ADMG.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></dt><dd></dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
-<span class="go">6.0</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">
@@ -1719,117 +659,6 @@ If weight is None, returns an int. Otherwise a float
 <dd><p>Sub-graph of just the undirected edges.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.subgraph">
-<span class="sig-name descname"><span class="pre">subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.subgraph" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a SubGraph view of the subgraph induced on <code class="docutils literal notranslate"><span class="pre">nodes</span></code>.</p>
-<p>The induced subgraph of the graph contains the nodes in <code class="docutils literal notranslate"><span class="pre">nodes</span></code>
-and the edges between those nodes.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nodes</strong> : list, iterable</p>
-<blockquote>
-<div><p>A container of nodes which will be iterated through once.</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>G</strong> : MixedEdgeGraph</p>
-<blockquote>
-<div><p>A copy of the graph with only the nodes.</p>
-</div></blockquote>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.successors">
-<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="headerlink" href="#pywhy_graphs.ADMG.successors" title="Permalink to this definition">#</a></dt>
-<dd><p>Descendants of ‘source’ node with directed path.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.to_directed">
-<span class="sig-name descname"><span class="pre">to_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.to_directed" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a directed representation of the graph.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G</strong> : DiGraph</p>
-<blockquote>
-<div><p>A directed graph with the same name, same nodes, and with
-each edge (u, v, data) replaced by two directed edges
-(u, v, data) and (v, u, data).</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This returns a “deepcopy” of the edge, node, and
-graph attributes which attempts to completely copy
-all of the data and references.</p>
-<p>This is in contrast to the similar D=DiGraph(G) which returns a
-shallow copy of the data.</p>
-<p>See the Python copy module for more information on shallow
-and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
-<p>Warning: If you have subclassed Graph to use dict-like objects
-in the data structure, those changes do not transfer to the
-DiGraph created by this method.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or MultiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-<span class="go">[(0, 1), (1, 0)]</span>
-</pre></div>
-</div>
-<p>If already directed, return a (deep) copy</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>  <span class="c1"># or MultiDiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-<span class="go">[(0, 1)]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.to_undirected">
-<span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.to_undirected" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns an undirected representation of the digraph.</p>
-<dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G</strong> : Graph</p>
-<blockquote>
-<div><p>An undirected graph with the same name and nodes and
-with edge (u, v, data) if either (u, v, data) or (v, u, data)
-is in the digraph.  If both edges exist in a sub digraph and
-their edge data is different, only one edge is created
-with an arbitrary choice of which edge data to use.
-You must check and correct for this manually if desired.</p>
-</div></blockquote>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This returns a “deepcopy” of the edge, node, and
-graph attributes which attempts to completely copy
-all of the data and references.</p>
-<p>This is in contrast to the similar D=MultiDiGraph(G) which
-returns a shallow copy of the data.</p>
-<p>See the Python copy module for more information on shallow
-and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
-<p>Warning: If you have subclassed MultiDiGraph to use dict-like
-objects in the data structure, those changes do not transfer
-to the MultiGraph created by this method.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># or MultiGraph, etc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-<span class="go">[(0, 1), (1, 0)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G2</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G2</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
-<span class="go">[(0, 1)]</span>
-</pre></div>
-</div>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.undirected_edge_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">undirected_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.undirected_edge_name" title="Permalink to this definition">#</a></dt>
@@ -1840,40 +669,6 @@ to the MultiGraph created by this method.</p>
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.undirected_edges">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">undirected_edges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><span class="pre">Mapping</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.undirected_edges" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">EdgeView</span></code> of the undirected edges.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pywhy_graphs.ADMG.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywhy_graphs.ADMG.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the graph using nodes/edges/graphs as input.</p>
-<p>Like dict.update, this method takes a graph as input, adding the
-graph’s nodes and edges to this graph. It can also take two inputs:
-edges and nodes. Finally it can take either edges or nodes.
-To specify only nodes the keyword <code class="docutils literal notranslate"><span class="pre">nodes</span></code> must be used.</p>
-<p>The collections of edges and nodes are treated similarly to
-the add_edges_from/add_nodes_from methods. When iterated, they
-should yield 2-tuples (u, v) or 3-tuples (u, v, datadict).</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>edges</strong> : nx.Graph object, collection of edges, or None</p>
-<blockquote>
-<div><p>The first parameter can be a graph or some edges. If it has
-attributes <code class="docutils literal notranslate"><span class="pre">nodes</span></code> and <a class="reference internal" href="#pywhy_graphs.ADMG.edges" title="pywhy_graphs.ADMG.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>, then it is taken to be a
-Graph-like object and those attributes are used as collections
-of nodes and edges to be added to the graph.
-If the first parameter does not have those attributes, it is
-treated as a collection of edges and added to the graph.
-If the first argument is None, no edges are added.</p>
-</div></blockquote>
-<p><strong>nodes</strong> : collection of nodes, or None</p>
-<blockquote>
-<div><p>The second parameter is treated as a collection of nodes
-to be added to the graph unless it is None.
-If <code class="docutils literal notranslate"><span class="pre">edges</span> <span class="pre">is</span> <span class="pre">None</span></code> and <code class="docutils literal notranslate"><span class="pre">nodes</span> <span class="pre">is</span> <span class="pre">None</span></code> an exception is raised.
-If the first parameter is a Graph, then <code class="docutils literal notranslate"><span class="pre">nodes</span></code> is ignored.</p>
-</div></blockquote>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,10 @@
+﻿pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG
+=======================================================
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+
+.. autoclass:: StationaryTimeSeriesPAG
+   :special-members: __contains__,__getitem__,__iter__,__len__,__add__,__sub__,__mul__,__div__,__neg__,__hash__
+   :members:
+
+.. include:: pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.examples

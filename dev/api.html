@@ -43,7 +43,7 @@
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pywhy_graphs.ADMG" href="generated/pywhy_graphs.ADMG.html" />
@@ -103,13 +103,19 @@
 
 <li class="toctree-l1 current active nav-item">
  <a class="current reference internal nav-link" href="#">
-  API
+  Reference API
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="use.html">
   Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="user_guide.html">
+  User Guide
  </a>
 </li>
 
@@ -282,6 +288,67 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesDiGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html">
+   pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.html">
+   pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_linear_var_process.html">
+   2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_data_from_var.html">
+   2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+   2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
   </a>
@@ -300,10 +367,32 @@
  </li>
 </ul>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="reference/simulation/index.html">
-   Simulation module
+   2. Simulation module
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_linear_var_process.html">
+     2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_data_from_var.html">
+     2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+     2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -330,8 +419,13 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#causal-graph-classes">
-   Causal graph classes
+  <a class="reference internal nav-link" href="#pywhy-graphs-classes-causal-graph-classes">
+   <code class="xref py py-mod docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.classes
+    </span>
+   </code>
+   : Causal graph classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -352,6 +446,18 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#timeseries">
    Timeseries
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pywhy-graphs-simulate-causal-graphical-model-simulations">
+   <code class="xref py py-mod docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.simulate
+    </span>
+   </code>
+   : Causal graphical model simulations
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -389,14 +495,14 @@
               <article class="bd-article" role="main">
                 
   <section id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h1>
+<span id="api-ref"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h1>
 <p><a class="reference internal" href="#module-pywhy_graphs" title="pywhy_graphs"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs</span></code></a>:</p>
 <span class="target" id="module-pywhy_graphs"></span><p>This is the application programming interface (API) reference
 for classes (<code class="docutils literal notranslate"><span class="pre">CamelCase</span></code> names) and functions
 (<code class="docutils literal notranslate"><span class="pre">underscore_case</span></code> names) of pywhy-graphs, grouped thematically by analysis
 stage.</p>
-<section id="causal-graph-classes">
-<h2>Causal graph classes<a class="headerlink" href="#causal-graph-classes" title="Permalink to this heading">#</a></h2>
+<section id="pywhy-graphs-classes-causal-graph-classes">
+<h2><a class="reference internal" href="reference/classes/index.html#module-pywhy_graphs.classes" title="pywhy_graphs.classes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.classes</span></code></a>: Causal graph classes<a class="headerlink" href="#pywhy-graphs-classes-causal-graph-classes" title="Permalink to this heading">#</a></h2>
 <p>These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature.</p>
 <table class="autosummary longtable table autosummary">
@@ -508,6 +614,60 @@ welcome feedback.</p>
 </tr>
 </tbody>
 </table>
+<p>We also have classes for representing causal time-series graphs.</p>
+<p>Pywhy-graphs implements a networkx-like graph class for representing time-series.
+Stationary causal timeseries graphs may be useful in various applications.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeSeriesGraph</span></code></a>([incoming_graph_data, max_lag])</p></td>
+<td><p>A class to imbue undirected graph with time-series structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeSeriesDiGraph</span></code></a>([incoming_graph_data, max_lag])</p></td>
+<td><p>A class to imbue directed graph with time-series structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeSeriesMixedEdgeGraph</span></code></a>([graphs, ...])</p></td>
+<td><p>A class to imbue mixed-edge graph with time-series structure.</p></td>
+</tr>
+</tbody>
+</table>
+<p>For stationary time-series, we explicitly represent them with different classes.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesCPDAG</span></code></a>([...])</p></td>
+<td><p>Completed partially directed acyclic graphs (CPDAG).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesDiGraph</span></code></a>([...])</p></td>
+<td><p>Stationary time-series directed graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesGraph</span></code></a>([...])</p></td>
+<td><p>Stationary time-series graph without directionality on edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesMixedEdgeGraph</span></code></a>([graphs, ...])</p></td>
+<td><p>A mixed-edge causal graph for stationary time-series.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesPAG</span></code></a>([...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pywhy-graphs-simulate-causal-graphical-model-simulations">
+<h2><a class="reference internal" href="reference/simulation/index.html#module-pywhy_graphs.simulate" title="pywhy_graphs.simulate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.simulate</span></code></a>: Causal graphical model simulations<a class="headerlink" href="#pywhy-graphs-simulate-causal-graphical-model-simulations" title="Permalink to this heading">#</a></h2>
+<p>Pywhy-graphs implements a various functions for assisting in simulating
+a SCM and their data starting from the causal graph.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_linear_var_process.html#pywhy_graphs.simulate.simulate_linear_var_process" title="pywhy_graphs.simulate.simulate_linear_var_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_linear_var_process</span></code></a>([...])</p></td>
+<td><p>Simulate a linear VAR process of a &quot;stationary&quot; causal graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_data_from_var.html#pywhy_graphs.simulate.simulate_data_from_var" title="pywhy_graphs.simulate.simulate_data_from_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_data_from_var</span></code></a>(var_arr[, ...])</p></td>
+<td><p>Simulate data from an already set VAR process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html#pywhy_graphs.simulate.simulate_var_process_from_summary_graph" title="pywhy_graphs.simulate.simulate_var_process_from_summary_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_var_process_from_summary_graph</span></code></a>(G)</p></td>
+<td><p>Simulate a VAR(max_lag) process starting from a summary graph.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="visualization-of-causal-graphs">
 <h2>Visualization of causal graphs<a class="headerlink" href="#visualization-of-causal-graphs" title="Permalink to this heading">#</a></h2>
@@ -539,7 +699,7 @@ to perform modular visualization of nodes and edges.</p>
 <h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="reference/simulation/index.html">Simulation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/simulation/index.html">2. Simulation module</a></li>
 </ul>
 </div>
 </section>

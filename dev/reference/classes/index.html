@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1. pywhy_graphs.classes: Graph types &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Glossary of Common Terms and API Elements" href="../../glossary.html" />
+    <link rel="prev" title="User Guide" href="../../user_guide.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../use.html">
+  Usage
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1.
+   <code class="xref py py-mod docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.classes
+    </span>
+   </code>
+   : Graph types
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../simulation/index.html">
+   2. Simulation module
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_linear_var_process.html">
+     2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_data_from_var.html">
+     2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+     2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../glossary.html">
+   3. Glossary of Common Terms and API Elements
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#which-graph-class-should-i-use">
+   1.1. Which graph class should I use?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#causal-graph-types">
+   1.2. Causal graph types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#causal-graph-types-for-time-series-alpha">
+   1.3. Causal graph types for time-series (alpha)
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-pywhy_graphs.classes">
+<span id="pywhy-graphs-classes-graph-types"></span><span id="classes"></span><h1><span class="section-number">1. </span><a class="reference internal" href="#module-pywhy_graphs.classes" title="pywhy_graphs.classes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.classes</span></code></a>: Graph types<a class="headerlink" href="#module-pywhy_graphs.classes" title="Permalink to this heading">#</a></h1>
+<p>Pywhy-graphs provides data structures and methods for storing causal graphs.</p>
+<p>The classes heavily rely on NetworkX and follows a similar API. We are generally
+“networkx-compliant” in the sense that we have similar outputs for a similar input
+and similarly named functions in the graph API. However, we also extend the API
+to account for various classes of graphs that are not covered in networkx.</p>
+<p>The choice of graph class depends on the structure of the
+graph you want to represent. For reference on concepts repeated
+across the API, see <a class="reference internal" href="../../glossary.html#glossary"><span class="std std-ref">Glossary of Common Terms and API Elements</span></a>.</p>
+<section id="which-graph-class-should-i-use">
+<h2><span class="section-number">1.1. </span>Which graph class should I use?<a class="headerlink" href="#which-graph-class-should-i-use" title="Permalink to this heading">#</a></h2>
+<p>Note, that we do not implement a causal DAG without latent confounders, because
+that can be represented with a <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> with acyclicity constraints.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pywhy_graph Class</p></th>
+<th class="head"><p>Edge Types</p></th>
+<th class="head"><p>Latent confounders</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ADMG</p></td>
+<td><p>directed, bidirected, undirected</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+<p>We also represent common equivalence classes of causal graphs.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pywhy_graph Class</p></th>
+<th class="head"><p>Edge Types</p></th>
+<th class="head"><p>Latent confounders</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPDAG</p></td>
+<td><p>directed, undirected</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>PAG</p></td>
+<td><p>directed, bidirected, undirected</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+<p>For representing interventions, we have an augmented graph, which stems from
+the addition of “F-nodes”, which represent interventions <a class="footnote-reference brackets" href="#footcite-pearl1993aspects" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pywhy_graph Class</p></th>
+<th class="head"><p>Edge Types</p></th>
+<th class="head"><p>Known Target</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AugmentedGraph</p></td>
+<td><p>directed, undirected, bidirected</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>IPAG</p></td>
+<td><p>directed, undirected, bidirected, circle</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>PsiPAG</p></td>
+<td><p>directed, undirected, bidirected, circle</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+<p>Finally, we also support time-series and create graphs that represent
+stationary time-series causal processes.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pywhy_graph Class</p></th>
+<th class="head"><p>Edge Types</p></th>
+<th class="head"><p>Analagous non time-series graph</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>StationaryTimeSeriesGraph</p></td>
+<td><p>undirected</p></td>
+<td><p>nx.Graph</p></td>
+</tr>
+<tr class="row-odd"><td><p>StationaryTimeSeriesDiGraph</p></td>
+<td><p>directed</p></td>
+<td><p>nx.DiGraph</p></td>
+</tr>
+<tr class="row-even"><td><p>StationaryTimeSeriesMixedEdgeGraph</p></td>
+<td><p>directed, undirected, bidirected</p></td>
+<td><p>MixedEdgeGraph</p></td>
+</tr>
+<tr class="row-odd"><td><p>StationaryTimeSeriesCPDAG</p></td>
+<td><p>directed, undirected</p></td>
+<td><p>CPDAG</p></td>
+</tr>
+<tr class="row-even"><td><p>StationaryTimeSeriesPAG</p></td>
+<td><p>directed, bidirected, circle</p></td>
+<td><p>PAG</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="causal-graph-types">
+<h2><span class="section-number">1.2. </span>Causal graph types<a class="headerlink" href="#causal-graph-types" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.</span></span><span class="sig-name descname"><span class="pre">ADMG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/admg.html#ADMG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Acyclic directed mixed graph (ADMG).</p>
+<p>A causal graph with two different edge types: bidirected and traditional
+directed edges. Directed edges constitute causal relations as a
+causal DAG did, while bidirected edges constitute the presence of a
+latent confounder.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize directed edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize bidirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize undirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>directed_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘directed’.</p>
+</div></blockquote>
+<p><strong>bidirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the bidirected edges. By default ‘bidirected’.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘undirected’.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>The data structure underneath the hood is stored in two networkx graphs:
+<code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> to represent the non-directed
+edges and directed edges. Non-directed edges in an ADMG can be present as
+bidirected edges standing for latent confounders, or undirected edges
+standing for selection bias.</p>
+<ul class="simple">
+<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></p></li>
+<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
+<li><p>Undirected edges (–, indicating selection bias) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.</span></span><span class="sig-name descname"><span class="pre">CPDAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/cpdag.html#CPDAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Completed partially directed acyclic graphs (CPDAG).</p>
+<p>CPDAGs generalize causal DAGs by allowing undirected edges.
+Undirected edges imply uncertainty in the orientation of the causal
+relationship. For example, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B</span></code>, can be <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-&gt;</span> <span class="pre">B</span></code> or <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;-</span> <span class="pre">B</span></code>,
+allowing for a Markov equivalence class of DAGs for each CPDAG.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize directed edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize undirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>directed_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘directed’.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘undirected’.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_graphs.ADMG</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
+these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
+causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
+to be learned from score-based (such as the “GES” algorithm) and constraint-based
+(such as the PC algorithm) approaches for causal structure learning.</p>
+<p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.</span></span><span class="sig-name descname"><span class="pre">PAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_circle_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'circle'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/pag.html#PAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Partial ancestral graph (PAG).</p>
+<p>PAGs are a Markov equivalence class with mixed edges of directed,
+bidirected, undirected and edges with circle endpoints. In terms
+of graph functionality, they essentially extend the definition of
+an ADMG with edges with circular endpoints.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize directed edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize undirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize bidirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_circle_edges</strong> : input circular endpoint edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize edges with circle endpoints. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>directed_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘directed’.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the undirected edges. By default ‘undirected’.</p>
+</div></blockquote>
+<p><strong>bidirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the bidirected edges. By default ‘bidirected’.</p>
+</div></blockquote>
+<p><strong>circle_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the circle edges. By default ‘circle’.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_graphs.ADMG</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
+these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
+causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
+to be learned from score-based (such as the “GES” algorithm) and constraint-based
+(such as the PC algorithm) approaches for causal structure learning.</p>
+<p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
+</dd></dl>
+
+</section>
+<section id="causal-graph-types-for-time-series-alpha">
+<h2><span class="section-number">1.3. </span>Causal graph types for time-series (alpha)<a class="headerlink" href="#causal-graph-types-for-time-series-alpha" title="Permalink to this heading">#</a></h2>
+<p>Currently, we have an alpha support for time-series causal graphs. This means that their internals
+and API will most surely change over the next few versions.</p>
+<p>Support of time-series is implemented in the form of more structured graph classes, where
+every graph has two major differences:</p>
+<ul class="simple">
+<li><p>max lag: Every graph has a keyword argument input <code class="docutils literal notranslate"><span class="pre">max_lag</span></code>, specifying the maximum lag
+that the time-series graph can represent.</p></li>
+<li><p>time-series node (tsnode): Every graph’s nodes are required to be a 2-tuple, with the variable
+name as the first element and the lag as the second element.</p></li>
+<li><p>time-ordered: All edges are time-ordered, unless the underlying graph is an undirected
+<a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a>. Time-ordered edges means that there are no directed edges pointing from
+the present to the past, so there are no edges of the form <code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-t),</span> <span class="pre">('y',</span> <span class="pre">-t'))</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">&lt;</span> <span class="pre">t'</span></code>. For example, a directed edge of the form <code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-3),</span> <span class="pre">('y',</span> <span class="pre">-4))</span></code> is not allowed.</p></li>
+<li><p>selection bias (undirected edges): There is no support for undirected edges, or selection bias
+in time-series causal graphs at this moment.</p></li>
+</ul>
+<p>Some graphs also embody the implicit assumption of “stationarity”, which means all edges are
+repeated over time. For example: if we assume stationarity, and know the edge
+<code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-3),</span> <span class="pre">('y',</span> <span class="pre">-2))</span></code> exists in the graph and the maximum lag is 4, then the following edges
+also exist in the graph:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-4),</span> <span class="pre">('y',</span> <span class="pre">-3))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-2),</span> <span class="pre">('y',</span> <span class="pre">-1))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(('x',</span> <span class="pre">-1),</span> <span class="pre">('y',</span> <span class="pre">0))</span></code></p></li>
+</ul>
+<p>Note that stationarity in the Markov equivalence class of the causal graphs has some subtle differences
+that impact the causal assumptions encoded in the MEC. All other functionalities are similar. See
+<a class="footnote-reference brackets" href="#footcite-gerhardus2021characterization" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for a characterization of assumptions within a time-series
+causal graph.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeriesGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/graph.html#TimeSeriesGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>A class to imbue undirected graph with time-series structure.</p>
+<p>This should not be used directly. See <code class="docutils literal notranslate"><span class="pre">BaseTimeSeriesGraph</span></code> for documentation on the
+functionality of time-series graphs.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeriesDiGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/digraph.html#TimeSeriesDiGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>A class to imbue directed graph with time-series structure.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">BaseTimeSeriesGraph</span></code> for documentation on the
+functionality of time-series graphs.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">TimeSeriesMixedEdgeGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graphs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/mixededge.html#TimeSeriesMixedEdgeGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>A class to imbue mixed-edge graph with time-series structure.</p>
+<p>This should not be used directly.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesCPDAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/cpdag.html#StationaryTimeSeriesCPDAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Completed partially directed acyclic graphs (CPDAG).</p>
+<p>CPDAGs generalize causal DAGs by allowing undirected edges.
+Undirected edges imply uncertainty in the orientation of the causal
+relationship. For example, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B</span></code>, can be <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">-&gt;</span> <span class="pre">B</span></code> or <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">&lt;-</span> <span class="pre">B</span></code>,
+allowing for a Markov equivalence class of DAGs for each CPDAG.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize directed edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize undirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+</div></blockquote>
+<p><strong>directed_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘directed’.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘undirected’.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_graphs.ADMG</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
+these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
+causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
+to be learned from score-based (such as the “GES” algorithm) and constraint-based
+(such as the PC algorithm) approaches for causal structure learning.</p>
+<p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesDiGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/digraph.html#StationaryTimeSeriesDiGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Stationary time-series directed graph.</p>
+<p>A stationary graph is one where lagged edges repeat themselves
+over time. Edges connecting to nodes in time point “t=0” are
+all the relevant edges needed to depict the time-series graph.</p>
+<p>Time-series graph nodes are defined as a cross-product of variables
+and a time-index. Nodes are always a tuple of variables and the lag.
+For example, a node could be <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">-1)</span></code> indicating the ‘x’ variable
+at ‘-1’ lag.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_graph_data</strong> : input graph (optional, default: None)</p>
+<blockquote>
+<div><p>Data to initialize graph. If None (default) an empty
+graph is created.  The data can be any format that is supported
+by the to_networkx_graph() function, currently including edge list,
+dict of dicts, dict of lists, NetworkX graph, 2D NumPy array, SciPy
+sparse matrix, or PyGraphviz graph.</p>
+</div></blockquote>
+<p><strong>max_lag</strong> : int, optional</p>
+<blockquote>
+<div><p>The max lag, by default 1.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A stationary time-series graph is one in which edges over time are repeated.
+In order to properly query for d-separation, one needs to query up to 2 times
+the maximum lag.</p>
+<p>A ts-graph’s nodes are defined uniquely by its set of variables and the maximum-lag
+parameter. Given for example, <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">'y',</span> <span class="pre">'z')</span></code> as the set of variables and a
+maximum-lag of 2, then there would be 9 total nodes in the graph consisting of the
+cross-product of <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">'y',</span> <span class="pre">'z')</span></code> and <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1,</span> <span class="pre">2)</span></code>. Nodes are automatically added,
+or deleted depending on the value of the maximum-lag in the graph.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stationary</strong> : bool</p>
+<blockquote>
+<div><p>Whether or not the graph is stationary.</p>
+</div></blockquote>
+<p><strong>check_time_direction</strong> : bool</p>
+<blockquote>
+<div><p>Whether or not to check time directionality is valid, by default True.
+May set to False for undirected graphs.</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/graph.html#StationaryTimeSeriesGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Stationary time-series graph without directionality on edges.</p>
+<p>This class should not be used directly.</p>
+<p>Included for completeness to enable modeling and working with <code class="docutils literal notranslate"><span class="pre">nx.Graph</span></code> like
+objects with time-series structure. By the time-ordering assumption, all lagged
+edges must point forward in time. This serves as an API layer to allow for
+non-directed edges in time (i.e. circular edges among nodes in a ts-PAG).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incoming_graph_data</strong> : iterable, optional</p>
+<blockquote>
+<div><p>The graph data to set, by default None.</p>
+</div></blockquote>
+<p><strong>max_lag</strong> : int, optional</p>
+<blockquote>
+<div><p>Maximum lag, by default 1.</p>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationaryTimeSeriesDiGraph</span></code></a></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesMixedEdgeGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graphs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/mixededge.html#StationaryTimeSeriesMixedEdgeGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>A mixed-edge causal graph for stationary time-series.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>graphs</strong> : List of Graph | DiGraph</p>
+<blockquote>
+<div><p>A list of networkx single-edge graphs.</p>
+</div></blockquote>
+<p><strong>edge_types</strong> : List of str</p>
+<blockquote>
+<div><p>A list of names for each edge type.</p>
+</div></blockquote>
+<p><strong>max_lag</strong> : int, optional</p>
+<blockquote>
+<div><p>The maximum lag, by default None.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesPAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_circle_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'circle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pywhy_graphs/classes/timeseries/pag.html#StationaryTimeSeriesPAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../../user_guide.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">User Guide</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../../glossary.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title"><span class="section-number">3. </span>Glossary of Common Terms and API Elements</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

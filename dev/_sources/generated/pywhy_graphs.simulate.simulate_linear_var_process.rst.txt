@@ -1,0 +1,12 @@
+﻿pywhy_graphs.simulate.simulate_linear_var_process
+=================================================
+
+.. currentmodule:: pywhy_graphs.simulate
+
+.. autofunction:: simulate_linear_var_process
+
+.. include:: pywhy_graphs.simulate.simulate_linear_var_process.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

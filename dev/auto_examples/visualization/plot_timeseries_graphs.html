@@ -43,10 +43,10 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Release History" href="../../whats_new.html" />
+    <link rel="next" title="User Guide" href="../../user_guide.html" />
     <link rel="prev" title="Drawing graphs and setting their layout for visual comparison" href="draw_and_compare_graphs_with_same_layout.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
@@ -103,13 +103,19 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../api.html">
-  API
+  Reference API
  </a>
 </li>
 
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../use.html">
   Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide.html">
+  User Guide
  </a>
 </li>
 
@@ -295,7 +301,7 @@ messy in the final output.</p>
 <span class="n">dot_G</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;default_G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Next, we will set positions using the <a class="reference internal" href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pywhy_graphs.viz.timeseries_layout</span></code></a> function,
+<p>Next, we will set positions using the <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.viz.timeseries_layout</span></code> function,
 which creates a nice default layout for time-series graphs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the layout position for the graph G using networkx</span>
 <span class="n">pos_G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -341,10 +347,10 @@ which creates a nice default layout for time-series graphs.</p>
           <p class="prev-next-title">Drawing graphs and setting their layout for visual comparison</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../../whats_new.html" title="next page">
+  <a class='right-next' id="next-link" href="../../user_guide.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Release History</p>
+      <p class="prev-next-title">User Guide</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

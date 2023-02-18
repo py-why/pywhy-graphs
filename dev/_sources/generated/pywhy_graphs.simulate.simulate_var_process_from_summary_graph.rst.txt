@@ -1,0 +1,12 @@
+﻿pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+=============================================================
+
+.. currentmodule:: pywhy_graphs.simulate
+
+.. autofunction:: simulate_var_process_from_summary_graph
+
+.. include:: pywhy_graphs.simulate.simulate_var_process_from_summary_graph.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>
