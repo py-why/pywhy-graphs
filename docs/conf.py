@@ -264,7 +264,7 @@ html_title = f"pywhy-graphs v{version}"
 templates_path = ["_templates"]
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
-html_favicon = "_static/favicon.ico"
+html_favicon = "_static/favicon_url.ico"
 
 html_theme_options = {
     "icon_links": [

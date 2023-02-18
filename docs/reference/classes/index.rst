@@ -74,6 +74,7 @@ stationary time-series causal processes.
 Causal graph types
 ==================
 .. currentmodule:: pywhy_graphs.classes
+    
 .. autoclass:: ADMG
     :noindex:
     :inherited-members:
@@ -83,15 +84,7 @@ Causal graph types
 .. autoclass:: PAG
     :noindex:
     :inherited-members:
-.. autoclass:: AugmentedGraph
-    :noindex:
-    :inherited-members:
-.. autoclass:: IPAG
-    :noindex:
-    :inherited-members:
-.. autoclass:: PsiPAG
-    :noindex:
-    :inherited-members:
+
 
 Causal graph types for time-series (alpha)
 ==========================================
@@ -106,7 +99,7 @@ every graph has two major differences:
 - time-series node (tsnode): Every graph's nodes are required to be a 2-tuple, with the variable
   name as the first element and the lag as the second element.
 - time-ordered: All edges are time-ordered, unless the underlying graph is an undirected
-  :class:`nx.Graph`. Time-ordered edges means that there are no directed edges pointing from
+  :class:`networkx.Graph`. Time-ordered edges means that there are no directed edges pointing from
   the present to the past, so there are no edges of the form ``(('x', -t), ('y', -t'))``, where
   ``t < t'``. For example, a directed edge of the form ``(('x', -3), ('y', -4))`` is not allowed.
 - selection bias (undirected edges): There is no support for undirected edges, or selection bias
