@@ -35,7 +35,7 @@ Contents
 
    installation
    Reference API<api>
-   Usage<use>
+   Usage (Simple Examples)<use>
    User Guide<user_guide>
    whats_new
 

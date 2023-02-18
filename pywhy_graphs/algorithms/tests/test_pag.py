@@ -3,9 +3,10 @@ from itertools import permutations
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import PAG
+from pywhy_graphs import PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
+    is_definite_noncollider,
     pds,
     pds_path,
     possible_ancestors,
@@ -81,6 +82,45 @@ def pds_graph():
         edge_list,
         incoming_bidirected_edges=latent_edge_list,
         incoming_circle_edges=uncertain_edge_list,
+    )
+    return G
+
+
+@pytest.fixture(scope="module")
+def pdst_graph():
+    """Extension of the Figure 6.17 in "causation, prediction and search" for time-series.
+
+    Creates the relevant graph, but now with time lag points.
+
+    References
+    ----------
+    .. footbibliography::
+    """
+    edge_list = [
+        (("D", -1), ("A", 0)),
+        (("B", -1), ("E", 0)),
+        (("H", -1), ("D", 0)),
+        (("F", -1), ("B", 0)),
+    ]
+    latent_edge_list = [(("A", 0), ("B", -1)), (("D", 0), ("E", 0))]
+    uncertain_edge_list = [
+        (("A", 0), ("E", 0)),
+        (("E", 0), ("A", 0)),
+        (("E", 0), ("B", -1)),
+        (("B", -1), ("F", -1)),
+        (("F", -1), ("C", -1)),
+        (("C", -1), ("F", -1)),
+        (("C", -1), ("H", -1)),
+        (("H", -1), ("C", -1)),
+        (("D", 0), ("H", -1)),
+        (("A", 0), ("D", 0)),
+    ]
+    G = pywhy_graphs.StationaryTimeSeriesPAG(
+        edge_list,
+        incoming_bidirected_edges=latent_edge_list,
+        incoming_circle_edges=uncertain_edge_list,
+        max_lag=2,
+        stationary=False,
     )
     return G
 
@@ -399,3 +439,61 @@ def test_pds_path(pds_graph: PAG):
     assert ex_pdspath == set()
     assert xe_pdsep == set()
     assert ex_pdsep == {"A", "B", "D", "H"}
+
+
+def test_definite_non_collider():
+    """Test non-collider definite status check."""
+    G = PAG()
+    G.add_nodes_from(["x", "y", "z"])
+
+    # first test x *-* y -> z
+    G_copy = G.copy()
+    G_copy.add_edge("y", "z", G_copy.directed_edge_name)
+    G_copy.add_edge("x", "y", G_copy.directed_edge_name)
+
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # x <-> y <-> z
+    G_copy.remove_edge("y", "z", G_copy.directed_edge_name)
+    G_copy.add_edge("y", "z", G_copy.bidirected_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # second test x <- y *-* z
+    G_copy = G.copy()
+    G_copy.add_edge("y", "x", G_copy.directed_edge_name)
+    G_copy.add_edge("z", "y", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    G_copy.remove_edge("y", "x", G_copy.directed_edge_name)
+    G_copy.add_edge("y", "x", G_copy.bidirected_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # third test x o-o y o-o z, where x and z are unshielded
+    G_copy = G.copy()
+    G_copy.add_edge("y", "x", G_copy.circle_edge_name)
+    G_copy.add_edge("x", "y", G_copy.circle_edge_name)
+    G_copy.add_edge("z", "y", G_copy.circle_edge_name)
+    G_copy.add_edge("y", "z", G_copy.circle_edge_name)
+
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.directed_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+
+# def test_pdst():
+#     G = pdst_graph()
+#     pass
+
+
+# def test_pdst_path(pdst_graph):
+#     pass

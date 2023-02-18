@@ -16,8 +16,8 @@ class StationaryTimeSeriesPAG(
 ):
     def __init__(
         self,
-        incoming_circle_edges=None,
         incoming_directed_edges=None,
+        incoming_circle_edges=None,
         incoming_bidirected_edges=None,
         incoming_undirected_edges=None,
         circle_edge_name: str = "circle",

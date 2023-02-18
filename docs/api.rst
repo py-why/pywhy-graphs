@@ -49,6 +49,7 @@ causal graph operations.
    pds_path
    uncovered_pd_path
    acyclification
+   is_definite_noncollider
 
 Conversions between other package's causal graphs
 =================================================
