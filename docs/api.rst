@@ -84,8 +84,8 @@ welcome feedback.
    bidirected_to_unobserved_confounder
    m_separated
 
-Timeseries
-==========
+:mod:`pywhy_graphs.classes.timeseries`: Timeseries
+==================================================
 The following are useful functions that operate specifically on time-series graphs.
 
 .. currentmodule:: pywhy_graphs.classes.timeseries

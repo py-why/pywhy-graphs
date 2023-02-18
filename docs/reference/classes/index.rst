@@ -85,9 +85,12 @@ stationary time-series causal processes.
     :noindex:
     :inherited-members:
 
-
 :mod:`pywhy_graphs.classes.timeseries`: Causal graph types for time-series (alpha)
 ==================================================================================
+.. automodule:: pywhy_graphs.classes.timeseries
+   :no-members:
+   :no-inherited-members:
+
 Currently, we have an alpha support for time-series causal graphs. This means that their internals
 and API will most surely change over the next few versions.
 
@@ -115,11 +118,10 @@ also exist in the graph:
 - ``(('x', -1), ('y', 0))``
 
 Stationarity implies that all edge additions/removals propagate to other homologous edges :footcite:`entner2010tsfci`.
-This property can be turned off in :class:`pywhy_graphs.StationaryTimeSeriesCPDAG` and
-:class:`pywhy_graphs.StationaryTimeSeriesPAG` by calling the
-:meth:`pywhy_graphs.StationaryTimeSeriesMixedEdgeGraph.set_stationarity`. This may be useful for
-example in causal discovery, where we are modifying edges, but do not want the modifications to
-propagate to homologous edges.
+This property can be turned off in :class:`~pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG` and
+:class:`~pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG` by calling the `set_stationarity` function.
+This may be useful for example in causal discovery, where we are modifying edges, but do not want
+the modifications to propagate to homologous edges.
 
 Note that stationarity in the Markov equivalence class of the causal graphs has some subtle differences
 that impact the causal assumptions encoded in the MEC. All other functionalities are similar. See
