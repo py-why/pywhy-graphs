@@ -3,12 +3,14 @@ from itertools import permutations
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import PAG, StationaryTimeSeriesPAG
+from pywhy_graphs import PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
     is_definite_noncollider,
     pds,
     pds_path,
+    pds_t,
+    pds_t_path,
     possible_ancestors,
     possible_descendants,
     uncovered_pd_path,
@@ -490,10 +492,56 @@ def test_definite_non_collider():
     assert not is_definite_noncollider(G_copy, "x", "y", "z")
 
 
-# def test_pdst():
-#     G = pdst_graph()
-#     pass
+def test_pdst(pdst_graph):
+    G = pdst_graph
 
+    a_pdspath = pds_t_path(G, ("A", 0), ("E", 0))
+    e_pdspath = pds_t_path(G, ("E", 0), ("A", 0))
+    a_pdsep = pds_t(G, ("A", 0), ("E", 0))
+    e_pdsep = pds_t(G, ("E", 0), ("A", 0))
 
-# def test_pdst_path(pdst_graph):
-#     pass
+    # the original graph is fully biconnected, so
+    # pdspath is equivalent to pds
+    assert a_pdsep == a_pdspath
+    assert e_pdsep == e_pdspath
+
+    # If we add a different node that is not biconnected,
+    # it will not fall in the pds path
+    G.add_edge(("x", -1), ("E", 0), G.circle_edge_name)
+    G.add_edge(("E", 0), ("x", -1), G.circle_edge_name)
+    a_pdspath = pds_t_path(G, ("A", 0), ("E", 0))
+    e_pdspath = pds_t_path(G, ("E", 0), ("A", 0))
+
+    assert a_pdsep == a_pdspath
+    assert e_pdsep == e_pdspath
+
+    # since the PDS set does not rely on the second
+    # node, the PDS(x, E) is the empty set, while
+    # PDS(E, x) comprises now of {B, D, H} and {A}
+    # because now A is not the end set
+    xe_pdsep = pds_t(G, ("x", -1), ("E", 0))
+    ex_pdsep = pds_t(G, ("E", 0), ("x", -1))
+    xe_pdspath = pds_t_path(G, ("x", -1), ("E", 0))
+    ex_pdspath = pds_t_path(G, ("E", 0), ("x", -1))
+
+    assert xe_pdspath == set()
+    assert ex_pdspath == set()
+    assert xe_pdsep == set()
+    assert ex_pdsep == {("A", 0), ("B", -1), ("D", 0), ("H", -1)}
+
+    # now we look at variables beyond the max(lag(node1), lag(node2)),
+    # these are not included even if they would be included in the PDS
+    G.add_edge(("x", -1), ("y", -2), G.circle_edge_name)
+    G.add_edge(("y", -2), ("x", -1), G.circle_edge_name)
+    G.add_edge(("y", -2), ("E", 0), G.circle_edge_name)
+    G.add_edge(("E", 0), ("y", -2), G.circle_edge_name)
+
+    xe_pdsep = pds(G, ("x", -1), ("E", 0))
+    ex_pdsep = pds(G, ("E", 0), ("x", -1))
+    assert ("y", -2) in xe_pdsep
+    assert ("y", -2) in ex_pdsep
+
+    xe_pdsep_t = pds_t(G, ("x", -1), ("E", 0))
+    ex_pdsep_t = pds_t(G, ("E", 0), ("x", -1))
+    assert ("y", -2) not in xe_pdsep_t
+    assert ("y", -2) not in ex_pdsep_t

@@ -24,21 +24,28 @@ class StationaryTimeSeriesPAG(
         directed_edge_name: str = "directed",
         bidirected_edge_name: str = "bidirected",
         undirected_edge_name: str = "undirected",
+        stationary: bool = True,
         **attr,
     ):
+        self.stationary = stationary
         super().__init__(**attr)
         self.add_edge_type(
-            StationaryTimeSeriesDiGraph(incoming_directed_edges, **attr), directed_edge_name
+            StationaryTimeSeriesDiGraph(incoming_directed_edges, stationary=stationary, **attr),
+            directed_edge_name,
         )
         self.add_edge_type(
-            StationaryTimeSeriesDiGraph(incoming_circle_edges, check_time_direction=False, **attr),
+            StationaryTimeSeriesDiGraph(
+                incoming_circle_edges, stationary=stationary, check_time_direction=False, **attr
+            ),
             circle_edge_name,
         )
         self.add_edge_type(
-            StationaryTimeSeriesGraph(incoming_undirected_edges, **attr), undirected_edge_name
+            StationaryTimeSeriesGraph(incoming_undirected_edges, stationary=stationary, **attr),
+            undirected_edge_name,
         )
         self.add_edge_type(
-            StationaryTimeSeriesGraph(incoming_bidirected_edges, **attr), bidirected_edge_name
+            StationaryTimeSeriesGraph(incoming_bidirected_edges, stationary=stationary, **attr),
+            bidirected_edge_name,
         )
 
         self._directed_name = directed_edge_name

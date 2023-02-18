@@ -47,6 +47,8 @@ causal graph operations.
    discriminating_path
    pds
    pds_path
+   pds_t
+   pds_t_path
    uncovered_pd_path
    acyclification
    is_definite_noncollider
