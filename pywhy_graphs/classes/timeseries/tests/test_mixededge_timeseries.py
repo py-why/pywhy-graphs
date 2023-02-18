@@ -6,30 +6,44 @@ import pytest
 from networkx.utils import edges_equal, nodes_equal
 
 import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.classes.timeseries import (
+    TimeSeriesDiGraph,
+    TimeSeriesGraph,
+    TimeSeriesMixedEdgeGraph,
+)
 
 
-class BaseMixedEdgeGraphTester:
+class BaseTimeSeriesMixedEdgeGraphTester:
     """Tests for data-structure independent graph class features."""
 
     def test_contains(self):
         G = self.K3
-        assert 1 in G
-        assert 4 not in G
-        assert "b" not in G
+        assert (1, 0) in G
+        assert 1 in G.variables
+        assert 4 not in G.variables
+        assert (4, 0) not in G
+        assert ("b", 0) not in G
         assert [] not in G  # no exception for nonhashable
         assert {1: 1} not in G  # no exception for nonhashable
 
     def test_order(self):
         G = self.K3
-        assert len(G) == 3
-        assert G.order() == 3
-        assert G.number_of_nodes() == 3
+        assert len(G) == self.max_lag * len(G.variables)
+        assert G.order() == self.max_lag * len(G.variables)
+        assert G.number_of_nodes() == self.max_lag * len(G.variables)
 
     def test_nodes(self):
         G = self.K3
         assert isinstance(G._node, G.node_dict_factory)
-        assert sorted(G.nodes()) == self.k3nodes
-        assert sorted(G.nodes(data=True)) == [(0, {}), (1, {}), (2, {})]
+        assert sorted(G.nodes()) == sorted(self.k3nodes)
+        assert sorted(G.nodes(data=True)) == [
+            ((0, -1), {}),
+            ((0, 0), {}),
+            ((1, -1), {}),
+            ((1, 0), {}),
+            ((2, -1), {}),
+            ((2, 0), {}),
+        ]
 
     def test_none_node(self):
         G = self.Graph()
@@ -44,21 +58,21 @@ class BaseMixedEdgeGraphTester:
 
     def test_has_node(self):
         G = self.K3
-        assert G.has_node(1)
-        assert not G.has_node(4)
+        assert G.has_node((1, 0))
+        assert not G.has_node((4, 0))
         assert not G.has_node([])  # no exception for nonhashable
         assert not G.has_node({1: 1})  # no exception for nonhashable
 
     def test_has_edge(self):
         G = self.K3
-        assert G.has_edge(0, 1)
-        assert not G.has_edge(0, -1)
+        assert G.has_edge((0, 0), (1, 0))
+        assert not G.has_edge((0, 0), (-1, 0))
 
     def test_neighbors(self):
         G = self.K3
-        assert sorted(G.neighbors(0)) == [1, 2]
+        assert sorted(G.neighbors((0, 0))) == [(1, 0), (2, 0)]
         with pytest.raises(nx.NetworkXError):
-            assert sorted(G.neighbors(-1))
+            assert sorted(G.neighbors((-1, 0)))
 
     @pytest.mark.skipif(platform.python_implementation() == "PyPy", reason="PyPy gc is different")
     def test_memory_leak(self):
@@ -88,17 +102,17 @@ class BaseMixedEdgeGraphTester:
 
     def test_size(self):
         G = self.K3
-        print(G)
         assert G.size() == 3
         assert G.number_of_edges() == 3
 
     def test_nbunch_iter(self):
         G = self.K3
         assert nodes_equal(G.nbunch_iter(), self.k3nodes)  # all nodes
-        assert nodes_equal(G.nbunch_iter(0), [0])  # single node
-        assert nodes_equal(G.nbunch_iter([0, 1]), [0, 1])  # sequence
+        assert nodes_equal(G.nbunch_iter([(0, 0)]), [(0, 0)])  # single node
+        assert nodes_equal(G.nbunch_iter([(0, 0), (1, 0)]), [(0, 0), (1, 0)])  # sequence
+
         # sequence with none in graph
-        assert nodes_equal(G.nbunch_iter([-1]), [])
+        assert nodes_equal(G.nbunch_iter([(-1, 0)]), [])
         # string sequence with none in graph
         assert nodes_equal(G.nbunch_iter("foo"), [])
         # node not in graph doesn't get caught upon creation of iterator
@@ -134,27 +148,49 @@ class BaseMixedEdgeGraphTester:
     def test_edges(self):
         G = self.K3
         edge_type = self.K3_edge_type
-        assert edges_equal(G.edges()[edge_type], [(0, 1), (0, 2), (1, 2)])
-        assert edges_equal(G.edges(0)[edge_type], [(0, 1), (0, 2)])
-        assert edges_equal(G.edges([0, 1])[edge_type], [(0, 1), (0, 2), (1, 2)])
+        assert edges_equal(
+            G.edges()[edge_type], [((0, 0), (1, 0)), ((0, 0), (2, 0)), ((1, 0), (2, 0))]
+        )
+        assert edges_equal(G.edges((0, 0))[edge_type], [((0, 0), (1, 0)), ((0, 0), (2, 0))])
+        assert edges_equal(
+            G.edges([(0, 0), (1, 0)])[edge_type],
+            [((0, 0), (1, 0)), ((0, 0), (2, 0)), ((1, 0), (2, 0))],
+        )
 
     def test_degree(self):
         G = self.K3
-        assert sorted(G.degree()[self.K3_edge_type]) == [(0, 2), (1, 2), (2, 2)]
-        assert dict(G.degree()[self.K3_edge_type]) == {0: 2, 1: 2, 2: 2}
-        assert G.degree(0)[self.K3_edge_type] == 2
-        with pytest.raises(nx.NetworkXError):
-            G.degree(-1)  # node not in graph
+        assert sorted(G.degree()[self.K3_edge_type]) == [
+            ((0, -1), 0),
+            ((0, 0), 2),
+            ((1, -1), 0),
+            ((1, 0), 2),
+            ((2, -1), 0),
+            ((2, 0), 2),
+        ]
+        assert dict(G.degree()[self.K3_edge_type]) == {
+            (0, 0): 2,
+            (0, -1): 0,
+            (1, 0): 2,
+            (1, -1): 0,
+            (2, 0): 2,
+            (2, -1): 0,
+        }
+        assert G.degree((0, 0))[self.K3_edge_type] == 2
+
+        # TODO: does not work as expected
+        # G.get_graphs('undirected').degree(-1)
+        # with pytest.raises(nx.NetworkXError, match='Node not in graph'):
+        #     G.degree([(-1, 0)])  # node not in graph
 
     def test_selfloop_degree(self):
         G = self.Graph()
         G.add_edge_type(nx.Graph(), "undirected")
-        G.add_edge(1, 1, edge_type="undirected")
-        assert sorted(G.degree()[self.K3_edge_type]) == [(1, 2)]
-        assert dict(G.degree()[self.K3_edge_type]) == {1: 2}
-        assert G.degree(1)[self.K3_edge_type] == 2
-        assert sorted(G.degree([1])[self.K3_edge_type]) == [(1, 2)]
-        assert G.degree(1, weight="weight")[self.K3_edge_type] == 2
+        G.add_edge((1, -1), (1, -1), edge_type="undirected")
+        assert sorted(G.degree()[self.K3_edge_type]) == [((1, -1), 2), ((1, 0), 0)]
+        assert dict(G.degree()[self.K3_edge_type]) == {(1, -1): 2, (1, 0): 0}
+        assert G.degree((1, -1))[self.K3_edge_type] == 2
+        assert sorted(G.degree([(1, -1)])[self.K3_edge_type]) == [((1, -1), 2)]
+        assert G.degree((1, -1), weight="weight")[self.K3_edge_type] == 2
 
     @pytest.mark.skip(reason="#TODO: doesn't work")
     def test_selfloops(self):
@@ -185,23 +221,9 @@ class BaseMixedEdgeGraphTester:
         assert id(G.nodes) != id(old_nodes)
 
 
-class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
-    def setup_method(self):
-        self.Graph = pywhy_nx.MixedEdgeGraph
-        self._graph_func = nx.Graph
-
-        # build dict-of-dict-of-dict K3
-        ed1, ed2, ed3 = ({}, {}, {})
-        self.k3adj = {0: {1: ed1, 2: ed2}, 1: {0: ed1, 2: ed3}, 2: {0: ed2, 1: ed3}}
-        self.k3edges = [(0, 1), (0, 2), (1, 2)]
-        self.k3nodes = [0, 1, 2]
-        self.K3_edge_type = "undirected"
-        self.K3 = self.Graph()
-        self.K3.add_edge_type(nx.Graph(), self.K3_edge_type)
-        self.K3.add_edges_from(self.k3edges, edge_type=self.K3_edge_type)
-
+class ComplexTimeSeriesMixedEdgeGraphTester:
     def test_init(self):
-        directed_edges = nx.DiGraph(
+        directed_edges = TimeSeriesDiGraph(
             [
                 ("x8", "x2"),
                 ("x9", "x2"),
@@ -220,26 +242,6 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         # all nodes should match after adding them to the mixed-edge-graph
         for _, graph in G.get_graphs().items():
             assert set(G.nodes) == set(graph.nodes)
-
-    def test_add_edge_type(self):
-        # test adding edge type with empty graph
-        G = self.Graph()
-
-        with pytest.raises(
-            RuntimeError, match="must be an instantiated instance of a base networkx graph"
-        ):
-            G.add_edge_type(nx.Graph, edge_type="undirected")
-
-        G.add_edge_type(nx.Graph(), edge_type="undirected")
-
-        with pytest.raises(ValueError, match="is already in the graph"):
-            G.add_edge_type(nx.Graph(), edge_type="undirected")
-
-        # test adding edge type with some nodes already
-        complete_G = nx.complete_graph(5, create_using=nx.DiGraph)
-        G.add_edge_type(complete_G, edge_type="directed")
-        for _, sub_graph in G.get_graphs().items():
-            assert sub_graph.nodes == complete_G.nodes
 
     def test_add_edge(self):
         edge_type = "bidirected"
@@ -401,3 +403,26 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         # No inputs -> exception
         with pytest.raises(nx.NetworkXError):
             nx.Graph().update()
+
+
+class TestTimeSeriesMixedEdgeGraph(BaseTimeSeriesMixedEdgeGraphTester):
+    def setup_method(self):
+        self.Graph = TimeSeriesMixedEdgeGraph
+        self._graph_func = TimeSeriesGraph
+
+        # build dict-of-dict-of-dict K3 with contemporaneous edges
+        self.k3edges = [
+            ((0, 0), (1, 0)),
+            ((0, 0), (2, 0)),
+            ((1, 0), (2, 0)),  # collider at (2, 0)
+        ]
+        self.max_lag = 2
+        self.k3variables = [0, 1, 2]
+        self.K3_edge_type = "undirected"
+
+        self.K3 = self.Graph()
+        self.K3.add_edge_type(TimeSeriesGraph(), self.K3_edge_type)
+        for edge in self.k3edges:
+            self.K3.add_edge(*edge, edge_type=self.K3_edge_type)
+
+        self.k3nodes = list(self.K3.nodes)

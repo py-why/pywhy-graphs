@@ -2,16 +2,16 @@ import networkx as nx
 import numpy as np
 import pytest
 
-from pywhy_graphs.classes.timeseries.functions import (
-    get_summary_graph,
-    has_homologous_edges,
-    nodes_in_time_order,
-)
-from pywhy_graphs.classes.timeseries.timeseries import (
+from pywhy_graphs.classes.timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     TimeSeriesDiGraph,
     TimeSeriesGraph,
+)
+from pywhy_graphs.classes.timeseries.functions import (
+    get_summary_graph,
+    has_homologous_edges,
+    nodes_in_time_order,
 )
 
 

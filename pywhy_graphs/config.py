@@ -169,7 +169,7 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
         matplotlib:       3.6.2 {backend=MacOSX}
         pandas:           1.5.2
         pygraphviz:       Not found
-        causal-learn:     Not found
+        causal-learn:     no version info
         joblib:           1.2.0
 
         pywhy_graphs:     0.0.0
@@ -218,7 +218,7 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
         "matplotlib",
         "pandas",
         "pygraphviz",
-        # "causallearn",  # no version
+        "causallearn",  # no version
         # "tigramite",  # no version
         "joblib",
         "",
@@ -249,7 +249,10 @@ def sys_info(fid=None, show_paths=False, *, dependencies="user"):
         except Exception:
             out("Not found\n")
         else:
-            out(mod.__version__)
+            if mod_name == "causallearn":
+                out("no version info")
+            else:
+                out(mod.__version__)
             if mod_name == "numpy":
                 out(f" {{{libs}}}")
             elif mod_name == "matplotlib":

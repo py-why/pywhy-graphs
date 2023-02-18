@@ -12,7 +12,6 @@ We provide functions for simulating structural causal models starting from a
 causal graph. This is useful for testing causal discovery algorithms, which assume
 an underlying graph exists and then data is generated faithful to that graph.
 
-
 .. automodule:: pywhy_graphs.simulate
    :no-members:
    :no-inherited-members:

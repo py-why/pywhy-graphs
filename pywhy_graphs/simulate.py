@@ -2,7 +2,6 @@ from typing import Callable, List, Optional
 
 import networkx as nx
 import numpy as np
-import pandas as pd
 import scipy.stats
 
 import pywhy_graphs.networkx as pywhy_nx
@@ -149,6 +148,8 @@ def simulate_data_from_var(
     ``n_realizations`` parameter instead. To generate 500 independent realizations in the
     above example, one would set ``n_realizations = 500`` and ``n_times=2``.
     """
+    import pandas as pd
+
     if var_arr.shape[0] != var_arr.shape[1]:
         raise ValueError(
             f"The shape of the VAR array should be "
@@ -313,6 +314,8 @@ def simulate_var_process_from_summary_graph(
     -----
     Right now, it is assumed that the summary graph is just a DAG.
     """
+    import pandas as pd
+
     rng = np.random.default_rng(random_state)
     n_nodes = G.number_of_nodes()
     var_arr = np.zeros((n_nodes, n_nodes, max_lag + 1))

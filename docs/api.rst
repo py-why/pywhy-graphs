@@ -15,8 +15,8 @@ for classes (``CamelCase`` names) and functions
 (``underscore_case`` names) of pywhy-graphs, grouped thematically by analysis
 stage.
 
-Causal graph classes
-====================
+:mod:`pywhy_graphs.classes`: Causal graph classes
+=================================================
 These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature. 
 

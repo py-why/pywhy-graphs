@@ -4,12 +4,8 @@ import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.typing import TsNode
 
 from .base import BaseTimeSeriesGraph, tsdict
-from .timeseries import (
-    StationaryTimeSeriesDiGraph,
-    StationaryTimeSeriesGraph,
-    TimeSeriesDiGraph,
-    TimeSeriesGraph,
-)
+from .digraph import StationaryTimeSeriesDiGraph, TimeSeriesDiGraph
+from .graph import StationaryTimeSeriesGraph, TimeSeriesGraph
 
 
 class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
@@ -56,56 +52,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
     def copy(self):
         """Returns a copy of the graph.
 
-        The copy method by default returns an independent shallow copy
-        of the graph and attributes. That is, if an attribute is a
-        container, that container is shared by the original an the copy.
-        Use Python's `copy.deepcopy` for new containers.
-
-        Notes
-        -----
-        All copies reproduce the graph structure, but data attributes
-        may be handled in different ways. There are four types of copies
-        of a graph that people might want.
-
-        Deepcopy -- A "deepcopy" copies the graph structure as well as
-        all data attributes and any objects they might contain.
-        The entire graph object is new so that changes in the copy
-        do not affect the original object. (see Python's copy.deepcopy)
-
-        Data Reference (Shallow) -- For a shallow copy the graph structure
-        is copied but the edge, node and graph attribute dicts are
-        references to those in the original graph. This saves
-        time and memory but could cause confusion if you change an attribute
-        in one graph and it changes the attribute in the other.
-        NetworkX does not provide this level of shallow copy.
-
-        Independent Shallow -- This copy creates new independent attribute
-        dicts and then does a shallow copy of the attributes. That is, any
-        attributes that are containers are shared between the new graph
-        and the original. This is exactly what ``dict.copy()`` provides.
-        You can obtain this style copy using:
-
-            >>> G = nx.path_graph(5)
-            >>> H = G.copy()
-            >>> H = G.copy(as_view=False)
-            >>> H = nx.Graph(G)
-            >>> H = G.__class__(G)
-
-        Fresh Data -- For fresh data, the graph structure is copied while
-        new empty data attribute dicts are created. The resulting graph
-        is independent of the original and it has no edge, node or graph
-        attributes. Fresh copies are not enabled. Instead use:
-
-            >>> H = G.__class__()
-            >>> H.add_nodes_from(G)
-            >>> H.add_edges_from(G.edges)
-
-        View -- Inspired by dict-views, graph-views act like read-only
-        versions of the original graph, providing a copy of the original
-        structure without requiring any memory for copying the information.
-
-        See the Python copy module for more information on shallow
-        and deep copies, https://docs.python.org/3/library/copy.html.
+        Exactly the same as :meth:`pywhy_graphs.networkx.MixedEdgeGraph.copy`,
+        except this preserves the max lag graph attribute.
 
         Parameters
         ----------
@@ -120,16 +68,10 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
 
         See Also
         --------
-        pywhy_graphs.networkx.MixedEdgeGraph.to_directed: return a directed
-            copy of the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> H = G.copy()
-
+        :meth:`pywhy_graphs.networkx.MixedEdgeGraph.to_directed`: return a
+            directed copy of the graph.
         """
-        G = self.__class__()
+        G = self.__class__(max_lag=self.max_lag)
         G.graph.update(self.graph)
         graph_attr = G.graph
 
@@ -190,6 +132,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         u_lag = np.abs(u_lag)
         v_lag = np.abs(v_lag)
 
+        to_t = v_lag
+        from_t = u_lag
         if direction == "both":
             # re-center to 0, assuming v_lag is smaller, since it is the "to node"
             u_lag = u_lag - v_lag
@@ -210,11 +154,14 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
                 from_t -= 1
         elif direction == "backwards":
             for _ in range(u_lag, self._max_lag + 1):
+                print((u, -from_t), (v, -to_t))
                 super().add_edge((u, -from_t), (v, -to_t), **attr)
                 to_t += 1
                 from_t += 1
 
-    def remove_homologous_edges(self, u_of_edge: TsNode, v_of_edge: TsNode, direction="both"):
+    def remove_homologous_edges(
+        self, u_of_edge: TsNode, v_of_edge: TsNode, edge_type: str = "all", direction="both"
+    ):
         """Remove homologous edges.
 
         Assumes the edge that we consider is ``(u_of_edge, v_of_edge)``, that is 'u' points to 'v'.
@@ -240,6 +187,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         u_lag = np.abs(u_lag)
         v_lag = np.abs(v_lag)
 
+        to_t = v_lag
+        from_t = u_lag
         if direction == "both":
             # re-center to 0, assuming v_lag is smaller, since it is the "to node"
             u_lag = u_lag - v_lag
@@ -250,24 +199,20 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
             from_t = u_lag
             for _ in range(u_lag, self._max_lag + 1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t += 1
                 from_t += 1
         elif direction == "forward":
-            to_t = v_lag
-            from_t = u_lag
             # decrease lag moving forward
             for _ in range(v_lag, -1, -1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t -= 1
                 from_t -= 1
         elif direction == "backwards":
-            to_t = v_lag
-            from_t = u_lag
             for _ in range(u_lag, self._max_lag + 1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t += 1
                 from_t += 1
 
@@ -287,9 +232,12 @@ class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
         Attributes to add to graph as key=value pairs.
     """
 
+    # whether or not the graph should be assumed to be stationary
+    stationary: bool = True
+
     # supported graph types
     graph_types = (StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph)
 
     def __init__(self, graphs=None, edge_types=None, max_lag: int = None, **attr):
-        attr.update(dict(max_lag=max_lag))
-        super().__init__(graphs, edge_types, **attr)
+        # attr.update(dict(max_lag=max_lag))
+        super().__init__(graphs, edge_types, max_lag=max_lag, **attr)
