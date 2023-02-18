@@ -57,23 +57,74 @@ the addition of "F-nodes", which represent interventions :footcite:`pearl1993asp
 Finally, we also support time-series and create graphs that represent
 stationary time-series causal processes.
 
-+---------------------------------------+------------------------------------------+---------------------------------+
-| Pywhy_graph Class                     | Edge Types                               | Analagous non time-series graph |
-+=======================================+==========================================+=================================+
-| StationaryTimeSeriesGraph             | undirected                               | nx.Graph                        |
-+---------------------------------------+------------------------------------------+---------------------------------+
-| StationaryTimeSeriesDiGraph           | directed                                 | nx.DiGraph                      |
-+---------------------------------------+------------------------------------------+---------------------------------+
-| StationaryTimeSeriesMixedEdgeGraph    | directed, undirected, bidirected         | MixedEdgeGraph                  |
-+---------------------------------------+------------------------------------------+---------------------------------+
-| StationaryTimeSeriesCPDAG             | directed, undirected                     | CPDAG                           |
-+---------------------------------------+------------------------------------------+---------------------------------+
-| StationaryTimeSeriesPAG               | directed, undirected, bidirected, circle | PAG                             |
-+---------------------------------------+------------------------------------------+---------------------------------+
-
++------------------------------------+----------------------------------+---------------------------------+
+| Pywhy_graph Class                  | Edge Types                       | Analagous non time-series graph |
++====================================+==================================+=================================+
+| StationaryTimeSeriesGraph          | undirected                       | nx.Graph                        |
++------------------------------------+----------------------------------+---------------------------------+
+| StationaryTimeSeriesDiGraph        | directed                         | nx.DiGraph                      |
++------------------------------------+----------------------------------+---------------------------------+
+| StationaryTimeSeriesMixedEdgeGraph | directed, undirected, bidirected | MixedEdgeGraph                  |
++------------------------------------+----------------------------------+---------------------------------+
+| StationaryTimeSeriesCPDAG          | directed, undirected             | CPDAG                           |
++------------------------------------+----------------------------------+---------------------------------+
+| StationaryTimeSeriesPAG            | directed, bidirected, circle     | PAG                             |
++------------------------------------+----------------------------------+---------------------------------+
 
 Causal graph types
 ==================
+.. currentmodule:: pywhy_graphs.classes
+.. autoclass:: ADMG
+    :noindex:
+    :inherited-members:
+.. autoclass:: CPDAG
+    :noindex:
+    :inherited-members:
+.. autoclass:: PAG
+    :noindex:
+    :inherited-members:
+.. autoclass:: AugmentedGraph
+    :noindex:
+    :inherited-members:
+.. autoclass:: IPAG
+    :noindex:
+    :inherited-members:
+.. autoclass:: PsiPAG
+    :noindex:
+    :inherited-members:
+
+Causal graph types for time-series (alpha)
+==========================================
+Currently, we have an alpha support for time-series causal graphs. This means that their internals
+and API will most surely change over the next few versions.
+
+Support of time-series is implemented in the form of more structured graph classes, where
+every graph has two major differences:
+
+- max lag: Every graph has a keyword argument input ``max_lag``, specifying the maximum lag
+  that the time-series graph can represent.
+- time-series node (tsnode): Every graph's nodes are required to be a 2-tuple, with the variable
+  name as the first element and the lag as the second element.
+- time-ordered: All edges are time-ordered, unless the underlying graph is an undirected
+  :class:`nx.Graph`. Time-ordered edges means that there are no directed edges pointing from
+  the present to the past, so there are no edges of the form ``(('x', -t), ('y', -t'))``, where
+  ``t < t'``. For example, a directed edge of the form ``(('x', -3), ('y', -4))`` is not allowed.
+- selection bias (undirected edges): There is no support for undirected edges, or selection bias
+  in time-series causal graphs at this moment.
+
+Some graphs also embody the implicit assumption of "stationarity", which means all edges are
+repeated over time. For example: if we assume stationarity, and know the edge
+``(('x', -3), ('y', -2))`` exists in the graph and the maximum lag is 4, then the following edges
+also exist in the graph:
+
+- ``(('x', -4), ('y', -3))``
+- ``(('x', -2), ('y', -1))``
+- ``(('x', -1), ('y', 0))``
+
+Note that stationarity in the Markov equivalence class of the causal graphs has some subtle differences
+that impact the causal assumptions encoded in the MEC. All other functionalities are similar. See
+:footcite:`gerhardus2021characterization` for a characterization of assumptions within a time-series
+causal graph.
 
 .. currentmodule:: pywhy_graphs.classes.timeseries
 .. autoclass:: TimeSeriesGraph
@@ -101,7 +152,3 @@ Causal graph types
     :noindex:
     :inherited-members:
 
-.. note:: NetworkX uses `dicts` to store the nodes and neighbors in a graph.
-   So the reporting of nodes and edges for the base graph classes may not
-   necessarily be consistent across versions and platforms; however, the reporting
-   for CPython is consistent across platforms and versions after 3.6.

@@ -132,7 +132,11 @@ class TsGraphNodeMixin:
 
 
 class TsGraphPropertyMixin:
-    """A mixin class for time-series graph properties."""
+    """A mixin class for time-series graph properties.
+
+    This adds structure to the :class:`networkx.Graph`'s graph attribute
+    dictionary (called ``graph_attr_dict_factory``).
+    """
 
     graph: Dict
     _adj: _CachedPropertyResetterAdj
@@ -154,58 +158,8 @@ class TsGraphPropertyMixin:
     def copy(self, as_view: bool = False):
         """Returns a copy of the graph.
 
-        The copy method by default returns an independent shallow copy
-        of the graph and attributes. That is, if an attribute is a
-        container, that container is shared by the original an the copy.
-        Use Python's `copy.deepcopy` for new containers.
-
-        If `as_view` is True then a view is returned instead of a copy.
-
-        Notes
-        -----
-        All copies reproduce the graph structure, but data attributes
-        may be handled in different ways. There are four types of copies
-        of a graph that people might want.
-
-        Deepcopy -- A "deepcopy" copies the graph structure as well as
-        all data attributes and any objects they might contain.
-        The entire graph object is new so that changes in the copy
-        do not affect the original object. (see Python's copy.deepcopy)
-
-        Data Reference (Shallow) -- For a shallow copy the graph structure
-        is copied but the edge, node and graph attribute dicts are
-        references to those in the original graph. This saves
-        time and memory but could cause confusion if you change an attribute
-        in one graph and it changes the attribute in the other.
-        NetworkX does not provide this level of shallow copy.
-
-        Independent Shallow -- This copy creates new independent attribute
-        dicts and then does a shallow copy of the attributes. That is, any
-        attributes that are containers are shared between the new graph
-        and the original. This is exactly what `dict.copy()` provides.
-        You can obtain this style copy using:
-
-            >>> G = nx.path_graph(5)
-            >>> H = G.copy()
-            >>> H = G.copy(as_view=False)
-            >>> H = nx.Graph(G)
-            >>> H = G.__class__(G)
-
-        Fresh Data -- For fresh data, the graph structure is copied while
-        new empty data attribute dicts are created. The resulting graph
-        is independent of the original and it has no edge, node or graph
-        attributes. Fresh copies are not enabled. Instead use:
-
-            >>> H = G.__class__()
-            >>> H.add_nodes_from(G)
-            >>> H.add_edges_from(G.edges)
-
-        View -- Inspired by dict-views, graph-views act like read-only
-        versions of the original graph, providing a copy of the original
-        structure without requiring any memory for copying the information.
-
-        See the Python copy module for more information on shallow
-        and deep copies, https://docs.python.org/3/library/copy.html.
+        Exactly the same as :meth:`networkx.Graph.copy`, but preserves
+        max lag graph attributes.
 
         Parameters
         ----------
@@ -221,12 +175,6 @@ class TsGraphPropertyMixin:
         See Also
         --------
         to_directed: return a directed copy of the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> H = G.copy()
-
         """
         if as_view is True:
             return nx.graphviews.generic_graph_view(self)
@@ -369,8 +317,8 @@ class TsGraphEdgeMixin:
     def add_edge(self, u_of_edge: TsNode, v_of_edge: TsNode, **attr):
         self._check_ts_node(u_of_edge)
         self._check_ts_node(v_of_edge)
-        u, u_lag = u_of_edge
-        v, v_lag = v_of_edge
+        _, u_lag = u_of_edge
+        _, v_lag = v_of_edge
         if u_lag > 0 or v_lag > 0:
             raise RuntimeError(f"All lags should be negative or 0, not {u_lag} or {v_lag}.")
 

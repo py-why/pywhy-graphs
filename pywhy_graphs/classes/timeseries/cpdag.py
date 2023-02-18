@@ -5,8 +5,9 @@ import networkx as nx
 from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
 from pywhy_graphs.typing import Node
 
+from .digraph import StationaryTimeSeriesDiGraph
+from .graph import StationaryTimeSeriesGraph
 from .mixededge import StationaryTimeSeriesMixedEdgeGraph
-from .timeseries import StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph
 
 
 class StationaryTimeSeriesCPDAG(

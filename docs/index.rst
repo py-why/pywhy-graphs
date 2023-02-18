@@ -16,6 +16,15 @@ provide. You can also find an exhaustive list of the public API in the
 :ref:`api_ref`. You can also look at our numerous :ref:`examples <general_examples>`
 that illustrate the use of ``pywhy_graphs`` in many different contexts.
 
+API Stability
+-------------
+Currently, we are in very early stages of development. Most likely certain aspects of the causal
+graphs API will change, but we will do our best to maintain some consistency. Our goal is to
+eventually converge to a stable API that maintains the common software engineering release cycle traits
+(e.g. deprecation cycles and API stability within major versions). Certain functionality
+will be marked as "alpha" indicating that their might be drastic changes over different releases.
+One should use alpha functionality with caution.
+
 
 Contents
 --------
