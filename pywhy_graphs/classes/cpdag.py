@@ -57,14 +57,14 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
 
     - Directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
         The subgraph of directed edges may be accessed by the
-        :meth:`sub_directed_graph`. Their edges in networkx format can be
-        accessed by :attr:`directed_edges` and the corresponding name of the
-        edge type by :attr:`directed_edge_name`.
+        `CPDAG.sub_directed_graph`. Their edges in networkx format can be
+        accessed by `CPDAG.directed_edges` and the corresponding name of the
+        edge type by `CPDAG.directed_edge_name`.
     - Undirected edges (--, indicating uncertainty) = `networkx.Graph`
         The subgraph of undirected edges may be accessed by the
-        :meth:`sub_undirected_graph`. Their edges in networkx format can be
-        accessed by :attr:`undirected_edges` and the corresponding name of the
-        edge type by :attr:`undirected_edge_name`.
+        `CPDAG.sub_undirected_graph`. Their edges in networkx format can be
+        accessed by `CPDAG.undirected_edges` and the corresponding name of the
+        edge type by `CPDAG.undirected_edge_name`.
 
     By definition, no cycles may exist due to the directed edges.
     """

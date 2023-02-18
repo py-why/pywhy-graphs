@@ -80,6 +80,7 @@ warnings.filterwarnings(
 autosummary_generate = True
 autodoc_default_options = {
     "inherited-members": False,
+    "private-members": False,
 }
 autodoc_inherit_docstrings = False
 # autodoc_typehints = "signature"
