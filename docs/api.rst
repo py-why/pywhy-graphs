@@ -1,3 +1,5 @@
+.. _api_ref:
+
 ###
 API
 ###
@@ -13,8 +15,8 @@ for classes (``CamelCase`` names) and functions
 (``underscore_case`` names) of pywhy-graphs, grouped thematically by analysis
 stage.
 
-Causal graph classes
-====================
+:mod:`pywhy_graphs.classes`: Causal graph classes
+=================================================
 These are the causal classes for Structural Causal Models (SCMs), or various causal
 graphs encountered in the literature. 
 
@@ -95,6 +97,44 @@ The following are useful functions that operate specifically on time-series grap
    get_summary_graph
    has_homologous_edges
    nodes_in_time_order
+
+We also have classes for representing causal time-series graphs.
+
+Pywhy-graphs implements a networkx-like graph class for representing time-series.
+Stationary causal timeseries graphs may be useful in various applications.
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+.. autosummary::
+   :toctree: generated/
+   
+   TimeSeriesGraph
+   TimeSeriesDiGraph
+   TimeSeriesMixedEdgeGraph
+
+For stationary time-series, we explicitly represent them with different classes.
+
+.. autosummary::
+   :toctree: generated/
+
+   StationaryTimeSeriesCPDAG
+   StationaryTimeSeriesDiGraph
+   StationaryTimeSeriesGraph
+   StationaryTimeSeriesMixedEdgeGraph
+   StationaryTimeSeriesPAG
+
+:mod:`pywhy_graphs.simulate`: Causal graphical model simulations
+================================================================
+Pywhy-graphs implements a various functions for assisting in simulating
+a SCM and their data starting from the causal graph.
+
+.. currentmodule:: pywhy_graphs
+
+.. autosummary::
+   :toctree: generated/
+
+   simulate.simulate_linear_var_process
+   simulate.simulate_data_from_var
+   simulate.simulate_var_process_from_summary_graph
 
 
 Visualization of causal graphs

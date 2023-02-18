@@ -5,13 +5,13 @@ from itertools import combinations
 import networkx as nx
 import pytest
 
-from pywhy_graphs.classes.timeseries.functions import complete_ts_graph, empty_ts_graph
-from pywhy_graphs.classes.timeseries.timeseries import (
+from pywhy_graphs.classes.timeseries import (
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesGraph,
     TimeSeriesDiGraph,
     TimeSeriesGraph,
 )
+from pywhy_graphs.classes.timeseries.functions import complete_ts_graph, empty_ts_graph
 
 
 @pytest.mark.parametrize(

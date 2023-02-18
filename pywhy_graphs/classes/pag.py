@@ -44,7 +44,7 @@ class PAG(ADMG, ConservativeMixin):
     --------
     networkx.DiGraph
     networkx.Graph
-    ADMG
+    pywhy_graphs.ADMG
 
     Notes
     -----
@@ -210,8 +210,8 @@ class PAG(ADMG, ConservativeMixin):
         """Return an iterator over children of node n.
 
         Possible children of 'n' are nodes with an edge like
-        'n' o-> 'x'. Nodes with 'n' o-o 'x' are not considered
-        possible children.
+        ``'n' o-> 'x'``. Nodes with ``'n' <-* 'x'``
+        are not considered possible children.
 
         Parameters
         ----------
@@ -223,13 +223,19 @@ class PAG(ADMG, ConservativeMixin):
         possible_children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_directed_graph().successors(n)
+        for nbr in self.neighbors(n):
+            if (
+                not self.has_edge(nbr, n, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def possible_parents(self, n: Node) -> Iterator:
         """Return an iterator over possible parents of node n.
 
         Possible parents of 'n' are nodes with an edge like
-        'n' <-o 'x'. Nodes with 'n' o-o 'x' are not considered
+        ``'n' <-* 'x'``. Nodes with ``'n' *-> 'x'`` are not considered
         possible parents.
 
         Parameters
@@ -242,7 +248,13 @@ class PAG(ADMG, ConservativeMixin):
         possible_parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_directed_graph().predecessors(n)
+        for nbr in self.neighbors(n):
+            if (
+                not self.has_edge(n, nbr, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def parents(self, n: Node) -> Iterator:
         """Return the definite parents of node 'n' in a PAG.
@@ -269,7 +281,9 @@ class PAG(ADMG, ConservativeMixin):
         """
         possible_parents = self.possible_parents(n)
         for node in possible_parents:
-            if not self.has_edge(n, node, self.circle_edge_name):
+            if not self.has_edge(n, node, self.circle_edge_name) and self.has_edge(
+                node, n, self.directed_edge_name
+            ):
                 yield node
 
     def children(self, n: Node) -> Iterator:
@@ -297,7 +311,9 @@ class PAG(ADMG, ConservativeMixin):
         """
         possible_children = self.possible_children(n)
         for node in possible_children:
-            if not self.has_edge(node, n, self.circle_edge_name):
+            if not self.has_edge(node, n, self.circle_edge_name) and self.has_edge(
+                n, node, self.directed_edge_name
+            ):
                 yield node
 
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
