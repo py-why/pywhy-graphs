@@ -85,8 +85,46 @@ class TimeSeriesMixedEdgeGraphTester:
         assert ("x", 0) not in G.neighbors(("x", -1))
         assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
-    def test_add_homologous_edges(self):
-        pass
+    @pytest.mark.parametrize("direction", ["both", "forward", "backwards"])
+    def test_add_homologous_contemporaneous_edges(self, direction):
+        G = self.G.copy()
+
+        G.add_homologous_edges(("x", -1), ("y", -1), direction=direction)
+
+        # currently any stationary time series graph adds edges in both directions
+        if direction == "both" or self.G.stationary:
+            for lag in range(0, G.max_lag + 1):
+                assert G.has_edge(("x", -lag), ("y", -lag))
+        elif direction == "forward":
+            for lag in range(2, G.max_lag + 1):
+                assert not G.has_edge(("x", -lag), ("y", -lag))
+            assert G.has_edge(("x", 0), ("y", 0))
+            assert G.has_edge(("x", -1), ("y", -1))
+        elif direction == "backwards":
+            for lag in range(1, G.max_lag + 1):
+                assert G.has_edge(("x", -lag), ("y", -lag))
+            assert not G.has_edge(("x", 0), ("y", 0))
+
+    @pytest.mark.parametrize("direction", ["both", "forward", "backwards"])
+    def test_remove_homologous_edges(self, direction):
+        G = self.G.copy()
+
+        G.add_homologous_edges(("x", -1), ("y", -1), direction="both")
+        G.remove_homologous_edges(("x", -1), ("y", -1), direction=direction)
+
+        # currently any stationary time series graph adds edges in both directions
+        if direction == "both" or self.G.stationary:
+            for lag in range(0, G.max_lag + 1):
+                assert not G.has_edge(("x", -lag), ("y", -lag))
+        elif direction == "forward":
+            for lag in range(2, G.max_lag + 1):
+                assert G.has_edge(("x", -lag), ("y", -lag))
+            assert not G.has_edge(("x", 0), ("y", 0))
+            assert not G.has_edge(("x", -1), ("y", -1))
+        elif direction == "backwards":
+            for lag in range(1, G.max_lag + 1):
+                assert not G.has_edge(("x", -lag), ("y", -lag))
+            assert G.has_edge(("x", 0), ("y", 0))
 
     def test_m_sep_complete_graph(self):
         variables = self.G.variables

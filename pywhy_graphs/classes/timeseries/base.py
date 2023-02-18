@@ -414,6 +414,8 @@ class TsGraphEdgeMixin:
         u_lag = np.abs(u_lag)
         v_lag = np.abs(v_lag)
 
+        to_t = v_lag
+        from_t = u_lag
         if direction == "both":
             # re-center to 0, assuming v_lag is smaller, since it is the "to node"
             u_lag = u_lag - v_lag

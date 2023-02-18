@@ -190,6 +190,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         u_lag = np.abs(u_lag)
         v_lag = np.abs(v_lag)
 
+        to_t = v_lag
+        from_t = u_lag
         if direction == "both":
             # re-center to 0, assuming v_lag is smaller, since it is the "to node"
             u_lag = u_lag - v_lag
@@ -210,11 +212,14 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
                 from_t -= 1
         elif direction == "backwards":
             for _ in range(u_lag, self._max_lag + 1):
+                print((u, -from_t), (v, -to_t))
                 super().add_edge((u, -from_t), (v, -to_t), **attr)
                 to_t += 1
                 from_t += 1
 
-    def remove_homologous_edges(self, u_of_edge: TsNode, v_of_edge: TsNode, direction="both"):
+    def remove_homologous_edges(
+        self, u_of_edge: TsNode, v_of_edge: TsNode, edge_type: str = "all", direction="both"
+    ):
         """Remove homologous edges.
 
         Assumes the edge that we consider is ``(u_of_edge, v_of_edge)``, that is 'u' points to 'v'.
@@ -240,6 +245,8 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
         u_lag = np.abs(u_lag)
         v_lag = np.abs(v_lag)
 
+        to_t = v_lag
+        from_t = u_lag
         if direction == "both":
             # re-center to 0, assuming v_lag is smaller, since it is the "to node"
             u_lag = u_lag - v_lag
@@ -250,24 +257,20 @@ class TimeSeriesMixedEdgeGraph(BaseTimeSeriesGraph, pywhy_nx.MixedEdgeGraph):
             from_t = u_lag
             for _ in range(u_lag, self._max_lag + 1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t += 1
                 from_t += 1
         elif direction == "forward":
-            to_t = v_lag
-            from_t = u_lag
             # decrease lag moving forward
             for _ in range(v_lag, -1, -1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t -= 1
                 from_t -= 1
         elif direction == "backwards":
-            to_t = v_lag
-            from_t = u_lag
             for _ in range(u_lag, self._max_lag + 1):
                 if self.has_edge((u, -from_t), (v, -to_t)):
-                    super().remove_edge((u, -from_t), (v, -to_t))
+                    super().remove_edge((u, -from_t), (v, -to_t), edge_type=edge_type)
                 to_t += 1
                 from_t += 1
 
@@ -286,6 +289,9 @@ class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
     attr : keyword arguments, optional (default= no attributes)
         Attributes to add to graph as key=value pairs.
     """
+
+    # whether or not the graph should be assumed to be stationary
+    stationary: bool = True
 
     # supported graph types
     graph_types = (StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph)
