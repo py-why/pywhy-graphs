@@ -43,6 +43,18 @@ class TestCPDAG(BaseGraph):
         incoming_graph_data = {0: {1: {}, 2: ed2}}
         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
 
+    def test_wrong_construction(self):
+        # PAGs only allow one type of edge between any two nodes
+        edge_list = [
+            ("x4", "x1"),
+            ("x2", "x5"),
+        ]
+        latent_edge_list = [("x1", "x2"), ("x4", "x5"), ("x4", "x1")]
+        with pytest.raises(
+            RuntimeError, match="There is already an existing edge between x4 and x1"
+        ):
+            self.Graph(edge_list, incoming_undirected_edges=latent_edge_list)
+
 
 class TestADMG(BaseGraph):
     """Test relevant causal graph properties."""
@@ -86,56 +98,6 @@ class TestADMG(BaseGraph):
         print(self.G.edges())
 
         assert list(G.c_components()) == [{0, 1}, {2}]
-
-    # def test_hash(self):
-    #     """Test hashing a causal graph."""
-    #     G = self.G
-    #     current_hash = hash(G)
-    #     assert G._current_hash is None
-
-    #     G.add_bidirected_edge("1", "2")
-    #     new_hash = hash(G)
-    #     assert current_hash != new_hash
-
-    #     G.remove_bidirected_edge("1", "2")
-    #     assert current_hash == hash(G)
-
-    # def test_full_graph(self):
-    #     """Test computing a full graph from causal graph."""
-    #     G = self.G
-    #     # the current hash should match after computing full graphs
-    #     current_hash = hash(G)
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-
-    #     # after adding a new edge, the hash should change and
-    #     # be different
-    #     G.add_bidirected_edge("1", "2")
-    #     new_hash = hash(G)
-    #     assert new_hash != G._current_hash
-
-    #     # once the hash is computed, it should be the same again
-    #     G.compute_full_graph()
-    #     assert new_hash == G._current_hash
-
-    #     # removing the bidirected edge should result in the same
-    #     # hash again
-    #     G.remove_bidirected_edge("1", "2")
-    #     assert current_hash != G._current_hash
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-
-    #     # different orders of edges shouldn't matter
-    #     G_copy = G.copy()
-    #     G.add_bidirected_edge("1", "2")
-    #     G.add_bidirected_edge("2", "3")
-    #     G_hash = hash(G)
-    #     G_copy.add_bidirected_edge("2", "3")
-    #     G_copy.add_bidirected_edge("1", "2")
-    #     copy_hash = hash(G_copy)
-    #     assert G_hash == copy_hash
 
     def test_m_separation(self):
         G = self.G.copy()
