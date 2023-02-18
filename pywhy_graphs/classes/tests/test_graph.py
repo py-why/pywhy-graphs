@@ -290,15 +290,16 @@ class TestPAG(TestADMG):
 
         # basic parent/children semantics
         assert [2] == list(G.children(0))
+        assert [0] == list(G.parents(2))
         assert [] == list(G.parents(0))
         assert [] == list(G.children(1))
         assert [] == list(G.parents(1))
         assert [] == list(G.parents(4))
         assert [] == list(G.children(4))
 
-        # o-o edges do not constitute possible parent/children
-        assert [] == list(G.possible_children(1)) == list(G.possible_parents(1))
-        assert [] == list(G.possible_children(4)) == list(G.possible_parents(4))
+        # o-o edges do constitute possible parent/children
+        assert [4] == list(G.possible_children(1)) == list(G.possible_parents(1))
+        assert [1] == list(G.possible_children(4)) == list(G.possible_parents(4))
 
         # when the parental relationship between 2 and 0
         # is made uncertain, the parents/children sets reflect

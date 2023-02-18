@@ -35,7 +35,7 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
     --------
     networkx.DiGraph
     networkx.Graph
-    ADMG
+    pywhy_graphs.ADMG
 
     Notes
     -----
