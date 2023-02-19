@@ -161,7 +161,7 @@ def test_discriminating_path():
     (2012): 294-321.
     """
     # this is Figure 2's PAG after orienting colliders, there should be no
-    # discriminating path
+    # discriminating path, except one
     edges = [
         ("x4", "x1"),
         ("x4", "x6"),
@@ -180,9 +180,12 @@ def test_discriminating_path():
 
     for u in pag.nodes:
         for (a, c) in permutations(pag.neighbors(u), 2):
-            found_discriminating_path, _, _ = discriminating_path(pag, u, a, c, max_path_length=100)
+            found_discriminating_path, disc_path, _ = discriminating_path(
+                pag, u, a, c, max_path_length=100
+            )
             if (c, u, a) == ("x6", "x3", "x2"):
                 assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x3", "x6"]
             else:
                 assert not found_discriminating_path
 
@@ -191,12 +194,65 @@ def test_discriminating_path():
     pag.add_edge("x5", "x2", pag.bidirected_edge_name)
     for u in pag.nodes:
         for (a, c) in permutations(pag.neighbors(u), 2):
-            found_discriminating_path, _, _ = discriminating_path(pag, u, a, c, max_path_length=100)
-            if (c, u, a) in (("x6", "x5", "x2"), ("x6", "x3", "x2")):
+            found_discriminating_path, disc_path, _ = discriminating_path(
+                pag, u, a, c, max_path_length=100
+            )
+            if (c, u, a) == ("x6", "x5", "x2"):
                 assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x5", "x6"]
+            elif (c, u, a) == ("x6", "x3", "x2"):
+                assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x3", "x6"]
             else:
                 assert not found_discriminating_path
 
+
+@pytest.mark.parametrize("xp_xb", ["circle", "bidirected", None])
+@pytest.mark.parametrize("xj_xb", ["circle", "bidirected", None])
+def test_discriminating_path_longer(xj_xb, xp_xb):
+    """Test discriminating path for Figure 4 from the supplemental of [1].
+
+    The endpoints indicated by circle endpoints can be anything:
+
+    - xj <-* xb
+    - xp <-* xb
+
+    References
+    ----------
+    [1] Colombo, Diego, et al. "Learning high-dimensional directed acyclic
+    graphs with latent and selection variables." The Annals of Statistics
+    (2012): 294-321.
+    """
+    # test against longer discriminating path with Figure 4
+    edges = [
+        ("xk", "xp"),
+        ("xj", "xp"),
+        ("xb", "xp"),
+        ("xb", "xj"),
+    ]
+    bidirected_edges = [("xl", "xk"), ("xk", "xj")]
+    pag = pywhy_graphs.PAG(edges, incoming_bidirected_edges=bidirected_edges)
+    if xp_xb == "bidirected":
+        pag.remove_edge("xb", "xp", pag.directed_edge_name)
+        pag.add_edge("xp", "xb", xp_xb)
+    elif xp_xb is not None:
+        pag.add_edge("xp", "xb", xp_xb)
+
+    if xj_xb == "bidirected":
+        pag.remove_edge("xb", "xj", pag.directed_edge_name)
+        pag.add_edge("xj", "xb", xj_xb)
+    elif xj_xb is not None:
+        pag.add_edge("xj", "xb", xj_xb)
+
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "xb", "xj", "xp", max_path_length=10
+    )
+    assert found_discriminating_path
+    assert list(disc_path) == ["xl", "xk", "xj", "xb", "xp"]
+
+
+def test_restricted_discriminating_path():
+    """Test computing discriminating path with path length restrictions."""
     edges = [
         ("x4", "x1"),
         ("x4", "x6"),
@@ -212,10 +268,16 @@ def test_discriminating_path():
     pag = pywhy_graphs.PAG(
         edges, incoming_bidirected_edges=bidirected_edges, incoming_circle_edges=circle_edges
     )
-    found_discriminating_path, _, _ = discriminating_path(
-        pag, "x3", "x2", "x6", max_path_length=100
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "x3", "x2", "x6", max_path_length=10
     )
     assert found_discriminating_path
+    assert list(disc_path) == ["x1", "x2", "x3", "x6"]
+
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "x3", "x2", "x6", max_path_length=0
+    )
+    assert not found_discriminating_path
 
 
 def test_uncovered_pd_path_circle_path_only():

@@ -221,10 +221,10 @@ def discriminating_path(
     -------
     explored_nodes : set
         A set of explored nodes.
-    found_discriminating_path : bool
-        Whether or not a discriminating path was found.
     disc_path : list
         The discriminating path starting from node c.
+    found_discriminating_path : bool
+        Whether or not a discriminating path was found.
     """
     if max_path_length is None:
         max_path_length = 1000
