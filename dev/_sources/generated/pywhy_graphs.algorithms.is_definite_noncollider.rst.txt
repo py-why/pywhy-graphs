@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.is_definite_noncollider
+===============================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: is_definite_noncollider
+
+.. include:: pywhy_graphs.algorithms.is_definite_noncollider.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

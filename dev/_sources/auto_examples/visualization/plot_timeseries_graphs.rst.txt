@@ -52,6 +52,12 @@ For comparing different graphs with the same layout, see :ref:`ex-draw-graphs`
     G.add_edges_from(ts_edges)
 
 
+
+
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 32-33
 
 First we will draw the graph without setting positions
@@ -64,6 +70,23 @@ First we will draw the graph without setting positions
 
     # render the graphs using graphviz render() function
     dot_G.render(outfile="default_G.png", view=True)
+
+
+
+
+.. image-sg:: /auto_examples/visualization/images/sphx_glr_plot_timeseries_graphs_001.png
+   :alt: plot timeseries graphs
+   :srcset: /auto_examples/visualization/images/sphx_glr_plot_timeseries_graphs_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    'default_G.png'
+
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 39-41
@@ -92,11 +115,29 @@ which creates a nice default layout for time-series graphs.
     dot_G.render(outfile="G.png", view=True, engine="neato")
 
 
+
+.. image-sg:: /auto_examples/visualization/images/sphx_glr_plot_timeseries_graphs_002.png
+   :alt: plot timeseries graphs
+   :srcset: /auto_examples/visualization/images/sphx_glr_plot_timeseries_graphs_002.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    {('x1', 0): array([10. , -7.5]), ('x1', -1): array([ 3.33333333, -7.5       ]), ('x1', -2): array([-3.33333333, -7.5       ]), ('x1', -3): array([-10. ,  -7.5]), ('x2', 0): array([10.,  0.]), ('x2', -1): array([3.33333333, 0.        ]), ('x2', -2): array([-3.33333333,  0.        ]), ('x2', -3): array([-10.,   0.]), ('x3', 0): array([10. ,  7.5]), ('x3', -1): array([3.33333333, 7.5       ]), ('x3', -2): array([-3.33333333,  7.5       ]), ('x3', -3): array([-10. ,   7.5])}
+
+    'G.png'
+
+
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
+   **Total running time of the script:** ( 0 minutes  0.755 seconds)
 
-**Estimated memory usage:**  0 MB
+**Estimated memory usage:**  8 MB
 
 
 .. _sphx_glr_download_auto_examples_visualization_plot_timeseries_graphs.py:

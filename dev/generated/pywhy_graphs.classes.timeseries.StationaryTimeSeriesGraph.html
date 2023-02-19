@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -220,6 +220,16 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
+   pywhy_graphs.algorithms.pds_t
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.pds_t_path.html">
+   pywhy_graphs.algorithms.pds_t_path
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.uncovered_pd_path.html">
    pywhy_graphs.algorithms.uncovered_pd_path
   </a>
@@ -227,6 +237,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
    pywhy_graphs.algorithms.acyclification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.is_definite_noncollider.html">
+   pywhy_graphs.algorithms.is_definite_noncollider
   </a>
  </li>
 </ul>
@@ -450,7 +465,7 @@
 <h1>pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph<a class="headerlink" href="#pywhy-graphs-classes-timeseries-stationarytimeseriesgraph" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/timeseries/graph.html#StationaryTimeSeriesGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.classes.timeseries.</span></span><span class="sig-name descname"><span class="pre">StationaryTimeSeriesGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_graph_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stationary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/timeseries/graph.html#StationaryTimeSeriesGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph" title="Permalink to this definition">#</a></dt>
 <dd><p>Stationary time-series graph without directionality on edges.</p>
 <p>This class should not be used directly.</p>
 <p>Included for completeness to enable modeling and working with <code class="docutils literal notranslate"><span class="pre">nx.Graph</span></code> like

@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -319,6 +319,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
 <span class="sd">        Whether G is a valid PAG or CPDAG.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function does not check whether or not the PAG, or CPDAG are valid in the sense</span>
+<span class="sd">    that the construction of the PAG/CPDAG was constrained to not contain any</span>
+<span class="sd">    directed edge cycles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">):</span>
         <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_cpdag_edge</span>
@@ -328,13 +334,6 @@
     <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">edgeview</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edgeview</span><span class="p">:</span>
             <span class="n">check_func</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">)</span>
-
-    <span class="c1"># the directed edges should not form cycles</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()):</span>
-        <span class="k">if</span> <span class="n">on_error</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">G</span><span class="si">}</span><span class="s2"> is not a DAG, which it should be.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -343,6 +342,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    graph : CPDAG</span>
+<span class="sd">        The CPDAG we are adding edges to.</span>
 <span class="sd">    u_of_edge : node</span>
 <span class="sd">        The start node.</span>
 <span class="sd">    v_of_edge : node</span>
@@ -351,20 +352,20 @@
 <span class="sd">        The edge type that is being added.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="p">:</span>
-        <span class="c1"># there should not be a circle edge, or a bidirected edge</span>
+    <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be a undirected edge, or a bidirected edge</span>
         <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">):</span>
             <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;There is an existing </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2">. You are &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;trying to add a directed edge from </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;If your intention is to create a bidirected edge, first remove the &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;edge and then explicitly add the bidirected edge.&quot;</span>
             <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
         <span class="c1"># there should not be any type of edge between the two</span>
-        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span>
+        <span class="p">):</span>
             <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">if</span> <span class="n">raise_error</span><span class="p">:</span>

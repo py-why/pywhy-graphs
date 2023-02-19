@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -215,6 +215,7 @@
     <span class="s2">&quot;uncovered_pd_path&quot;</span><span class="p">,</span>
     <span class="s2">&quot;pds_t&quot;</span><span class="p">,</span>
     <span class="s2">&quot;pds_t_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_definite_noncollider&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -335,10 +336,14 @@
     <span class="k">return</span> <span class="n">condition_one</span> <span class="ow">and</span> <span class="n">condition_two</span>
 
 
-<span class="k">def</span> <span class="nf">is_definite_noncollider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="is_definite_noncollider"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider">[docs]</a><span class="k">def</span> <span class="nf">is_definite_noncollider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</span>
 
-<span class="sd">    I.e. node1 *-* node2 -&gt; node3, or node1 &lt;- node2 *-* node3</span>
+<span class="sd">    Definite noncolliders have the form:</span>
+
+<span class="sd">    - node1 *-* node2 -&gt; node3, or</span>
+<span class="sd">    - node1 &lt;- node2 *-* node3, or</span>
+<span class="sd">    - node1 *-o node2 o-* node3 with node1 and node3 non-adjacent</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -352,15 +357,32 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    is_noncollider : bool</span>
-<span class="sd">        Whether or not the path is a definite non-collider.</span>
+<span class="sd">        Whether or not the path is a definite non-collider. If it is not a definite non-collider,</span>
+<span class="sd">        then it may be a definite collider, or uncertain.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">condition_one</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">node3</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
-        <span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span>
-    <span class="p">)</span>
-    <span class="n">condition_two</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">node1</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
-        <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">condition_one</span> <span class="ow">or</span> <span class="n">condition_two</span>
+    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+        <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+    <span class="p">):</span>
+        <span class="c1"># node1 *-&gt; node2 *-* node3</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+        <span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+    <span class="p">):</span>
+        <span class="c1"># node1 *-* node2 &lt;- node3</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+        <span class="n">node3</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">circle_edge_name</span>
+    <span class="p">):</span>
+        <span class="c1"># node1 *-o node2 o-* node3</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node3</span><span class="p">,</span> <span class="s2">&quot;any&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node3</span><span class="p">,</span> <span class="n">node1</span><span class="p">,</span> <span class="s2">&quot;any&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="discriminating_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path">[docs]</a><span class="k">def</span> <span class="nf">discriminating_path</span><span class="p">(</span>
@@ -393,10 +415,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    explored_nodes : set</span>
 <span class="sd">        A set of explored nodes.</span>
-<span class="sd">    found_discriminating_path : bool</span>
-<span class="sd">        Whether or not a discriminating path was found.</span>
 <span class="sd">    disc_path : list</span>
 <span class="sd">        The discriminating path starting from node c.</span>
+<span class="sd">    found_discriminating_path : bool</span>
+<span class="sd">        Whether or not a discriminating path was found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">max_path_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_path_length</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -901,7 +923,7 @@
     <span class="k">return</span> <span class="n">pds_path</span></div>
 
 
-<span class="k">def</span> <span class="nf">pds_t</span><span class="p">(</span>
+<div class="viewcode-block" id="pds_t"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t">[docs]</a><span class="k">def</span> <span class="nf">pds_t</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
     <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
     <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
@@ -955,10 +977,10 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_lag</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
             <span class="n">pds_t_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">pds_t_set</span>
+    <span class="k">return</span> <span class="n">pds_t_set</span></div>
 
 
-<span class="k">def</span> <span class="nf">pds_t_path</span><span class="p">(</span>
+<div class="viewcode-block" id="pds_t_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path">[docs]</a><span class="k">def</span> <span class="nf">pds_t_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
     <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
     <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
@@ -1013,7 +1035,7 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">max_lag</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
             <span class="n">pds_t_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">pds_t_set</span>
+    <span class="k">return</span> <span class="n">pds_t_set</span></div>
 
 
 <span class="k">def</span> <span class="nf">definite_m_separated</span><span class="p">(</span>
@@ -1023,7 +1045,7 @@
     <span class="n">z</span><span class="p">,</span>
     <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
     <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
-    <span class="n">circle_edge_name</span><span class="o">=</span><span class="s2">&quot;cirlcle&quot;</span><span class="p">,</span>
+    <span class="n">circle_edge_name</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check definite m-separation among &#39;x&#39; and &#39;y&#39; given &#39;z&#39; in partial ancestral graph G.</span>
 

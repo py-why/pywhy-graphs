@@ -39,6 +39,54 @@ such as `Dagitty <http://dagitty.net>`_.
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-65
 
+
+
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image-sg:: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_001.png
+          :alt: draw and compare graphs with same layout
+          :srcset: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_001.png
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_002.png
+          :alt: draw and compare graphs with same layout
+          :srcset: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_002.png
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_003.png
+          :alt: draw and compare graphs with same layout
+          :srcset: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_003.png
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_004.png
+          :alt: draw and compare graphs with same layout
+          :srcset: /auto_examples/visualization/images/sphx_glr_draw_and_compare_graphs_with_same_layout_004.png
+          :class: sphx-glr-multi-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    {'x': array([-1.        ,  0.15471958]), 'y': array([-0.42925134, -0.7990356 ]), 'z': array([0.90151211, 0.36916753]), 'w': array([ 0.62354034, -0.6548282 ]), 'xy': array([-0.09580111,  0.92997669])}
+
+    'pag.png'
+
+
+
+
+
+|
+
 .. code-block:: default
 
 
@@ -89,9 +137,9 @@ such as `Dagitty <http://dagitty.net>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
+   **Total running time of the script:** ( 0 minutes  0.413 seconds)
 
-**Estimated memory usage:**  0 MB
+**Estimated memory usage:**  8 MB
 
 
 .. _sphx_glr_download_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py:

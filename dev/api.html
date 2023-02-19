@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -220,6 +220,16 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html">
+   pywhy_graphs.algorithms.pds_t
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html">
+   pywhy_graphs.algorithms.pds_t_path
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html">
    pywhy_graphs.algorithms.uncovered_pd_path
   </a>
@@ -227,6 +237,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html">
    pywhy_graphs.algorithms.acyclification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html">
+   pywhy_graphs.algorithms.is_definite_noncollider
   </a>
  </li>
 </ul>
@@ -444,8 +459,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#timeseries">
-   Timeseries
+  <a class="reference internal nav-link" href="#pywhy-graphs-classes-timeseries-timeseries">
+   <code class="xref py py-mod docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.classes.timeseries
+    </span>
+   </code>
+   : Timeseries
   </a>
   <ul class="nav section-nav flex-column">
   </ul>
@@ -545,11 +565,20 @@ causal graph operations.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path" title="pywhy_graphs.algorithms.pds_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
 <td><p>Compute the possibly-d-separating set path.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t" title="pywhy_graphs.algorithms.pds_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t</span></code></a>(graph, node_x, node_y[, max_path_length])</p></td>
+<td><p>Compute the possibly-d-separating set over time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path" title="pywhy_graphs.algorithms.pds_t_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
+<td><p>Compute the possibly-d-separating path set over time.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path" title="pywhy_graphs.algorithms.uncovered_pd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncovered_pd_path</span></code></a>(graph, u, c[, ...])</p></td>
 <td><p>Compute uncovered potentially directed (pd) paths from u to c.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html#pywhy_graphs.algorithms.acyclification" title="pywhy_graphs.algorithms.acyclification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acyclification</span></code></a>(G[, directed_edge_type, ...])</p></td>
 <td><p>Acyclify a cyclic graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider" title="pywhy_graphs.algorithms.is_definite_noncollider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_definite_noncollider</span></code></a>(G, node1, node2, node3)</p></td>
+<td><p>Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</p></td>
 </tr>
 </tbody>
 </table>
@@ -592,8 +621,8 @@ welcome feedback.</p>
 </tbody>
 </table>
 </section>
-<section id="timeseries">
-<h2>Timeseries<a class="headerlink" href="#timeseries" title="Permalink to this heading">#</a></h2>
+<section id="pywhy-graphs-classes-timeseries-timeseries">
+<h2><a class="reference internal" href="reference/classes/index.html#module-pywhy_graphs.classes.timeseries" title="pywhy_graphs.classes.timeseries"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.classes.timeseries</span></code></a>: Timeseries<a class="headerlink" href="#pywhy-graphs-classes-timeseries-timeseries" title="Permalink to this heading">#</a></h2>
 <p>The following are useful functions that operate specifically on time-series graphs.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>

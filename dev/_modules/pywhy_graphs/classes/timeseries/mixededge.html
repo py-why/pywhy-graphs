@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -433,8 +433,12 @@
     <span class="n">graph_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">StationaryTimeSeriesGraph</span><span class="p">,</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="c1"># attr.update(dict(max_lag=max_lag))</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">edge_types</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">edge_types</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_stationarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stationary</span> <span class="o">=</span> <span class="n">stationary</span>
+        <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">stationary</span> <span class="o">=</span> <span class="n">stationary</span></div>
 </pre></div>
 
               </article>

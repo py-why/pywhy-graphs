@@ -109,7 +109,7 @@
 
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -278,49 +278,57 @@ in that case graphviz will choose how to place the nodes. This can look rather
 messy in the final output.</p>
 <p>In this example, we demonstrate how to visualize timeseries graphs effectively.</p>
 <p>For comparing different graphs with the same layout, see <a class="reference internal" href="draw_and_compare_graphs_with_same_layout.html#ex-draw-graphs"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" class="sphx-glr-backref-module-pywhy_graphs-classes-timeseries sphx-glr-backref-type-py-class"><span class="n">StationaryTimeSeriesDiGraph</span></a>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">,</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a>
 
 <span class="c1"># create some dummy graphs: G, admg, cpdag, and pag</span>
 <span class="c1"># this code is borrowed from the other example: intro_causal_graphs.py ;)</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">ts_edges</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" class="sphx-glr-backref-module-pywhy_graphs-classes-timeseries sphx-glr-backref-type-py-class"><span class="n">StationaryTimeSeriesDiGraph</span></a><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ts_edges</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
     <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
     <span class="p">((</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
     <span class="p">((</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
     <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
 <span class="p">]</span>
-<span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ts_edges</span><span class="p">)</span>
+<a href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.DiGraph.add_edges_from.html#networkx.DiGraph.add_edges_from" title="networkx.DiGraph.add_edges_from" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-method"><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ts_edges</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p>First we will draw the graph without setting positions</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dot_G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">)</span>
 
 <span class="c1"># render the graphs using graphviz render() function</span>
-<span class="n">dot_G</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;default_G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_G</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;default_G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_timeseries_graphs_001.png" srcset="../../_images/sphx_glr_plot_timeseries_graphs_001.png" alt="plot timeseries graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;default_G.png&#39;
 </pre></div>
 </div>
 <p>Next, we will set positions using the <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.viz.timeseries_layout</span></code> function,
 which creates a nice default layout for time-series graphs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the layout position for the graph G using networkx</span>
-<span class="n">pos_G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># let us inspect the positions.</span>
 <span class="c1"># Notice that networkx and graphviz related software store positions as</span>
 <span class="c1"># a dictionary keyed by node with (x, y) coordinates as values.</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pos_G</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
 
 <span class="c1"># draw the graphs (i.e., generate a graphviz object that can be rendered)</span>
 <span class="c1"># each time we call draw() we pass the layout position of G</span>
-<span class="n">dot_G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos_G</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
 
 <span class="c1"># render the graphs using graphviz render() function</span>
-<span class="n">dot_G</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_G</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  0 MB</p>
+<img src="../../_images/sphx_glr_plot_timeseries_graphs_002.png" srcset="../../_images/sphx_glr_plot_timeseries_graphs_002.png" alt="plot timeseries graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{(&#39;x1&#39;, 0): array([10. , -7.5]), (&#39;x1&#39;, -1): array([ 3.33333333, -7.5       ]), (&#39;x1&#39;, -2): array([-3.33333333, -7.5       ]), (&#39;x1&#39;, -3): array([-10. ,  -7.5]), (&#39;x2&#39;, 0): array([10.,  0.]), (&#39;x2&#39;, -1): array([3.33333333, 0.        ]), (&#39;x2&#39;, -2): array([-3.33333333,  0.        ]), (&#39;x2&#39;, -3): array([-10.,   0.]), (&#39;x3&#39;, 0): array([10. ,  7.5]), (&#39;x3&#39;, -1): array([3.33333333, 7.5       ]), (&#39;x3&#39;, -2): array([-3.33333333,  7.5       ]), (&#39;x3&#39;, -3): array([-10. ,   7.5])}
+
+&#39;G.png&#39;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.755 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-visualization-plot-timeseries-graphs-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cc1f46a1d658fe2d0057773186877d73/plot_timeseries_graphs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_timeseries_graphs.py</span></code></a></p>

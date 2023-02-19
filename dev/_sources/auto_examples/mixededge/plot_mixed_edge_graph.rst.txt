@@ -55,6 +55,12 @@ edges.
     import pywhy_graphs as pg
 
 
+
+
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 35-43
 
 Construct a MixedEdgeGraph
@@ -102,6 +108,17 @@ graph object knows which graphs are associated with which types of edges.
     plt.show(block=False)
 
 
+
+
+.. image-sg:: /auto_examples/mixededge/images/sphx_glr_plot_mixed_edge_graph_001.png
+   :alt: Instrumental Variable Mixed Edge Causal Graph
+   :srcset: /auto_examples/mixededge/images/sphx_glr_plot_mixed_edge_graph_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 75-77
 
 Mixed Edge Graph Properties
@@ -131,6 +148,22 @@ Mixed Edge Graph Properties
     bidirected_edges = G.get_graphs("bidirected")
 
 
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    IV Graph
+    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types is directed: False because there are directed edges.
+    False
+    ['directed', 'bidirected']
+    {'directed': <networkx.classes.digraph.DiGraph object at 0x7f03eaa78580>, 'bidirected': <networkx.classes.graph.Graph object at 0x7f03eaa78520>}
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 97-99
 
 Mixed Edge Graph Operations on Nodes
@@ -157,6 +190,21 @@ Mixed Edge Graph Operations on Nodes
     # Now, we can remove the node
     G.remove_node("A")
     print(f"Graph has node A: {G.has_node('A')}")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types has nodes: ['Z', 'Y', 'X']
+    Graph has node A: False
+    Now graph has node A: True
+    Graph has node A: False
+
+
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 118-124
@@ -190,6 +238,19 @@ typically must be specified in edge operations for mixed edge graphs.
     # Now, we can remove the Z <-> Y bidirected edge.
     G.remove_edge("Z", "Y", edge_type="bidirected")
     assert not G.has_edge("Z", "Y", edge_type="bidirected")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    The graph has directed edges: [('X', 'Y'), ('Z', 'X')]
+    [('X', 'Y'), ('Z', 'X')]
+
+
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 144-149
@@ -232,11 +293,33 @@ class properties. Moreover, one can specify the edge type.
         print(f"{node} with degree: {degrees}")
 
 
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    directed
+    {'X': {'Y': {}}, 'Y': {}, 'Z': {'X': {}}}
+    bidirected
+    {'X': {'Y': {}}, 'Y': {'X': {}}, 'Z': {}}
+    {'X': {'Y': {}}, 'Y': {}, 'Z': {'X': {}}}
+    directed
+    [('X', 'Y'), ('Z', 'X')]
+    bidirected
+    [('X', 'Y')]
+    directed with degree: [('X', 2), ('Y', 1), ('Z', 1)]
+    bidirected with degree: [('X', 1), ('Y', 1), ('Z', 0)]
+
+
+
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
+   **Total running time of the script:** ( 0 minutes  1.651 seconds)
 
-**Estimated memory usage:**  0 MB
+**Estimated memory usage:**  43 MB
 
 
 .. _sphx_glr_download_auto_examples_mixededge_plot_mixed_edge_graph.py:

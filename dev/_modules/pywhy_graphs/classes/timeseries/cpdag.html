@@ -106,7 +106,7 @@
 
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../../use.html">
-  Usage
+  Usage (Simple Examples)
  </a>
 </li>
 
@@ -252,8 +252,10 @@
         <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">directed_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;directed&quot;</span><span class="p">,</span>
         <span class="n">undirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+        <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stationary</span> <span class="o">=</span> <span class="n">stationary</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">attr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span>
             <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">(</span><span class="n">incoming_directed_edges</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">),</span> <span class="n">directed_edge_name</span>
