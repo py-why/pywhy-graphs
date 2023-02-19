@@ -106,13 +106,12 @@ _black_check = 'black --check pywhy_graphs examples'
 _isort_check = 'isort --check .'
 _pydocstyle = 'pydocstyle .'
 _codespell = 'codespell pywhy_graphs/ doc/ examples/ --ignore-words=.codespellignore --skip "**/_build/*"'
-_changelog = 'semversioner changelog > CHANGELOG.md'
-_apply_version = 'semversioner release'
 
 type_check = 'mypy -p pywhy_graphs --config-file pyproject.toml'
 unit_test = 'pytest ./pywhy_graphs ./integration_tests --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
 integration_test = 'pytest ./integration_tests'
-build_docs = 'make -C docs clean html-noplot'
+build_docs = 'make -C docs clean html'
+build_docs_noplot = 'make -C docs clean html-noplot'
 
 [[tool.poe.tasks.lint]]
 sequence = ['_flake8', '_bandit', '_codespell', '_pydocstyle']
@@ -132,9 +131,6 @@ ignore_fail = 'return_non_zero'
 [[tool.poe.tasks.verify]]
 sequence = ['apply_format', 'lint', 'type_check', 'unit_test']
 ignore_fail = "return_non_zero"
-
-[[tool.poe.tasks.release]]
-sequence = ['_changelog', '_apply_version']
 
 [tool.black]
 line-length = 100

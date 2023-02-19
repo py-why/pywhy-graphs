@@ -47,8 +47,11 @@ causal graph operations.
    discriminating_path
    pds
    pds_path
+   pds_t
+   pds_t_path
    uncovered_pd_path
    acyclification
+   is_definite_noncollider
 
 Conversions between other package's causal graphs
 =================================================
@@ -81,8 +84,8 @@ welcome feedback.
    bidirected_to_unobserved_confounder
    m_separated
 
-Timeseries
-==========
+:mod:`pywhy_graphs.classes.timeseries`: Timeseries
+==================================================
 The following are useful functions that operate specifically on time-series graphs.
 
 .. currentmodule:: pywhy_graphs.classes.timeseries
