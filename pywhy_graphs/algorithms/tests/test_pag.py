@@ -341,7 +341,8 @@ def test_uncovered_pd_path_circle_path_only():
     assert not found_uncovered_circle_path
 
 
-def test_uncovered_pd_path():
+@pytest.mark.parametrize("max_path_length", [10, None])
+def test_uncovered_pd_path(max_path_length):
     """Test basic uncovered partially directed path."""
     # If A o-> C and there is an undirected pd path
     # from A to C through u, where u and C are not adjacent
@@ -364,18 +365,18 @@ def test_uncovered_pd_path():
     G.add_edge("v", "y", G.bidirected_edge_name)
 
     # get the uncovered pd paths
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", max_path_length, "A")
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
 
     # the shielded triple should not result in an uncovered pd path
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "v", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "v", "C", max_path_length, "A")
     assert not found_uncovered_pd_path
     assert uncov_pd_path == []
 
     # when there is a circle edge it should still work
     G.add_edge("C", "z", G.circle_edge_name)
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", max_path_length, "A")
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
 
@@ -385,15 +386,45 @@ def test_uncovered_pd_path():
     G.add_edge("u", "A", G.circle_edge_name)
     G.add_edge("u", "C", G.circle_edge_name)
     G.add_edge("C", "u", G.circle_edge_name)
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 10)
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", max_path_length)
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "C"]
 
     # check errors for running uncovered pd path
     with pytest.raises(RuntimeError, match="Both first and second"):
-        uncovered_pd_path(G, "u", "C", 100, "A", "x")
+        uncovered_pd_path(G, "u", "C", max_path_length, "A", "x")
     with pytest.raises(RuntimeError, match="Some nodes are not in"):
-        uncovered_pd_path(G, "u", "C", 100, "wrong")
+        uncovered_pd_path(G, "u", "C", max_path_length, "wrong")
+
+
+def test_uncovered_pd_path_restricted():
+    """Test restriction of max path length in uncovered pd path."""
+
+    # use the same setup as in test_uncovered_pd_path
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.directed_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    G.add_edges_from(
+        [("A", "u"), ("u", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    G.add_edge("y", "x", G.circle_edge_name)
+
+    # create a pd path from A to C through v
+    G.add_edges_from(
+        [("A", "v"), ("v", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    # with the bidirected edge, v,x,y is a shielded triple
+    G.add_edge("v", "y", G.bidirected_edge_name)
+
+    # get the uncovered pd paths
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", None, "A")
+    assert found_uncovered_pd_path
+    assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
+
+    # if we limit the path length, then we won't find a uncovered pd path
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 3, "A")
+    assert not found_uncovered_pd_path
+    assert uncov_pd_path == []
 
 
 def test_uncovered_pd_path_intersecting():
@@ -503,6 +534,15 @@ def test_pds_path(pds_graph: PAG):
     assert ex_pdspath == set()
     assert xe_pdsep == set()
     assert ex_pdsep == {"A", "B", "D", "H"}
+
+
+def test_pds_unconnected(pds_graph: PAG):
+    """Test PDS in edge case where nodes are unconnected."""
+    G = pds_graph
+    G.add_node("N")
+
+    pds_set = pds(G, "N", "E")
+    assert pds_set == set()
 
 
 def test_definite_non_collider():
