@@ -245,7 +245,7 @@ def test_is_minimal_m_separator(fig5_vanderzander):
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, r={"Z_1", "Z_2"})
     assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", set())
     assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1"})
-    with pytest.raises(AssertionError):
+    with pytest.raises(nx.NetworkXError, match="should be no larger than proposed separating set"):
         pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_1", "Z_2"})
         pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"X_1"}, i={"V_1"})
     assert pywhy_nx.is_minimal_m_separator(
