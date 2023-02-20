@@ -1,3 +1,4 @@
+import networkx as nx
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
@@ -30,6 +31,31 @@ class BaseGraph:
         # TODO: size() does not work yet due to degree
         # assert G.size() == 3
 
+    def test_sub_graph(self):
+        G = self.G.copy()
+
+        undir_G = G.sub_undirected_graph()
+        assert isinstance(undir_G, nx.Graph)
+
+        dir_G = G.sub_directed_graph()
+        assert isinstance(dir_G, nx.DiGraph)
+
+        if hasattr(G, "sub_bidirected_graph"):
+            bidir_G = G.sub_bidirected_graph()
+            assert isinstance(bidir_G, nx.Graph)
+
+        if hasattr(G, "sub_circle_graph"):
+            circle_G = G.sub_circle_graph()
+            assert isinstance(circle_G, nx.DiGraph)
+
+    @pytest.mark.parametrize("edge_type", ["all", "directed", "undirected"])
+    def test_add_edges_from(self, edge_type):
+        G = self.Graph()
+
+        G.add_edges_from([("x", "y"), ("y", "z")], edge_type)
+        assert G.has_edge("x", "y")
+        assert G.has_edge("y", "z")
+
 
 class TestCPDAG(BaseGraph):
     def setup_method(self):
@@ -42,6 +68,18 @@ class TestCPDAG(BaseGraph):
         ed2 = {}
         incoming_graph_data = {0: {1: {}, 2: ed2}}
         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+
+    def test_wrong_construction(self):
+        # PAGs only allow one type of edge between any two nodes
+        edge_list = [
+            ("x4", "x1"),
+            ("x2", "x5"),
+        ]
+        latent_edge_list = [("x1", "x2"), ("x4", "x5"), ("x4", "x1")]
+        with pytest.raises(
+            RuntimeError, match="There is already an existing edge between x4 and x1"
+        ):
+            self.Graph(edge_list, incoming_undirected_edges=latent_edge_list)
 
 
 class TestADMG(BaseGraph):
@@ -86,56 +124,6 @@ class TestADMG(BaseGraph):
         print(self.G.edges())
 
         assert list(G.c_components()) == [{0, 1}, {2}]
-
-    # def test_hash(self):
-    #     """Test hashing a causal graph."""
-    #     G = self.G
-    #     current_hash = hash(G)
-    #     assert G._current_hash is None
-
-    #     G.add_bidirected_edge("1", "2")
-    #     new_hash = hash(G)
-    #     assert current_hash != new_hash
-
-    #     G.remove_bidirected_edge("1", "2")
-    #     assert current_hash == hash(G)
-
-    # def test_full_graph(self):
-    #     """Test computing a full graph from causal graph."""
-    #     G = self.G
-    #     # the current hash should match after computing full graphs
-    #     current_hash = hash(G)
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-
-    #     # after adding a new edge, the hash should change and
-    #     # be different
-    #     G.add_bidirected_edge("1", "2")
-    #     new_hash = hash(G)
-    #     assert new_hash != G._current_hash
-
-    #     # once the hash is computed, it should be the same again
-    #     G.compute_full_graph()
-    #     assert new_hash == G._current_hash
-
-    #     # removing the bidirected edge should result in the same
-    #     # hash again
-    #     G.remove_bidirected_edge("1", "2")
-    #     assert current_hash != G._current_hash
-    #     G.compute_full_graph()
-    #     assert current_hash == G._current_hash
-
-    #     # different orders of edges shouldn't matter
-    #     G_copy = G.copy()
-    #     G.add_bidirected_edge("1", "2")
-    #     G.add_bidirected_edge("2", "3")
-    #     G_hash = hash(G)
-    #     G_copy.add_bidirected_edge("2", "3")
-    #     G_copy.add_bidirected_edge("1", "2")
-    #     copy_hash = hash(G_copy)
-    #     assert G_hash == copy_hash
 
     def test_m_separation(self):
         G = self.G.copy()
@@ -290,15 +278,16 @@ class TestPAG(TestADMG):
 
         # basic parent/children semantics
         assert [2] == list(G.children(0))
+        assert [0] == list(G.parents(2))
         assert [] == list(G.parents(0))
         assert [] == list(G.children(1))
         assert [] == list(G.parents(1))
         assert [] == list(G.parents(4))
         assert [] == list(G.children(4))
 
-        # o-o edges do not constitute possible parent/children
-        assert [] == list(G.possible_children(1)) == list(G.possible_parents(1))
-        assert [] == list(G.possible_children(4)) == list(G.possible_parents(4))
+        # o-o edges do constitute possible parent/children
+        assert [4] == list(G.possible_children(1)) == list(G.possible_parents(1))
+        assert [1] == list(G.possible_children(4)) == list(G.possible_parents(4))
 
         # when the parental relationship between 2 and 0
         # is made uncertain, the parents/children sets reflect

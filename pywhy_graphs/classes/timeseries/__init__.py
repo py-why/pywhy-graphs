@@ -1,14 +1,10 @@
 from .base import BaseTimeSeriesGraph
 from .conversion import numpy_to_tsgraph, tsgraph_to_numpy
 from .cpdag import StationaryTimeSeriesCPDAG
+from .digraph import StationaryTimeSeriesDiGraph, TimeSeriesDiGraph
+from .graph import StationaryTimeSeriesGraph, TimeSeriesGraph
 from .mixededge import StationaryTimeSeriesMixedEdgeGraph, TimeSeriesMixedEdgeGraph
 from .pag import StationaryTimeSeriesPAG
-from .timeseries import (
-    StationaryTimeSeriesDiGraph,
-    StationaryTimeSeriesGraph,
-    TimeSeriesDiGraph,
-    TimeSeriesGraph,
-)
 
 from .functions import (  # isort: skip
     complete_ts_graph,

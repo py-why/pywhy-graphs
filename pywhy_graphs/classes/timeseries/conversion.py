@@ -4,7 +4,7 @@ import numpy as np
 
 from pywhy_graphs.typing import Node
 
-from .timeseries import StationaryTimeSeriesGraph
+from .graph import StationaryTimeSeriesGraph
 
 
 def tsgraph_to_numpy(G, var_order: List[Node] = None):

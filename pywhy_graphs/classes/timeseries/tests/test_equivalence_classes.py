@@ -1,7 +1,7 @@
 import networkx as nx
 import pytest
 
-# from pywhy_graphs import StationaryTimeSeriesPAG
+from pywhy_graphs import StationaryTimeSeriesCPDAG, StationaryTimeSeriesPAG
 
 
 class TimeSeriesMECGraphTester:
@@ -44,11 +44,12 @@ class TimeSeriesMECGraphTester:
             assert not G.has_node(("newx", -lag))
 
     def test_add_edges(self):
-        G = self.G.copy()
+        G = self.Graph(max_lag=self.max_lag)
 
         # initial graph should have no edges
         for graph in G.get_graphs().values():
             assert set(graph.edges) == set()
+        G.add_edge(("x", 0), ("y", 0))
         assert ("x", 0) not in G.neighbors(("x", -1))
 
         # test addition of edges
@@ -57,7 +58,7 @@ class TimeSeriesMECGraphTester:
         assert all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
         # only adding edges in a subgraph
-        G.remove_edge(("x", -1), ("x", 0), "bidirected")
+        G.remove_edge(("x", -1), ("x", 0), "undirected")
         G.add_edge(("x", -1), ("x", 0), "directed")
         assert ("x", 0) in G.neighbors(("x", -1))
         assert not all(("x", 0) in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
@@ -74,6 +75,23 @@ class TimeSeriesMECGraphTester:
         assert ("x", 0) not in G.neighbors(("x", -1))
         assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
+    def test_sub_graph(self):
+        G = self.G.copy()
+
+        undir_G = G.sub_undirected_graph()
+        assert isinstance(undir_G, nx.Graph)
+
+        dir_G = G.sub_directed_graph()
+        assert isinstance(dir_G, nx.DiGraph)
+
+        if hasattr(G, "sub_bidirected_graph"):
+            bidir_G = G.sub_bidirected_graph()
+            assert isinstance(bidir_G, nx.Graph)
+
+        if hasattr(G, "sub_circle_graph"):
+            circle_G = G.sub_circle_graph()
+            assert isinstance(circle_G, nx.DiGraph)
+
     def test_remove_forward_edges(self):
         """Test that a timeseries PAG can remove edges forward in time."""
 
@@ -81,14 +99,81 @@ class TimeSeriesMECGraphTester:
         # edges forward in time
 
 
-# # class TestTimeSeriesPAG(BaseGraph):
-#     def setup_method(self):
-#         # start every graph with the confounded graph
-#         # 0 -> 1, 0 -> 2; 0 -- 3
-#         # self.Graph = CPDAG
-#         incoming_uncertain_data = [(0, 3)]
+class TestTimeSeriesCPDAG(TimeSeriesMECGraphTester):
+    def setup_method(self):
+        # start with a single time-series and graph over lags
+        self.Graph = StationaryTimeSeriesCPDAG
+        self.max_lag = 3
+        incoming_uncertain_data = [((0, -3), (0, -2))]
 
-#         # build dict-of-dict-of-dict K3
-#         ed2 = {}
-#         incoming_graph_data = {0: {1: {}, 2: ed2}}
-#         self.G = self.Graph(incoming_graph_data, incoming_uncertain_data)
+        # build dict-of-dict-of-dict K3
+        incoming_graph_data = [((2, -2), (0, -1))]
+        self.G = self.Graph(max_lag=self.max_lag)
+        self.G.add_edges_from(incoming_graph_data, edge_type="directed")
+        self.G.add_edges_from(incoming_uncertain_data, edge_type="undirected")
+
+        self.k3nodes = self.G.nodes
+        self.variables = [0, 2]
+
+    def test_orient_uncertain_edge(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        G.orient_uncertain_edge((1, 0), (0, 0))
+        assert G.has_edge((1, 0), (0, 0), G.directed_edge_name)
+        assert not G.has_edge((0, 0), (1, 0), G.undirected_edge_name)
+
+    def test_possible_parents(self):
+        G = self.G.copy()
+
+        assert set(G.possible_parents((0, 0))) == set([(0, -1), (2, -1)])
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        assert set(G.possible_parents((0, 0))) == set(((1, 0), (0, -1), (2, -1)))
+
+    def test_possible_children(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.undirected_edge_name)
+        assert set(G.possible_children((1, 0))) == set([(0, 0)])
+
+
+class TestTimeSeriesPAG(TimeSeriesMECGraphTester):
+    def setup_method(self):
+        # start with a single time-series and graph over lags
+        self.Graph = StationaryTimeSeriesPAG
+        self.max_lag = 3
+        incoming_uncertain_data = [((0, -3), (0, -2))]
+
+        # build dict-of-dict-of-dict K3
+        incoming_graph_data = [((0, -2), (0, -1))]
+        self.G = self.Graph(max_lag=self.max_lag)
+        self.G.add_edges_from(incoming_graph_data, edge_type=self.G.directed_edge_name)
+        self.G.add_edges_from(incoming_uncertain_data, edge_type=self.G.circle_edge_name)
+
+        self.k3nodes = self.G.nodes
+        self.variables = [0]
+
+    def test_orient_uncertain_edge(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        G.add_edge((0, 0), (1, 0), G.circle_edge_name)
+        G.orient_uncertain_edge((1, 0), (0, 0))
+        assert G.has_edge((1, 0), (0, 0), G.directed_edge_name)
+        assert G.has_edge((0, 0), (1, 0), G.circle_edge_name)
+
+    def test_possible_parents(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        G.add_edge((0, 0), (1, 0), G.circle_edge_name)
+        assert set(G.possible_parents((0, 0))) == set(((1, 0), (0, -1)))
+
+    def test_possible_children(self):
+        G = self.G.copy()
+
+        G.add_edge((1, 0), (0, 0), G.circle_edge_name)
+        assert set(G.possible_children((1, 0))) == set([(0, 0)])
+
+        G.add_edge((0, 0), (1, 0), G.directed_edge_name)
+        assert set(G.possible_children((1, 0))) == set()

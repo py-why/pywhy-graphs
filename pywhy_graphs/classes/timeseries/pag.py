@@ -6,8 +6,9 @@ import networkx as nx
 from pywhy_graphs.classes.base import AncestralMixin, ConservativeMixin
 from pywhy_graphs.typing import Node
 
+from .digraph import StationaryTimeSeriesDiGraph
+from .graph import StationaryTimeSeriesGraph
 from .mixededge import StationaryTimeSeriesMixedEdgeGraph
-from .timeseries import StationaryTimeSeriesDiGraph, StationaryTimeSeriesGraph
 
 
 class StationaryTimeSeriesPAG(
@@ -15,27 +16,36 @@ class StationaryTimeSeriesPAG(
 ):
     def __init__(
         self,
-        incoming_circle_edges=None,
         incoming_directed_edges=None,
+        incoming_circle_edges=None,
         incoming_bidirected_edges=None,
         incoming_undirected_edges=None,
         circle_edge_name: str = "circle",
         directed_edge_name: str = "directed",
         bidirected_edge_name: str = "bidirected",
         undirected_edge_name: str = "undirected",
+        stationary: bool = True,
         **attr,
     ):
+        self.stationary = stationary
         super().__init__(**attr)
-        self.add_edge_type(StationaryTimeSeriesDiGraph(incoming_directed_edges), directed_edge_name)
         self.add_edge_type(
-            StationaryTimeSeriesDiGraph(incoming_circle_edges, check_time_direction=False),
+            StationaryTimeSeriesDiGraph(incoming_directed_edges, stationary=stationary, **attr),
+            directed_edge_name,
+        )
+        self.add_edge_type(
+            StationaryTimeSeriesDiGraph(
+                incoming_circle_edges, stationary=stationary, check_time_direction=False, **attr
+            ),
             circle_edge_name,
         )
         self.add_edge_type(
-            StationaryTimeSeriesGraph(incoming_undirected_edges), undirected_edge_name
+            StationaryTimeSeriesGraph(incoming_undirected_edges, stationary=stationary, **attr),
+            undirected_edge_name,
         )
         self.add_edge_type(
-            StationaryTimeSeriesGraph(incoming_bidirected_edges), bidirected_edge_name
+            StationaryTimeSeriesGraph(incoming_bidirected_edges, stationary=stationary, **attr),
+            bidirected_edge_name,
         )
 
         self._directed_name = directed_edge_name
@@ -121,8 +131,8 @@ class StationaryTimeSeriesPAG(
         v : node
             The node that 'u' points to in the graph.
         """
-        if not self.has_edge(u, v, self._undirected_name):
-            raise RuntimeError(f"There is no undirected edge between {u} and {v}.")
+        if not self.has_edge(u, v, self.circle_edge_name):
+            raise RuntimeError(f"There is no circle edge between {u} and {v}.")
         u, v = sorted([u, v], key=lambda x: x[1])  # type: ignore
         self.remove_edge(u, v, self.circle_edge_name)
         self.add_edge(u, v, self._directed_name)  # type: ignore
@@ -146,7 +156,13 @@ class StationaryTimeSeriesPAG(
         children : Iterator
             An iterator of the children of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            if (
+                not self.has_edge(nbr, n, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def possible_parents(self, n: Node) -> Iterator[Node]:
         """Return an iterator over parents of node n.
@@ -167,7 +183,19 @@ class StationaryTimeSeriesPAG(
         parents : Iterator
             An iterator of the parents of node 'n'.
         """
-        return self.sub_undirected_graph().neighbors(n)
+        for nbr in self.neighbors(n):
+            print(
+                nbr,
+                self.has_edge(n, nbr, self.directed_edge_name),
+                self.has_edge(nbr, n, self.bidirected_edge_name),
+                self.has_edge(nbr, n, self.undirected_edge_name),
+            )
+            if (
+                not self.has_edge(n, nbr, self.directed_edge_name)
+                and not self.has_edge(nbr, n, self.bidirected_edge_name)
+                and not self.has_edge(nbr, n, self.undirected_edge_name)
+            ):
+                yield nbr
 
     def to_ts_undirected(self):
         graph_class = StationaryTimeSeriesGraph

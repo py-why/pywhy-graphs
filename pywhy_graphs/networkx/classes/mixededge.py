@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 from functools import cached_property
+from typing import Dict, Union
 
 import networkx as nx
 from networkx.classes.reportviews import NodeView
@@ -154,7 +155,7 @@ class MixedEdgeGraph:
     def edge_types(self):
         return list(self._edge_graphs.keys())
 
-    def get_graphs(self, edge_type="all"):
+    def get_graphs(self, edge_type="all") -> Union[nx.Graph, Dict[str, nx.Graph]]:
         """Get graphs representing the mixed-edges.
 
         Parameters
@@ -487,6 +488,8 @@ class MixedEdgeGraph:
             Each edge given in the container will be added to the
             graph. The edges must be given as 2-tuples (u, v) or
             3-tuples (u, v, d) where d is a dictionary containing edge data.
+        edge_type : str
+            The edge type to add edges to.
         attr : keyword arguments, optional
             Edge data (or labels or objects) can be assigned using
             keyword arguments.
@@ -526,12 +529,19 @@ class MixedEdgeGraph:
             if u not in self._node:
                 if u is None:
                     raise ValueError("None cannot be a node")
-                self.add_node(u)
+                self.add_node(u, **attr)
             if v not in self._node:
                 if v is None:
                     raise ValueError("None cannot be a node")
-                self.add_node(v)
-        self._get_internal_graph(edge_type).add_edges_from(ebunch_to_add, **attr)
+                self.add_node(v, **attr)
+
+        if edge_type == "all":
+            edge_type = self.edge_types
+        else:
+            edge_type = [edge_type]
+
+        for _edge_type in edge_type:
+            self._get_internal_graph(_edge_type).add_edges_from(ebunch_to_add, **attr)
 
     def remove_edge(self, u, v, edge_type):
         """Remove an edge between u and v.
@@ -700,11 +710,19 @@ class MixedEdgeGraph:
     def add_edge_type(self, graph, edge_type):
         if edge_type in self._edge_graphs:
             raise ValueError(f"edge_type {edge_type} is already in the graph.")
+        if not isinstance(graph, (nx.Graph, nx.DiGraph)):
+            raise RuntimeError(
+                f"{graph} must be an instantiated instance of a base networkx "
+                f"graph [nx.Graph, nx.DiGraph]"
+            )
 
         # ensure new graph type has all nodes
-        graph.add_nodes_from(self._node)
         self._edge_graphs[edge_type] = graph
-        self.add_nodes_from(graph.nodes)
+
+        # if we have nodes already, or if we have an empty edge-type subgraph
+        if self._node or self.edge_types:
+            graph.add_nodes_from(self._node)
+            self.add_nodes_from(graph.nodes)
 
     def add_edge_types_from(self, graphs, edge_types):
         if len(graphs) != len(edge_types):
@@ -1045,17 +1063,21 @@ class MixedEdgeGraph:
         G : MixedEdgeGraph
             A copy of the graph with only the nodes.
         """
-        induced_nodes = nx.filters.show_nodes(self.nbunch_iter(nodes))
-
         # initialize list of empty internal graphs
         graph_classes = [self._internal_graph_nx_type(edge_type)() for edge_type in self.edge_types]
-        graph = self.__class__(graph_classes, edge_types=self.edge_types)
-        graph.add_nodes_from(induced_nodes)
+        graph = self.__class__(**self.graph)
+        graph.add_edge_types_from(graph_classes, self.edge_types)
+        graph.add_nodes_from(nodes)
 
         # now add the edges for each edge type
         for edge_type, _graph in graph._edge_graphs.items():
-            edges = self._get_internal_graph(edge_type).edges(induced_nodes)
-            _graph.add_edges_from(edges)
+            for node in nodes:
+                edges = self._get_internal_graph(edge_type).edges(node)
+
+                # only add edges from the induced subgraph
+                for u, v in edges:
+                    if u in set(nodes) and v in nodes:
+                        _graph.add_edge(u, v)
         return graph
 
     def degree(self, nbunch=None, weight=None):
@@ -1078,10 +1100,9 @@ class MixedEdgeGraph:
             mapping nodes to their degree.
             If a single node is requested, returns the degree of the node as an integer.
         """
-        edge_type = self.edge_types
         # get the DegreeView for each internal graph
         deg_dicts = dict()
-        for _edge_type in edge_type:
+        for _edge_type in self.edge_types:
             deg_view = self._get_internal_graph(_edge_type).degree(nbunch=nbunch, weight=weight)
             deg_dicts[_edge_type] = deg_view
         return deg_dicts
