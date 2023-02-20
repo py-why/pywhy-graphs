@@ -197,7 +197,7 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
 
 
@@ -314,7 +314,7 @@
     <span class="k">return</span> <span class="n">summary_G</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_extended_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_extended_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">TimeSeriesDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the extended summary graph from a ts-graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -326,7 +326,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    summary_G : nx.DiGraph</span>
 <span class="sd">        An acyclic extended summary graph with nodes named as tuples of</span>
-<span class="sd">        (&lt;variable_name&gt;, &#39;t&#39;), or (&lt;variable_name&gt;, &#39;-t&#39;) for the present</span>
+<span class="sd">        (&lt;variable_name&gt;, 0), or (&lt;variable_name&gt;, -1) for the present</span>
 <span class="sd">        and past respectively.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">is_directed</span><span class="p">():</span>
@@ -336,23 +336,23 @@
     <span class="n">summary_G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
 
     <span class="c1"># add all variables in ts-graph as nodes as tuples</span>
-    <span class="n">summary_G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">variables</span><span class="p">])</span>
-    <span class="n">summary_G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">variables</span><span class="p">])</span>
+    <span class="n">summary_G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">variable</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">variables</span><span class="p">])</span>
+    <span class="n">summary_G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="n">variable</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">variables</span><span class="p">])</span>
 
     <span class="c1"># loop through every non-lag node</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes_at</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">var_name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">node</span>
         <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">contemporaneous_neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-            <span class="n">nbr_name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nbr</span>
+            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">nbr</span><span class="p">):</span>
+                <span class="n">nbr_name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nbr</span>
 
-            <span class="c1"># add nbr -&gt; variable</span>
-            <span class="n">summary_G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">nbr_name</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">))</span>
-
+                <span class="c1"># add nbr -&gt; variable</span>
+                <span class="n">summary_G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">var_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">nbr_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">lagged_neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
             <span class="n">nbr_name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nbr</span>
 
             <span class="c1"># add nbr -&gt; variable</span>
-            <span class="n">summary_G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">nbr_name</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">))</span>
+            <span class="n">summary_G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">nbr_name</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">summary_G</span>
 
 

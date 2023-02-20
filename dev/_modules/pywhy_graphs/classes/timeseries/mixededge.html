@@ -300,7 +300,9 @@
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">ebunch</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.add_homologous_edges"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.add_homologous_edges">[docs]</a>    <span class="k">def</span> <span class="nf">add_homologous_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.add_homologous_edges"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.add_homologous_edges">[docs]</a>    <span class="k">def</span> <span class="nf">add_homologous_edges</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add homologous edges.</span>
 
 <span class="sd">        Assumes the edge that we consider is ``(u_of_edge, v_of_edge)``, that is &#39;u&#39; points to &#39;v&#39;.</span>
@@ -316,42 +318,12 @@
 <span class="sd">            Which direction to add homologous edges to, by default &#39;both&#39;, corresponding</span>
 <span class="sd">            to making the edge stationary over all time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_ts_node</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_ts_node</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">)</span>
-
-        <span class="n">u</span><span class="p">,</span> <span class="n">u_lag</span> <span class="o">=</span> <span class="n">u_of_edge</span>
-        <span class="n">v</span><span class="p">,</span> <span class="n">v_lag</span> <span class="o">=</span> <span class="n">v_of_edge</span>
-
-        <span class="c1"># take absolute value</span>
-        <span class="n">u_lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_lag</span><span class="p">)</span>
-        <span class="n">v_lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_lag</span><span class="p">)</span>
-
-        <span class="n">to_t</span> <span class="o">=</span> <span class="n">v_lag</span>
-        <span class="n">from_t</span> <span class="o">=</span> <span class="n">u_lag</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
-            <span class="c1"># re-center to 0, assuming v_lag is smaller, since it is the &quot;to node&quot;</span>
-            <span class="n">u_lag</span> <span class="o">=</span> <span class="n">u_lag</span> <span class="o">-</span> <span class="n">v_lag</span>
-            <span class="n">v_lag</span> <span class="o">=</span> <span class="mi">0</span>
-
-            <span class="c1"># now add lagged edges up until max lag</span>
-            <span class="n">to_t</span> <span class="o">=</span> <span class="n">v_lag</span>
-            <span class="n">from_t</span> <span class="o">=</span> <span class="n">u_lag</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_lag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
-            <span class="c1"># decrease lag moving forward</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v_lag</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backwards&quot;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_lag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">))</span>
-                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">+=</span> <span class="mi">1</span></div>
+        <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">add_homologous_edges</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add_homologous_edges</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.remove_homologous_edges"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.remove_homologous_edges">[docs]</a>    <span class="k">def</span> <span class="nf">remove_homologous_edges</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;both&quot;</span>
@@ -371,44 +343,12 @@
 <span class="sd">            Which direction to add homologous edges to, by default &#39;both&#39;, corresponding</span>
 <span class="sd">            to making the edge stationary over all time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_ts_node</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_ts_node</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">)</span>
-
-        <span class="n">u</span><span class="p">,</span> <span class="n">u_lag</span> <span class="o">=</span> <span class="n">u_of_edge</span>
-        <span class="n">v</span><span class="p">,</span> <span class="n">v_lag</span> <span class="o">=</span> <span class="n">v_of_edge</span>
-
-        <span class="c1"># take absolute value</span>
-        <span class="n">u_lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_lag</span><span class="p">)</span>
-        <span class="n">v_lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_lag</span><span class="p">)</span>
-
-        <span class="n">to_t</span> <span class="o">=</span> <span class="n">v_lag</span>
-        <span class="n">from_t</span> <span class="o">=</span> <span class="n">u_lag</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
-            <span class="c1"># re-center to 0, assuming v_lag is smaller, since it is the &quot;to node&quot;</span>
-            <span class="n">u_lag</span> <span class="o">=</span> <span class="n">u_lag</span> <span class="o">-</span> <span class="n">v_lag</span>
-            <span class="n">v_lag</span> <span class="o">=</span> <span class="mi">0</span>
-
-            <span class="c1"># now add lagged edges up until max lag</span>
-            <span class="n">to_t</span> <span class="o">=</span> <span class="n">v_lag</span>
-            <span class="n">from_t</span> <span class="o">=</span> <span class="n">u_lag</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_lag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">)):</span>
-                    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
-            <span class="c1"># decrease lag moving forward</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v_lag</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">)):</span>
-                    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backwards&quot;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u_lag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">)):</span>
-                    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span><span class="n">from_t</span><span class="p">),</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">to_t</span><span class="p">),</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
-                <span class="n">to_t</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">from_t</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
+        <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">remove_homologous_edges</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">remove_homologous_edges</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="StationaryTimeSeriesMixedEdgeGraph"><a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph">[docs]</a><span class="k">class</span> <span class="nc">StationaryTimeSeriesMixedEdgeGraph</span><span class="p">(</span><span class="n">TimeSeriesMixedEdgeGraph</span><span class="p">):</span>
