@@ -210,9 +210,6 @@ def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_nam
     .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
        Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
        Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
-
-
-
     """
 
     queue = deque(start_nodes)
@@ -252,16 +249,17 @@ def is_minimal_m_separator(
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
-    """Check if a set 'z' is a i-minimal m-separator between 'x' and 'y' in mixed-edge causal
-    graph G. The function will first check if 'z' is a m-separator, and then check if it
+    """Check if a set 'z' is a i-minimal m-separator between 'x' and 'y'.
+
+    The function will first check if 'z' is a m-separator, and then check if it
     is minimal. An i-minimal m-separating set is a minimal m-separator that contains i.
 
     This implements the algorithm TESTMINSEP presented in [1]_ for ancestral mixed graphs, but has
     been tested to work with non-ancestral graphs.
 
     This implementation differs from the specification of TESTMINSEP in [1]_ in that we replace
-    the check in line 6 with :math:`z - i \neq R_x`, and similarly in line 8 with
-    :math:`z - i \neq R_y`. This change was deemed necessary because in line 4 all nodes in ``i``
+    the check in line 6 with :math:`z - i \\neq R_x`, and similarly in line 8 with
+    :math:`z - i \\neq R_y`. This change was deemed necessary because in line 4 all nodes in ``i``
     are removed, so there cannot be paths from ``x`` to ``i`` in the augmented moralized graph,
     causing the algorithm to return false when a minimal m-separator existed.
 
@@ -358,9 +356,10 @@ def minimal_m_separator(
     bidirected_edge_name="bidirected",
     undirected_edge_name="undirected",
 ):
-    """Find a i-minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G,
-    which may contain directed, bidirected, and undirected edges. An i-minimal m-separating set
-    is a minimal m-separator that contains i.
+    """Find a i-minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G.
+
+    The set which may contain directed, bidirected, and undirected edges. An i-minimal
+    m-separating set is a minimal m-separator that contains i.
 
     This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed
     graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
@@ -453,6 +452,7 @@ def minimal_m_separator(
 # depend on that implementation
 def _bfs_with_marks(G, start_node, check_set):
     """Breadth-first-search with markings.
+
     Performs BFS starting from ``start_node`` and whenever a node
     inside ``check_set`` is met, it is "marked". Once a node is marked,
     BFS does not continue along that path. The resulting marked nodes
