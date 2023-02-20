@@ -23,12 +23,11 @@ def m_separated(
     contain directed, bidirected, and undirected edges.
 
     This implements the m-separation algorithm TESTSEP presented in [1]_ for ancestral mixed
-    graphs, which is itself adapted from [2]_. Further checks have ensure that it works
-    for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search
-    over m-connecting paths between 'x' and 'y' (i.e. a path on which every node that is a
-    collider is in 'z', and every node that is not a collider is not in 'z'). The algorithm
-    has runtime :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices
-    :math:`|V|`.
+    graphs. Further checks have ensure that it works for non-ancestral mixed graphs
+    (e.g. ADMGs). The algorithm performs a breadth-first search over m-connecting paths
+    between 'x' and 'y' (i.e. a path on which every node that is a collider is in 'z', and
+    every node that is not a collider is not in 'z'). The algorithm has runtime
+    :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices :math:`|V|`.
 
 
     Parameters
