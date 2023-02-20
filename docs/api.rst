@@ -86,6 +86,8 @@ welcome feedback.
    MixedEdgeGraph
    bidirected_to_unobserved_confounder
    m_separated
+   is_minimal_m_separator
+   minimal_m_separator
 
 :mod:`pywhy_graphs.classes.timeseries`: Timeseries
 ==================================================

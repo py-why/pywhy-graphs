@@ -7,6 +7,58 @@ from networkx.exception import NetworkXError
 import pywhy_graphs.networkx as pywhy_nx
 
 
+@pytest.fixture
+def fig5_vanderzander():
+
+    nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(nodes)
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(nodes)
+    bigraph = nx.Graph()
+    bigraph.add_nodes_from(nodes)
+
+    digraph.add_edge("V_1", "X")
+    digraph.add_edge("Z_1", "X")
+    digraph.add_edge("X", "V_2")
+    digraph.add_edge("Y", "V_2")
+    digraph.add_edge("Z_2", "Y")
+    digraph.add_edge("Z_2", "Z_1")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    return G
+
+
+@pytest.fixture
+def modified_fig5_vanderzander():
+
+    nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
+
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(nodes)
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(nodes)
+    bigraph = nx.Graph()
+    bigraph.add_nodes_from(nodes)
+
+    digraph.add_edge("V_1", "X")
+    digraph.add_edge("Z_1", "X")
+    digraph.add_edge("X", "V_2")
+    digraph.add_edge("Y", "V_2")
+    digraph.add_edge("Z_2", "Y")
+    digraph.add_edge("Z_2", "Z_1")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    return G
+
+
 def test_m_separation():
     logging.getLogger().setLevel(logging.DEBUG)
 
@@ -86,7 +138,6 @@ def test_m_separation():
     assert pywhy_nx.m_separated(G, {1}, {5}, {7})
     assert not pywhy_nx.m_separated(G, {1}, {5}, set())
     assert not pywhy_nx.m_separated(G, {1}, {5}, {6})
-    print(G.edges())
     assert not pywhy_nx.m_separated(G, {1}, {5}, {6, 7})
 
     # check m-sep works in undirected graphs:
@@ -171,3 +222,115 @@ def test_m_separation():
 
     assert not pywhy_nx.m_separated(G, {"A"}, {"C"}, {"D"})
     assert pywhy_nx.m_separated(G, {"A"}, {"C"}, set())
+
+
+def test_anterior():
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C", "D"])
+    digraph.add_edge("B", "A")
+    ungraph = nx.Graph()
+    ungraph.add_edge("A", "D")
+    ungraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([digraph, ungraph], ["directed", "undirected"])
+
+    result = pywhy_nx.algorithms.m_separation._anterior(G, {"A"})
+
+    assert result == {"A", "B", "C", "D"}
+
+
+def test_is_minimal_m_separator(fig5_vanderzander):
+
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_1"})
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"})
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, r={"Z_1", "Z_2"})
+    assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", set())
+    assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1"})
+    with pytest.raises(nx.NetworkXError, match="should be no larger than proposed separating set"):
+        pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_1", "Z_2"})
+        pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"X_1"}, i={"V_1"})
+    assert pywhy_nx.is_minimal_m_separator(
+        fig5_vanderzander, "X", "Y", {"Z_1", "Z_2"}, i={"Z_1", "Z_2"}
+    )
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_1"}, i={"Z_1"})
+
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, i={"Z_2"})
+
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1", "Z_2"}, i={"V_1"})
+    assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1", "Z_1"}, i={"V_1"})
+
+    assert not pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"V_1"}, i={"V_1"})
+
+
+def test_minimal_m_separator(fig5_vanderzander):
+    # Test fork graph
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from(["A", "B", "C"])
+    digraph.add_edge("B", "A")
+    digraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([digraph], ["directed"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == {"B"}
+
+    # Test undirected chain
+    ungraph = nx.Graph()
+    ungraph.add_nodes_from(["A", "B", "C"])
+    ungraph.add_edge("B", "A")
+    ungraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([ungraph], ["undirected"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == {"B"}
+
+    # Test collider is separated by empty set
+    bigraph = nx.Graph()
+    bigraph.add_edge("A", "B")
+    bigraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([bigraph], ["bidirected"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == set()
+
+    digraph = nx.DiGraph()
+    digraph.add_edge("A", "B")
+    digraph.add_edge("C", "B")
+    G = pywhy_nx.MixedEdgeGraph([digraph], ["directed"])
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+    assert result == set()
+
+    # Assert adjacent nodes are not m-separated by any set
+    ungraph = nx.Graph()
+    ungraph.add_edge("A", "B")
+    G = pywhy_nx.MixedEdgeGraph([ungraph], ["undirected"])
+    result = pywhy_nx.minimal_m_separator(G, "A", "B")
+    assert result is None
+
+    # Assert that mixed edge paths are handled correctly
+    ungraph = nx.Graph()
+    bigraph = nx.Graph()
+    digraph = nx.DiGraph()
+    ungraph.add_edge("A", "B")
+    digraph.add_edge("B", "C")
+    bigraph.add_edge("A", "D")
+    digraph.add_edge("C", "D")
+    digraph.add_edge("A", "E")
+    ungraph.add_edge("E", "C")
+
+    G = pywhy_nx.MixedEdgeGraph(
+        [digraph, ungraph, bigraph], ["directed", "undirected", "bidirected"]
+    )
+
+    result = pywhy_nx.minimal_m_separator(G, "A", "C")
+
+    assert result == {"E", "B"}
+
+    # Test Fig. 5 in Van der Zander, 2019
+    G = fig5_vanderzander
+    result = pywhy_nx.minimal_m_separator(G, "X", "Y")
+    assert result == {"Z_1"} or result == {"Z_2"}
+
+    assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1", "Z_2"}) == {"Z_1", "Z_2"}
+
+    assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1"}) == {"Z_1"}
+    assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_2"}) == {"Z_2"}
