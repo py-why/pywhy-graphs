@@ -263,7 +263,6 @@ def is_minimal_m_separator(
     are removed, so there cannot be paths from ``x`` to ``i`` in the augmented moralized graph,
     causing the algorithm to return false when a minimal m-separator existed.
 
-
     Parameters
     ----------
     G : mixed-edge-graph
@@ -281,11 +280,11 @@ def is_minimal_m_separator(
         Largest set of nodes which may be included in the found separating set,
         default is None, which is later set to all vertices in ``G``.
     directed_edge_name : str
-        Name of the directed edge, default is directed.
+        Name of the directed edge, default is 'directed'.
     bidirected_edge_name : str
-        Name of the bidirected edge, default is bidirected.
+        Name of the bidirected edge, default is 'bidirected'.
     undirected_edge_name : str
-        Name of the undirected edge, default is undirected.
+        Name of the undirected edge, default is 'undirected'.
 
     Returns
     -------
@@ -365,7 +364,6 @@ def minimal_m_separator(
     graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and
     number of vertices :math:`|V|`.
 
-
     This implementation differs from the specification of FINDMINSEP in [1]_ in that all
     nodes in ``i`` are removed from the anterior graph :math:`G'`, in between lines 3 and 4.
     This change was deemed necessary because otherwise the TESTSEP call in line 7 would fail
@@ -386,11 +384,11 @@ def minimal_m_separator(
         Largest set of nodes which may be included in the found separating set,
         default is None, which is later set to all vertices in ``G``.
     directed_edge_name : str
-        Name of the directed edge, default is directed.
+        Name of the directed edge, default is 'directed'.
     bidirected_edge_name : str
-        Name of the bidirected edge, default is bidirected.
+        Name of the bidirected edge, default is 'bidirected'.
     undirected_edge_name : str
-        Name of the undirected edge, default is undirected.
+        Name of the undirected edge, default is 'undirected'.
 
     Returns
     -------
