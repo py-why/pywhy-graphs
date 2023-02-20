@@ -92,7 +92,7 @@ class TimeSeriesMixedEdgeGraphTester:
         G.add_homologous_edges(("x", -1), ("y", -1), direction=direction)
 
         # currently any stationary time series graph adds edges in both directions
-        if direction == "both" or self.G.stationary:
+        if direction == "both":
             for lag in range(0, G.max_lag + 1):
                 assert G.has_edge(("x", -lag), ("y", -lag))
         elif direction == "forward":
@@ -113,7 +113,7 @@ class TimeSeriesMixedEdgeGraphTester:
         G.remove_homologous_edges(("x", -1), ("y", -1), direction=direction)
 
         # currently any stationary time series graph adds edges in both directions
-        if direction == "both" or self.G.stationary:
+        if direction == "both":
             for lag in range(0, G.max_lag + 1):
                 assert not G.has_edge(("x", -lag), ("y", -lag))
         elif direction == "forward":
