@@ -319,8 +319,6 @@ class TsGraphEdgeMixin:
         self._check_ts_node(v_of_edge)
         _, u_lag = u_of_edge
         _, v_lag = v_of_edge
-        if u_lag > 0 or v_lag > 0:
-            raise RuntimeError(f"All lags should be negative or 0, not {u_lag} or {v_lag}.")
 
         # time-directionality should be checked if the graph is directed; for PAGs, we will
         # disable it
