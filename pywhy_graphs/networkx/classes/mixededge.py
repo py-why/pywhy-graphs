@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 from functools import cached_property
+from typing import Dict, Union
 
 import networkx as nx
 from networkx.classes.reportviews import NodeView
@@ -154,7 +155,7 @@ class MixedEdgeGraph:
     def edge_types(self):
         return list(self._edge_graphs.keys())
 
-    def get_graphs(self, edge_type="all"):
+    def get_graphs(self, edge_type="all") -> Union[nx.Graph, Dict[str, nx.Graph]]:
         """Get graphs representing the mixed-edges.
 
         Parameters

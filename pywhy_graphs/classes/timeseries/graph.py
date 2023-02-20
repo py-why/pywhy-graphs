@@ -65,7 +65,8 @@ class StationaryTimeSeriesGraph(TimeSeriesGraph):
     # whether or not the graph should be assumed to be stationary
     stationary: bool = True
 
-    def __init__(self, incoming_graph_data=None, max_lag: int = 1, **attr):
+    def __init__(self, incoming_graph_data=None, max_lag: int = 1, stationary: bool = True, **attr):
+        self.stationary = stationary
         super(StationaryTimeSeriesGraph, self).__init__(
             incoming_graph_data=incoming_graph_data, max_lag=max_lag, **attr
         )

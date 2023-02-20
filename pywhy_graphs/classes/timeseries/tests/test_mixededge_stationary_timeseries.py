@@ -232,3 +232,16 @@ class TestStationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraphTester):
         self.max_lag = max_lag
         G = self.klass(self.graphs, self.edge_types, max_lag=self.max_lag)
         self.G = G
+
+    def test_set_stationarity(self):
+        G = self.G.copy()
+
+        G.set_stationarity(True)
+        assert G.stationary
+        for graph in G.get_graphs().values():
+            assert graph.stationary
+
+        G.set_stationarity(False)
+        assert not G.stationary
+        for graph in G.get_graphs().values():
+            assert not graph.stationary

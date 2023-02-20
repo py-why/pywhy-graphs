@@ -6,8 +6,11 @@ import pywhy_graphs
 from pywhy_graphs import PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
+    is_definite_noncollider,
     pds,
     pds_path,
+    pds_t,
+    pds_t_path,
     possible_ancestors,
     possible_descendants,
     uncovered_pd_path,
@@ -85,6 +88,45 @@ def pds_graph():
     return G
 
 
+@pytest.fixture(scope="module")
+def pdst_graph():
+    """Extension of the Figure 6.17 in "causation, prediction and search" for time-series.
+
+    Creates the relevant graph, but now with time lag points.
+
+    References
+    ----------
+    .. footbibliography::
+    """
+    edge_list = [
+        (("D", -1), ("A", 0)),
+        (("B", -1), ("E", 0)),
+        (("H", -1), ("D", 0)),
+        (("F", -1), ("B", 0)),
+    ]
+    latent_edge_list = [(("A", 0), ("B", -1)), (("D", 0), ("E", 0))]
+    uncertain_edge_list = [
+        (("A", 0), ("E", 0)),
+        (("E", 0), ("A", 0)),
+        (("E", 0), ("B", -1)),
+        (("B", -1), ("F", -1)),
+        (("F", -1), ("C", -1)),
+        (("C", -1), ("F", -1)),
+        (("C", -1), ("H", -1)),
+        (("H", -1), ("C", -1)),
+        (("D", 0), ("H", -1)),
+        (("A", 0), ("D", 0)),
+    ]
+    G = pywhy_graphs.StationaryTimeSeriesPAG(
+        edge_list,
+        incoming_bidirected_edges=latent_edge_list,
+        incoming_circle_edges=uncertain_edge_list,
+        max_lag=2,
+        stationary=False,
+    )
+    return G
+
+
 def test_possible_descendants(mixed_edge_path_graph):
     G = mixed_edge_path_graph
     possible_anc = possible_descendants(G, "a")
@@ -119,7 +161,7 @@ def test_discriminating_path():
     (2012): 294-321.
     """
     # this is Figure 2's PAG after orienting colliders, there should be no
-    # discriminating path
+    # discriminating path, except one
     edges = [
         ("x4", "x1"),
         ("x4", "x6"),
@@ -138,9 +180,12 @@ def test_discriminating_path():
 
     for u in pag.nodes:
         for (a, c) in permutations(pag.neighbors(u), 2):
-            found_discriminating_path, _, _ = discriminating_path(pag, u, a, c, max_path_length=100)
+            found_discriminating_path, disc_path, _ = discriminating_path(
+                pag, u, a, c, max_path_length=100
+            )
             if (c, u, a) == ("x6", "x3", "x2"):
                 assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x3", "x6"]
             else:
                 assert not found_discriminating_path
 
@@ -149,12 +194,65 @@ def test_discriminating_path():
     pag.add_edge("x5", "x2", pag.bidirected_edge_name)
     for u in pag.nodes:
         for (a, c) in permutations(pag.neighbors(u), 2):
-            found_discriminating_path, _, _ = discriminating_path(pag, u, a, c, max_path_length=100)
-            if (c, u, a) in (("x6", "x5", "x2"), ("x6", "x3", "x2")):
+            found_discriminating_path, disc_path, _ = discriminating_path(
+                pag, u, a, c, max_path_length=100
+            )
+            if (c, u, a) == ("x6", "x5", "x2"):
                 assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x5", "x6"]
+            elif (c, u, a) == ("x6", "x3", "x2"):
+                assert found_discriminating_path
+                assert list(disc_path) == ["x1", "x2", "x3", "x6"]
             else:
                 assert not found_discriminating_path
 
+
+@pytest.mark.parametrize("xp_xb", ["circle", "bidirected", None])
+@pytest.mark.parametrize("xj_xb", ["circle", "bidirected", None])
+def test_discriminating_path_longer(xj_xb, xp_xb):
+    """Test discriminating path for Figure 4 from the supplemental of [1].
+
+    The endpoints indicated by circle endpoints can be anything:
+
+    - xj <-* xb
+    - xp <-* xb
+
+    References
+    ----------
+    [1] Colombo, Diego, et al. "Learning high-dimensional directed acyclic
+    graphs with latent and selection variables." The Annals of Statistics
+    (2012): 294-321.
+    """
+    # test against longer discriminating path with Figure 4
+    edges = [
+        ("xk", "xp"),
+        ("xj", "xp"),
+        ("xb", "xp"),
+        ("xb", "xj"),
+    ]
+    bidirected_edges = [("xl", "xk"), ("xk", "xj")]
+    pag = pywhy_graphs.PAG(edges, incoming_bidirected_edges=bidirected_edges)
+    if xp_xb == "bidirected":
+        pag.remove_edge("xb", "xp", pag.directed_edge_name)
+        pag.add_edge("xp", "xb", xp_xb)
+    elif xp_xb is not None:
+        pag.add_edge("xp", "xb", xp_xb)
+
+    if xj_xb == "bidirected":
+        pag.remove_edge("xb", "xj", pag.directed_edge_name)
+        pag.add_edge("xj", "xb", xj_xb)
+    elif xj_xb is not None:
+        pag.add_edge("xj", "xb", xj_xb)
+
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "xb", "xj", "xp", max_path_length=10
+    )
+    assert found_discriminating_path
+    assert list(disc_path) == ["xl", "xk", "xj", "xb", "xp"]
+
+
+def test_restricted_discriminating_path():
+    """Test computing discriminating path with path length restrictions."""
     edges = [
         ("x4", "x1"),
         ("x4", "x6"),
@@ -170,10 +268,16 @@ def test_discriminating_path():
     pag = pywhy_graphs.PAG(
         edges, incoming_bidirected_edges=bidirected_edges, incoming_circle_edges=circle_edges
     )
-    found_discriminating_path, _, _ = discriminating_path(
-        pag, "x3", "x2", "x6", max_path_length=100
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "x3", "x2", "x6", max_path_length=10
     )
     assert found_discriminating_path
+    assert list(disc_path) == ["x1", "x2", "x3", "x6"]
+
+    found_discriminating_path, disc_path, _ = discriminating_path(
+        pag, "x3", "x2", "x6", max_path_length=0
+    )
+    assert not found_discriminating_path
 
 
 def test_uncovered_pd_path_circle_path_only():
@@ -237,7 +341,8 @@ def test_uncovered_pd_path_circle_path_only():
     assert not found_uncovered_circle_path
 
 
-def test_uncovered_pd_path():
+@pytest.mark.parametrize("max_path_length", [10, None])
+def test_uncovered_pd_path(max_path_length):
     """Test basic uncovered partially directed path."""
     # If A o-> C and there is an undirected pd path
     # from A to C through u, where u and C are not adjacent
@@ -260,18 +365,18 @@ def test_uncovered_pd_path():
     G.add_edge("v", "y", G.bidirected_edge_name)
 
     # get the uncovered pd paths
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", max_path_length, "A")
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
 
     # the shielded triple should not result in an uncovered pd path
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "v", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "v", "C", max_path_length, "A")
     assert not found_uncovered_pd_path
     assert uncov_pd_path == []
 
     # when there is a circle edge it should still work
     G.add_edge("C", "z", G.circle_edge_name)
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 100, "A")
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", max_path_length, "A")
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
 
@@ -281,15 +386,45 @@ def test_uncovered_pd_path():
     G.add_edge("u", "A", G.circle_edge_name)
     G.add_edge("u", "C", G.circle_edge_name)
     G.add_edge("C", "u", G.circle_edge_name)
-    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", 10)
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "A", "C", max_path_length)
     assert found_uncovered_pd_path
     assert uncov_pd_path == ["A", "u", "C"]
 
     # check errors for running uncovered pd path
     with pytest.raises(RuntimeError, match="Both first and second"):
-        uncovered_pd_path(G, "u", "C", 100, "A", "x")
+        uncovered_pd_path(G, "u", "C", max_path_length, "A", "x")
     with pytest.raises(RuntimeError, match="Some nodes are not in"):
-        uncovered_pd_path(G, "u", "C", 100, "wrong")
+        uncovered_pd_path(G, "u", "C", max_path_length, "wrong")
+
+
+def test_uncovered_pd_path_restricted():
+    """Test restriction of max path length in uncovered pd path."""
+
+    # use the same setup as in test_uncovered_pd_path
+    G = pywhy_graphs.PAG()
+    G.add_edge("A", "C", G.directed_edge_name)
+    G.add_edge("C", "A", G.circle_edge_name)
+    G.add_edges_from(
+        [("A", "u"), ("u", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    G.add_edge("y", "x", G.circle_edge_name)
+
+    # create a pd path from A to C through v
+    G.add_edges_from(
+        [("A", "v"), ("v", "x"), ("x", "y"), ("y", "z"), ("z", "C")], G.directed_edge_name
+    )
+    # with the bidirected edge, v,x,y is a shielded triple
+    G.add_edge("v", "y", G.bidirected_edge_name)
+
+    # get the uncovered pd paths
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", None, "A")
+    assert found_uncovered_pd_path
+    assert uncov_pd_path == ["A", "u", "x", "y", "z", "C"]
+
+    # if we limit the path length, then we won't find a uncovered pd path
+    uncov_pd_path, found_uncovered_pd_path = uncovered_pd_path(G, "u", "C", 3, "A")
+    assert not found_uncovered_pd_path
+    assert uncov_pd_path == []
 
 
 def test_uncovered_pd_path_intersecting():
@@ -399,3 +534,116 @@ def test_pds_path(pds_graph: PAG):
     assert ex_pdspath == set()
     assert xe_pdsep == set()
     assert ex_pdsep == {"A", "B", "D", "H"}
+
+
+def test_pds_unconnected(pds_graph: PAG):
+    """Test PDS in edge case where nodes are unconnected."""
+    G = pds_graph
+    G.add_node("N")
+
+    pds_set = pds(G, "N", "E")
+    assert pds_set == set()
+
+
+def test_definite_non_collider():
+    """Test non-collider definite status check."""
+    G = PAG()
+    G.add_nodes_from(["x", "y", "z"])
+
+    # first test x *-* y -> z
+    G_copy = G.copy()
+    G_copy.add_edge("y", "z", G_copy.directed_edge_name)
+    G_copy.add_edge("x", "y", G_copy.directed_edge_name)
+
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # x <-> y <-> z
+    G_copy.remove_edge("y", "z", G_copy.directed_edge_name)
+    G_copy.add_edge("y", "z", G_copy.bidirected_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # second test x <- y *-* z
+    G_copy = G.copy()
+    G_copy.add_edge("y", "x", G_copy.directed_edge_name)
+    G_copy.add_edge("z", "y", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.bidirected_edge_name)
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    G_copy.remove_edge("y", "x", G_copy.directed_edge_name)
+    G_copy.add_edge("y", "x", G_copy.bidirected_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # third test x o-o y o-o z, where x and z are unshielded
+    G_copy = G.copy()
+    G_copy.add_edge("y", "x", G_copy.circle_edge_name)
+    G_copy.add_edge("x", "y", G_copy.circle_edge_name)
+    G_copy.add_edge("z", "y", G_copy.circle_edge_name)
+    G_copy.add_edge("y", "z", G_copy.circle_edge_name)
+
+    assert is_definite_noncollider(G_copy, "x", "y", "z")
+
+    # even if the triplet is shielded, it is a definite collider
+    G_copy.add_edge("x", "z", G_copy.directed_edge_name)
+    assert not is_definite_noncollider(G_copy, "x", "y", "z")
+
+
+def test_pdst(pdst_graph):
+    G = pdst_graph
+
+    a_pdspath = pds_t_path(G, ("A", 0), ("E", 0))
+    e_pdspath = pds_t_path(G, ("E", 0), ("A", 0))
+    a_pdsep = pds_t(G, ("A", 0), ("E", 0))
+    e_pdsep = pds_t(G, ("E", 0), ("A", 0))
+
+    # the original graph is fully biconnected, so
+    # pdspath is equivalent to pds
+    assert a_pdsep == a_pdspath
+    assert e_pdsep == e_pdspath
+
+    # If we add a different node that is not biconnected,
+    # it will not fall in the pds path
+    G.add_edge(("x", -1), ("E", 0), G.circle_edge_name)
+    G.add_edge(("E", 0), ("x", -1), G.circle_edge_name)
+    a_pdspath = pds_t_path(G, ("A", 0), ("E", 0))
+    e_pdspath = pds_t_path(G, ("E", 0), ("A", 0))
+
+    assert a_pdsep == a_pdspath
+    assert e_pdsep == e_pdspath
+
+    # since the PDS set does not rely on the second
+    # node, the PDS(x, E) is the empty set, while
+    # PDS(E, x) comprises now of {B, D, H} and {A}
+    # because now A is not the end set
+    xe_pdsep = pds_t(G, ("x", -1), ("E", 0))
+    ex_pdsep = pds_t(G, ("E", 0), ("x", -1))
+    xe_pdspath = pds_t_path(G, ("x", -1), ("E", 0))
+    ex_pdspath = pds_t_path(G, ("E", 0), ("x", -1))
+
+    assert xe_pdspath == set()
+    assert ex_pdspath == set()
+    assert xe_pdsep == set()
+    assert ex_pdsep == {("A", 0), ("B", -1), ("D", 0), ("H", -1)}
+
+    # now we look at variables beyond the max(lag(node1), lag(node2)),
+    # these are not included even if they would be included in the PDS
+    G.add_edge(("x", -1), ("y", -2), G.circle_edge_name)
+    G.add_edge(("y", -2), ("x", -1), G.circle_edge_name)
+    G.add_edge(("y", -2), ("E", 0), G.circle_edge_name)
+    G.add_edge(("E", 0), ("y", -2), G.circle_edge_name)
+
+    xe_pdsep = pds(G, ("x", -1), ("E", 0))
+    ex_pdsep = pds(G, ("E", 0), ("x", -1))
+    assert ("y", -2) in xe_pdsep
+    assert ("y", -2) in ex_pdsep
+
+    xe_pdsep_t = pds_t(G, ("x", -1), ("E", 0))
+    ex_pdsep_t = pds_t(G, ("E", 0), ("x", -1))
+    assert ("y", -2) not in xe_pdsep_t
+    assert ("y", -2) not in ex_pdsep_t

@@ -239,5 +239,9 @@ class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
     graph_types = (StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph)
 
     def __init__(self, graphs=None, edge_types=None, max_lag: int = None, **attr):
-        # attr.update(dict(max_lag=max_lag))
         super().__init__(graphs, edge_types, max_lag=max_lag, **attr)
+
+    def set_stationarity(self, stationary: bool):
+        self.stationary = stationary
+        for graph in self.get_graphs().values():
+            graph.stationary = stationary

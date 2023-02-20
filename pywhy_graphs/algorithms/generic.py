@@ -125,6 +125,12 @@ def is_valid_mec_graph(G, on_error: str = "raise") -> bool:
     -------
     bool
         Whether G is a valid PAG or CPDAG.
+
+    Notes
+    -----
+    This function does not check whether or not the PAG, or CPDAG are valid in the sense
+    that the construction of the PAG/CPDAG was constrained to not contain any
+    directed edge cycles.
     """
     if isinstance(G, CPDAG) or isinstance(G, StationaryTimeSeriesCPDAG):
         check_func = _check_adding_cpdag_edge
@@ -134,13 +140,6 @@ def is_valid_mec_graph(G, on_error: str = "raise") -> bool:
     for edge_type, edgeview in G.edges().items():
         for u, v in edgeview:
             check_func(G, u, v, edge_type)
-
-    # the directed edges should not form cycles
-    if not nx.is_directed_acyclic_graph(G.sub_directed_graph()):
-        if on_error == "raise":
-            raise RuntimeError(f"{G} is not a DAG, which it should be.")
-        return False
-
     return True
 
 
@@ -149,6 +148,8 @@ def _check_adding_cpdag_edge(graph: CPDAG, u_of_edge: Node, v_of_edge: Node, edg
 
     Parameters
     ----------
+    graph : CPDAG
+        The CPDAG we are adding edges to.
     u_of_edge : node
         The start node.
     v_of_edge : node
@@ -157,20 +158,20 @@ def _check_adding_cpdag_edge(graph: CPDAG, u_of_edge: Node, v_of_edge: Node, edg
         The edge type that is being added.
     """
     raise_error = False
-    if edge_type == EdgeType.DIRECTED:
-        # there should not be a circle edge, or a bidirected edge
+    if edge_type == EdgeType.DIRECTED.value:
+        # there should not be a undirected edge, or a bidirected edge
         if graph.has_edge(u_of_edge, v_of_edge, graph.undirected_edge_name):
             raise_error = True
         if graph.has_edge(v_of_edge, u_of_edge, graph.directed_edge_name):
             raise RuntimeError(
                 f"There is an existing {v_of_edge} -> {u_of_edge}. You are "
                 f"trying to add a directed edge from {u_of_edge} -> {v_of_edge}. "
-                f"If your intention is to create a bidirected edge, first remove the "
-                f"edge and then explicitly add the bidirected edge."
             )
-    elif edge_type == EdgeType.UNDIRECTED:
+    elif edge_type == EdgeType.UNDIRECTED.value:
         # there should not be any type of edge between the two
-        if graph.has_edge(u_of_edge, v_of_edge):
+        if graph.has_edge(u_of_edge, v_of_edge, graph.directed_edge_name) or graph.has_edge(
+            v_of_edge, u_of_edge, graph.directed_edge_name
+        ):
             raise_error = True
 
     if raise_error:
