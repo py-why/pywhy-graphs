@@ -1068,17 +1068,21 @@ class MixedEdgeGraph:
         G : MixedEdgeGraph
             A copy of the graph with only the nodes.
         """
-        induced_nodes = nx.filters.show_nodes(self.nbunch_iter(nodes))
-
         # initialize list of empty internal graphs
         graph_classes = [self._internal_graph_nx_type(edge_type)() for edge_type in self.edge_types]
-        graph = self.__class__(graphs=graph_classes, edge_types=self.edge_types)
-        graph.add_nodes_from(induced_nodes)
+        graph = self.__class__(**self.graph)
+        graph.add_edge_types_from(graph_classes, self.edge_types)
+        graph.add_nodes_from(nodes)
 
         # now add the edges for each edge type
         for edge_type, _graph in graph._edge_graphs.items():
-            edges = self._get_internal_graph(edge_type).edges(induced_nodes)
-            _graph.add_edges_from(edges)
+            for node in nodes:
+                edges = self._get_internal_graph(edge_type).edges(node)
+
+                # only add edges from the induced subgraph
+                for u, v in edges:
+                    if u in set(nodes) and v in nodes:
+                        _graph.add_edge(u, v)
         return graph
 
     def degree(self, nbunch=None, weight=None):

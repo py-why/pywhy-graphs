@@ -172,6 +172,14 @@ class BaseMixedEdgeGraphTester:
         G.add_edge(1, 1)
         G.remove_nodes_from([0, 1])
 
+    def test_remove_node_error(self):
+        G = self.K3.copy()
+        with pytest.raises(nx.NetworkXError, match="is not in the graph"):
+            G.remove_node("blah")
+
+        # remove_nodes_from will skip the errors though
+        G.remove_nodes_from(["blah"])
+
     def test_cache_reset(self):
         G = self.K3.copy()
         old_adj = G.adj
@@ -220,6 +228,57 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         # all nodes should match after adding them to the mixed-edge-graph
         for _, graph in G.get_graphs().items():
             assert set(G.nodes) == set(graph.nodes)
+
+    def test_init_errors(self):
+        directed_edges = nx.DiGraph(
+            [
+                ("x8", "x2"),
+                ("x9", "x2"),
+                ("x10", "x1"),
+                ("x2", "x4"),
+                ("x4", "x6"),  # start of cycle
+                ("x6", "x5"),
+                ("x5", "x3"),
+                ("x3", "x4"),  # end of cycle
+                ("x6", "x7"),
+            ]
+        )
+        bidirected_edges = nx.Graph([("x1", "x3")])
+        with pytest.raises(RuntimeError, match="If graphs or edge types are defined"):
+            pywhy_nx.MixedEdgeGraph([directed_edges, bidirected_edges])
+
+        with pytest.raises(RuntimeError, match="The number of graph objects passed in"):
+            pywhy_nx.MixedEdgeGraph([directed_edges, bidirected_edges], ["directed"])
+
+        with pytest.raises(RuntimeError, match="All graph object inputs must be one of Networkx"):
+            pywhy_nx.MixedEdgeGraph(
+                [directed_edges.edges, bidirected_edges], ["directed", "bidirected"]
+            )
+
+    def test_clear(self):
+        G = self.K3.copy()
+        G.clear()
+        assert G.size() == 0
+        assert len(G.nodes) == 0
+
+        G = self.K3.copy()
+        G.clear_edges()
+        assert len(G.nodes) > 0
+
+        G = self.K3.copy()
+        G.clear_edge_types()
+        assert len(G.nodes) > 0
+
+    def test_subgraph(self):
+        G = self.K3.copy()
+
+        sub_G = G.subgraph(self.k3nodes)
+        for edge_type, graph in G.get_graphs().items():
+            assert nx.is_isomorphic(graph, sub_G.get_graphs(edge_type))
+
+        sub_G = G.subgraph(self.k3nodes[:-1])
+        for edge_type, graph in G.get_graphs().items():
+            assert not nx.is_isomorphic(graph, sub_G.get_graphs(edge_type))
 
     def test_add_edge_type(self):
         # test adding edge type with empty graph

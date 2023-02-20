@@ -181,6 +181,7 @@ omit = [
     'pywhy_graphs/config.py',
     '**/networkxprotocol.py',
     '**/tests/**',
+    'pywhy_graphs.export.py',
 ]
 
 [tool.coverage.report]
