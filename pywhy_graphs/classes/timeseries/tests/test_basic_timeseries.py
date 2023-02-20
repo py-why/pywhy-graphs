@@ -29,6 +29,12 @@ def test_ts_graph_error(G_func):
     with pytest.raises(ValueError, match="Max lag for time series graph "):
         complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
 
+    G = G_func()
+    with pytest.raises(ValueError, match="All nodes in time series DAG must be a 2-tuple"):
+        G.add_node(0)
+    with pytest.raises(ValueError, match="All lag points should be 0, or less."):
+        G.add_node(("x", 2))
+
 
 @pytest.mark.parametrize("G_func", [TimeSeriesGraph, TimeSeriesDiGraph])
 def test_time_nodes(G_func):

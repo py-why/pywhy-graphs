@@ -1,13 +1,25 @@
 import networkx as nx
+import pytest
 
 import pywhy_graphs
 
 
-def test_convert_to_latent_confounder():
+def test_convert_to_latent_confounder_errors():
     # build initial DAG
     ed1, ed2 = ({}, {})
     incoming_graph_data = {0: {1: ed1, 2: ed2}, 3: {2: ed2}}
     G = pywhy_graphs.ADMG(incoming_graph_data)
+
+    with pytest.raises(RuntimeError, match="is not a common cause within the graph"):
+        pywhy_graphs.set_nodes_as_latent_confounders(G, [1])
+
+
+@pytest.mark.parametrize("graph_func", [pywhy_graphs.ADMG, nx.DiGraph])
+def test_convert_to_latent_confounder(graph_func):
+    # build initial DAG
+    ed1, ed2 = ({}, {})
+    incoming_graph_data = {0: {1: ed1, 2: ed2}, 3: {2: ed2}}
+    G = graph_func(incoming_graph_data)
 
     assert pywhy_graphs.is_node_common_cause(G, 0)
     assert not pywhy_graphs.is_node_common_cause(G, 0, exclude_nodes=set([1]))
