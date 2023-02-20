@@ -180,9 +180,7 @@ def m_separated(
     return True
 
 
-def _anterior(
-    G, start_nodes, directed_edge_name="directed", undirected_edge_name="undirected"
-):
+def _anterior(G, start_nodes, directed_edge_name="directed", undirected_edge_name="undirected"):
     """Computes the anterior of a set of nodes in a graph with directed and undirected edges.
 
     This algorithm works through breadth-first search on mixed edge graphs with directed
@@ -313,15 +311,11 @@ def is_minimal_m_separator(
             f"Minimal set {i} should be no larger than proposed separating set {z}"
         )
     if not z <= r:
-        raise nx.NetworkXError(
-            f"Separating set {z} should be no larger than maximum set {r}"
-        )
+        raise nx.NetworkXError(f"Separating set {z} should be no larger than maximum set {r}")
 
     if z - _anterior(G, {x, y}.union(i)) != set() or not z <= r:
         return False
-    if not m_separated(
-        G, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name
-    ):
+    if not m_separated(G, x, y, z, directed_edge_name, bidirected_edge_name, undirected_edge_name):
         return False
 
     G_copy = G.copy()
@@ -418,9 +412,7 @@ def minimal_m_separator(
     if r is None:
         r = set(G.nodes())
     if not i <= r:
-        raise nx.NetworkError(
-            f"Minimal set {i} should be no larger than maximal set {r}"
-        )
+        raise nx.NetworkError(f"Minimal set {i} should be no larger than maximal set {r}")
 
     G_copy = G.copy()
 
