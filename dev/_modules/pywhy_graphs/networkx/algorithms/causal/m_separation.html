@@ -199,7 +199,7 @@
 
 <span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;m_separated&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;m_separated&quot;</span><span class="p">,</span> <span class="s2">&quot;minimal_m_separator&quot;</span><span class="p">,</span> <span class="s2">&quot;is_minimal_m_separator&quot;</span><span class="p">]</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -209,19 +209,19 @@
     <span class="n">x</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
     <span class="n">z</span><span class="p">,</span>
-    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
     <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
     <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check m-separation among &#39;x&#39; and &#39;y&#39; given &#39;z&#39; in mixed-edge causal graph G, which may</span>
 <span class="sd">    contain directed, bidirected, and undirected edges.</span>
 
 <span class="sd">    This implements the m-separation algorithm TESTSEP presented in [1]_ for ancestral mixed</span>
-<span class="sd">    graphs, which is itself adapted from [2]_. Further checks have ensure that it works</span>
-<span class="sd">    for non-ancestral mixed graphs (e.g. ADMGs). The algorithm performs a breadth-first search</span>
-<span class="sd">    over m-connecting paths between &#39;x&#39; and &#39;y&#39; (i.e. a path on which every node that is a</span>
-<span class="sd">    collider is in &#39;z&#39;, and every node that is not a collider is not in &#39;z&#39;). The algorithm</span>
-<span class="sd">    has runtime ``O(|E| + |V|)`` for number of edges ``|E|`` and number of vertices ``|V|``.</span>
+<span class="sd">    graphs. Further checks have ensure that it works for non-ancestral mixed graphs</span>
+<span class="sd">    (e.g. ADMGs). The algorithm performs a breadth-first search over m-connecting paths</span>
+<span class="sd">    between &#39;x&#39; and &#39;y&#39; (i.e. a path on which every node that is a collider is in &#39;z&#39;, and</span>
+<span class="sd">    every node that is not a collider is not in &#39;z&#39;). The algorithm has runtime</span>
+<span class="sd">    :math:`O(|E| + |V|)` for number of edges :math:`|E|` and number of vertices :math:`|V|`.</span>
 
 
 <span class="sd">    Parameters</span>
@@ -251,8 +251,6 @@
 <span class="sd">    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment</span>
 <span class="sd">       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial</span>
 <span class="sd">       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.</span>
-
-<span class="sd">    .. [2]</span>
 
 
 <span class="sd">    See Also</span>
@@ -373,6 +371,321 @@
                             <span class="n">forward_deque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">def</span> <span class="nf">_anterior</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_nodes</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the anterior of a set of nodes in a graph with directed and undirected edges.</span>
+
+<span class="sd">    This algorithm works through breadth-first search on mixed edge graphs with directed</span>
+<span class="sd">    and undirected edges.</span>
+
+<span class="sd">    All directed paths are ancestral and anterior. A path is also anterior if undirected edges</span>
+<span class="sd">    could be replaced by directed edges to form a directed path. By definition, the anterior</span>
+<span class="sd">    set includes the start nodes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : mixed-edge-graph</span>
+<span class="sd">        Mixed edge causal graph.</span>
+<span class="sd">    start_nodes : set</span>
+<span class="sd">        Set of nodes which are always included in the found separating set.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        Name of the directed edge, default is directed.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        Name of the undirected edge, default is undirected.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    visited : set</span>
+<span class="sd">        The anterior set of nodes</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment</span>
+<span class="sd">       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial</span>
+<span class="sd">       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">)</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">has_undirected</span> <span class="o">=</span> <span class="n">undirected_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span>
+    <span class="k">if</span> <span class="n">has_undirected</span><span class="p">:</span>
+        <span class="n">G_undirected</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+    <span class="n">has_directed</span> <span class="o">=</span> <span class="n">directed_edge_name</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span>
+    <span class="k">if</span> <span class="n">has_directed</span><span class="p">:</span>
+        <span class="n">G_directed</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="n">edge_type</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">has_directed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">G_directed</span><span class="o">.</span><span class="n">in_edges</span><span class="p">(</span><span class="n">nbunch</span><span class="o">=</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">has_undirected</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">G_undirected</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">visited</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="is_minimal_m_separator"><a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.is_minimal_m_separator.html#pywhy_graphs.networkx.is_minimal_m_separator">[docs]</a><span class="k">def</span> <span class="nf">is_minimal_m_separator</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">z</span><span class="p">,</span>
+    <span class="n">i</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+    <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a set &#39;z&#39; is a i-minimal m-separator between &#39;x&#39; and &#39;y&#39;.</span>
+
+<span class="sd">    The function will first check if &#39;z&#39; is a m-separator, and then check if it</span>
+<span class="sd">    is minimal. An i-minimal m-separating set is a minimal m-separator that contains i.</span>
+
+<span class="sd">    This implements the algorithm TESTMINSEP presented in [1]_ for ancestral mixed graphs, but has</span>
+<span class="sd">    been tested to work with non-ancestral graphs.</span>
+
+<span class="sd">    This implementation differs from the specification of TESTMINSEP in [1]_ in that we replace</span>
+<span class="sd">    the check in line 6 with :math:`z - i \\neq R_x`, and similarly in line 8 with</span>
+<span class="sd">    :math:`z - i \\neq R_y`. This change was deemed necessary because in line 4 all nodes in ``i``</span>
+<span class="sd">    are removed, so there cannot be paths from ``x`` to ``i`` in the augmented moralized graph,</span>
+<span class="sd">    causing the algorithm to return false when a minimal m-separator existed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : mixed-edge-graph</span>
+<span class="sd">        Mixed edge causal graph.</span>
+<span class="sd">    x : node</span>
+<span class="sd">        Node in ``G``.</span>
+<span class="sd">    y : node</span>
+<span class="sd">        Node in ``G``.</span>
+<span class="sd">    z : set</span>
+<span class="sd">        Set of nodes in ``G`` representing the candidate minimal m-separator of ``x`` and ``y``.</span>
+<span class="sd">    i : set</span>
+<span class="sd">        Set of nodes which are always included in the found separating set,</span>
+<span class="sd">        default is None, which is later set to empty set.</span>
+<span class="sd">    r : set</span>
+<span class="sd">        Largest set of nodes which may be included in the found separating set,</span>
+<span class="sd">        default is None, which is later set to all vertices in ``G``.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        Name of the directed edge, default is &#39;directed&#39;.</span>
+<span class="sd">    bidirected_edge_name : str</span>
+<span class="sd">        Name of the bidirected edge, default is &#39;bidirected&#39;.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        Name of the undirected edge, default is &#39;undirected&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_minimal_m_sep : bool</span>
+<span class="sd">        If the set ``z`` is a minimal m-separator, returns True, else returns False.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment</span>
+<span class="sd">       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial</span>
+<span class="sd">       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">z</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Minimal set </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> should be no larger than proposed separating set </span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">z</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Separating set </span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2"> should be no larger than maximum set </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">z</span> <span class="o">-</span> <span class="n">_anterior</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">}</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">z</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m_separated</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="p">,</span> <span class="n">bidirected_edge_name</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">G_copy</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">nodeset</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">}</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">anterior_nodes_G</span> <span class="o">=</span> <span class="n">_anterior</span><span class="p">(</span><span class="n">G_copy</span><span class="p">,</span> <span class="n">nodeset</span><span class="p">)</span>
+    <span class="n">G_copy</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">-</span> <span class="n">anterior_nodes_G</span><span class="p">)</span>
+    <span class="n">aug_G_p</span> <span class="o">=</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">mixed_edge_moral_graph</span><span class="p">(</span>
+        <span class="n">G_copy</span><span class="p">,</span>
+        <span class="n">directed_edge_name</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">,</span>
+        <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="n">bidirected_edge_name</span><span class="p">,</span>
+        <span class="n">undirected_edge_name</span><span class="o">=</span><span class="n">undirected_edge_name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">aug_G_p</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="n">r_x</span> <span class="o">=</span> <span class="n">_bfs_with_marks</span><span class="p">(</span><span class="n">aug_G_p</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Note: we check z - i != r_x instead of z != r_x since</span>
+    <span class="c1"># all nodes in i are removed from graph and so x will never have a path</span>
+    <span class="c1"># to i. Appears to be bug in the original algorithm.</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="o">-</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">r_x</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">r_y</span> <span class="o">=</span> <span class="n">_bfs_with_marks</span><span class="p">(</span><span class="n">aug_G_p</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Note: we check z - i != r_y for similar reasons as above.</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="o">-</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">r_y</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="minimal_m_separator"><a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.minimal_m_separator.html#pywhy_graphs.networkx.minimal_m_separator">[docs]</a><span class="k">def</span> <span class="nf">minimal_m_separator</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">i</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+    <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+    <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find a i-minimal m-separating set &#39;z&#39; between &#39;x&#39; and &#39;y&#39; in mixed-edge causal graph G.</span>
+
+<span class="sd">    The set which may contain directed, bidirected, and undirected edges. An i-minimal</span>
+<span class="sd">    m-separating set is a minimal m-separator that contains i.</span>
+
+<span class="sd">    This implements the m-separation algorithm FINDSEP presented in [1]_ for ancestral mixed</span>
+<span class="sd">    graphs.  The algorithm has runtime :math:`O(|E| + |V|)` for number of edges :math`|E|` and</span>
+<span class="sd">    number of vertices :math:`|V|`.</span>
+
+<span class="sd">    This implementation differs from the specification of FINDMINSEP in [1]_ in that all</span>
+<span class="sd">    nodes in ``i`` are removed from the anterior graph :math:`G&#39;`, in between lines 3 and 4.</span>
+<span class="sd">    This change was deemed necessary because otherwise the TESTSEP call in line 7 would fail</span>
+<span class="sd">    even if the union of ``z`` and ``i`` was a valid i-minimal m-separating set.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : mixed-edge-graph</span>
+<span class="sd">        Mixed edge causal graph.</span>
+<span class="sd">    x : node</span>
+<span class="sd">        Node in ``G``.</span>
+<span class="sd">    y : node</span>
+<span class="sd">        Node in ``G``.</span>
+<span class="sd">    i : set</span>
+<span class="sd">        Set of nodes which are always included in the found separating set,</span>
+<span class="sd">        default is None, which is later set to empty set.</span>
+<span class="sd">    r : set</span>
+<span class="sd">        Largest set of nodes which may be included in the found separating set,</span>
+<span class="sd">        default is None, which is later set to all vertices in ``G``.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        Name of the directed edge, default is &#39;directed&#39;.</span>
+<span class="sd">    bidirected_edge_name : str</span>
+<span class="sd">        Name of the bidirected edge, default is &#39;bidirected&#39;.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        Name of the undirected edge, default is &#39;undirected&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    z : set | None</span>
+<span class="sd">        If a separating set exists, returns a set of nodes which m-separates ``x``</span>
+<span class="sd">        and ``y``, otherwise returns None.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment</span>
+<span class="sd">       Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial</span>
+<span class="sd">       Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimal set </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> should be no larger than maximal set </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">G_copy</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">nodeset</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">}</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">anterior_nodes_G</span> <span class="o">=</span> <span class="n">_anterior</span><span class="p">(</span><span class="n">G_copy</span><span class="p">,</span> <span class="n">nodeset</span><span class="p">)</span>
+    <span class="n">G_copy</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">G_copy</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">-</span> <span class="n">anterior_nodes_G</span><span class="p">)</span>
+    <span class="n">G_p</span> <span class="o">=</span> <span class="n">G_copy</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">aug_G_p</span> <span class="o">=</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">mixed_edge_moral_graph</span><span class="p">(</span>
+        <span class="n">G_copy</span><span class="p">,</span>
+        <span class="n">directed_edge_name</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">,</span>
+        <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="n">bidirected_edge_name</span><span class="p">,</span>
+        <span class="n">undirected_edge_name</span><span class="o">=</span><span class="n">undirected_edge_name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">aug_G_p</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">G_p</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="n">z_prime</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+        <span class="n">_anterior</span><span class="p">(</span><span class="n">G_copy</span><span class="p">,</span> <span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">},</span> <span class="n">directed_edge_name</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-</span> <span class="p">{</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">z_dprime</span> <span class="o">=</span> <span class="n">_bfs_with_marks</span><span class="p">(</span><span class="n">aug_G_p</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z_prime</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">_bfs_with_marks</span><span class="p">(</span><span class="n">aug_G_p</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z_dprime</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m_separated</span><span class="p">(</span>
+        <span class="n">G_p</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="p">,</span> <span class="n">bidirected_edge_name</span><span class="p">,</span> <span class="n">undirected_edge_name</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">z</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+
+<span class="c1"># XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can</span>
+<span class="c1"># depend on that implementation</span>
+<span class="k">def</span> <span class="nf">_bfs_with_marks</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="n">check_set</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Breadth-first-search with markings.</span>
+
+<span class="sd">    Performs BFS starting from ``start_node`` and whenever a node</span>
+<span class="sd">    inside ``check_set`` is met, it is &quot;marked&quot;. Once a node is marked,</span>
+<span class="sd">    BFS does not continue along that path. The resulting marked nodes</span>
+<span class="sd">    are returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : nx.Graph</span>
+<span class="sd">        An undirected graph.</span>
+<span class="sd">    start_node : node</span>
+<span class="sd">        The start of the BFS.</span>
+<span class="sd">    check_set : set</span>
+<span class="sd">        The set of nodes to check against.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    marked : set | None</span>
+<span class="sd">        A set of nodes that were marked, or None if BFS failed to find</span>
+<span class="sd">        any paths from ``start_node`` to ``check_set``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">marked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">visited</span><span class="p">[</span><span class="n">start_node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_node</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="c1"># memoize where we visited so far</span>
+                <span class="n">visited</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="c1"># mark the node in Z&#39; and do not continue along that path</span>
+                <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">check_set</span><span class="p">:</span>
+                    <span class="n">marked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">marked</span>
 </pre></div>
 
               </article>

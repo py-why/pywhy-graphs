@@ -1,0 +1,12 @@
+﻿pywhy_graphs.networkx.is_minimal_m_separator
+============================================
+
+.. currentmodule:: pywhy_graphs.networkx
+
+.. autofunction:: is_minimal_m_separator
+
+.. include:: pywhy_graphs.networkx.is_minimal_m_separator.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

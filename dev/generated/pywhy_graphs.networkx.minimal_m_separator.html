@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.networkx.m_separated &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.networkx.minimal_m_separator &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.networkx.is_minimal_m_separator" href="pywhy_graphs.networkx.is_minimal_m_separator.html" />
-    <link rel="prev" title="pywhy_graphs.networkx.bidirected_to_unobserved_confounder" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html" />
+    <link rel="next" title="pywhy_graphs.classes.timeseries.complete_ts_graph" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html" />
+    <link rel="prev" title="pywhy_graphs.networkx.is_minimal_m_separator" href="pywhy_graphs.networkx.is_minimal_m_separator.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -269,8 +269,8 @@
    pywhy_graphs.networkx.bidirected_to_unobserved_confounder
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
    pywhy_graphs.networkx.m_separated
   </a>
  </li>
@@ -279,8 +279,8 @@
    pywhy_graphs.networkx.is_minimal_m_separator
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.minimal_m_separator.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.networkx.minimal_m_separator
   </a>
  </li>
@@ -445,20 +445,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.networkx.m_separated">
+  <a class="reference internal nav-link" href="#pywhy_graphs.networkx.minimal_m_separator">
    <code class="docutils literal notranslate">
     <span class="pre">
-     m_separated()
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-using-pywhy-graphs-networkx-m-separated">
-   Examples using
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     pywhy_graphs.networkx.m_separated
+     minimal_m_separator()
     </span>
    </code>
   </a>
@@ -482,70 +472,71 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-networkx-m-separated">
-<h1>pywhy_graphs.networkx.m_separated<a class="headerlink" href="#pywhy-graphs-networkx-m-separated" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-networkx-minimal-m-separator">
+<h1>pywhy_graphs.networkx.minimal_m_separator<a class="headerlink" href="#pywhy-graphs-networkx-minimal-m-separator" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.networkx.m_separated">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">m_separated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'undirected'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/m_separation.html#m_separated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.m_separated" title="Permalink to this definition">#</a></dt>
-<dd><p>Check m-separation among ‘x’ and ‘y’ given ‘z’ in mixed-edge causal graph G, which may
-contain directed, bidirected, and undirected edges.</p>
-<p>This implements the m-separation algorithm TESTSEP presented in <a class="reference internal" href="#r23c6b73ac81f-1" id="id1">[1]</a> for ancestral mixed
-graphs. Further checks have ensure that it works for non-ancestral mixed graphs
-(e.g. ADMGs). The algorithm performs a breadth-first search over m-connecting paths
-between ‘x’ and ‘y’ (i.e. a path on which every node that is a collider is in ‘z’, and
-every node that is not a collider is not in ‘z’). The algorithm has runtime
-<span class="math notranslate nohighlight">\(O(|E| + |V|)\)</span> for number of edges <span class="math notranslate nohighlight">\(|E|\)</span> and number of vertices <span class="math notranslate nohighlight">\(|V|\)</span>.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.networkx.minimal_m_separator">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.networkx.</span></span><span class="sig-name descname"><span class="pre">minimal_m_separator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'undirected'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/algorithms/causal/m_separation.html#minimal_m_separator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.minimal_m_separator" title="Permalink to this definition">#</a></dt>
+<dd><p>Find a i-minimal m-separating set ‘z’ between ‘x’ and ‘y’ in mixed-edge causal graph G.</p>
+<p>The set which may contain directed, bidirected, and undirected edges. An i-minimal
+m-separating set is a minimal m-separator that contains i.</p>
+<p>This implements the m-separation algorithm FINDSEP presented in <a class="reference internal" href="#ra22741f2856b-1" id="id1">[1]</a> for ancestral mixed
+graphs.  The algorithm has runtime <span class="math notranslate nohighlight">\(O(|E| + |V|)\)</span> for number of edges :math`|E|` and
+number of vertices <span class="math notranslate nohighlight">\(|V|\)</span>.</p>
+<p>This implementation differs from the specification of FINDMINSEP in <a class="reference internal" href="#ra22741f2856b-1" id="id2">[1]</a> in that all
+nodes in <code class="docutils literal notranslate"><span class="pre">i</span></code> are removed from the anterior graph <span class="math notranslate nohighlight">\(G'\)</span>, in between lines 3 and 4.
+This change was deemed necessary because otherwise the TESTSEP call in line 7 would fail
+even if the union of <code class="docutils literal notranslate"><span class="pre">z</span></code> and <code class="docutils literal notranslate"><span class="pre">i</span></code> was a valid i-minimal m-separating set.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>G</strong> : mixed-edge-graph</p>
 <blockquote>
 <div><p>Mixed edge causal graph.</p>
 </div></blockquote>
-<p><strong>x</strong> : set</p>
+<p><strong>x</strong> : node</p>
 <blockquote>
-<div><p>First set of nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
+<div><p>Node in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>y</strong> : set</p>
+<p><strong>y</strong> : node</p>
 <blockquote>
-<div><p>Second set of nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
+<div><p>Node in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
-<p><strong>z</strong> : set</p>
+<p><strong>i</strong> : set</p>
 <blockquote>
-<div><p>Set of conditioning nodes in <code class="docutils literal notranslate"><span class="pre">G</span></code>. Can be empty set.</p>
+<div><p>Set of nodes which are always included in the found separating set,
+default is None, which is later set to empty set.</p>
+</div></blockquote>
+<p><strong>r</strong> : set</p>
+<blockquote>
+<div><p>Largest set of nodes which may be included in the found separating set,
+default is None, which is later set to all vertices in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
 </div></blockquote>
 <p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
-<div><p>Name of the directed edge, default is directed.</p>
+<div><p>Name of the directed edge, default is ‘directed’.</p>
 </div></blockquote>
 <p><strong>bidirected_edge_name</strong> : str</p>
 <blockquote>
-<div><p>Name of the bidirected edge, default is bidirected.</p>
+<div><p>Name of the bidirected edge, default is ‘bidirected’.</p>
 </div></blockquote>
 <p><strong>undirected_edge_name</strong> : str</p>
 <blockquote>
-<div><p>Name of the undirected edge, default is undirected.</p>
+<div><p>Name of the undirected edge, default is ‘undirected’.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>b</strong> : bool</p>
+<dd class="field-even"><p><strong>z</strong> : set | None</p>
 <blockquote>
-<div><p>A boolean that is true if <code class="docutils literal notranslate"><span class="pre">x</span></code> is m-separated from <code class="docutils literal notranslate"><span class="pre">y</span></code> given <code class="docutils literal notranslate"><span class="pre">z</span></code> in <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p>
+<div><p>If a separating set exists, returns a set of nodes which m-separates <code class="docutils literal notranslate"><span class="pre">x</span></code>
+and <code class="docutils literal notranslate"><span class="pre">y</span></code>, otherwise returns None.</p>
 </div></blockquote>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/algorithms/generated/networkx.algorithms.d_separation.d_separated.html#networkx.algorithms.d_separation.d_separated" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.algorithms.d_separation.d_separated</span></code></a></dt><dd></dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>This wraps the networkx implementation, which only allows DAGs and does
-not have an <code class="docutils literal notranslate"><span class="pre">ADMG</span></code> representation.</p>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
-<div class="citation" id="r23c6b73ac81f-1" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="ra22741f2856b-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
 <p>B. van der Zander, M. Liśkiewicz, and J. Textor, “Separators and Adjustment
 Sets in Causal Graphs: Complete Criteria and an Algorithmic Framework,” Artificial
 Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.</p>
@@ -553,13 +544,7 @@ Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
 </div>
 </dd></dl>
 
-<section id="examples-using-pywhy-graphs-networkx-m-separated">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.networkx.m_separated</span></code><a class="headerlink" href="#examples-using-pywhy-graphs-networkx-m-separated" title="Permalink to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W..."><img alt="An introduction to causal graphs and how to use them" src="../_images/sphx_glr_intro_causal_graphs_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/intro/intro_causal_graphs.html#sphx-glr-auto-examples-intro-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
-  <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
               </article>
@@ -569,17 +554,17 @@ Intelligence, vol. 270, pp. 1–40, May 2019, doi: 10.1016/j.artint.2018.12.006.
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.networkx.is_minimal_m_separator.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.networkx.bidirected_to_unobserved_confounder</p>
+          <p class="prev-next-title">pywhy_graphs.networkx.is_minimal_m_separator</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.networkx.is_minimal_m_separator.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.networkx.is_minimal_m_separator</p>
+      <p class="prev-next-title">pywhy_graphs.classes.timeseries.complete_ts_graph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
