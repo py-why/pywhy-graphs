@@ -58,8 +58,10 @@ class StationaryTimeSeriesCPDAG(
         incoming_undirected_edges=None,
         directed_edge_name: str = "directed",
         undirected_edge_name: str = "undirected",
+        stationary: bool = True,
         **attr,
     ):
+        self.stationary = stationary
         super().__init__(**attr)
         self.add_edge_type(
             StationaryTimeSeriesDiGraph(incoming_directed_edges, **attr), directed_edge_name

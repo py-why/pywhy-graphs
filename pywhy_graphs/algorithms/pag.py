@@ -21,6 +21,7 @@ __all__ = [
     "uncovered_pd_path",
     "pds_t",
     "pds_t_path",
+    "is_definite_noncollider",
 ]
 
 
@@ -144,7 +145,11 @@ def is_definite_collider(G: PAG, node1: Node, node2: Node, node3: Node) -> bool:
 def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bool:
     """Check if <node1, node2, node3> path forms a definite non-collider.
 
-    I.e. node1 *-* node2 -> node3, or node1 <- node2 *-* node3
+    Definite noncolliders have the form:
+
+    - node1 *-* node2 -> node3, or
+    - node1 <- node2 *-* node3, or
+    - node1 *-o node2 o-* node3 with node1 and node3 non-adjacent
 
     Parameters
     ----------
@@ -158,15 +163,25 @@ def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bo
     Returns
     -------
     is_noncollider : bool
-        Whether or not the path is a definite non-collider.
+        Whether or not the path is a definite non-collider. If it is not a definite non-collider,
+        then it may be a definite collider, or uncertain.
     """
-    condition_one = G.has_edge(node2, node3, G.directed_edge_name) and not G.has_edge(
-        node3, node2, G.directed_edge_name
-    )
-    condition_two = G.has_edge(node2, node1, G.directed_edge_name) and not G.has_edge(
-        node1, node2, G.directed_edge_name
-    )
-    return condition_one or condition_two
+    if G.has_edge(node1, node2, G.directed_edge_name) or G.has_edge(
+        node1, node2, G.bidirected_edge_name
+    ):
+        # node1 *-> node2 *-* node3
+        # or node1 *-* node2 <-* node3
+        if G.has_edge(node3, node2, G.directed_edge_name) or G.has_edge(
+            node3, node2, G.bidirected_edge_name
+        ):
+            return False
+    elif G.has_edge(node1, node2, G.circle_edge_name) and G.has_edge(
+        node3, node2, G.circle_edge_name
+    ):
+        # node1 *-o node2 o-* node3
+        if G.has_edge(node1, node3, "any") or G.has_edge(node3, node1, "any"):
+            return False
+    return True
 
 
 def discriminating_path(
@@ -199,10 +214,10 @@ def discriminating_path(
     -------
     explored_nodes : set
         A set of explored nodes.
-    found_discriminating_path : bool
-        Whether or not a discriminating path was found.
     disc_path : list
         The discriminating path starting from node c.
+    found_discriminating_path : bool
+        Whether or not a discriminating path was found.
     """
     if max_path_length is None:
         max_path_length = 1000
@@ -829,7 +844,7 @@ def definite_m_separated(
     z,
     bidirected_edge_name="bidirected",
     directed_edge_name="directed",
-    circle_edge_name="cirlcle",
+    circle_edge_name="circle",
 ):
     """Check definite m-separation among 'x' and 'y' given 'z' in partial ancestral graph G.
 

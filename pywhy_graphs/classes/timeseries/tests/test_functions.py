@@ -9,6 +9,7 @@ from pywhy_graphs.classes.timeseries import (
     TimeSeriesGraph,
 )
 from pywhy_graphs.classes.timeseries.functions import (
+    get_extended_summary_graph,
     get_summary_graph,
     has_homologous_edges,
     nodes_in_time_order,
@@ -55,7 +56,7 @@ def test_has_homologous_edges(G_func):
                 assert not has_homologous_edges(G, *edge)
 
 
-def test_get_summary_graph():
+def test_get_summary_graphs():
     max_lag = 2
     ts_edges = [
         (("x2", -1), ("x2", 0)),
@@ -78,6 +79,25 @@ def test_get_summary_graph():
     expected_summary_G.add_edges_from([(node, node) for node in expected_summary_G.nodes])
     summary_G = get_summary_graph(G, include_self_loops=True)
     assert nx.is_isomorphic(summary_G, expected_summary_G)
+
+    with pytest.raises(RuntimeError, match="Undirected graphs not supported"):
+        get_summary_graph(G.to_undirected())
+
+    # now test extended summary graph
+    ts_edges = [
+        (("x2", -1), ("x2", 0)),
+        (("x3", -1), ("x3", 0)),
+        (("x3", -1), ("x2", 0)),
+        (("x3", -1), ("x1", 0)),
+        (("x3", 0), ("x1", 0)),
+        (("x1", -1), ("x1", 0)),
+    ]
+    expected_ext_summ_G = nx.DiGraph(ts_edges)
+    ext_summ_G = get_extended_summary_graph(G)
+    assert nx.is_isomorphic(ext_summ_G, expected_ext_summ_G)
+
+    with pytest.raises(RuntimeError, match="Undirected graphs not supported"):
+        get_extended_summary_graph(G.to_undirected())
 
 
 @pytest.mark.parametrize(

@@ -85,46 +85,52 @@ class TimeSeriesMixedEdgeGraphTester:
         assert ("x", 0) not in G.neighbors(("x", -1))
         assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
+    @pytest.mark.parametrize("edge_type", ["all", "directed", "bidirected"])
     @pytest.mark.parametrize("direction", ["both", "forward", "backwards"])
-    def test_add_homologous_contemporaneous_edges(self, direction):
+    def test_add_homologous_contemporaneous_edges(self, direction, edge_type):
         G = self.G.copy()
 
-        G.add_homologous_edges(("x", -1), ("y", -1), direction=direction)
+        G.add_homologous_edges(("x", -1), ("y", -1), direction=direction, edge_type=edge_type)
+        if edge_type == "all":
+            edge_type = "any"
 
         # currently any stationary time series graph adds edges in both directions
-        if direction == "both" or self.G.stationary:
+        if direction == "both":
             for lag in range(0, G.max_lag + 1):
-                assert G.has_edge(("x", -lag), ("y", -lag))
+                assert G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
         elif direction == "forward":
             for lag in range(2, G.max_lag + 1):
-                assert not G.has_edge(("x", -lag), ("y", -lag))
-            assert G.has_edge(("x", 0), ("y", 0))
-            assert G.has_edge(("x", -1), ("y", -1))
+                assert not G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
+            assert G.has_edge(("x", 0), ("y", 0), edge_type=edge_type)
+            assert G.has_edge(("x", -1), ("y", -1), edge_type=edge_type)
         elif direction == "backwards":
             for lag in range(1, G.max_lag + 1):
-                assert G.has_edge(("x", -lag), ("y", -lag))
-            assert not G.has_edge(("x", 0), ("y", 0))
+                assert G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
+            assert not G.has_edge(("x", 0), ("y", 0), edge_type=edge_type)
 
+    @pytest.mark.parametrize("edge_type", ["all", "directed", "bidirected"])
     @pytest.mark.parametrize("direction", ["both", "forward", "backwards"])
-    def test_remove_homologous_edges(self, direction):
+    def test_remove_homologous_edges(self, direction, edge_type):
         G = self.G.copy()
 
-        G.add_homologous_edges(("x", -1), ("y", -1), direction="both")
-        G.remove_homologous_edges(("x", -1), ("y", -1), direction=direction)
+        G.add_homologous_edges(("x", -1), ("y", -1), direction="both", edge_type=edge_type)
+        G.remove_homologous_edges(("x", -1), ("y", -1), direction=direction, edge_type=edge_type)
+        if edge_type == "all":
+            edge_type = "any"
 
         # currently any stationary time series graph adds edges in both directions
-        if direction == "both" or self.G.stationary:
+        if direction == "both":
             for lag in range(0, G.max_lag + 1):
-                assert not G.has_edge(("x", -lag), ("y", -lag))
+                assert not G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
         elif direction == "forward":
             for lag in range(2, G.max_lag + 1):
-                assert G.has_edge(("x", -lag), ("y", -lag))
-            assert not G.has_edge(("x", 0), ("y", 0))
-            assert not G.has_edge(("x", -1), ("y", -1))
+                assert G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
+            assert not G.has_edge(("x", 0), ("y", 0), edge_type=edge_type)
+            assert not G.has_edge(("x", -1), ("y", -1), edge_type=edge_type)
         elif direction == "backwards":
             for lag in range(1, G.max_lag + 1):
-                assert not G.has_edge(("x", -lag), ("y", -lag))
-            assert G.has_edge(("x", 0), ("y", 0))
+                assert not G.has_edge(("x", -lag), ("y", -lag), edge_type=edge_type)
+            assert G.has_edge(("x", 0), ("y", 0), edge_type=edge_type)
 
     def test_m_sep_complete_graph(self):
         variables = self.G.variables
@@ -232,3 +238,16 @@ class TestStationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraphTester):
         self.max_lag = max_lag
         G = self.klass(self.graphs, self.edge_types, max_lag=self.max_lag)
         self.G = G
+
+    def test_set_stationarity(self):
+        G = self.G.copy()
+
+        G.set_stationarity(True)
+        assert G.stationary
+        for graph in G.get_graphs().values():
+            assert graph.stationary
+
+        G.set_stationarity(False)
+        assert not G.stationary
+        for graph in G.get_graphs().values():
+            assert not graph.stationary

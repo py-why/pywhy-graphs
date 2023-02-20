@@ -3,7 +3,7 @@ from typing import Iterator, List
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs.classes.timeseries import StationaryTimeSeriesDiGraph
+from pywhy_graphs.classes.timeseries import StationaryTimeSeriesDiGraph, TimeSeriesDiGraph
 from pywhy_graphs.typing import Node, TsNode
 
 
@@ -120,7 +120,7 @@ def get_summary_graph(G, include_self_loops: bool = False) -> nx.DiGraph:
     return summary_G
 
 
-def get_extended_summary_graph(G) -> nx.DiGraph:
+def get_extended_summary_graph(G: TimeSeriesDiGraph) -> nx.DiGraph:
     """Compute the extended summary graph from a ts-graph.
 
     Parameters
@@ -132,7 +132,7 @@ def get_extended_summary_graph(G) -> nx.DiGraph:
     -------
     summary_G : nx.DiGraph
         An acyclic extended summary graph with nodes named as tuples of
-        (<variable_name>, 't'), or (<variable_name>, '-t') for the present
+        (<variable_name>, 0), or (<variable_name>, -1) for the present
         and past respectively.
     """
     if not G.is_directed():
@@ -142,23 +142,23 @@ def get_extended_summary_graph(G) -> nx.DiGraph:
     summary_G = nx.DiGraph()
 
     # add all variables in ts-graph as nodes as tuples
-    summary_G.add_nodes_from([(variable, "t") for variable in G.variables])
-    summary_G.add_nodes_from([(variable, "-t") for variable in G.variables])
+    summary_G.add_nodes_from([(variable, 0) for variable in G.variables])
+    summary_G.add_nodes_from([(variable, -1) for variable in G.variables])
 
     # loop through every non-lag node
     for node in G.nodes_at(t=0):
         var_name, _ = node
         for nbr in G.contemporaneous_neighbors(node):
-            nbr_name, _ = nbr
+            if G.has_edge(node, nbr):
+                nbr_name, _ = nbr
 
-            # add nbr -> variable
-            summary_G.add_edge((nbr_name, "t"), (var_name, "t"))
-
+                # add nbr -> variable
+                summary_G.add_edge((var_name, 0), (nbr_name, 0))
         for nbr in G.lagged_neighbors(node):
             nbr_name, _ = nbr
 
             # add nbr -> variable
-            summary_G.add_edge((nbr_name, "-t"), (var_name, "t"))
+            summary_G.add_edge((nbr_name, -1), (var_name, 0))
     return summary_G
 
 
