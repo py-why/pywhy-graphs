@@ -1257,17 +1257,21 @@
 <span class="sd">        G : MixedEdgeGraph</span>
 <span class="sd">            A copy of the graph with only the nodes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">induced_nodes</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">show_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbunch_iter</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
-
         <span class="c1"># initialize list of empty internal graphs</span>
         <span class="n">graph_classes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_graph_nx_type</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)()</span> <span class="k">for</span> <span class="n">edge_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_types</span><span class="p">]</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">graph_classes</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_types</span><span class="p">)</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">induced_nodes</span><span class="p">)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge_types_from</span><span class="p">(</span><span class="n">graph_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_types</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 
         <span class="c1"># now add the edges for each edge type</span>
         <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">_graph</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">_edge_graphs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">induced_nodes</span><span class="p">)</span>
-            <span class="n">_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+                <span class="c1"># only add edges from the induced subgraph</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                        <span class="n">_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">graph</span></div>
 
 <div class="viewcode-block" id="MixedEdgeGraph.degree"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.degree">[docs]</a>    <span class="k">def</span> <span class="nf">degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nbunch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
