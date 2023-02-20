@@ -170,16 +170,9 @@ def is_definite_noncollider(G: PAG, node1: Node, node2: Node, node3: Node) -> bo
         node1, node2, G.bidirected_edge_name
     ):
         # node1 *-> node2 *-* node3
+        # or node1 *-* node2 <-* node3
         if G.has_edge(node3, node2, G.directed_edge_name) or G.has_edge(
             node3, node2, G.bidirected_edge_name
-        ):
-            return False
-    elif G.has_edge(node3, node2, G.directed_edge_name) or G.has_edge(
-        node3, node2, G.bidirected_edge_name
-    ):
-        # node1 *-* node2 <- node3
-        if G.has_edge(node1, node2, G.directed_edge_name) or G.has_edge(
-            node1, node2, G.bidirected_edge_name
         ):
             return False
     elif G.has_edge(node1, node2, G.circle_edge_name) and G.has_edge(

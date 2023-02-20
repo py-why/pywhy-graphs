@@ -2,7 +2,8 @@ import re
 
 import networkx as nx
 
-from pywhy_graphs.viz import draw
+from pywhy_graphs import StationaryTimeSeriesDiGraph
+from pywhy_graphs.viz import draw, timeseries_layout
 
 
 def test_draw_pos_is_fully_given():
@@ -75,3 +76,12 @@ def test_draw_pos_contains_more_nodes():
     assert re.search(r"\tx \[.* pos=\"0,0!\"", dot_body_text) is not None
     assert re.search(r"\ty \[.* pos=\"1,0!\"", dot_body_text) is not None
     assert "pos=" not in re.search(r"\tz \[(.*)\]", dot_body_text).groups()[0]
+
+
+def test_draw_with_ts_layout():
+    G = StationaryTimeSeriesDiGraph()
+    G.add_edges_from([(("x", -1), ("x", 0)), (("x", -1), ("y", 0)), (("z", -1), ("y", 0))])
+
+    pos_G = timeseries_layout(G, variable_order=["x", "y", "z"], scale=10)
+
+    assert all(node in pos_G for node in G.nodes)
