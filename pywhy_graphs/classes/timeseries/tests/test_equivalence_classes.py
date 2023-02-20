@@ -75,6 +75,23 @@ class TimeSeriesMECGraphTester:
         assert ("x", 0) not in G.neighbors(("x", -1))
         assert all(("x", 0) not in graph.neighbors(("x", -1)) for graph in G.get_graphs().values())
 
+    def test_sub_graph(self):
+        G = self.G.copy()
+
+        undir_G = G.sub_undirected_graph()
+        assert isinstance(undir_G, nx.Graph)
+
+        dir_G = G.sub_directed_graph()
+        assert isinstance(dir_G, nx.DiGraph)
+
+        if hasattr(G, "sub_bidirected_graph"):
+            bidir_G = G.sub_bidirected_graph()
+            assert isinstance(bidir_G, nx.Graph)
+
+        if hasattr(G, "sub_circle_graph"):
+            circle_G = G.sub_circle_graph()
+            assert isinstance(circle_G, nx.DiGraph)
+
     def test_remove_forward_edges(self):
         """Test that a timeseries PAG can remove edges forward in time."""
 

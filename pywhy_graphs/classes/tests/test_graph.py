@@ -1,3 +1,4 @@
+import networkx as nx
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
@@ -29,6 +30,31 @@ class BaseGraph:
         assert G.number_of_edges(edge_type="directed") == 2
         # TODO: size() does not work yet due to degree
         # assert G.size() == 3
+
+    def test_sub_graph(self):
+        G = self.G.copy()
+
+        undir_G = G.sub_undirected_graph()
+        assert isinstance(undir_G, nx.Graph)
+
+        dir_G = G.sub_directed_graph()
+        assert isinstance(dir_G, nx.DiGraph)
+
+        if hasattr(G, "sub_bidirected_graph"):
+            bidir_G = G.sub_bidirected_graph()
+            assert isinstance(bidir_G, nx.Graph)
+
+        if hasattr(G, "sub_circle_graph"):
+            circle_G = G.sub_circle_graph()
+            assert isinstance(circle_G, nx.DiGraph)
+
+    @pytest.mark.parametrize("edge_type", ["all", "directed", "undirected"])
+    def test_add_edges_from(self, edge_type):
+        G = self.Graph()
+
+        G.add_edges_from([("x", "y"), ("y", "z")], edge_type)
+        assert G.has_edge("x", "y")
+        assert G.has_edge("y", "z")
 
 
 class TestCPDAG(BaseGraph):
