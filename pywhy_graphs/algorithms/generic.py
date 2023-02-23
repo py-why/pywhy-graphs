@@ -206,7 +206,7 @@ def _check_adding_pag_edge(graph: PAG, u_of_edge: Node, v_of_edge: Node, edge_ty
         ):
             raise_error = True
     elif edge_type == EdgeType.DIRECTED.value:
-        # there should not be a circle edge, or a bidirected edge
+        # there should not be a circle edge in the same direction, or a bidirected edge
         if graph.has_edge(u_of_edge, v_of_edge, graph.circle_edge_name) or graph.has_edge(
             u_of_edge, v_of_edge, graph.bidirected_edge_name
         ):

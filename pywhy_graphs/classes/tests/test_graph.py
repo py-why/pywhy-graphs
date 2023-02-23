@@ -2,7 +2,7 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
-from pywhy_graphs import ADMG, CPDAG, PAG
+from pywhy_graphs import ADMG, CPDAG, IPAG, PAG, AugmentedGraph, PsiPAG
 
 
 class BaseGraph:
@@ -57,6 +57,89 @@ class BaseGraph:
         assert G.has_edge("y", "z")
 
 
+class InterventionTester:
+    def test_init_error(self):
+        with pytest.raises(RuntimeError, match="There is a graph property named F-nodes"):
+            self.Graph(**{"F-nodes": []})
+
+    def test_add_f_nodes(self):
+        G = self.G.copy()
+        non_f_nodes = set(G.nodes)
+
+        # adding an f-node should result in an error if not in graph
+        with pytest.raises(
+            RuntimeError, match="The intervention set nodes must be an iterable set"
+        ):
+            G.add_f_node("blah")
+
+        with pytest.raises(
+            RuntimeError, match="The intervention set must be a set of unique nodes"
+        ):
+            G.add_f_node([0, 0])
+
+        # add F-node to the node '1'
+        G.add_f_node({1})
+        assert G.has_node(("F", 0))
+
+        # only a directed edge from the F-node should be added
+        assert G.has_edge(("F", 0), (1))
+        for edge_type in G.edge_types:
+            if edge_type != G.directed_edge_name:
+                assert not G.has_edge(("F", 0), (1), edge_type)
+
+        with pytest.raises(RuntimeError, match="You cannot add an F-node for {1}"):
+            G.add_f_node({1})
+
+        if self.G.known_targets:
+            with pytest.raises(RuntimeError, match="All intervention sets must be nodes already"):
+                G.add_f_node({"blah"})
+
+        # adding F-node for intervention set on multiple variables is
+        # allowed
+        G.add_f_node({1, 0})
+        assert G.f_nodes == {("F", 0), ("F", 1)}
+        assert G.intervention_sets == {frozenset((0, 1)), frozenset([1])}
+        assert G.intervened_nodes == {0, 1}
+
+        # non-f-nodes should still be the original nodes before F-nodes were added
+        assert G.non_f_nodes == non_f_nodes
+
+    def test_remove_f_nodes(self):
+        G = self.G.copy()
+
+        G.add_f_node({0})
+        G.add_f_node({1, 0})
+
+        G.remove_node(("F", 1))
+        assert ("F", 1) not in G.f_nodes
+        assert ("F", 1) not in G.nodes
+        assert G.intervention_sets == {frozenset([0])}
+        assert G.intervened_nodes == {0}
+
+    def test_f_node_edges_error(self):
+        G = self.G.copy()
+
+        G.add_f_node({0})
+
+        with pytest.raises(RuntimeError, match="Adding edges to F-nodes is not allowed"):
+            G.add_edge(("F", 0), 1, edge_type="bidirected")
+        # with pytest.raises(RuntimeError, match='Adding edges to F-nodes is not allowed'):
+        #     G.add_edges_from([(("F", 0), 1)], edge_type="bidirected")
+        with pytest.raises(RuntimeError, match="Removing edges from F-nodes is not allowed"):
+            G.remove_edge(("F", 0), 1, edge_type=G.directed_edge_name)
+        # with pytest.raises(RuntimeError, match='Removing edges to F-nodes is not allowed'):
+        #     G.remove_edges_from([[("F", 0), 1]], edge_type=G.directed_edge_name)
+
+    def test_subdirected_graph(self):
+        G = self.G.copy()
+
+        G.add_f_node({0})
+
+        # add the subdirected graph
+        sub_di_graph = G.sub_directed_graph()
+        assert {(("F", 0), 0), (0, 2)}.issubset(set(sub_di_graph.edges))
+
+
 class TestCPDAG(BaseGraph):
     def setup_method(self):
         # start every graph with the confounded graph
@@ -89,12 +172,12 @@ class TestADMG(BaseGraph):
         # start every graph with the confounded graph
         # 0 -> 1, 0 -> 2 with 1 <--> 0
         self.Graph = ADMG
-        incoming_latent_data = [(0, 1)]
+        self.incoming_latent_data = [(0, 1)]
 
         # build dict-of-dict-of-dict K3
         ed1, ed2 = ({}, {})
-        incoming_graph_data = {0: {1: ed1, 2: ed2}}
-        self.G = self.Graph(incoming_graph_data, incoming_latent_data)
+        self.incoming_graph_data = {0: {1: ed1, 2: ed2}}
+        self.G = self.Graph(self.incoming_graph_data, self.incoming_latent_data)
 
     def test_bidirected_edge(self):
         """Test bidirected edge functions."""
@@ -119,9 +202,11 @@ class TestADMG(BaseGraph):
 
     def test_c_components(self):
         """Test working with c-components in causal graph."""
-        G = self.G
-        print(self.G)
-        print(self.G.edges())
+        bidirected_edges = [(0, 1)]
+        directed_edges = [(0, 2)]
+        G = self.Graph()
+        G.add_edges_from(bidirected_edges, "bidirected")
+        G.add_edges_from(directed_edges, "directed")
 
         assert list(G.c_components()) == [{0, 1}, {2}]
 
@@ -322,3 +407,43 @@ class TestPAG(TestADMG):
         G.add_edge(3, 4, G.directed_edge_name)
         assert not pywhy_nx.m_separated(G, {3}, {1}, set())
         assert not pywhy_nx.m_separated(G, {3}, {1}, {4})
+
+
+class TestIPAG(TestPAG, InterventionTester):
+    def setup_method(self):
+        # setup the causal graph in previous method
+        # start every graph with the confounded graph
+        self.Graph = IPAG
+        self.G = IPAG()
+
+        # Create a IPAG: 2 <- 0 <-> 1
+        # handle the bidirected edge from 0 to 1
+        self.G.add_edge(0, 1, "bidirected")
+        self.G.add_edge(0, 2, "directed")
+
+
+class TestPsiPAG(TestPAG, InterventionTester):
+    def setup_method(self):
+        # setup the causal graph in previous method
+        # start every graph with the confounded graph
+        self.Graph = PsiPAG
+        self.G = PsiPAG()
+
+        # Create a IPAG: 2 <- 0 <-> 1
+        # handle the bidirected edge from 0 to 1
+        self.G.add_edge(0, 1, "bidirected")
+        self.G.add_edge(0, 2, "directed")
+
+
+class TestAugmentedGraph(TestADMG, InterventionTester):
+    def setup_method(self):
+        # start every graph with the confounded graph
+        # 0 -> 1, 0 -> 2 with 1 <--> 0
+        self.Graph = AugmentedGraph
+
+        self.incoming_latent_data = [(0, 1)]
+
+        # build dict-of-dict-of-dict K3
+        ed1, ed2 = ({}, {})
+        self.incoming_graph_data = {0: {1: ed1, 2: ed2}}
+        self.G = self.Graph(self.incoming_graph_data, self.incoming_latent_data)
