@@ -28,6 +28,9 @@ graphs encountered in the literature.
    ADMG
    CPDAG
    PAG
+   AugmentedGraph
+   IPAG
+   PsiPAG
 
 Algorithms for Markov Equivalence Classes
 =========================================

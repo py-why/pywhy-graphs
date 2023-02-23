@@ -187,6 +187,21 @@
    pywhy_graphs.PAG
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
+   pywhy_graphs.AugmentedGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.IPAG.html">
+   pywhy_graphs.IPAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
+   pywhy_graphs.PsiPAG
+  </a>
+ </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -626,16 +641,40 @@ by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</
 </dl>
 </div>
 <p class="rubric">Notes</p>
+<p><strong>Edge Type Subgraphs</strong></p>
 <p>The data structure underneath the hood is stored in two networkx graphs:
 <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> to represent the non-directed
 edges and directed edges. Non-directed edges in an ADMG can be present as
 bidirected edges standing for latent confounders, or undirected edges
 standing for selection bias.</p>
 <ul class="simple">
-<li><p>Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></p></li>
-<li><p>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
-<li><p>Undirected edges (–, indicating selection bias) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p></li>
+<li><dl class="simple">
+<dt>Directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></dt><dd><p>The subgraph of directed edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">ADMG.sub_directed_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">ADMG.directed_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">ADMG.directed_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></dt><dd><p>The subgraph of bidirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">ADMG.sub_bidirected_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">ADMG.bidirected_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">ADMG.bidirected_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Undirected edges (–, indicating selection bias) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></dt><dd><p>The subgraph of undirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">ADMG.sub_undirected_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">ADMG.undirected_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">ADMG.undirected_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
 </ul>
+<p>By definition, no cycles may exist due to the directed edges. However, beyond
+that multiple types of edges between the same pairs of nodes are possible.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pywhy_graphs.ADMG.bidirected_edge_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bidirected_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.ADMG.bidirected_edge_name" title="Permalink to this definition">#</a></dt>

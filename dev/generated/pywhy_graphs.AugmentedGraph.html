@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.algorithms.pds_t &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.AugmentedGraph &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -43,11 +43,12 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.algorithms.pds_t_path" href="pywhy_graphs.algorithms.pds_t_path.html" />
-    <link rel="prev" title="pywhy_graphs.algorithms.pds_path" href="pywhy_graphs.algorithms.pds_path.html" />
+    <link rel="next" title="pywhy_graphs.IPAG" href="pywhy_graphs.IPAG.html" />
+    <link rel="prev" title="pywhy_graphs.PAG" href="pywhy_graphs.PAG.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -171,7 +172,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="nav bd-sidenav">
+    <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.ADMG.html">
    pywhy_graphs.ADMG
@@ -187,8 +188,8 @@
    pywhy_graphs.PAG
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.AugmentedGraph
   </a>
  </li>
@@ -203,7 +204,7 @@
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
    pywhy_graphs.algorithms.is_valid_mec_graph
@@ -234,8 +235,8 @@
    pywhy_graphs.algorithms.pds_path
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
    pywhy_graphs.algorithms.pds_t
   </a>
  </li>
@@ -459,10 +460,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.algorithms.pds_t">
+  <a class="reference internal nav-link" href="#pywhy_graphs.AugmentedGraph">
    <code class="docutils literal notranslate">
     <span class="pre">
-     pds_t()
+     AugmentedGraph
     </span>
    </code>
   </a>
@@ -486,48 +487,80 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-algorithms-pds-t">
-<h1>pywhy_graphs.algorithms.pds_t<a class="headerlink" href="#pywhy-graphs-algorithms-pds-t" title="Permalink to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.algorithms.pds_t">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">pds_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG" title="pywhy_graphs.classes.timeseries.pag.StationaryTimeSeriesPAG"><span class="pre">StationaryTimeSeriesPAG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_path_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/pag.html#pds_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.pds_t" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the possibly-d-separating set over time.</p>
-<p>Returns the ‘pdst’ set defined in <a class="footnote-reference brackets" href="#footcite-malinsky18a-svarfci" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+  <section id="pywhy-graphs-augmentedgraph">
+<h1>pywhy_graphs.AugmentedGraph<a class="headerlink" href="#pywhy-graphs-augmentedgraph" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pywhy_graphs.AugmentedGraph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.</span></span><span class="sig-name descname"><span class="pre">AugmentedGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/intervention.html#AugmentedGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.AugmentedGraph" title="Permalink to this definition">#</a></dt>
+<dd><p>An augmented ADMG causal graph.</p>
+<p>An augmented graph is one where interventions are represented by F-nodes.
+See <a class="footnote-reference brackets" href="#footcite-pearl-aspects-1993" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, where they were first introduced. They
+allow one to model hard and soft interventions as an explicit “F-node” added
+to the existing causal graph. For more information, see &lt;TBD user guide&gt;.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>graph</strong> : StationaryTimeSeriesPAG</p>
+<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
 <blockquote>
-<div><p>The graph.</p>
+<div><p>Data to initialize directed edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
 </div></blockquote>
-<p><strong>node_x</strong> : node</p>
+<p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
 <blockquote>
-<div><p>The starting node.</p>
+<div><p>Data to initialize bidirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
 </div></blockquote>
-<p><strong>node_y</strong> : node</p>
+<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
 <blockquote>
-<div><p>The ending node</p>
+<div><p>Data to initialize undirected edges. All arguments that are accepted
+by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
 </div></blockquote>
-<p><strong>max_path_length</strong> : int, optional</p>
+<p><strong>directed_edge_name</strong> : str</p>
 <blockquote>
-<div><p>The maximum length of a path to search on for PDS set, by default None, which
-sets it to 1000.</p>
+<div><p>The name for the directed edges. By default ‘directed’.</p>
 </div></blockquote>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>pds_t_set</strong> : set</p>
+<p><strong>bidirected_edge_name</strong> : str</p>
 <blockquote>
-<div><p>The set of nodes in the possibly d-separating path set.</p>
+<div><p>The name for the bidirected edges. By default ‘bidirected’.</p>
+</div></blockquote>
+<p><strong>undirected_edge_name</strong> : str</p>
+<blockquote>
+<div><p>The name for the directed edges. By default ‘undirected’.</p>
+</div></blockquote>
+<p><strong>attr</strong> : keyword arguments, optional (default= no attributes)</p>
+<blockquote>
+<div><p>Attributes to add to graph as key=value pairs.</p>
 </div></blockquote>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.ADMG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADMG</span></code></a></dt><dd></dd>
+</dl>
+</div>
 <p class="rubric">Notes</p>
-<p>This is a smaller subset compared to possibly-d-separating sets.</p>
-<p>This consists of nodes, ‘x’, in the PDS set of (node_x, node_y), with the
-time-lag of ‘x’ being less than the max time-lag among node_x and and node_y.</p>
-<p>The current implementation calls <code class="docutils literal notranslate"><span class="pre">pds</span></code> and then restricts the nodes that it returns.</p>
+<p><strong>Edge Type Subgraphs</strong></p>
+<p>Different edge types in an I-PAG are represented exactly as they are in a
+<a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-class docutils literal notranslate"><span class="pre">pywhy_graphs.PAG</span></code></a>.</p>
+<p><strong>F-nodes</strong></p>
+<p>F-nodes are represented in pywhy-graphs as a tuple as <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">&lt;index&gt;)</span></code>, where <code class="docutils literal notranslate"><span class="pre">index</span></code>
+is just a random index number. Each F-node is mapped to the intervention-set that they
+are applied on. For example in the graph <span class="math notranslate nohighlight">\(('F', 0) \rightarrow X \rightarrow Y\)</span>,
+<code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> is the F-node added that models an intervention on <code class="docutils literal notranslate"><span class="pre">X</span></code>. Each intervention-set
+is a set of regular nodes in the causal graph.</p>
+<p class="rubric">References</p>
+<div class="docutils container" id="id2">
+<aside class="footnote brackets" id="footcite-pearl-aspects-1993" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Judea Pearl. Aspects of graphical models connected with causality. <em>Proceedings of the 49th Session of the International Statistical Institute</em>, pages 399–401, 1993.</p>
+</aside>
+</aside>
+</div>
 </dd></dl>
 
-<div style='clear:both'></div></section>
+</section>
 
 
               </article>
@@ -537,17 +570,17 @@ time-lag of ‘x’ being less than the max time-lag among node_x and and node_y
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.pds_path.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.PAG.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.algorithms.pds_path</p>
+          <p class="prev-next-title">pywhy_graphs.PAG</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.pds_t_path.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.IPAG.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.algorithms.pds_t_path</p>
+      <p class="prev-next-title">pywhy_graphs.IPAG</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

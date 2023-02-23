@@ -187,6 +187,21 @@
    pywhy_graphs.PAG
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
+   pywhy_graphs.AugmentedGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.IPAG.html">
+   pywhy_graphs.IPAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
+   pywhy_graphs.PsiPAG
+  </a>
+ </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -1496,7 +1511,7 @@ directed edges from <code class="docutils literal notranslate"><span class="pre"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.networkx.MixedEdgeGraph.remove_edge">
-<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/classes/mixededge.html#MixedEdgeGraph.remove_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/classes/mixededge.html#MixedEdgeGraph.remove_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove an edge between u and v.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1528,7 +1543,7 @@ if there is no edge with the specified key.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from">
-<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/classes/mixededge.html#MixedEdgeGraph.remove_edges_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/classes/mixededge.html#MixedEdgeGraph.remove_edges_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove all edges specified in ebunch.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1611,7 +1626,8 @@ If weight is None, returns an int. Otherwise a float
 <dt class="sig sig-object py" id="pywhy_graphs.networkx.MixedEdgeGraph.subgraph">
 <span class="sig-name descname"><span class="pre">subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/networkx/classes/mixededge.html#MixedEdgeGraph.subgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.networkx.MixedEdgeGraph.subgraph" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a SubGraph view of the subgraph induced on <code class="docutils literal notranslate"><span class="pre">nodes</span></code>.</p>
-<p>The induced subgraph of the graph contains the nodes in <code class="docutils literal notranslate"><span class="pre">nodes</span></code>
+<p>TODO: this does not work as expected with subclasses
+The induced subgraph of the graph contains the nodes in <code class="docutils literal notranslate"><span class="pre">nodes</span></code>
 and the edges between those nodes.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

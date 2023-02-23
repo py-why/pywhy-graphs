@@ -46,7 +46,7 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.algorithms.is_valid_mec_graph" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" />
+    <link rel="next" title="pywhy_graphs.AugmentedGraph" href="pywhy_graphs.AugmentedGraph.html" />
     <link rel="prev" title="pywhy_graphs.CPDAG" href="pywhy_graphs.CPDAG.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
@@ -185,6 +185,21 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    pywhy_graphs.PAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
+   pywhy_graphs.AugmentedGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.IPAG.html">
+   pywhy_graphs.IPAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
+   pywhy_graphs.PsiPAG
   </a>
  </li>
 </ul>
@@ -462,6 +477,15 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pywhy_graphs.PAG.circle_edge_name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       PAG.circle_edge_name
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pywhy_graphs.PAG.circle_edges">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -609,12 +633,98 @@ by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>CPDAGs are Markov equivalence class of causal DAGs. The implicit assumption in
-these causal graphs are the Structural Causal Model (or SCM) is Markovian, inducing
-causal sufficiency, where there is no unobserved latent confounder. This allows CPDAGs
-to be learned from score-based (such as the “GES” algorithm) and constraint-based
-(such as the PC algorithm) approaches for causal structure learning.</p>
-<p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
+<p>PAGs are Markov equivalence class of causal ADMGs. The implicit assumption in
+these causal graphs are the Structural Causal Model (or SCM) is Semi-Markovian, such
+that latent confounders may be present. This allows PAGs to be learned from
+constraint-based (such as the FCI algorithm) approaches for causal structure learning.</p>
+<p><strong>Edge Type Subgraphs</strong></p>
+<p>The data structure underneath the hood is stored in two types of networkx graphs:
+<code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></dt><dd><p>The subgraph of directed edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_directed_graph</span></code>. Their edges in networkx format can be
+accessed by <a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edges" title="pywhy_graphs.ADMG.directed_edges"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directed_edges</span></code></a> and the corresponding
+name of the edge type by <a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directed_edge_name</span></code></a>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bidirected edges (&lt;-&gt;, indicating latent confounder) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></dt><dd><p>The subgraph of bidirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_bidirected_graph</span></code>. Their edges in networkx format can be
+accessed by <a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.bidirected_edges" title="pywhy_graphs.ADMG.bidirected_edges"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bidirected_edges</span></code></a> and the corresponding name of the
+edge type by <a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.bidirected_edge_name" title="pywhy_graphs.ADMG.bidirected_edge_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bidirected_edge_name</span></code></a>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Undirected edges (–, indicating selection bias) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></dt><dd><p>The subgraph of undirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_undirected_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">~.PAG.undirected_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">~.PAG.undirected_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Circle edges (<em>-o, o-</em>, indicating uncertainty) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></dt><dd><p>The subgraph of undirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_circle_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">~.PAG.circle_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">~.PAG.circle_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>How different edges are represented in the PAG</strong></p>
+<p>Compared to an <code class="docutils literal notranslate"><span class="pre">~pywhy_graphs.classes.ADMG</span></code> and <code class="docutils literal notranslate"><span class="pre">~pywhy_graphs.classes.CPDAG</span></code> and a
+<a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a>, a PAG is more complex in that it generalizes endpoints an edge can
+take, exponentially increasing the number of possible edges that can occur between two
+nodes. The main complication arises in edges with circle endpoints. Rather than store all
+possible edges as separate networkx graphs, we have a set of rules that map a combination
+of the above edge-type subgraphs to a certain edge.</p>
+<p>Bidirected and undirected edges are represented by one networkx graph (<code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code>).
+They are simple in that they do not require pairing with another edge-type subgraph.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;-&gt;</span> <span class="pre">y</span></code>: is a bidirected edge present? (Note by definition of a PAG no other edge</dt><dd><p>can be present between x and y)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code>: is an undirected present? (Note no other edge should be present in any</dt><dd><p>other direction, so an undirected edge is similar to a bidirected edge in that it
+represents only one kind of edge)</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Edges with arrowheads, tails and circular endpoints are represented by another networkx
+graph (<code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>). They complicate matters because the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_directed_graph</span></code> and
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_circle_graph</span></code> can be combined in different ways to
+result in different edges between x and y.</p>
+<p>Without loss of generality, we will be dealing with the ordered tuple (x, y). If you want
+the other direction of the edge, you can just flip the order of x and y. For example,
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;-</span> <span class="pre">y</span></code> would just be <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">-&gt;</span> <span class="pre">x</span></code>, so we will only discuss the <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> edge. The following
+rules dictate what sort of edge we are dealing with:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">o-o</span> <span class="pre">y</span></code>: is circle edge present in both directions? There are <strong>only</strong> edges present</dt><dd><p>in the <code class="docutils literal notranslate"><span class="pre">~.PAG.sub_circle_graph</span></code> between x and y.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">o-&gt;</span> <span class="pre">y</span></code>: is circle edge one way and directed edge another way? There is an edge from</dt><dd><p>the <code class="docutils literal notranslate"><span class="pre">~.PAG.sub_circle_graph</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">~.PAG.sub_directed_graph</span></code> between x and y in opposite
+directions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">o-</span> <span class="pre">y</span></code>: is there only one circle edge? In this special case, we do not use the</dt><dd><p><code class="docutils literal notranslate"><span class="pre">~.PAG.sub_undirected_graph</span></code> to represent the tail endpoint at y. There is <strong>only</strong>
+one edge in the <code class="docutils literal notranslate"><span class="pre">~.PAG.sub_circle_graph</span></code> between x and y.</p>
+</dd>
+</dl>
+</li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywhy_graphs.PAG.children">
 <span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/classes/pag.html#PAG.children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.PAG.children" title="Permalink to this definition">#</a></dt>
@@ -644,6 +754,12 @@ a directed edge between them from ‘n’ -&gt; ‘x’. For example,
 <dt><a class="reference internal" href="#pywhy_graphs.PAG.possible_parents" title="pywhy_graphs.PAG.possible_parents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_parents</span></code></a></dt><dd></dd>
 </dl>
 </div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywhy_graphs.PAG.circle_edge_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">circle_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.PAG.circle_edge_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the circle edge subgraph.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -784,10 +900,10 @@ possible parents.</p>
           <p class="prev-next-title">pywhy_graphs.CPDAG</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.AugmentedGraph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.algorithms.is_valid_mec_graph</p>
+      <p class="prev-next-title">pywhy_graphs.AugmentedGraph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

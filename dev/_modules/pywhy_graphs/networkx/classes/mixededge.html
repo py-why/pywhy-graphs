@@ -388,8 +388,12 @@
         <span class="n">return_vals</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_graphs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">graph_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">func_str</span><span class="p">)</span>
-            <span class="n">return_val</span> <span class="o">=</span> <span class="n">graph_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">return_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">return_val</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">return_val</span> <span class="o">=</span> <span class="n">graph_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">return_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">return_val</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NetworkXError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ne">KeyError</span> <span class="o">==</span> <span class="n">e</span><span class="o">.</span><span class="n">__cause__</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">NetworkXError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">return_vals</span>
 
     <span class="k">def</span> <span class="nf">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">):</span>
@@ -737,7 +741,7 @@
         <span class="k">for</span> <span class="n">_edge_type</span> <span class="ow">in</span> <span class="n">edge_type</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="n">_edge_type</span><span class="p">)</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MixedEdgeGraph.remove_edge"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedEdgeGraph.remove_edge"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an edge between u and v.</span>
 
 <span class="sd">        Parameters</span>
@@ -762,7 +766,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MixedEdgeGraph.remove_edges_from"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedEdgeGraph.remove_edges_from"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edges_from">[docs]</a>    <span class="k">def</span> <span class="nf">remove_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all edges specified in ebunch.</span>
 
 <span class="sd">        Parameters</span>
@@ -1244,6 +1248,7 @@
 <div class="viewcode-block" id="MixedEdgeGraph.subgraph"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.subgraph">[docs]</a>    <span class="k">def</span> <span class="nf">subgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a SubGraph view of the subgraph induced on ``nodes``.</span>
 
+<span class="sd">        TODO: this does not work as expected with subclasses</span>
 <span class="sd">        The induced subgraph of the graph contains the nodes in ``nodes``</span>
 <span class="sd">        and the edges between those nodes.</span>
 

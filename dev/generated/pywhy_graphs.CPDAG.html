@@ -187,6 +187,21 @@
    pywhy_graphs.PAG
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
+   pywhy_graphs.AugmentedGraph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.IPAG.html">
+   pywhy_graphs.IPAG
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
+   pywhy_graphs.PsiPAG
+  </a>
+ </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
@@ -615,6 +630,31 @@ causal sufficiency, where there is no unobserved latent confounder. This allows 
 to be learned from score-based (such as the “GES” algorithm) and constraint-based
 (such as the PC algorithm) approaches for causal structure learning.</p>
 <p>One should not use CPDAGs if they suspect their data has unobserved latent confounders.</p>
+<p><strong>Edge Type Subgraphs</strong></p>
+<p>The data structure underneath the hood is stored in two networkx graphs:
+<code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> to represent the non-directed
+edges and directed edges. Non-directed edges in an CPDAG can be present as
+undirected edges standing for uncertainty in which directino the directed
+edge is in.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Directed edges (&lt;-, -&gt;, indicating causal relationship) = <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></dt><dd><p>The subgraph of directed edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">CPDAG.sub_directed_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">CPDAG.directed_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">CPDAG.directed_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Undirected edges (–, indicating uncertainty) = <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code></dt><dd><p>The subgraph of undirected edges may be accessed by the
+<code class="docutils literal notranslate"><span class="pre">CPDAG.sub_undirected_graph</span></code>. Their edges in networkx format can be
+accessed by <code class="docutils literal notranslate"><span class="pre">CPDAG.undirected_edges</span></code> and the corresponding name of the
+edge type by <code class="docutils literal notranslate"><span class="pre">CPDAG.undirected_edge_name</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>By definition, no cycles may exist due to the directed edges.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pywhy_graphs.CPDAG.directed_edge_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">directed_edge_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pywhy_graphs.CPDAG.directed_edge_name" title="Permalink to this definition">#</a></dt>

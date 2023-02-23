@@ -236,15 +236,32 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
+<span class="sd">    **Edge Type Subgraphs**</span>
+
 <span class="sd">    The data structure underneath the hood is stored in two networkx graphs:</span>
 <span class="sd">    ``networkx.Graph`` and ``networkx.DiGraph`` to represent the non-directed</span>
 <span class="sd">    edges and directed edges. Non-directed edges in an ADMG can be present as</span>
 <span class="sd">    bidirected edges standing for latent confounders, or undirected edges</span>
 <span class="sd">    standing for selection bias.</span>
 
-<span class="sd">    - Normal directed edges (&lt;-, -&gt;, indicating causal relationship) = `networkx.DiGraph`</span>
+<span class="sd">    - Directed edges (&lt;-, -&gt;, indicating causal relationship) = `networkx.DiGraph`</span>
+<span class="sd">        The subgraph of directed edges may be accessed by the</span>
+<span class="sd">        `ADMG.sub_directed_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by `ADMG.directed_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by `ADMG.directed_edge_name`.</span>
 <span class="sd">    - Bidirected edges (&lt;-&gt;, indicating latent confounder) = `networkx.Graph`</span>
+<span class="sd">        The subgraph of bidirected edges may be accessed by the</span>
+<span class="sd">        `ADMG.sub_bidirected_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by `ADMG.bidirected_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by `ADMG.bidirected_edge_name`.</span>
 <span class="sd">    - Undirected edges (--, indicating selection bias) = `networkx.Graph`</span>
+<span class="sd">        The subgraph of undirected edges may be accessed by the</span>
+<span class="sd">        `ADMG.sub_undirected_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by `ADMG.undirected_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by `ADMG.undirected_edge_name`.</span>
+
+<span class="sd">    By definition, no cycles may exist due to the directed edges. However, beyond</span>
+<span class="sd">    that multiple types of edges between the same pairs of nodes are possible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>

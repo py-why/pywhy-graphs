@@ -400,7 +400,7 @@
         <span class="p">):</span>
             <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="c1"># there should not be a circle edge, or a bidirected edge</span>
+        <span class="c1"># there should not be a circle edge in the same direction, or a bidirected edge</span>
         <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
             <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
         <span class="p">):</span>
