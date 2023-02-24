@@ -14,6 +14,8 @@ User Guide
    :numbered:
    :maxdepth: 3
 
+   
    reference/classes/index
    reference/simulation/index
+   reference/export/index
    glossary

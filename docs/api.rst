@@ -60,13 +60,15 @@ implement various causal inference procedures, but encode a causal graph object
 differently. This submodule converts between those causal graph data structures
 and corresponding causal graphs in pywhy-graphs.
 
-.. currentmodule:: pywhy_graphs.array
+.. currentmodule:: pywhy_graphs.export
 
 .. autosummary::
    :toctree: generated/
 
-   graph_to_arr
+   graph_to_clearn_arr
    clearn_arr_to_graph
+   graph_to_numpy
+   numpy_to_graph
 
 NetworkX Experimental Functionality
 ===================================
