@@ -544,7 +544,8 @@ def pds(
 
     If Y is a triangle, then it will be uncertain with circular edges
     due to the fact that it is a shielded triple, not allowing us to infer
-    that it is a collider. These are defined in :footcite:`Colombo2012`.
+    that it is a collider. These are defined in :footcite:`Colombo2012`
+    and :footcite:`Spirtes1993`.
 
     References
     ----------

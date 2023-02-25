@@ -26,6 +26,7 @@ Version 0.1
 Changelog
 ---------
 
+- |Feature| Implement minimal m-separator function in :func:`pywhy_graphs.networkx.minimal_m_separator` with a BFS approach, by `Jaron Lee`_ (:pr:`53`)
 - |Feature| Implement m-separation :func:`pywhy_graphs.networkx.m_separated` with the BallTree approach, by `Jaron Lee`_ (:pr:`48`)
 - |Feature| Add support for undirected edges in m-separation :func:`pywhy_graphs.networkx.m_separated`, by `Jaron Lee`_ (:pr:`46`)
 - |Feature| Implement uncovered circle path finding inside the :func:`pywhy_graphs.algorithms.uncovered_pd_path`, by `Jaron Lee`_ (:pr:`42`)
@@ -37,6 +38,7 @@ Changelog
 - |Feature| Adding a layout for the nodes positions in the :func:`pywhy_graphs.viz.draw` function, by `Julien Siebert`_ (:pr:`26`)
 - |Feature| Add :class:`pywhy_graphs.networkx.MixedEdgeGraph` for mixed-edge graphs, by `Adam Li`_ (:pr:`29`)
 - |MajorFeature| Implement a series of graph classes for time-series graphs, such as ``pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph``, by `Adam Li`_ (:pr:`21`)
+- |MajorFeature| Implement a series of graph classes for modeling interventions, such as :class:`pywhy_graphs.AugmentedGraph`, by `Adam Li`_ (:pr:`49`)
 - |Feature| Implement export/import functions to go to/from pywhy-graphs to causallearn and to/from pywhy-graphs to numpy, by `Adam Li`_ (:pr:`51`)
 
 Code and Documentation Contributors

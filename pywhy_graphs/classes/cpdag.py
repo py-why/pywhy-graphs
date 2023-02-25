@@ -46,6 +46,27 @@ class CPDAG(pywhy_nx.MixedEdgeGraph, AncestralMixin, ConservativeMixin):
     (such as the PC algorithm) approaches for causal structure learning.
 
     One should not use CPDAGs if they suspect their data has unobserved latent confounders.
+
+    **Edge Type Subgraphs**
+
+    The data structure underneath the hood is stored in two networkx graphs:
+    ``networkx.Graph`` and ``networkx.DiGraph`` to represent the non-directed
+    edges and directed edges. Non-directed edges in an CPDAG can be present as
+    undirected edges standing for uncertainty in which directino the directed
+    edge is in.
+
+    - Directed edges (<-, ->, indicating causal relationship) = `networkx.DiGraph`
+        The subgraph of directed edges may be accessed by the
+        `CPDAG.sub_directed_graph`. Their edges in networkx format can be
+        accessed by `CPDAG.directed_edges` and the corresponding name of the
+        edge type by `CPDAG.directed_edge_name`.
+    - Undirected edges (--, indicating uncertainty) = `networkx.Graph`
+        The subgraph of undirected edges may be accessed by the
+        `CPDAG.sub_undirected_graph`. Their edges in networkx format can be
+        accessed by `CPDAG.undirected_edges` and the corresponding name of the
+        edge type by `CPDAG.undirected_edge_name`.
+
+    By definition, no cycles may exist due to the directed edges.
     """
 
     def __init__(

@@ -28,6 +28,9 @@ graphs encountered in the literature.
    ADMG
    CPDAG
    PAG
+   AugmentedGraph
+   IPAG
+   PsiPAG
 
 Algorithms for Markov Equivalence Classes
 =========================================
@@ -85,6 +88,8 @@ welcome feedback.
    MixedEdgeGraph
    bidirected_to_unobserved_confounder
    m_separated
+   is_minimal_m_separator
+   minimal_m_separator
 
 :mod:`pywhy_graphs.classes.timeseries`: Timeseries
 ==================================================
