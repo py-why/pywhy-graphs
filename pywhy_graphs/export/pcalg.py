@@ -1,48 +1,73 @@
 from typing import List
 
-import networkx as nx
 import numpy as np
 
 import pywhy_graphs
-from pywhy_graphs.config import VALUE_TO_EDGE_MAPPING, PCAlgEndpoint
+from pywhy_graphs.config import CLearnEndpoint, PCAlgCPDAGEndpoint, PCAlgPAGEndpoint
 from pywhy_graphs.typing import Node
 
+from .causallearn import graph_to_clearn
 
-def pcalg_to_graph(arr, arr_idx: List[Node], graph_type: str):
+
+def pcalg_to_graph(arr, arr_idx: List[Node], amat_type: str):
     """Convert an array from R's pcalg into causal graph.
 
     Parameters
     ----------
     arr : array-like of shape (n_nodes, n_nodes)
         The array representing the causal graph with enumerations
-        following that of `PCAlgEndpoint`.
+        following that of `PCAlgPAGEndpoint`.
     arr_idx : List[Node] of length (n_nodes,)
         The names of the nodes that are assigned to the graph in order
         of the rows/columns of ``arr``.
-    graph_type : str
-        The type of causal graph to construct.
+    amat_type : str
+        The type of graph in pcalg. One of ``{"pag", "cpdag"}``.
 
     Returns
     -------
     graph : causal graph
         The causal graph
+
+    Notes
+    -----
+    See pcalg documentation for ``amatType``
+    https://cran.r-project.org/web/packages/pcalg/pcalg.pdf. Copied here for convenience.
+
+    Coding for type amat.cpdag:
+
+    0: No edge or tail
+    1: Arrowhead
+
+    Note that the edgemark-code refers to the row index (as opposed adjacency matrices of
+    type mag or pag). E.g.:
+        amat[a,b] = 0  and  amat[b,a] = 1   implies a --> b.
+        amat[a,b] = 1  and  amat[b,a] = 0   implies a <-- b.
+        amat[a,b] = 0  and  amat[b,a] = 0   implies a     b.
+        amat[a,b] = 1  and  amat[b,a] = 1   implies a --- b.
+
+    Coding for type amat.pag:
+
+    0: No edge
+    1: Circle
+    2: Arrowhead
+    3: Tail
+
+    Note that the edgemark-code refers to the column index (as opposed adjacency matrices of type
+    dag or cpdag). E.g.:
+        amat[a,b] = 2  and  amat[b,a] = 3   implies   a --> b.
+        amat[a,b] = 3  and  amat[b,a] = 2   implies   a <-- b.
+        amat[a,b] = 2  and  amat[b,a] = 2   implies   a <-> b.
+        amat[a,b] = 1  and  amat[b,a] = 3   implies   a --o b.
+        amat[a,b] = 0  and  amat[b,a] = 0   implies   a     b.
     """
+    if amat_type not in ("pag", "cpdag"):
+        raise RuntimeError(f'Only amat_types are "pag" and "cpdag", not {amat_type}')
+
     # instantiate the type of causal graph
-    if graph_type == "dag":
-        graph = pywhy_graphs.ADMG()
-    elif graph_type == "admg":
-        graph = pywhy_graphs.ADMG()
-    elif graph_type == "cpdag":
+    if amat_type == "cpdag":
         graph = pywhy_graphs.CPDAG()  # type: ignore
-    elif graph_type == "pag":
+    elif amat_type == "pag":
         graph = pywhy_graphs.PAG()
-    elif graph_type in [pywhy_graphs.ADMG, pywhy_graphs.CPDAG, pywhy_graphs.PAG]:
-        graph = graph_type()
-    else:
-        raise RuntimeError(
-            f"The graph type {graph_type} is unrecognized. Please use one of "
-            f"'dag', 'admg', 'cpdag', 'pag'."
-        )
 
     graph.add_nodes_from(arr_idx)
 
@@ -58,46 +83,56 @@ def pcalg_to_graph(arr, arr_idx: List[Node], graph_type: str):
         memo_map[(idx, jdx)] = None
         memo_map[(jdx, idx)] = None
 
-        if arr_val == PCAlgEndpoint.ARROW.value:
-            # check other direction to determine if a bidirected edge
-            if arr[jdx, idx] == PCAlgEndpoint.ARROW.value:
-                graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.CIRCLE.value:
-                graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-                graph.add_edge(v, u, edge_type=graph.circle_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.TAIL.value:
-                graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-        elif arr_val == PCAlgEndpoint.TAIL.value:
-            # check other direction to determine if a bidirected edge
-            if arr[jdx, idx] == PCAlgEndpoint.TAIL.value:
-                graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.CIRCLE.value:
-                graph.add_edge(v, u, edge_type=graph.circle_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.ARROW.value:
-                graph.add_edge(v, u, edge_type=graph.directed_edge_name)
-        elif arr_val == PCAlgEndpoint.CIRCLE.value:
-            # check other direction to determine if a bidirected edge
-            if arr[jdx, idx] == PCAlgEndpoint.TAIL.value:
-                graph.add_edge(u, v, edge_type=graph.circle_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.CIRCLE.value:
-                graph.add_edge(u, v, edge_type=graph.circle_edge_name)
-                graph.add_edge(v, u, edge_type=graph.circle_edge_name)
-            elif arr[jdx, idx] == PCAlgEndpoint.ARROW.value:
-                graph.add_edge(u, v, edge_type=graph.circle_edge_name)
-                graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+        if amat_type == "pag":
+            if arr_val == PCAlgPAGEndpoint.ARROW.value:
+                # check other direction to determine if a bidirected edge
+                if arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                    graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.CIRCLE.value:
+                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
+                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.TAIL.value:
+                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
+            elif arr_val == PCAlgPAGEndpoint.TAIL.value:
+                # check other direction to determine if a bidirected edge
+                if arr[jdx, idx] == PCAlgPAGEndpoint.TAIL.value:
+                    graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.CIRCLE.value:
+                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                    graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+            elif arr_val == PCAlgPAGEndpoint.CIRCLE.value:
+                # check other direction to determine if a bidirected edge
+                if arr[jdx, idx] == PCAlgPAGEndpoint.TAIL.value:
+                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.CIRCLE.value:
+                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)
+                elif arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                    graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+        elif amat_type == "cpdag":
+            if arr_val == PCAlgCPDAGEndpoint.ARROW.value:
+                # check other direction to determine if a bidirected edge
+                if arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                    graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                else:
+                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
+            elif arr_val == PCAlgPAGEndpoint.NULL.value:
+                # check other direction to determine if a bidirected edge
+                if arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                    graph.add_edge(v, u, edge_type=graph.directed_edge_name)
 
-    if graph_type == "dag":
-        graph = graph.to_directed()
     return graph
 
 
-def graph_to_numpy(causal_graph):
-    """Convert causal graph to a numpy adjacency array.
+def graph_to_pcalg(causal_graph):
+    """Convert causal graph to a pcalg type adjacency array.
 
     Parameters
     ----------
     causal_graph : instance of causal graph
-        The causal graph that is represented in pywhy.
+        The causal graph that is represented in pywhy. Either CPDAG, or PAG.
 
     Returns
     -------
@@ -105,89 +140,101 @@ def graph_to_numpy(causal_graph):
         The numpy array that represents the graph. The values representing edges
         are mapped according to a pre-defined set of values. See Notes.
 
-    Examples
+    See Also
     --------
-    > arr = np.array([
-        [0, 21, 0],
-        [20, 0, 0],
-        [0, 0, 0]
-    ])
-    > nodelist = ['x', 'y', 'z']
-    > bow_graph = numpy_to_graph(arr, nodelist, 'admg')
-    > print(bow_graph.edges())
+    pcalg_to_graph
 
     Notes
     -----
-    The adjacency matrix is defined where the ijth entry of ``numpy_graph`` has a
-    non-zero entry if there is an edge from i to j. The ijth entry is symmetric with the
-    jith entry if the edge is 'undirected', or 'bidirected'. Then specific edges are
-    mapped to the following values:
-
-        - directed edge (->): 1
-        - circle endpoint (-o): 2
-        - undirected edge (--): 10
-        - bidirected edge (<->): 20
-
-    Circle endpoints can be symmetric, but they can also contain a tail, or a directed
-    edge at the other end. See `EDGE_TO_VALUE_MAPPING`. This corresponds to the
-    output of the `pcalg <>`_ package.
-
-    **How are multiple edges between same pair of nodes handled?**
-
-    In ADMGs, multiple edges between the same pairs of nodes are allowed. Since we
-    map edges between pairs of nodes to numerical values, we have to treat
-    undirected and bidirected edges separately, since one can have a directed edge
-    and either an undirected, or bidirected edge present. Therefore for example,
-    if there is a directed edge :math:`X \\rightarrow Y` and also a bidirected
-    edge :math:`X \\leftrightarrow Y`, then the numpy array element corresponding
-    to (X, Y) would have the value 21, indicating uniquely a directed edge and a
-    bidirected edge. Note, this is not an issue for any other common causal graph
-    class because there only one edge is supported between any two nodes.
+    See :func:`pcalg_to_graph` for information on how edges are represented in pcalg.
     """
-    undirected_edge_name = "undirected"
-    bidirected_edge_name = "bidirected"
+    if not isinstance(causal_graph, [pywhy_graphs.CPDAG, pywhy_graphs.PAG]):
+        raise RuntimeError(f"Causal graph must be one of CPDAG or PAG, not {causal_graph}.")
+    elif isinstance(causal_graph, pywhy_graphs.CPDAG):
+        amat_type = "cpdag"
+    elif isinstance(causal_graph, pywhy_graphs.PAG):
+        amat_type = "pag"
 
-    # master list of nodes is in the internal dag
-    node_list = causal_graph.nodes
-    n_nodes = len(node_list)
+    # first convert to causal-learn array
+    clearn_arr = graph_to_clearn(causal_graph)
 
-    numpy_graph = np.zeros((n_nodes, n_nodes))
-    bidirected_graph_arr = None
-    undirected_graph_arr = None
-
-    graph_map = dict()
-    for edge_type, graph in causal_graph.get_graphs().items():
-        # handle "undirected" type graphs separately
-        # handle bidirected edge separately
-        if edge_type == bidirected_edge_name:
-            bidirected_graph_arr = nx.to_numpy_array(graph, nodelist=node_list)
-            continue
-        if edge_type == undirected_edge_name:
-            undirected_graph_arr = nx.to_numpy_array(graph, nodelist=node_list)
+    # now map all values to their respective pcalg values
+    seen_idx = dict()
+    for (idx, jdx) in np.argwhere(clearn_arr != 0):
+        if (idx, jdx) in seen_idx or (jdx, idx) in seen_idx:
             continue
 
-        # convert internal graph to a numpy array
-        graph_arr = nx.to_numpy_array(graph, nodelist=node_list)
-        graph_arr[graph_arr != 0] = EDGE_TO_VALUE_MAPPING[edge_type]
-        graph_map[edge_type] = graph_arr
-
-    # ADMGs can have two edges between any 2 nodes
-    if type(causal_graph).__name__ == "ADMG":
-        # we handle this case separately from the other graphs
-        if len(graph_map) != 1:
-            raise AssertionError(f"The number of graph maps should be 1, not {len(graph_map)}...")
-
-        # set all bidirected edges with value 10
-        bidirected_graph_arr[bidirected_graph_arr != 0] = EDGE_TO_VALUE_MAPPING[
-            bidirected_edge_name
-        ]
-        undirected_graph_arr[undirected_graph_arr != 0] = EDGE_TO_VALUE_MAPPING[
-            undirected_edge_name
-        ]
-        numpy_graph += bidirected_graph_arr
-        numpy_graph += graph_arr
-    else:
-        # map each edge to an edge value
-        for _, graph_arr in graph_map.items():
-            numpy_graph += graph_arr
-    return numpy_graph
+        seen_idx[(idx, jdx)] = None
+        if amat_type == "cpdag":
+            if (
+                clearn_arr[idx, jdx] == CLearnEndpoint.TAIL.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.TAIL.value
+            ):
+                # --
+                clearn_arr[idx, jdx] = PCAlgCPDAGEndpoint.ARROW.value
+                clearn_arr[jdx, idx] = PCAlgCPDAGEndpoint.ARROW.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.ARROW.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.TAIL.value
+            ):
+                # ->
+                clearn_arr[idx, jdx] = PCAlgCPDAGEndpoint.ARROW.value
+                clearn_arr[jdx, idx] = PCAlgCPDAGEndpoint.NULL.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.TAIL.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.ARROW.value
+            ):
+                # <-
+                clearn_arr[idx, jdx] = PCAlgCPDAGEndpoint.NULL.value
+                clearn_arr[jdx, idx] = PCAlgCPDAGEndpoint.ARROW.value
+        if amat_type == "pag":
+            if (
+                clearn_arr[idx, jdx] == CLearnEndpoint.ARROW.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.NULL.value
+            ):
+                # ->
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.ARROW.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.NULL.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.NULL.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.ARROW.value
+            ):
+                # <-
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.NULL.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.ARROW.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.ARROW.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.ARROW.value
+            ):
+                # <->
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.ARROW.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.ARROW.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.ARROW.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.CIRCLE.value
+            ):
+                # o->
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.ARROW.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.CIRCLE.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.CIRCLE.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.ARROW.value
+            ):
+                # <-o
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.CIRCLE.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.ARROW.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.TAIL.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.TAIL.value
+            ):
+                # --
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.TAIL.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.TAIL.value
+            elif (
+                clearn_arr[idx, jdx] == CLearnEndpoint.CIRCLE.value
+                and clearn_arr[jdx, idx] == CLearnEndpoint.CIRCLE.value
+            ):
+                # o-o
+                clearn_arr[idx, jdx] = PCAlgPAGEndpoint.CIRCLE.value
+                clearn_arr[jdx, idx] = PCAlgPAGEndpoint.CIRCLE.value
+    return clearn_arr

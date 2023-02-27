@@ -68,13 +68,28 @@ class EdgeType(Enum, metaclass=MetaEnum):
     UNDIRECTED = "undirected"
 
 
-class PCAlgEndpoint(Enum, metaclass=MetaEnum):
-    """Enumeration of pcalg endpoints."""
+class TetradEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of tetrad endpoints."""
+
+    TAIL = "-"
+    ARROW = ">"
+    CIRCLE = "o"
+
+
+class PCAlgPAGEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of pcalg PAG endpoints."""
 
     NULL = 0
     CIRCLE = 1
     ARROW = 2
     TAIL = 3
+
+
+class PCAlgCPDAGEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of pcalg CPDAG endpoints."""
+
+    NULL = 0
+    ARROW = 1
 
 
 # Taken from causal-learn Endpoint.py
