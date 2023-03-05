@@ -28,8 +28,8 @@ upper-triangular numpy array.
 .. autosummary::
    :toctree: ../../generated/
 
-   graph_to_clearn_arr
-   clearn_arr_to_graph
+   graph_to_clearn
+   clearn_to_graph
 
 Numpy (graphviz and dagitty)
 ============================

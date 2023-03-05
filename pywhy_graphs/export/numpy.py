@@ -94,14 +94,14 @@ def graph_to_numpy(causal_graph):
 
     Examples
     --------
-    > arr = np.array([
-        [0, 21, 0],
-        [20, 0, 0],
-        [0, 0, 0]
-    ])
-    > nodelist = ['x', 'y', 'z']
-    > bow_graph = numpy_to_graph(arr, nodelist, 'admg')
-    > print(bow_graph.edges())
+    >>> arr = np.array([
+            [0, 21, 0],
+            [20, 0, 0],
+            [0, 0, 0]
+        ])
+    >>> nodelist = ['x', 'y', 'z']
+    >>> bow_graph = numpy_to_graph(arr, nodelist, 'admg')
+    >>> print(bow_graph.edges())
 
     Notes
     -----
@@ -109,15 +109,15 @@ def graph_to_numpy(causal_graph):
     non-zero entry if there is an edge from i to j. The ijth entry is symmetric with the
     jith entry if the edge is 'undirected', or 'bidirected'. Then specific edges are
     mapped to the following values:
-
-        - directed edge (->): 1
-        - circle endpoint (-o): 2
-        - undirected edge (--): 10
-        - bidirected edge (<->): 20
+    - directed edge (->): 1
+    - circle endpoint (-o): 2
+    - undirected edge (--): 10
+    - bidirected edge (<->): 20
 
     Circle endpoints can be symmetric, but they can also contain a tail, or a directed
     edge at the other end. See `EDGE_TO_VALUE_MAPPING`. This corresponds to the
-    output of the `pcalg <>`_ package.
+    output of the `pcalg <https://cran.r-project.org/web/packages/pcalg/index.html>`_
+    package.
 
     **How are multiple edges between same pair of nodes handled?**
 

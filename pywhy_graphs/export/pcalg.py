@@ -41,10 +41,11 @@ def pcalg_to_graph(arr, arr_idx: List[Node], amat_type: str):
 
     Note that the edgemark-code refers to the row index (as opposed adjacency matrices of
     type mag or pag). E.g.:
-        amat[a,b] = 0  and  amat[b,a] = 1   implies a --> b.
-        amat[a,b] = 1  and  amat[b,a] = 0   implies a <-- b.
-        amat[a,b] = 0  and  amat[b,a] = 0   implies a     b.
-        amat[a,b] = 1  and  amat[b,a] = 1   implies a --- b.
+
+    amat[a,b] = 0  and  amat[b,a] = 1   implies a --> b.
+    amat[a,b] = 1  and  amat[b,a] = 0   implies a <-- b.
+    amat[a,b] = 0  and  amat[b,a] = 0   implies a     b.
+    amat[a,b] = 1  and  amat[b,a] = 1   implies a --- b.
 
     Coding for type amat.pag:
 
@@ -55,11 +56,12 @@ def pcalg_to_graph(arr, arr_idx: List[Node], amat_type: str):
 
     Note that the edgemark-code refers to the column index (as opposed adjacency matrices of type
     dag or cpdag). E.g.:
-        amat[a,b] = 2  and  amat[b,a] = 3   implies   a --> b.
-        amat[a,b] = 3  and  amat[b,a] = 2   implies   a <-- b.
-        amat[a,b] = 2  and  amat[b,a] = 2   implies   a <-> b.
-        amat[a,b] = 1  and  amat[b,a] = 3   implies   a --o b.
-        amat[a,b] = 0  and  amat[b,a] = 0   implies   a     b.
+
+    amat[a,b] = 2  and  amat[b,a] = 3   implies   a --> b.
+    amat[a,b] = 3  and  amat[b,a] = 2   implies   a <-- b.
+    amat[a,b] = 2  and  amat[b,a] = 2   implies   a <-> b.
+    amat[a,b] = 1  and  amat[b,a] = 3   implies   a --o b.
+    amat[a,b] = 0  and  amat[b,a] = 0   implies   a     b.
     """
     if amat_type not in ("pag", "cpdag"):
         raise RuntimeError(f'Only amat_types are "pag" and "cpdag", not {amat_type}')
