@@ -72,6 +72,10 @@ and corresponding causal graphs in pywhy-graphs.
    clearn_arr_to_graph
    graph_to_numpy
    numpy_to_graph
+   graph_to_tetrad
+   tetrad_to_graph
+   graph_to_pcalg
+   pcalg_to_graph
 
 NetworkX Experimental Functionality
 ===================================
