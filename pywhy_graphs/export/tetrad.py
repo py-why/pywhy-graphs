@@ -37,7 +37,7 @@ def tetrad_to_graph(filename: str, graph_type):
     elif graph_type == "pag":
         G = pywhy_graphs.PAG()
     elif graph_type in [pywhy_graphs.ADMG, pywhy_graphs.CPDAG, pywhy_graphs.PAG]:
-        graph = graph_type()
+        G = graph_type()
     else:
         raise RuntimeError(
             f"The graph type {graph_type} is unrecognized. Please use one of "

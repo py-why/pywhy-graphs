@@ -28,9 +28,8 @@ upper-triangular numpy array.
 .. autosummary::
    :toctree: ../../generated/
 
-   export.graph_to_clearn_arr
-   export.clearn_arr_to_graph
-
+   graph_to_clearn_arr
+   clearn_arr_to_graph
 
 Numpy (graphviz and dagitty)
 ============================
@@ -41,8 +40,8 @@ edges if more than one edge is allowed between nodes.
 .. autosummary::
    :toctree: ../../generated/
 
-   export.graph_to_numpy
-   export.numpy_to_graph
+   graph_to_numpy
+   numpy_to_graph
 
 
 PCAlg from R (Experimental)
@@ -61,5 +60,23 @@ Please raise an issue if you encounter errors, or issues.
 .. autosummary::
    :toctree: ../../generated/
 
-   export.graph_to_pcalg
-   export.pcalg_to_graph
+   graph_to_pcalg
+   pcalg_to_graph
+
+Tetrad from Java
+================
+``tetrad`` from Java uses the following mapping for their endpoints 
+stored in a text file:
+
+- TAIL = "-"
+- ARROW = ">"
+- CIRCLE = "o"
+
+This functionality is experimental because this is not tested against the actual implementation in Java.
+Please raise an issue if you encounter errors, or issues.
+
+.. autosummary::
+   :toctree: ../../generated/
+
+   graph_to_tetrad
+   tetrad_to_graph
