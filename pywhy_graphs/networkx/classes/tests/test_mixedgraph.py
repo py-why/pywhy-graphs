@@ -11,6 +11,14 @@ import pywhy_graphs.networkx as pywhy_nx
 class BaseMixedEdgeGraphTester:
     """Tests for data-structure independent graph class features."""
 
+    def test_set_name(self):
+        G = self.K3.copy()
+        prev_name = G.name
+
+        G.name = "new_name"
+        assert G.name != prev_name
+        assert G.name == "new_name"
+
     def test_contains(self):
         G = self.K3
         assert 1 in G
@@ -269,6 +277,12 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         G.clear_edge_types()
         assert len(G.nodes) > 0
 
+        G = self.K3.copy()
+        with pytest.raises(ValueError, match="is not present in the graph"):
+            G.clear_edges(edge_type="blah")
+        G.clear_edges(G.edge_types[0])
+        assert len(G.get_graphs(G.edge_types[0]).edges) == 0
+
     def test_subgraph(self):
         G = self.K3.copy()
 
@@ -460,3 +474,9 @@ class TestMixedEdgeGraph(BaseMixedEdgeGraphTester):
         # No inputs -> exception
         with pytest.raises(nx.NetworkXError):
             nx.Graph().update()
+
+    def test_get_graphs(self):
+        G = self.K3.copy()
+
+        with pytest.raises(ValueError, match="Querying the edge_type of a MixedEdgeGraph"):
+            G.get_graphs("blah")

@@ -117,13 +117,13 @@ def pcalg_to_graph(arr, arr_idx: List[Node], amat_type: str):
         elif amat_type == "cpdag":
             if arr_val == PCAlgCPDAGEndpoint.ARROW.value:
                 # check other direction to determine if a bidirected edge
-                if arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                if arr[jdx, idx] == PCAlgCPDAGEndpoint.ARROW.value:
                     graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
                 else:
                     graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-            elif arr_val == PCAlgPAGEndpoint.NULL.value:
+            elif arr_val == PCAlgCPDAGEndpoint.NULL.value:
                 # check other direction to determine if a bidirected edge
-                if arr[jdx, idx] == PCAlgPAGEndpoint.ARROW.value:
+                if arr[jdx, idx] == PCAlgCPDAGEndpoint.ARROW.value:
                     graph.add_edge(v, u, edge_type=graph.directed_edge_name)
 
     return graph
