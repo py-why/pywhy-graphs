@@ -5,8 +5,6 @@ from numpy.testing import assert_array_equal
 from pywhy_graphs import ADMG, PAG
 from pywhy_graphs.export import graph_to_numpy, numpy_to_graph
 
-# setup graphs
-
 
 def test_to_numpy_admg():
     """Test conversion of ADMG to numpy array and back."""

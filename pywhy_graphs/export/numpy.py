@@ -8,7 +8,7 @@ from pywhy_graphs.config import EDGE_TO_VALUE_MAPPING, VALUE_TO_EDGE_MAPPING
 from pywhy_graphs.typing import Node
 
 
-def numpy_to_graph(arr, arr_idx: List[Node], graph_type: str):
+def numpy_to_graph(arr, arr_idx: List[Node], graph_type):
     """Convert an enumerated numpy array into causal graph.
 
     Parameters
@@ -20,7 +20,8 @@ def numpy_to_graph(arr, arr_idx: List[Node], graph_type: str):
         The names of the nodes that are assigned to the graph in order
         of the rows/columns of ``arr``.
     graph_type : str
-        The type of causal graph to construct.
+        The type of causal graph to construct. One of ('pag', 'cpdag',
+        'admg', 'dag').
 
     Returns
     -------

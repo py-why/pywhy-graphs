@@ -13,7 +13,6 @@ from pywhy_graphs.export import clearn_to_graph, graph_to_arr
 
 
 def create_clearn_nodes(n_nodes):
-    n_nodes = 5
     nodes = []
     node_names = np.arange(n_nodes)
     for name in node_names:
@@ -101,7 +100,7 @@ def cpdag():
 
 
 def pag():
-    n_nodes = 5
+    n_nodes = 6
     nodes = create_clearn_nodes(n_nodes)
 
     G = GeneralGraph(nodes)
@@ -119,25 +118,40 @@ def pag():
     # add circle edges
     edge = Edge(G.nodes[0], G.nodes[3], Endpoint.CIRCLE, Endpoint.CIRCLE)
     G.add_edge(edge)
+    edge = Edge(G.nodes[2], G.nodes[1], Endpoint.CIRCLE, Endpoint.ARROW)
+    G.add_edge(edge)
+    edge = Edge(G.nodes[4], G.nodes[1], Endpoint.TAIL, Endpoint.TAIL)
+    G.add_edge(edge)
+    edge = Edge(G.nodes[4], G.nodes[5], Endpoint.TAIL, Endpoint.CIRCLE)
+    G.add_edge(edge)
+
+    # XXX: Note this does not work in causal-learn
+    # edge = Edge(G.nodes[4], G.nodes[5], Endpoint.CIRCLE, Endpoint.TAIL)
+    # G.add_edge(edge)
 
     directed_edges = nx.DiGraph(
         [
             (0, 1),
             (3, 4),
             (2, 4),
+            (2, 1),
         ]
     )
     bidirected_edges = nx.Graph([(1, 3)])
+    undirected_edges = nx.Graph([(1, 4)])
     circle_edges = nx.DiGraph(
         [
             (0, 3),
             (3, 0),
+            (1, 2),
+            (4, 5),
         ]
     )
     expected_graph = pywhy_graphs.PAG(
         directed_edges,
         incoming_bidirected_edges=bidirected_edges,
         incoming_circle_edges=circle_edges,
+        incoming_undirected_edges=undirected_edges,
     )
     return G, expected_graph
 
@@ -178,6 +192,8 @@ def test_graph_to_arr_roundtrip(
     graph = clearn_to_graph(arr, arr_idx=nodes, graph_type=graph_type)
     for edge_type, subG in graph.get_graphs().items():
         assert edge_type in expected_G.edge_types
+        print(edge_type)
+        print(subG.edges, expected_G.get_graphs(edge_type).edges)
         assert nx.is_isomorphic(subG, expected_G.get_graphs(edge_type))
 
     # convert graph back to array and it should match up to an order

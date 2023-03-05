@@ -1070,8 +1070,10 @@ class MixedEdgeGraph:
         """
         # initialize list of empty internal graphs
         graph_classes = [self._internal_graph_nx_type(edge_type)() for edge_type in self.edge_types]
-        graph = self.__class__(**self.graph)
-        graph.add_edge_types_from(graph_classes, self.edge_types)
+        graph = self.__class__(**self.graph).copy()
+        for edge_type, _graph in zip(self.edge_types, graph_classes):
+            if edge_type not in graph.edge_types:
+                graph.add_edge_type(_graph, edge_type)
         graph.add_nodes_from(nodes)
 
         # now add the edges for each edge type

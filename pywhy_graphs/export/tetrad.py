@@ -1,8 +1,10 @@
+from typing import Dict
+
 import pywhy_graphs
 from pywhy_graphs.config import TetradEndpoint
 
 
-def tetrad_to_graph(filename: str, graph_type: str):
+def tetrad_to_graph(filename: str, graph_type):
     """Convert a tetrad stored graph from a text file to causal graph in pywhy.
 
     Parameters
@@ -11,6 +13,7 @@ def tetrad_to_graph(filename: str, graph_type: str):
         The file at which the tetrad file is stored.
     graph_type : str
         Type of pywhy causal graph to construct.
+        One of ('pag', 'cpdag', 'admg', 'dag').
 
     Returns
     -------
@@ -34,7 +37,7 @@ def tetrad_to_graph(filename: str, graph_type: str):
     elif graph_type == "pag":
         G = pywhy_graphs.PAG()
     elif graph_type in [pywhy_graphs.ADMG, pywhy_graphs.CPDAG, pywhy_graphs.PAG]:
-        G = graph_type()
+        graph = graph_type()
     else:
         raise RuntimeError(
             f"The graph type {graph_type} is unrecognized. Please use one of "
@@ -105,7 +108,7 @@ def graph_to_tetrad(G, filename: str):
     """
     tetrad_txt = "Graph Nodes:\n"
 
-    graph_edge_dict = dict()
+    graph_edge_dict: Dict = dict()
     for idx, node in enumerate(G.nodes):
         if idx == 0:
             tetrad_txt += f"{node}"

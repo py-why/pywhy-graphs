@@ -33,6 +33,8 @@ def graph_to_clearn(G) -> Tuple[np.ndarray, List[Node]]:
             uv_edge_types = edge_types(G, u, v)
             if len(uv_edge_types) == 1:
                 edge_type = uv_edge_types[0]
+                # if there is only one edge type and it is directed, then
+                # there are
                 if edge_type == EdgeType.DIRECTED.value:
                     if G.has_edge(u, v, EdgeType.DIRECTED.value):
                         # u -> v
@@ -51,9 +53,20 @@ def graph_to_clearn(G) -> Tuple[np.ndarray, List[Node]]:
                     endpoint_v = CLearnEndpoint.TAIL
                     endpoint_u = CLearnEndpoint.TAIL
                 elif edge_type == EdgeType.CIRCLE.value:
-                    # u o-o v
-                    endpoint_v = CLearnEndpoint.CIRCLE
-                    endpoint_u = CLearnEndpoint.CIRCLE
+                    if G.has_edge(u, v, EdgeType.CIRCLE.value) and G.has_edge(
+                        v, u, EdgeType.CIRCLE.value
+                    ):
+                        # u o-o v
+                        endpoint_v = CLearnEndpoint.CIRCLE
+                        endpoint_u = CLearnEndpoint.CIRCLE
+                    elif G.has_edge(u, v, EdgeType.CIRCLE.value) and not G.has_edge(v, u):
+                        # u --o v
+                        endpoint_v = CLearnEndpoint.CIRCLE
+                        endpoint_u = CLearnEndpoint.TAIL
+                    elif not G.has_edge(u, v) and G.has_edge(v, u, EdgeType.CIRCLE.value):
+                        # u o-- v
+                        endpoint_v = CLearnEndpoint.TAIL
+                        endpoint_u = CLearnEndpoint.CIRCLE
                 else:
                     raise RuntimeError(
                         f"Unrecognizd edge type {edge_type}. Use one of "
@@ -89,27 +102,19 @@ def graph_to_clearn(G) -> Tuple[np.ndarray, List[Node]]:
                     endpoint_v = CLearnEndpoint.TAIL_AND_ARROW
                     endpoint_u = CLearnEndpoint.TAIL_AND_ARROW
                 elif EdgeType.CIRCLE.value in uv_edge_types:
-                    # u *-o v
-                    if G.has_edge(u, v, EdgeType.CIRCLE.value):
+                    # u *-o v or u o-* v
+                    if G.has_edge(u, v, EdgeType.CIRCLE.value) and G.has_edge(
+                        v, u, EdgeType.DIRECTED.value
+                    ):
+                        # u <-o v
                         endpoint_v = CLearnEndpoint.CIRCLE
-                        if G.has_edge(v, u, EdgeType.DIRECTED.value):
-                            endpoint_u = CLearnEndpoint.CIRCLE
-                        elif G.has_edge(v, u, EdgeType.UNDIRECTED.value):
-                            endpoint_u = CLearnEndpoint.TAIL
-                        else:
-                            raise RuntimeError(
-                                f"It is not possible for a PAG to have {u}-{v} with another edge..."
-                            )
-                    else:
+                        endpoint_u = CLearnEndpoint.ARROW
+                    elif G.has_edge(v, u, EdgeType.CIRCLE.value) and G.has_edge(
+                        u, v, EdgeType.DIRECTED.value
+                    ):
+                        # u o-> v
                         endpoint_u = CLearnEndpoint.CIRCLE
-                        if G.has_edge(u, v, EdgeType.DIRECTED.value):
-                            endpoint_v = CLearnEndpoint.CIRCLE
-                        elif G.has_edge(u, v, EdgeType.UNDIRECTED.value):
-                            endpoint_v = CLearnEndpoint.TAIL
-                        else:
-                            raise RuntimeError(
-                                f"It is not possible for a PAG to have {u}-{v} with another edge..."
-                            )
+                        endpoint_v = CLearnEndpoint.ARROW
             else:
                 raise RuntimeError(
                     f"Causal-learn does not support more than two types of edges between nodes. "
@@ -130,6 +135,7 @@ def clearn_to_graph(arr: np.ndarray, arr_idx: List[Node], graph_type: str):
     ----------
     arr : np.ndarray of shape (n_nodes, n_nodes)
         The causal-learn array encoding the endpoints between nodes.
+        Columns are the starting node and rows are the ending node.
     arr_idx : List[Node] of length (n_nodes)
         The array index, which stores the name of the n_nodes in order of their
         rows/columns in ``arr``.
@@ -179,92 +185,112 @@ def clearn_to_graph(arr: np.ndarray, arr_idx: List[Node], graph_type: str):
 
     # convert each non-zero array entry combination into
     # an edge in the graph
-    triu_inds = np.triu_indices(n_nodes, k=1)
-    for udx, vdx in zip(*triu_inds):
-        endpoint_v = CLearnEndpoint(arr[vdx, udx])
-        endpoint_u = CLearnEndpoint(arr[udx, vdx])
-        u = arr_idx[udx]
-        v = arr_idx[vdx]
+    for udx in range(n_nodes):
+        for vdx in range(n_nodes):
+            if udx == vdx:
+                continue
 
-        # First: check if there are two edges. If there
-        if any(
-            endpoint
-            in [
-                CLearnEndpoint.ARROW_AND_ARROW,
-                CLearnEndpoint.TAIL_AND_ARROW,
-                CLearnEndpoint.TAIL_AND_TAIL,
-            ]
-            for endpoint in (endpoint_u, endpoint_v)
-        ):
-            # u -> v and u <-> v
-            if (
-                endpoint_v == CLearnEndpoint.ARROW_AND_ARROW
-                and endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
+            endpoint_v = CLearnEndpoint(arr[vdx, udx])
+            endpoint_u = CLearnEndpoint(arr[udx, vdx])
+            u = arr_idx[udx]
+            v = arr_idx[vdx]
+
+            # First: check if there are two edges. If there
+            if any(
+                endpoint
+                in [
+                    CLearnEndpoint.ARROW_AND_ARROW,
+                    CLearnEndpoint.TAIL_AND_ARROW,
+                    CLearnEndpoint.TAIL_AND_TAIL,
+                ]
+                for endpoint in (endpoint_u, endpoint_v)
             ):
-                graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-                graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
-            # u <- v and u <-> v
-            elif (
-                endpoint_u == CLearnEndpoint.ARROW_AND_ARROW
-                and endpoint_v == CLearnEndpoint.TAIL_AND_ARROW
-            ):
-                graph.add_edge(v, u, edge_type=graph.directed_edge_name)
-                graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
-            # u -> v and u -- v
-            elif (endpoint_u == CLearnEndpoint.TAIL_AND_TAIL) and (
-                endpoint_v == CLearnEndpoint.TAIL_AND_ARROW
-            ):
-                graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-                graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
-            # u <- v and u -- v
-            elif (endpoint_v == CLearnEndpoint.TAIL_AND_TAIL) and (
-                endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
-            ):
-                graph.add_edge(v, u, edge_type=graph.directed_edge_name)
-                graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
-            # u -- v and u <-> v
-            elif (endpoint_v == CLearnEndpoint.TAIL_AND_ARROW) and (
-                endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
-            ):
-                graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
-                graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
-        # Else, there is only one edge between the two nodes and this is
-        # either a DAG, or an equivalence class
-        else:
-            # there are no circle edges, implying this is not a PAG at least
-            if not any(endpoint == CLearnEndpoint.CIRCLE for endpoint in (endpoint_u, endpoint_v)):
-                # u <--> v
-                if (endpoint_v == CLearnEndpoint.ARROW) and (endpoint_u == CLearnEndpoint.ARROW):
+                # u -> v and u <-> v
+                if (
+                    endpoint_v == CLearnEndpoint.ARROW_AND_ARROW
+                    and endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
+                ):
+                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
                     graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
-                # u -> v
-                elif (endpoint_v == CLearnEndpoint.ARROW) and (endpoint_u == CLearnEndpoint.TAIL):
-                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-                # u <- v
-                elif (endpoint_u == CLearnEndpoint.ARROW) and (endpoint_v == CLearnEndpoint.TAIL):
+                # u <- v and u <-> v
+                elif (
+                    endpoint_u == CLearnEndpoint.ARROW_AND_ARROW
+                    and endpoint_v == CLearnEndpoint.TAIL_AND_ARROW
+                ):
                     graph.add_edge(v, u, edge_type=graph.directed_edge_name)
-                # u -- v
-                elif (endpoint_v == CLearnEndpoint.TAIL) and (endpoint_u == CLearnEndpoint.TAIL):
+                    graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
+                # u -> v and u -- v
+                elif (endpoint_u == CLearnEndpoint.TAIL_AND_TAIL) and (
+                    endpoint_v == CLearnEndpoint.TAIL_AND_ARROW
+                ):
+                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
                     graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                # u <- v and u -- v
+                elif (endpoint_v == CLearnEndpoint.TAIL_AND_TAIL) and (
+                    endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
+                ):
+                    graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+                    graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                # u -- v and u <-> v
+                elif (endpoint_v == CLearnEndpoint.TAIL_AND_ARROW) and (
+                    endpoint_u == CLearnEndpoint.TAIL_AND_ARROW
+                ):
+                    graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
+                    graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+            # Else, there is only one edge between the two nodes and this is
+            # either a DAG, or an equivalence class
             else:
-                if not hasattr(graph, "circle_edge_name"):
-                    raise RuntimeError(f"Graph {graph} is adding circular end points...")
+                print("outside...", u, v, endpoint_u, endpoint_v)
+                # there are no circle edges, implying this is not a PAG at least
+                if all(endpoint != CLearnEndpoint.CIRCLE for endpoint in (endpoint_u, endpoint_v)):
+                    # u <--> v
+                    if (endpoint_v == CLearnEndpoint.ARROW) and (
+                        endpoint_u == CLearnEndpoint.ARROW
+                    ):
+                        graph.add_edge(u, v, edge_type=graph.bidirected_edge_name)
+                    # u -> v
+                    elif (endpoint_v == CLearnEndpoint.ARROW) and (
+                        endpoint_u == CLearnEndpoint.TAIL
+                    ):
+                        graph.add_edge(u, v, edge_type=graph.directed_edge_name)
+                    # u <- v
+                    elif (endpoint_u == CLearnEndpoint.ARROW) and (
+                        endpoint_v == CLearnEndpoint.TAIL
+                    ):
+                        graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+                    # u -- v
+                    elif (endpoint_v == CLearnEndpoint.TAIL) and (
+                        endpoint_u == CLearnEndpoint.TAIL
+                    ):
+                        graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                else:
+                    if not hasattr(graph, "circle_edge_name"):
+                        raise RuntimeError(f"Graph {graph} is adding circular end points...")
 
-                # Endpoints contain a circle...
-                # u o- v
-                if endpoint_u == CLearnEndpoint.CIRCLE:
-                    graph.add_edge(v, u, edge_type=graph.circle_edge_name)  # type: ignore
-                elif endpoint_u == CLearnEndpoint.ARROW:
-                    graph.add_edge(v, u, edge_type=graph.directed_edge_name)
-                elif endpoint_u == CLearnEndpoint.TAIL:
-                    graph.add_edge(v, u, edge_type=graph.undirected_edge_name)
-
-                # u -o v
-                if endpoint_v == CLearnEndpoint.CIRCLE:
-                    graph.add_edge(u, v, edge_type=graph.circle_edge_name)  # type: ignore
-                elif endpoint_v == CLearnEndpoint.ARROW:
-                    graph.add_edge(u, v, edge_type=graph.directed_edge_name)
-                elif endpoint_v == CLearnEndpoint.TAIL:
-                    graph.add_edge(u, v, edge_type=graph.undirected_edge_name)
+                    # Endpoints contain a circle...
+                    print(u, v, endpoint_u, endpoint_v)
+                    if endpoint_u == CLearnEndpoint.CIRCLE and endpoint_v == CLearnEndpoint.TAIL:
+                        print(endpoint_u, endpoint_v)
+                        # u o- v
+                        graph.add_edge(v, u, edge_type=graph.circle_edge_name)  # type: ignore
+                    elif endpoint_u == CLearnEndpoint.TAIL and endpoint_v == CLearnEndpoint.CIRCLE:
+                        print(endpoint_u, endpoint_v, "second")
+                        # u -o v
+                        graph.add_edge(u, v, edge_type=graph.circle_edge_name)  # type: ignore
+                    elif endpoint_u == CLearnEndpoint.ARROW and endpoint_v == CLearnEndpoint.CIRCLE:
+                        # u <-o v
+                        graph.add_edge(v, u, edge_type=graph.directed_edge_name)
+                        graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                    elif endpoint_u == CLearnEndpoint.CIRCLE and endpoint_v == CLearnEndpoint.ARROW:
+                        # u o-> v
+                        graph.add_edge(u, v, edge_type=graph.directed_edge_name)
+                        graph.add_edge(v, u, edge_type=graph.circle_edge_name)
+                    elif (
+                        endpoint_u == CLearnEndpoint.CIRCLE and endpoint_v == CLearnEndpoint.CIRCLE
+                    ):
+                        # u o-o v
+                        graph.add_edge(u, v, edge_type=graph.circle_edge_name)
+                        graph.add_edge(v, u, edge_type=graph.circle_edge_name)
 
     if graph_type == "dag":
         graph = graph.to_directed()
