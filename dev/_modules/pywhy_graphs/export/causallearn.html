@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pywhy_graphs.array.export &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.export.causallearn &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -191,7 +191,7 @@
               
               <article class="bd-article" role="main">
                 
-  <h1>Source code for pywhy_graphs.array.export</h1><div class="highlight"><pre>
+  <h1>Source code for pywhy_graphs.export.causallearn</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -202,7 +202,7 @@
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
 
 
-<span class="k">def</span> <span class="nf">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<div class="viewcode-block" id="graph_to_clearn"><a class="viewcode-back" href="../../../generated/pywhy_graphs.export.graph_to_clearn.html#pywhy_graphs.export.graph_to_clearn">[docs]</a><span class="k">def</span> <span class="nf">graph_to_clearn</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
     <span class="c1"># define the array</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -227,6 +227,8 @@
             <span class="n">uv_edge_types</span> <span class="o">=</span> <span class="n">edge_types</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uv_edge_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">edge_type</span> <span class="o">=</span> <span class="n">uv_edge_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># if there is only one edge type and it is directed, then</span>
+                <span class="c1"># there are</span>
                 <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
                         <span class="c1"># u -&gt; v</span>
@@ -245,9 +247,20 @@
                     <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
                     <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
                 <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                    <span class="c1"># u o-o v</span>
-                    <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
-                    <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
+                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                        <span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">):</span>
+                        <span class="c1"># u o-o v</span>
+                        <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
+                        <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
+                    <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+                        <span class="c1"># u --o v</span>
+                        <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
+                        <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+                        <span class="c1"># u o-- v</span>
+                        <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
+                        <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Unrecognizd edge type </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2">. Use one of &quot;</span>
@@ -283,27 +296,19 @@
                     <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
                     <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
                 <span class="k">elif</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">uv_edge_types</span><span class="p">:</span>
-                    <span class="c1"># u *-o v</span>
-                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+                    <span class="c1"># u *-o v or u o-* v</span>
+                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                        <span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">):</span>
+                        <span class="c1"># u &lt;-o v</span>
                         <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
-                        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                            <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
-                        <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                            <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;It is not possible for a PAG to have </span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> with another edge...&quot;</span>
-                            <span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span>
+                    <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">):</span>
+                        <span class="c1"># u o-&gt; v</span>
                         <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
-                        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                            <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
-                        <span class="k">elif</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                            <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;It is not possible for a PAG to have </span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> with another edge...&quot;</span>
-                            <span class="p">)</span>
+                        <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Causal-learn does not support more than two types of edges between nodes. &quot;</span>
@@ -314,16 +319,17 @@
             <span class="n">arr</span><span class="p">[</span><span class="n">udx</span><span class="p">,</span> <span class="n">vdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">endpoint_u</span><span class="o">.</span><span class="n">value</span>
             <span class="n">arr</span><span class="p">[</span><span class="n">vdx</span><span class="p">,</span> <span class="n">udx</span><span class="p">]</span> <span class="o">=</span> <span class="n">endpoint_v</span><span class="o">.</span><span class="n">value</span>
 
-    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span></div>
 
 
-<div class="viewcode-block" id="clearn_arr_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_arr_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="clearn_to_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.export.clearn_to_graph.html#pywhy_graphs.export.clearn_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clearn_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert causal-learn array to a graph object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    arr : np.ndarray of shape (n_nodes, n_nodes)</span>
 <span class="sd">        The causal-learn array encoding the endpoints between nodes.</span>
+<span class="sd">        Columns are the starting node and rows are the ending node.</span>
 <span class="sd">    arr_idx : List[Node] of length (n_nodes)</span>
 <span class="sd">        The array index, which stores the name of the n_nodes in order of their</span>
 <span class="sd">        rows/columns in ``arr``.</span>
@@ -373,99 +379,119 @@
 
     <span class="c1"># convert each non-zero array entry combination into</span>
     <span class="c1"># an edge in the graph</span>
-    <span class="n">triu_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">udx</span><span class="p">,</span> <span class="n">vdx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">triu_inds</span><span class="p">):</span>
-        <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">vdx</span><span class="p">,</span> <span class="n">udx</span><span class="p">])</span>
-        <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">udx</span><span class="p">,</span> <span class="n">vdx</span><span class="p">])</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">arr_idx</span><span class="p">[</span><span class="n">udx</span><span class="p">]</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">arr_idx</span><span class="p">[</span><span class="n">vdx</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">udx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">vdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">udx</span> <span class="o">==</span> <span class="n">vdx</span><span class="p">:</span>
+                <span class="k">continue</span>
 
-        <span class="c1"># First: check if there are two edges. If there</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="n">endpoint</span>
-            <span class="ow">in</span> <span class="p">[</span>
-                <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span><span class="p">,</span>
-                <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span><span class="p">,</span>
-                <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">,</span>
-            <span class="p">]</span>
-            <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="c1"># u -&gt; v and u &lt;-&gt; v</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span>
-                <span class="ow">and</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+            <span class="n">endpoint_v</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">vdx</span><span class="p">,</span> <span class="n">udx</span><span class="p">])</span>
+            <span class="n">endpoint_u</span> <span class="o">=</span> <span class="n">CLearnEndpoint</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">udx</span><span class="p">,</span> <span class="n">vdx</span><span class="p">])</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">arr_idx</span><span class="p">[</span><span class="n">udx</span><span class="p">]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">arr_idx</span><span class="p">[</span><span class="n">vdx</span><span class="p">]</span>
+
+            <span class="c1"># First: check if there are two edges. If there</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="n">endpoint</span>
+                <span class="ow">in</span> <span class="p">[</span>
+                    <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span><span class="p">,</span>
+                    <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span><span class="p">,</span>
+                    <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">,</span>
+                <span class="p">]</span>
+                <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
-            <span class="c1"># u &lt;- v and u &lt;-&gt; v</span>
-            <span class="k">elif</span> <span class="p">(</span>
-                <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span>
-                <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
-            <span class="p">):</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
-            <span class="c1"># u -&gt; v and u -- v</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
-            <span class="p">):</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
-            <span class="c1"># u &lt;- v and u -- v</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
-            <span class="p">):</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
-            <span class="c1"># u -- v and u &lt;-&gt; v</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
-            <span class="p">):</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
-        <span class="c1"># Else, there is only one edge between the two nodes and this is</span>
-        <span class="c1"># either a DAG, or an equivalence class</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># there are no circle edges, implying this is not a PAG at least</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">endpoint</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span> <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)):</span>
-                <span class="c1"># u &lt;--&gt; v</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">):</span>
+                <span class="c1"># u -&gt; v and u &lt;-&gt; v</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span>
+                    <span class="ow">and</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+                <span class="p">):</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
-                <span class="c1"># u -&gt; v</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">):</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="c1"># u &lt;- v</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">):</span>
+                <span class="c1"># u &lt;- v and u &lt;-&gt; v</span>
+                <span class="k">elif</span> <span class="p">(</span>
+                    <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW_AND_ARROW</span>
+                    <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+                <span class="p">):</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="c1"># u -- v</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">):</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+                <span class="c1"># u -&gt; v and u -- v</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+                <span class="p">):</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
                     <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+                <span class="c1"># u &lt;- v and u -- v</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+                <span class="p">):</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+                <span class="c1"># u -- v and u &lt;-&gt; v</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL_AND_ARROW</span>
+                <span class="p">):</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+            <span class="c1"># Else, there is only one edge between the two nodes and this is</span>
+            <span class="c1"># either a DAG, or an equivalence class</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;circle_edge_name&quot;</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Graph </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="s2"> is adding circular end points...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;outside...&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)</span>
+                <span class="c1"># there are no circle edges, implying this is not a PAG at least</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">endpoint</span> <span class="o">!=</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span> <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)):</span>
+                    <span class="c1"># u &lt;--&gt; v</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span>
+                    <span class="p">):</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+                    <span class="c1"># u -&gt; v</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
+                    <span class="p">):</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                    <span class="c1"># u &lt;- v</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
+                    <span class="p">):</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                    <span class="c1"># u -- v</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span>
+                    <span class="p">):</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;circle_edge_name&quot;</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Graph </span><span class="si">{</span><span class="n">graph</span><span class="si">}</span><span class="s2"> is adding circular end points...&quot;</span><span class="p">)</span>
 
-                <span class="c1"># Endpoints contain a circle...</span>
-                <span class="c1"># u o- v</span>
-                <span class="k">if</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-                <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
-
-                <span class="c1"># u -o v</span>
-                <span class="k">if</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-                <span class="k">elif</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">:</span>
-                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+                    <span class="c1"># Endpoints contain a circle...</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span> <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">)</span>
+                        <span class="c1"># u o- v</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                    <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">TAIL</span> <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">endpoint_u</span><span class="p">,</span> <span class="n">endpoint_v</span><span class="p">,</span> <span class="s2">&quot;second&quot;</span><span class="p">)</span>
+                        <span class="c1"># u -o v</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                    <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span> <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
+                        <span class="c1"># u &lt;-o v</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span> <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">ARROW</span><span class="p">:</span>
+                        <span class="c1"># u o-&gt; v</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="p">(</span>
+                        <span class="n">endpoint_u</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span> <span class="ow">and</span> <span class="n">endpoint_v</span> <span class="o">==</span> <span class="n">CLearnEndpoint</span><span class="o">.</span><span class="n">CIRCLE</span>
+                    <span class="p">):</span>
+                        <span class="c1"># u o-o v</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+                        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">graph_type</span> <span class="o">==</span> <span class="s2">&quot;dag&quot;</span><span class="p">:</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">graph</span></div>
 
 
-<div class="viewcode-block" id="graph_to_arr"><a class="viewcode-back" href="../../../generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr">[docs]</a><span class="k">def</span> <span class="nf">graph_to_arr</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">graph_to_arr</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;causal-learn&quot;</span><span class="p">,</span>
     <span class="n">node_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -509,13 +535,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: add option for exporting to pcalg</span>
     <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;causal-learn&quot;</span><span class="p">:</span>
-        <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span> <span class="o">=</span> <span class="n">_graph_to_clearn_arr</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span> <span class="o">=</span> <span class="n">graph_to_clearn</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">node_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">new_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">node_order</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">)</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">new_order</span><span class="p">,</span> <span class="n">new_order</span><span class="p">)]</span>
         <span class="n">arr_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr_idx</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">new_order</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span></div>
+    <span class="k">return</span> <span class="n">arr</span><span class="p">,</span> <span class="n">arr_idx</span>
 </pre></div>
 
               </article>

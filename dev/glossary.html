@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>3. Glossary of Common Terms and API Elements &#8212; pywhy-graphs v0.0.0</title>
+    <title>4. Glossary of Common Terms and API Elements &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Release History" href="whats_new.html" />
-    <link rel="prev" title="1. Causal Graphs in PyWhy" href="reference/classes/index.html" />
+    <link rel="prev" title="3. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package" href="reference/export/index.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="_static/copybutton.js"></script>
     <script type="text/javascript" src="_static/scrollfix.js"></script>
@@ -205,9 +205,61 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="reference/export/index.html">
+   3. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html">
+     3.1.1. pywhy_graphs.export.graph_to_clearn
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.clearn_to_graph.html">
+     3.1.2. pywhy_graphs.export.clearn_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_numpy.html">
+     3.2.1. pywhy_graphs.export.graph_to_numpy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.numpy_to_graph.html">
+     3.2.2. pywhy_graphs.export.numpy_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_pcalg.html">
+     3.3.1. pywhy_graphs.export.graph_to_pcalg
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.pcalg_to_graph.html">
+     3.3.2. pywhy_graphs.export.pcalg_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_tetrad.html">
+     3.4.1. pywhy_graphs.export.graph_to_tetrad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/pywhy_graphs.export.tetrad_to_graph.html">
+     3.4.2. pywhy_graphs.export.tetrad_to_graph
+    </a>
+   </li>
+  </ul>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. Glossary of Common Terms and API Elements
+   4. Glossary of Common Terms and API Elements
   </a>
  </li>
 </ul>
@@ -236,7 +288,7 @@
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#general-concepts">
-   3.1. General Concepts
+   4.1. General Concepts
   </a>
  </li>
 </ul>
@@ -259,7 +311,7 @@
               <article class="bd-article" role="main">
                 
   <section id="glossary-of-common-terms-and-api-elements">
-<span id="glossary"></span><h1><span class="section-number">3. </span>Glossary of Common Terms and API Elements<a class="headerlink" href="#glossary-of-common-terms-and-api-elements" title="Permalink to this heading">#</a></h1>
+<span id="glossary"></span><h1><span class="section-number">4. </span>Glossary of Common Terms and API Elements<a class="headerlink" href="#glossary-of-common-terms-and-api-elements" title="Permalink to this heading">#</a></h1>
 <p>This glossary hopes to definitively represent the tacit and explicit
 conventions applied in Pywhy-Graphs and its API, while providing a reference
 for users and contributors. It aims to describe the concepts and either detail
@@ -270,7 +322,7 @@ Guide, we may minimize redundancy and inconsistency.</p>
 more specific sets of related terms are listed below:
 <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#glossary-attributes" title="(in scikit-learn v1.2)"><span>Attributes</span></a>.</p>
 <section id="general-concepts">
-<h2><span class="section-number">3.1. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.1. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this heading">#</a></h2>
 <dl class="glossary">
 <dt id="term-1d">1d<a class="headerlink" href="#term-1d" title="Permalink to this term">#</a></dt><dt id="term-1d-array">1d array<a class="headerlink" href="#term-1d-array" title="Permalink to this term">#</a></dt><dd><p>One-dimensional array. A NumPy array whose <code class="docutils literal notranslate"><span class="pre">.shape</span></code> has length 1.
 A vector.</p>
@@ -405,11 +457,11 @@ nodes in a time-series graph that are all part of the same variable <code class=
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="reference/classes/index.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="reference/export/index.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">1. </span>Causal Graphs in PyWhy</p>
+          <p class="prev-next-title"><span class="section-number">3. </span>Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="whats_new.html" title="next page">

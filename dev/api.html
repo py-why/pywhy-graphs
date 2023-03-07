@@ -262,13 +262,43 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="generated/pywhy_graphs.array.graph_to_arr.html">
-   pywhy_graphs.array.graph_to_arr
+  <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html">
+   3.1.1. pywhy_graphs.export.graph_to_clearn
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="generated/pywhy_graphs.array.clearn_arr_to_graph.html">
-   pywhy_graphs.array.clearn_arr_to_graph
+  <a class="reference internal" href="generated/pywhy_graphs.export.clearn_to_graph.html">
+   3.1.2. pywhy_graphs.export.clearn_to_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_numpy.html">
+   3.2.1. pywhy_graphs.export.graph_to_numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.numpy_to_graph.html">
+   3.2.2. pywhy_graphs.export.numpy_to_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_tetrad.html">
+   3.4.1. pywhy_graphs.export.graph_to_tetrad
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.tetrad_to_graph.html">
+   3.4.2. pywhy_graphs.export.tetrad_to_graph
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_pcalg.html">
+   3.3.1. pywhy_graphs.export.graph_to_pcalg
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.export.pcalg_to_graph.html">
+   3.3.2. pywhy_graphs.export.pcalg_to_graph
   </a>
  </li>
 </ul>
@@ -625,11 +655,29 @@ differently. This submodule converts between those causal graph data structures
 and corresponding causal graphs in pywhy-graphs.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.graph_to_arr.html#pywhy_graphs.array.graph_to_arr" title="pywhy_graphs.array.graph_to_arr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_arr</span></code></a>(G[, format, node_order])</p></td>
-<td><p>Convert a graph to a structured numpy array.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html#pywhy_graphs.export.graph_to_clearn" title="pywhy_graphs.export.graph_to_clearn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_clearn</span></code></a>(G)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.array.clearn_arr_to_graph.html#pywhy_graphs.array.clearn_arr_to_graph" title="pywhy_graphs.array.clearn_arr_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clearn_arr_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.clearn_to_graph.html#pywhy_graphs.export.clearn_to_graph" title="pywhy_graphs.export.clearn_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clearn_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
 <td><p>Convert causal-learn array to a graph object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_numpy.html#pywhy_graphs.export.graph_to_numpy" title="pywhy_graphs.export.graph_to_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_numpy</span></code></a>(causal_graph)</p></td>
+<td><p>Convert causal graph to a numpy adjacency array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.numpy_to_graph.html#pywhy_graphs.export.numpy_to_graph" title="pywhy_graphs.export.numpy_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
+<td><p>Convert an enumerated numpy array into causal graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_tetrad.html#pywhy_graphs.export.graph_to_tetrad" title="pywhy_graphs.export.graph_to_tetrad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_tetrad</span></code></a>(G, filename)</p></td>
+<td><p>Convert a pywhy causal graph to a tetrad text file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.tetrad_to_graph.html#pywhy_graphs.export.tetrad_to_graph" title="pywhy_graphs.export.tetrad_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tetrad_to_graph</span></code></a>(filename, graph_type)</p></td>
+<td><p>Convert a tetrad stored graph from a text file to causal graph in pywhy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_pcalg.html#pywhy_graphs.export.graph_to_pcalg" title="pywhy_graphs.export.graph_to_pcalg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_pcalg</span></code></a>(causal_graph)</p></td>
+<td><p>Convert causal graph to a pcalg type adjacency array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.export.pcalg_to_graph.html#pywhy_graphs.export.pcalg_to_graph" title="pywhy_graphs.export.pcalg_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pcalg_to_graph</span></code></a>(arr, arr_idx, amat_type)</p></td>
+<td><p>Convert an array from R's pcalg into causal graph.</p></td>
 </tr>
 </tbody>
 </table>
