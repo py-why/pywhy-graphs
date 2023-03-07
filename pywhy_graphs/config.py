@@ -11,9 +11,9 @@ import numpy as np
 EDGE_TO_VALUE_MAPPING = {
     None: 0,
     "directed": 1,
-    "undirected": 2,
-    "bidirected": 3,
-    "circle": 4,
+    "circle": 2,
+    "undirected": 10,
+    "bidirected": 20,
 }
 VALUE_TO_EDGE_MAPPING = {val: key for key, val in EDGE_TO_VALUE_MAPPING.items()}
 
@@ -66,6 +66,30 @@ class EdgeType(Enum, metaclass=MetaEnum):
     BIDIRECTED = "bidirected"
     CIRCLE = "circle"
     UNDIRECTED = "undirected"
+
+
+class TetradEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of tetrad endpoints."""
+
+    TAIL = "-"
+    ARROW = ">"
+    CIRCLE = "o"
+
+
+class PCAlgPAGEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of pcalg PAG endpoints."""
+
+    NULL = 0
+    CIRCLE = 1
+    ARROW = 2
+    TAIL = 3
+
+
+class PCAlgCPDAGEndpoint(Enum, metaclass=MetaEnum):
+    """Enumeration of pcalg CPDAG endpoints."""
+
+    NULL = 0
+    ARROW = 1
 
 
 # Taken from causal-learn Endpoint.py
