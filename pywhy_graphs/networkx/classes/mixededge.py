@@ -100,14 +100,14 @@ class MixedEdgeGraph:
             nodes = []
             self._edge_graphs = dict()
 
-        self.node_dict_factory = self.node_dict_factory
-        self.node_attr_dict_factory = self.node_attr_dict_factory
-        self._node = self.node_dict_factory()  # empty node attribute dict
-        # ensure nodes are all within the necessary data structures
-        self.add_nodes_from(nodes)
+            self.node_dict_factory = self.node_dict_factory
+            self.node_attr_dict_factory = self.node_attr_dict_factory
+            self._node = self.node_dict_factory()  # empty node attribute dict
+            # ensure nodes are all within the necessary data structures
+            self.add_nodes_from(nodes)
 
-        # dictionary for graph attributes
-        self.graph_attr_dict_factory = self.graph_attr_dict_factory
+            # dictionary for graph attributes
+            self.graph_attr_dict_factory = self.graph_attr_dict_factory
         self.graph = self.graph_attr_dict_factory()
         # load graph attributes (must be after convert)
         self.graph.update(attr)

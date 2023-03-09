@@ -9,7 +9,7 @@ from numpy.testing import assert_array_equal
 
 import pywhy_graphs
 import pywhy_graphs.networkx as pywhy_nx
-from pywhy_graphs.array.export import clearn_arr_to_graph, graph_to_arr
+from pywhy_graphs.export import clearn_to_graph, graph_to_arr
 
 
 def create_clearn_nodes(n_nodes):
@@ -153,7 +153,7 @@ def test_graph_to_arr_roundtrip_dag():
     nodes = [node.get_name() for node in clearn_G.nodes]
 
     # convert array to networkx/pywhy-graphs graph
-    graph = clearn_arr_to_graph(arr, arr_idx=nodes, graph_type=graph_type)
+    graph = clearn_to_graph(arr, arr_idx=nodes, graph_type=graph_type)
     assert nx.is_isomorphic(graph, expected_G)
 
 
@@ -175,7 +175,7 @@ def test_graph_to_arr_roundtrip(
     nodes = [node.get_name() for node in clearn_G.nodes]
 
     # convert array to networkx/pywhy-graphs graph
-    graph = clearn_arr_to_graph(arr, arr_idx=nodes, graph_type=graph_type)
+    graph = clearn_to_graph(arr, arr_idx=nodes, graph_type=graph_type)
     for edge_type, subG in graph.get_graphs().items():
         assert edge_type in expected_G.edge_types
         assert nx.is_isomorphic(subG, expected_G.get_graphs(edge_type))
@@ -203,13 +203,13 @@ def test_convert_clearn_errors():
     # only square arrays are acceptable
     arr = np.zeros((5, 3))
     with pytest.raises(RuntimeError, match="Only square arrays"):
-        clearn_arr_to_graph(arr, arr_idx=nodes, graph_type="dag")
+        clearn_to_graph(arr, arr_idx=nodes, graph_type="dag")
 
     # array idx and array should have same length
     arr = clearn_G.graph
     with pytest.raises(RuntimeError, match="The number of node names"):
-        clearn_arr_to_graph(arr, arr_idx=nodes + ["test"], graph_type="dag")
+        clearn_to_graph(arr, arr_idx=nodes + ["test"], graph_type="dag")
 
     arr[0, 1] = 52
     with pytest.raises(RuntimeError, match="Some entries of array"):
-        clearn_arr_to_graph(arr, arr_idx=nodes, graph_type="dag")
+        clearn_to_graph(arr, arr_idx=nodes, graph_type="dag")

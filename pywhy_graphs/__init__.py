@@ -13,9 +13,9 @@ from .classes import (
     StationaryTimeSeriesPAG,
 )
 from .algorithms import *  # noqa: F403
-from .array import export
 from .config import sys_info
 
+from . import export
 from . import classes
 from . import networkx
 from . import simulate

@@ -8,7 +8,7 @@ from pywhy_graphs.config import CLearnEndpoint, EdgeType
 from pywhy_graphs.typing import Node
 
 
-def _graph_to_clearn_arr(G) -> Tuple[np.ndarray, List[Node]]:
+def graph_to_clearn(G) -> Tuple[np.ndarray, List[Node]]:
     # define the array
     arr = np.zeros((G.number_of_nodes(), G.number_of_nodes()), dtype=int)
 
@@ -123,7 +123,7 @@ def _graph_to_clearn_arr(G) -> Tuple[np.ndarray, List[Node]]:
     return arr, arr_idx
 
 
-def clearn_arr_to_graph(arr: np.ndarray, arr_idx: List[Node], graph_type: str):
+def clearn_to_graph(arr: np.ndarray, arr_idx: List[Node], graph_type: str):
     """Convert causal-learn array to a graph object.
 
     Parameters
@@ -315,7 +315,7 @@ def graph_to_arr(
     """
     # TODO: add option for exporting to pcalg
     if format == "causal-learn":
-        arr, arr_idx = _graph_to_clearn_arr(G)
+        arr, arr_idx = graph_to_clearn(G)
 
     if node_order is not None:
         new_order = np.searchsorted(node_order, arr_idx)
