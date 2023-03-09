@@ -1,21 +1,31 @@
-from typing import List, Optional, Tuple
-
-import ananke
 import networkx as nx
-from ananke.graphs import ADMG, CG, DAG, Graph
+from ananke.graphs import ADMG, BG, CG, DAG, SG, UG, Graph
 
 import pywhy_graphs
 import pywhy_graphs.networkx as pywhy_nx
 
 
-def graph_to_ananke(graph: pywhy_nx.MixedEdgeGraph) -> Graph:
+def graph_to_ananke(
+    graph: pywhy_nx.MixedEdgeGraph,
+    directed_edge_name="directed",
+    bidirected_edge_name="bidirected",
+    undirected_edge_name="undirected",
+) -> Graph:
     """
-    Convert causal graph to Ananke graph. Supports DAGs, ADMGs, and CGs (chain graphs).
+    Convert causal graph to Ananke graph. Supports graphs with directed, undirected, and
+    bidirected edges -- including DAGs, ADMGs, and CGs (chain graphs).
 
     Parameters
     ----------
     graph : pywhy_nx.MixedEdgeGraph
         The mixed edge causal graph
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    bidirected_edge_name : str
+        Name of the bidirected edge, default is bidirected.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
+
 
     Returns
     -------
@@ -24,9 +34,6 @@ def graph_to_ananke(graph: pywhy_nx.MixedEdgeGraph) -> Graph:
 
     """
     vertices = graph.nodes
-    bidirected_edge_name = "bidirected"
-    directed_edge_name = "directed"
-    undirected_edge_name = "undirected"
     has_directed = False
     has_bidirected = False
     has_undirected = False
@@ -47,8 +54,12 @@ def graph_to_ananke(graph: pywhy_nx.MixedEdgeGraph) -> Graph:
         result = ADMG(vertices, di_edges=di_edges, bi_edges=bi_edges)
     elif has_directed and not has_bidirected and has_undirected:
         result = CG(vertices, di_edges=di_edges, ud_edges=ud_edges)
+    elif not has_directed and has_bidirected and not has_undirected:
+        result = BG(vertices, bi_edges=bi_edges)
+    elif not has_directed and not has_bidirected and has_undirected:
+        result = UG(vertices, ud_edges=ud_edges)
     else:
-        raise ValueError(graph.get_graphs().items(), has_directed, has_bidirected, has_undirected)
+        result = SG(vertices, di_edges=di_edges, bi_edges=bi_edges, ud_edges=ud_edges)
 
     return result
 
@@ -61,6 +72,13 @@ def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
     ----------
     ananke_graph : Graph
         The Ananke graph
+    directed_edge_name : str
+        Name of the directed edge, default is directed.
+    bidirected_edge_name : str
+        Name of the bidirected edge, default is bidirected.
+    undirected_edge_name : str
+        Name of the undirected edge, default is undirected.
+
 
     Returns
     -------
@@ -84,12 +102,12 @@ def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
         graph.add_nodes_from(ananke_graph.vertices)
         if ananke_graph.di_edges:
             directed_edges = nx.DiGraph(ananke_graph.di_edges)
-            graph.add_edge_type(directed_edges, "directed")
+            graph.add_edge_type(directed_edges, directed_edge_name)
         if ananke_graph.bi_edges:
             bidirected_edges = nx.Graph(ananke_graph.bi_edges)
-            graph.add_edge_type(bidirected_edges, "bidirected")
+            graph.add_edge_type(bidirected_edges, bidirected_edge_name)
         if ananke_graph.ud_edges:
             undirected_edges = nx.Graph(ananke_graph.ud_edges)
-            graph.add_edge_type(undirected_edges, "undirected")
+            graph.add_edge_type(undirected_edges, undirected_edge_name)
 
     return graph

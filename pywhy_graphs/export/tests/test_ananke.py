@@ -1,7 +1,6 @@
-import ananke
 import networkx as nx
 import pytest
-from ananke.graphs import ADMG, CG, DAG, Graph
+from ananke.graphs import ADMG, BG, CG, DAG, SG, UG, Graph
 
 import pywhy_graphs
 import pywhy_graphs.networkx as pywhy_nx
@@ -34,6 +33,7 @@ def admg():
 
 
 def cg():
+    # No partially directed cycles allowed
     vertices = ["A", "B", "C", "D"]
     di_edges = [("A", "C"), ("B", "D")]
     ud_edges = [("B", "A"), ("C", "D")]
@@ -50,12 +50,64 @@ def cg():
     return graph, expected_graph
 
 
+def ug():
+    vertices = ["A", "B", "C", "D"]
+    ud_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "A")]
+    graph = UG(vertices, ud_edges=ud_edges)
+
+    undirected_edges = nx.Graph(ud_edges)
+    expected_graph = pywhy_nx.MixedEdgeGraph()
+    expected_graph.add_nodes_from(vertices)
+    expected_graph.add_edge_type(undirected_edges, "undirected")
+
+    return graph, expected_graph
+
+
+def bg():
+    vertices = ["A", "B", "C", "D"]
+    bi_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "A")]
+    graph = BG(vertices, bi_edges=bi_edges)
+
+    bidirected_edges = nx.Graph(bi_edges)
+    expected_graph = pywhy_nx.MixedEdgeGraph()
+    expected_graph.add_nodes_from(vertices)
+    expected_graph.add_edge_type(bidirected_edges, "bidirected")
+
+    return graph, expected_graph
+
+
+def sg():
+    # Segregated graph needs to satisfy the property that undirected and
+    # bidirected edges never meet, and that undirected edges can't be oriented
+    # to form a directed cycle
+    vertices = ["A", "B", "C", "D"]
+    di_edges = [("A", "C"), ("B", "D")]
+    bi_edges = [("A", "B")]
+    ud_edges = [("C", "D")]
+    graph = SG(vertices=vertices, di_edges=di_edges, ud_edges=ud_edges, bi_edges=bi_edges)
+
+    directed_edges = nx.DiGraph(di_edges)
+    undirected_edges = nx.Graph(ud_edges)
+    bidirected_edges = nx.Graph(bi_edges)
+
+    expected_graph = pywhy_nx.MixedEdgeGraph()
+    expected_graph.add_nodes_from(vertices)
+    expected_graph.add_edge_type(directed_edges, "directed")
+    expected_graph.add_edge_type(undirected_edges, "undirected")
+    expected_graph.add_edge_type(bidirected_edges, "bidirected")
+
+    return graph, expected_graph
+
+
 @pytest.mark.parametrize(
     "ananke_G, expected_G, graph_type",
     [
         [*dag(), "dag"],
         [*admg(), "admg"],
         [*cg(), "cg"],
+        [*ug(), "ug"],
+        [*bg(), "bg"],
+        [*sg(), "sg"],
     ],
 )
 def test_graph_to_ananke_roundtrip(
