@@ -1,9 +1,9 @@
 import ananke
 import networkx as nx
 import pytest
+from ananke.graphs import ADMG, CG, DAG, Graph
 
 import pywhy_graphs
-from ananke.graphs import Graph, ADMG, CG, DAG
 import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.export import ananke_to_graph, graph_to_ananke
 

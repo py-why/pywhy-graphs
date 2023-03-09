@@ -2,8 +2,7 @@ from typing import List, Optional, Tuple
 
 import ananke
 import networkx as nx
-
-from ananke.graphs import Graph, DAG, ADMG, CG
+from ananke.graphs import ADMG, CG, DAG, Graph
 
 import pywhy_graphs
 import pywhy_graphs.networkx as pywhy_nx
@@ -15,15 +14,13 @@ def graph_to_ananke(graph: pywhy_nx.MixedEdgeGraph) -> Graph:
 
     Parameters
     ----------
-    graph : str, optional
-        The type of causal graph. Must be one of 'dag', 'admg', 'cpdag', 'pag'.
+    graph : pywhy_nx.MixedEdgeGraph
+        The mixed edge causal graph
 
     Returns
     -------
-    result : pywhy_nx.MixedEdgeGraph
-        The causal graph.
-
-
+    result : Graph
+        The Ananke graph
 
     """
     vertices = graph.nodes
@@ -60,6 +57,15 @@ def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
     """
     Convert Ananke graph to causal graph.
 
+    Parameters
+    ----------
+    ananke_graph : Graph
+        The Ananke graph
+
+    Returns
+    -------
+    result : pywhy_nx.MixedEdgeGraph
+        The mixed edge graph.
     """
     bidirected_edge_name = "bidirected"
     directed_edge_name = "directed"
@@ -73,14 +79,17 @@ def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
         graph.add_nodes_from(ananke_graph.vertices)
         graph.add_edges_from(ananke_graph.di_edges, edge_type=directed_edge_name)
         graph.add_edges_from(ananke_graph.bi_edges, edge_type=bidirected_edge_name)
-    elif type(ananke_graph) == CG:
+    else:
         graph = pywhy_nx.MixedEdgeGraph()
         graph.add_nodes_from(ananke_graph.vertices)
-        directed_edges = nx.DiGraph(ananke_graph.di_edges)
-        undirected_edges = nx.Graph(ananke_graph.ud_edges)
-        graph.add_edge_type(directed_edges, "directed")
-        graph.add_edge_type(undirected_edges, "undirected")
-    else:
-        raise ValueError("unsupported ananke graph")
+        if ananke_graph.di_edges:
+            directed_edges = nx.DiGraph(ananke_graph.di_edges)
+            graph.add_edge_type(directed_edges, "directed")
+        if ananke_graph.bi_edges:
+            bidirected_edges = nx.Graph(ananke_graph.bi_edges)
+            graph.add_edge_type(bidirected_edges, "bidirected")
+        if ananke_graph.ud_edges:
+            undirected_edges = nx.Graph(ananke_graph.ud_edges)
+            graph.add_edge_type(undirected_edges, "undirected")
 
     return graph
