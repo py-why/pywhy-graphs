@@ -66,7 +66,9 @@ def graph_to_ananke(
 
 def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
     """
-    Convert Ananke graph to causal graph.
+    Convert Ananke graph to causal graph. Explicitly supports conversion
+    to pywhy_nx.DAG, pywhy_nx.ADMG, and for ananke.graphs.CG to pywhy_nx.CPDAG.
+    Other graph types are converted to a pywhy_nx.MixedEdgeGraph.
 
     Parameters
     ----------
@@ -97,6 +99,12 @@ def ananke_to_graph(ananke_graph: Graph) -> pywhy_nx.MixedEdgeGraph:
         graph.add_nodes_from(ananke_graph.vertices)
         graph.add_edges_from(ananke_graph.di_edges, edge_type=directed_edge_name)
         graph.add_edges_from(ananke_graph.bi_edges, edge_type=bidirected_edge_name)
+    elif type(ananke_graph) == CG:
+
+        graph = pywhy_graphs.CPDAG()
+        graph.add_nodes_from(ananke_graph.vertices)
+        graph.add_edges_from(ananke_graph.di_edges, edge_type=directed_edge_name)
+        graph.add_edges_from(ananke_graph.ud_edges, edge_type=undirected_edge_name)
     else:
         graph = pywhy_nx.MixedEdgeGraph()
         graph.add_nodes_from(ananke_graph.vertices)

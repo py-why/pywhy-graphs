@@ -33,7 +33,8 @@ def admg():
 
 
 def cg():
-    # No partially directed cycles allowed
+    # No partially directed cycles allowed, currently using CPDAG to represent
+    # a chain graph
     vertices = ["A", "B", "C", "D"]
     di_edges = [("A", "C"), ("B", "D")]
     ud_edges = [("B", "A"), ("C", "D")]
@@ -42,10 +43,8 @@ def cg():
     directed_edges = nx.DiGraph(di_edges)
     undirected_edges = nx.Graph(ud_edges)
 
-    expected_graph = pywhy_nx.MixedEdgeGraph()
+    expected_graph = pywhy_graphs.CPDAG(directed_edges, undirected_edges)
     expected_graph.add_nodes_from(vertices)
-    expected_graph.add_edge_type(directed_edges, "directed")
-    expected_graph.add_edge_type(undirected_edges, "undirected")
 
     return graph, expected_graph
 
