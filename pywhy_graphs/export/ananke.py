@@ -32,7 +32,7 @@ def graph_to_ananke(
         The Ananke graph
 
     """
-    from ananke.graphs import ADMG, BG, CG, DAG, SG, UG, Graph
+    from ananke.graphs import ADMG, BG, CG, DAG, SG, UG
 
     vertices = graph.nodes
     has_directed = False
@@ -65,7 +65,12 @@ def graph_to_ananke(
     return result
 
 
-def ananke_to_graph(ananke_graph) -> pywhy_nx.MixedEdgeGraph:
+def ananke_to_graph(
+    ananke_graph,
+    directed_edge_name="directed",
+    bidirected_edge_name="bidirected",
+    undirected_edge_name="undirected",
+) -> pywhy_nx.MixedEdgeGraph:
     """
     Convert Ananke graph to causal graph. Explicitly supports conversion
     to pywhy_nx.DAG, pywhy_nx.ADMG, and for ananke.graphs.CG to pywhy_nx.CPDAG.
@@ -88,11 +93,8 @@ def ananke_to_graph(ananke_graph) -> pywhy_nx.MixedEdgeGraph:
     result : pywhy_nx.MixedEdgeGraph
         The mixed edge graph.
     """
-    from ananke.graphs import ADMG, BG, CG, DAG, SG, UG, Graph
+    from ananke.graphs import ADMG, CG, DAG
 
-    bidirected_edge_name = "bidirected"
-    directed_edge_name = "directed"
-    undirected_edge_name = "undirected"
     if type(ananke_graph) == DAG:
         graph = pywhy_graphs.ADMG()
         graph.add_nodes_from(ananke_graph.vertices)
@@ -103,7 +105,6 @@ def ananke_to_graph(ananke_graph) -> pywhy_nx.MixedEdgeGraph:
         graph.add_edges_from(ananke_graph.di_edges, edge_type=directed_edge_name)
         graph.add_edges_from(ananke_graph.bi_edges, edge_type=bidirected_edge_name)
     elif type(ananke_graph) == CG:
-
         graph = pywhy_graphs.CPDAG()
         graph.add_nodes_from(ananke_graph.vertices)
         graph.add_edges_from(ananke_graph.di_edges, edge_type=directed_edge_name)
