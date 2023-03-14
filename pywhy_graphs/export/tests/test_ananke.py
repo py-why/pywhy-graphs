@@ -5,6 +5,7 @@ from ananke.graphs import ADMG, BG, CG, DAG, SG, UG, Graph
 import pywhy_graphs
 import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.export import ananke_to_graph, graph_to_ananke
+from pywhy_graphs.testing import assert_mixed_edge_graphs_isomorphic
 
 
 def dag():
@@ -118,8 +119,4 @@ def test_graph_to_ananke_roundtrip(
     # Convert back to MixedEdgeGraph
     graph = ananke_to_graph(result)
 
-    for edge_type, subG in graph.get_graphs().items():
-        assert edge_type in expected_G.edge_types
-        assert pywhy_graphs.testing.assert_mixed_edge_graphs_isomorphic(
-            subG, expected_G.get_graphs(edge_type)
-        )
+    assert assert_mixed_edge_graphs_isomorphic(graph, expected_G)
