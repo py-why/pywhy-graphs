@@ -120,4 +120,6 @@ def test_graph_to_ananke_roundtrip(
 
     for edge_type, subG in graph.get_graphs().items():
         assert edge_type in expected_G.edge_types
-        assert nx.is_isomorphic(subG, expected_G.get_graphs(edge_type))
+        assert pywhy_graphs.testing.assert_mixed_edge_graphs_isomorphic(
+            subG, expected_G.get_graphs(edge_type)
+        )
