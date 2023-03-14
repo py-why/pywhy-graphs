@@ -19,11 +19,11 @@ def graph_to_ananke(
     graph : pywhy_nx.MixedEdgeGraph
         The mixed edge causal graph
     directed_edge_name : str
-        Name of the directed edge, default is directed.
+        Name of the directed edge, default is 'directed'.
     bidirected_edge_name : str
-        Name of the bidirected edge, default is bidirected.
+        Name of the bidirected edge, default is 'bidirected'.
     undirected_edge_name : str
-        Name of the undirected edge, default is undirected.
+        Name of the undirected edge, default is 'undirected'.
     Returns
     -------
     result : Graph
@@ -81,11 +81,9 @@ def ananke_to_graph(
     directed_edge_name : str
         Name of the directed edge, default is 'directed'.
     bidirected_edge_name : str
-        Name of the bidirected edge, default is bidirected.
+        Name of the bidirected edge, default is 'bidirected'.
     undirected_edge_name : str
         Name of the undirected edge, default is 'undirected'.
-
-
     Returns
     -------
     result : pywhy_nx.MixedEdgeGraph
