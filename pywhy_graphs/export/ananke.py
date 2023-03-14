@@ -85,7 +85,7 @@ def ananke_to_graph(
     bidirected_edge_name : str
         Name of the bidirected edge, default is bidirected.
     undirected_edge_name : str
-        Name of the undirected edge, default is undirected.
+        Name of the undirected edge, default is 'undirected'.
 
 
     Returns
