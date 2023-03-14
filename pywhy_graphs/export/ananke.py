@@ -81,7 +81,7 @@ def ananke_to_graph(
     ananke_graph : Graph
         The Ananke graph
     directed_edge_name : str
-        Name of the directed edge, default is directed.
+        Name of the directed edge, default is 'directed'.
     bidirected_edge_name : str
         Name of the bidirected edge, default is bidirected.
     undirected_edge_name : str
