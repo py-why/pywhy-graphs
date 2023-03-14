@@ -24,8 +24,6 @@ def graph_to_ananke(
         Name of the bidirected edge, default is bidirected.
     undirected_edge_name : str
         Name of the undirected edge, default is undirected.
-
-
     Returns
     -------
     result : Graph
