@@ -172,7 +172,9 @@ print(f"'z' is d-separated from 'x' given 'y': {pywhy_nx.m_separated(admg, {'z'}
 # Say we add a bidirected edge between 'z' and 'x', then they are no longer
 # d-separated.
 admg.add_edge("z", "x", admg.bidirected_edge_name)
-print(f"'z' is d-separated from 'x': {pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}")
+print(
+    f"'z' is d-separated from 'x' after adding a bidirected edge z<->x: {pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}"
+)
 
 # Markov Equivalence Classes
 # --------------------------
@@ -228,7 +230,7 @@ dot_graph.render(outfile="cpdag.png", view=True)
 #          an ancestral relationship.
 #
 # Typically, PAGs are learnt using some variant of the FCI algorithm :footcite:`Spirtes1993` and
-# :footcite`Zhang2008`.
+# :footcite:`Zhang2008`.
 pag = PAG()
 
 # let's assume all the undirected edges are formed from the earlier DAG

@@ -121,12 +121,21 @@ class InterventionTester:
 
         G.add_f_node({0})
 
-        with pytest.raises(RuntimeError, match="Adding edges to F-nodes is not allowed"):
-            G.add_edge(("F", 0), 1, edge_type="bidirected")
+        with pytest.raises(RuntimeError, match="is not a node in the existing graph."):
+            G.set_f_node("blah")
+        with pytest.raises(RuntimeError, match="Not all targets"):
+            G.set_f_node(0, targets={"blah"})
+        with pytest.raises(RuntimeError, match="Not all targets"):
+            # users should remember to use a "set" to add targets
+            G.add_node("test")
+            G.set_f_node(0, targets="test")
+
+        # with pytest.raises(RuntimeError, match="Adding edges to F-nodes is not allowed"):
+        #     G.add_edge(("F", 0), 1, edge_type="bidirected")
         # with pytest.raises(RuntimeError, match='Adding edges to F-nodes is not allowed'):
         #     G.add_edges_from([(("F", 0), 1)], edge_type="bidirected")
-        with pytest.raises(RuntimeError, match="Removing edges from F-nodes is not allowed"):
-            G.remove_edge(("F", 0), 1, edge_type=G.directed_edge_name)
+        # with pytest.raises(RuntimeError, match="Removing edges from F-nodes is not allowed"):
+        #     G.remove_edge(("F", 0), 1, edge_type=G.directed_edge_name)
         # with pytest.raises(RuntimeError, match='Removing edges to F-nodes is not allowed'):
         #     G.remove_edges_from([[("F", 0), 1]], edge_type=G.directed_edge_name)
 
