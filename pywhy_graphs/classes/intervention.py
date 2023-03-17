@@ -15,7 +15,7 @@ class InterventionMixin:
     nodes: NodeView
 
     @abstractmethod
-    def add_edge(self, u, v, edge_type: Optional[str]):
+    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
         pass
 
     @abstractmethod
