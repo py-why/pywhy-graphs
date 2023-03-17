@@ -173,7 +173,8 @@ print(f"'z' is d-separated from 'x' given 'y': {pywhy_nx.m_separated(admg, {'z'}
 # d-separated.
 admg.add_edge("z", "x", admg.bidirected_edge_name)
 print(
-    f"'z' is d-separated from 'x' after adding a bidirected edge z<->x: {pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}"
+    f"'z' is d-separated from 'x' after adding a bidirected edge z<->x: "
+    f"{pywhy_nx.m_separated(admg, {'z'}, {'x'}, set())}"
 )
 
 # Markov Equivalence Classes
