@@ -3,8 +3,8 @@
 
 pywhy-graphs is a Python package for representing causal graphs. For example, Acyclic
 Directed Mixed Graphs (ADMG), also known as causal DAGs and Partial Ancestral Graphs (PAGs).
-We build on top of ``networkx's`` ``MixedEdgeGraph`` such that we maintain all the well-tested and efficient
-algorithms and data structures of ``networkx``. 
+We build on top of ``networkx`` supporting graphs with mixed-edges using a composition
+of networkx graph classes.
 
 We encourage you to use the package for your causal inference research and also build on top
 with relevant Pull Requests. Also, see our `contributing guide <https://github.com/mne-tools/mne-icalabel/blob/main/CONTRIBUTING.md>`_.
@@ -31,7 +31,9 @@ low learning curve when transitioning to pywhy-graphs. However, NetworkX does no
 graphs with mixed-edges, so that is where the fundamental difference between the two APIs lie.
 
 In all the "NetworkX-like" functions related to edges, such as ``add_edge``, ``has_edge``,
-``number_of_edges``, etc. all have an additional keyword parameter, ``edge_type``. The edge
+``number_of_edges``, etc. all have an additional keyword parameter, ``edge_type``. We also
+add a handful of new functions to the basic :class:`pywhy_graphs.networkx.MixedEdgeGraph` class,
+which is summarized in the table below. The edge
 type is specified by this parameter and internally, all pywhy-graphs graph classes are a
 composition of different networkx base graphs, :class:`networkx.DiGraph` and :class:`networkx.Graph`
 that map to a user-specified edge type. For example,
@@ -48,15 +50,27 @@ that map to a user-specified edge type. For example,
    G.add_edge_type(nx.DiGraph(), edge_type='directed')
    G.add_edge_type(nx.Graph(), edge_type='bidirected')
 
+   assert 'directed' in G.edge_types
+   assert 'bidirected' in G.edge_types
+
    # when we use networkx-like API, we usually will have to specify the edge type
    G.add_edge(0, 1, edge_type='directed')
 
 Because of this feature, not all NetworkX algorithms will work with pywhy-graphs because
 they implicitly assume a single edge type. We implement common graph algorithms for
-mixed-edge graphs that have utility in causal inference in the :mod:`pywhy_graphs.algorithms`
+mixed-edge graphs that are focused on causal inference in the :mod:`pywhy_graphs.algorithms`
 submodule. This is a similar design to NetworkX, where all graph classes have a relatively
-lightweight API designed solely for interfacing with nodes and edges, while complex traversal
-algorithms live in separate functions.
+lightweight API designed solely for interfacing with nodes and edges, while more complicated
+algorithms are implemented as functions that take in a mixed edge graph.
+
++---------------+----------------------------------------------------------+
+| New API       | Description                                              |
++===============+==========================================================+
+| add_edge_type | Adds a new edge type to the graph                        |
++---------------+----------------------------------------------------------+
+| get_graphs    | Get a dictionary of edge types and their networkx graphs |
++---------------+----------------------------------------------------------+
+
 
 Contents
 --------
