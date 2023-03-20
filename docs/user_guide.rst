@@ -12,7 +12,7 @@ User Guide
 
 .. toctree::
    :numbered:
-   :maxdepth: 3
+   :maxdepth: 2
 
    reference/classes/index
    reference/algorithms/index
