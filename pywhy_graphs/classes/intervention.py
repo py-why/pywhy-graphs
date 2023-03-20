@@ -148,6 +148,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
     networkx.DiGraph
     networkx.Graph
     ADMG
+    pywhy_graphs.networkx.MixedEdgeGraph
 
     Notes
     -----

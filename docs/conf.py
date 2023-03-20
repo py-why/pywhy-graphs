@@ -82,7 +82,7 @@ autodoc_default_options = {
     "inherited-members": False,
     "private-members": False,
 }
-autodoc_inherit_docstrings = False
+autodoc_inherit_docstrings = True
 # autodoc_typehints = "signature"
 
 # -- numpydoc
@@ -356,6 +356,8 @@ nitpick_ignore_regex = [
     ('py:obj', r"networkx*"),
 ]
 
+
+doctest_global_setup = "import networkx as nx"
 
 # -- Other extension configuration -------------------------------------------
 
