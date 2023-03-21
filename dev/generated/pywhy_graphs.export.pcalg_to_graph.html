@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>3.3.2. pywhy_graphs.export.pcalg_to_graph &#8212; pywhy-graphs v0.0.0</title>
+    <title>4.3.2. pywhy_graphs.export.pcalg_to_graph &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pywhy_graphs.networkx.MixedEdgeGraph" href="pywhy_graphs.networkx.MixedEdgeGraph.html" />
-    <link rel="prev" title="3.3.1. pywhy_graphs.export.graph_to_pcalg" href="pywhy_graphs.export.graph_to_pcalg.html" />
+    <link rel="prev" title="4.3.1. pywhy_graphs.export.graph_to_pcalg" href="pywhy_graphs.export.graph_to_pcalg.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -178,8 +178,8 @@
   </a>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../reference/simulation/index.html">
-   2. Simulation module
+  <a class="reference internal" href="../reference/algorithms/index.html">
+   2. Causal Graph Algorithms in PyWhy
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -188,77 +188,164 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
+     2.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.possible_ancestors.html">
+     2.1.2. pywhy_graphs.algorithms.possible_ancestors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.possible_descendants.html">
+     2.1.3. pywhy_graphs.algorithms.possible_descendants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.discriminating_path.html">
+     2.1.4. pywhy_graphs.algorithms.discriminating_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.is_definite_noncollider.html">
+     2.1.5. pywhy_graphs.algorithms.is_definite_noncollider
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
+     2.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
+     2.1.7. pywhy_graphs.networkx.m_separated
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.is_minimal_m_separator.html">
+     2.1.8. pywhy_graphs.networkx.is_minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.minimal_m_separator.html">
+     2.1.9. pywhy_graphs.networkx.minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds.html">
+     2.2.1. pywhy_graphs.algorithms.pds
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_path.html">
+     2.2.2. pywhy_graphs.algorithms.pds_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.uncovered_pd_path.html">
+     2.2.3. pywhy_graphs.algorithms.uncovered_pd_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
+     2.3.1. pywhy_graphs.algorithms.pds_t
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_t_path.html">
+     2.3.2. pywhy_graphs.algorithms.pds_t_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
+     2.4.1. pywhy_graphs.algorithms.acyclification
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../reference/simulation/index.html">
+   3. Simulation module
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
-     2.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+     3.1.1. pywhy_graphs.simulate.simulate_linear_var_process
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
-     2.1.2. pywhy_graphs.simulate.simulate_data_from_var
+     3.1.2. pywhy_graphs.simulate.simulate_data_from_var
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-     2.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+     3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../reference/export/index.html">
-   3. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
+   4. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.graph_to_clearn.html">
-     3.1.1. pywhy_graphs.export.graph_to_clearn
+     4.1.1. pywhy_graphs.export.graph_to_clearn
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.clearn_to_graph.html">
-     3.1.2. pywhy_graphs.export.clearn_to_graph
+     4.1.2. pywhy_graphs.export.clearn_to_graph
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.graph_to_numpy.html">
-     3.2.1. pywhy_graphs.export.graph_to_numpy
+     4.2.1. pywhy_graphs.export.graph_to_numpy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.numpy_to_graph.html">
-     3.2.2. pywhy_graphs.export.numpy_to_graph
+     4.2.2. pywhy_graphs.export.numpy_to_graph
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.graph_to_pcalg.html">
-     3.3.1. pywhy_graphs.export.graph_to_pcalg
+     4.3.1. pywhy_graphs.export.graph_to_pcalg
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     3.3.2. pywhy_graphs.export.pcalg_to_graph
+     4.3.2. pywhy_graphs.export.pcalg_to_graph
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.graph_to_tetrad.html">
-     3.4.1. pywhy_graphs.export.graph_to_tetrad
+     4.4.1. pywhy_graphs.export.graph_to_tetrad
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.export.tetrad_to_graph.html">
-     3.4.2. pywhy_graphs.export.tetrad_to_graph
+     4.4.2. pywhy_graphs.export.tetrad_to_graph
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../glossary.html">
-   4. Glossary of Common Terms and API Elements
+   5. Glossary of Common Terms and API Elements
   </a>
  </li>
 </ul>
@@ -314,7 +401,7 @@
               <article class="bd-article" role="main">
                 
   <section id="pywhy-graphs-export-pcalg-to-graph">
-<h1><span class="section-number">3.3.2. </span>pywhy_graphs.export.pcalg_to_graph<a class="headerlink" href="#pywhy-graphs-export-pcalg-to-graph" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">4.3.2. </span>pywhy_graphs.export.pcalg_to_graph<a class="headerlink" href="#pywhy-graphs-export-pcalg-to-graph" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pywhy_graphs.export.pcalg_to_graph">
 <span class="sig-prename descclassname"><span class="pre">pywhy_graphs.export.</span></span><span class="sig-name descname"><span class="pre">pcalg_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arr_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amat_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/export/pcalg.html#pcalg_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.export.pcalg_to_graph" title="Permalink to this definition">#</a></dt>
@@ -384,7 +471,7 @@ amat[a,b] = 0  and  amat[b,a] = 0   implies   a     b.</p>
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">3.3.1. </span>pywhy_graphs.export.graph_to_pcalg</p>
+          <p class="prev-next-title"><span class="section-number">4.3.1. </span>pywhy_graphs.export.graph_to_pcalg</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="pywhy_graphs.networkx.MixedEdgeGraph.html" title="next page">

@@ -195,6 +195,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-compare-with-networkx">
+   How do we compare with NetworkX?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#contents">
    Contents
   </a>
@@ -232,8 +237,8 @@
 <h1><strong>pywhy-graphs</strong><a class="headerlink" href="#pywhy-graphs" title="Permalink to this heading">#</a></h1>
 <p>pywhy-graphs is a Python package for representing causal graphs. For example, Acyclic
 Directed Mixed Graphs (ADMG), also known as causal DAGs and Partial Ancestral Graphs (PAGs).
-We build on top of <code class="docutils literal notranslate"><span class="pre">networkx's</span></code> <code class="docutils literal notranslate"><span class="pre">MixedEdgeGraph</span></code> such that we maintain all the well-tested and efficient
-algorithms and data structures of <code class="docutils literal notranslate"><span class="pre">networkx</span></code>.</p>
+We build on top of <code class="docutils literal notranslate"><span class="pre">networkx</span></code> supporting graphs with mixed-edges using a composition
+of networkx graph classes.</p>
 <p>We encourage you to use the package for your causal inference research and also build on top
 with relevant Pull Requests. Also, see our <a class="reference external" href="https://github.com/mne-tools/mne-icalabel/blob/main/CONTRIBUTING.md">contributing guide</a>.</p>
 <p>Please refer to our <a class="reference internal" href="user_guide.html#user-guide"><span class="std std-ref">User Guide</span></a> for details on all the tools that we
@@ -248,6 +253,58 @@ eventually converge to a stable API that maintains the common software engineeri
 (e.g. deprecation cycles and API stability within major versions). Certain functionality
 will be marked as “alpha” indicating that their might be drastic changes over different releases.
 One should use alpha functionality with caution.</p>
+</section>
+<section id="how-do-we-compare-with-networkx">
+<h2>How do we compare with NetworkX?<a class="headerlink" href="#how-do-we-compare-with-networkx" title="Permalink to this heading">#</a></h2>
+<p>We fashioned pywhy-graphs API based on NetworkX because NetworkX’s API is stable, robust and
+has an existing community around it. Therefore, we expect all NetworkX users to have a relatively
+low learning curve when transitioning to pywhy-graphs. However, NetworkX does not currently support
+graphs with mixed-edges, so that is where the fundamental difference between the two APIs lie.</p>
+<p>In all the “NetworkX-like” functions related to edges, such as <code class="docutils literal notranslate"><span class="pre">add_edge</span></code>, <code class="docutils literal notranslate"><span class="pre">has_edge</span></code>,
+<code class="docutils literal notranslate"><span class="pre">number_of_edges</span></code>, etc. all have an additional keyword parameter, <code class="docutils literal notranslate"><span class="pre">edge_type</span></code>. We also
+add a handful of new functions to the basic <a class="reference internal" href="generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph" title="pywhy_graphs.networkx.MixedEdgeGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">pywhy_graphs.networkx.MixedEdgeGraph</span></code></a> class,
+which is summarized in the table below. The edge
+type is specified by this parameter and internally, all pywhy-graphs graph classes are a
+composition of different networkx base graphs, <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> and <a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.1rc1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></a>
+that map to a user-specified edge type. For example,</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="c1"># a mixed-edge graph is a composition of networkx graphs</span>
+<span class="c1"># so we can create a representation of a graph with directed and</span>
+<span class="c1"># bidirected edges using the MixedEdgeGraph class</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(),</span> <span class="n">edge_type</span><span class="o">=</span><span class="s1">&#39;directed&#39;</span><span class="p">)</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(),</span> <span class="n">edge_type</span><span class="o">=</span><span class="s1">&#39;bidirected&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="s1">&#39;directed&#39;</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span>
+<span class="k">assert</span> <span class="s1">&#39;bidirected&#39;</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_types</span>
+
+<span class="c1"># when we use networkx-like API, we usually will have to specify the edge type</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s1">&#39;directed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Because of this feature, not all NetworkX algorithms will work with pywhy-graphs because
+they implicitly assume a single edge type. We implement common graph algorithms for
+mixed-edge graphs that are focused on causal inference in the <a class="reference internal" href="reference/algorithms/index.html#module-pywhy_graphs.algorithms" title="pywhy_graphs.algorithms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.algorithms</span></code></a>
+submodule. This is a similar design to NetworkX, where all graph classes have a relatively
+lightweight API designed solely for interfacing with nodes and edges, while more complicated
+algorithms are implemented as functions that take in a mixed edge graph.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>New API</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>add_edge_type</p></td>
+<td><p>Adds a new edge type to the graph</p></td>
+</tr>
+<tr class="row-odd"><td><p>get_graphs</p></td>
+<td><p>Get a dictionary of edge types and their networkx graphs</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>

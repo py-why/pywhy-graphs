@@ -239,6 +239,7 @@
 <span class="sd">    networkx.DiGraph</span>
 <span class="sd">    networkx.Graph</span>
 <span class="sd">    pywhy_graphs.ADMG</span>
+<span class="sd">    pywhy_graphs.networkx.MixedEdgeGraph</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -512,20 +513,20 @@
             <span class="p">):</span>
                 <span class="k">yield</span> <span class="n">node</span></div>
 
-    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+<div class="viewcode-block" id="PAG.add_edge"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
 
         <span class="n">_check_adding_pag_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+<div class="viewcode-block" id="PAG.add_edges_from"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edges_from">[docs]</a>    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
 
         <span class="k">for</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span> <span class="ow">in</span> <span class="n">ebunch_to_add</span><span class="p">:</span>
             <span class="n">_check_adding_pag_edge</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div></div>
 </pre></div>
 
               </article>

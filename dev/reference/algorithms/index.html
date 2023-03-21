@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>3. Simulation module &#8212; pywhy-graphs v0.0.0</title>
+    <title>2. Causal Graph Algorithms in PyWhy &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -46,8 +46,8 @@
     <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="How to use pywhy-graphs with examples and tutorials" href="../../use.html" />
-    <link rel="prev" title="pywhy_graphs.sys_info" href="../../generated/pywhy_graphs.sys_info.html" />
+    <link rel="next" title="4. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package" href="../export/index.html" />
+    <link rel="prev" title="1. Causal Graphs in PyWhy" href="../classes/index.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/scrollfix.js"></script>
@@ -177,11 +177,11 @@
    1. Causal Graphs in PyWhy
   </a>
  </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../algorithms/index.html">
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
    2. Causal Graph Algorithms in PyWhy
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
@@ -264,11 +264,11 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../simulation/index.html">
    3. Simulation module
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
@@ -373,14 +373,25 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy-graphs-simulate-causal-graphical-model-simulations">
-   3.1.
-   <code class="xref py py-mod docutils literal notranslate">
-    <span class="pre">
-     pywhy_graphs.simulate
-    </span>
-   </code>
-   : Causal graphical model simulations
+  <a class="reference internal nav-link" href="#core-algorithms">
+   2.1. Core Algorithms
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithms-for-markov-equivalence-classes">
+   2.2. Algorithms for Markov Equivalence Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithms-for-time-series-graphs">
+   2.3. Algorithms for Time-Series Graphs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algorithms-for-handling-acyclicity">
+   2.4. Algorithms for handling acyclicity
   </a>
  </li>
 </ul>
@@ -402,23 +413,84 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="simulation-module">
-<span id="simulation"></span><h1><span class="section-number">3. </span>Simulation module<a class="headerlink" href="#simulation-module" title="Permalink to this heading">#</a></h1>
-<p>We provide functions for simulating structural causal models starting from a
-causal graph. This is useful for testing causal discovery algorithms, which assume
-an underlying graph exists and then data is generated faithful to that graph.</p>
-<span class="target" id="module-pywhy_graphs.simulate"></span><section id="pywhy-graphs-simulate-causal-graphical-model-simulations">
-<h2><span class="section-number">3.1. </span><a class="reference internal" href="#module-pywhy_graphs.simulate" title="pywhy_graphs.simulate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.simulate</span></code></a>: Causal graphical model simulations<a class="headerlink" href="#pywhy-graphs-simulate-causal-graphical-model-simulations" title="Permalink to this heading">#</a></h2>
+  <section id="module-pywhy_graphs.algorithms">
+<span id="causal-graph-algorithms-in-pywhy"></span><span id="algorithms"></span><h1><span class="section-number">2. </span>Causal Graph Algorithms in PyWhy<a class="headerlink" href="#module-pywhy_graphs.algorithms" title="Permalink to this heading">#</a></h1>
+<p>Pywhy-graphs provides data structures and methods for storing causal graphs, which
+are documented in <a class="reference internal" href="../classes/index.html#classes"><span class="std std-ref">Causal Graphs in PyWhy</span></a>. We also provide a submodule for common graph
+algorithms in the form of functions that take a mixed-edge graph as input.</p>
+<section id="core-algorithms">
+<h2><span class="section-number">2.1. </span>Core Algorithms<a class="headerlink" href="#core-algorithms" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_linear_var_process.html#pywhy_graphs.simulate.simulate_linear_var_process" title="pywhy_graphs.simulate.simulate_linear_var_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_linear_var_process</span></code></a>([...])</p></td>
-<td><p>Simulate a linear VAR process of a &quot;stationary&quot; causal graph.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph" title="pywhy_graphs.algorithms.is_valid_mec_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid_mec_graph</span></code></a>(G[, on_error])</p></td>
+<td><p>Check G is a valid PAG.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_data_from_var.html#pywhy_graphs.simulate.simulate_data_from_var" title="pywhy_graphs.simulate.simulate_data_from_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_data_from_var</span></code></a>(var_arr[, ...])</p></td>
-<td><p>Simulate data from an already set VAR process.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.possible_ancestors.html#pywhy_graphs.algorithms.possible_ancestors" title="pywhy_graphs.algorithms.possible_ancestors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_ancestors</span></code></a>(G, source)</p></td>
+<td><p>Possible ancestors of a source node.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html#pywhy_graphs.simulate.simulate_var_process_from_summary_graph" title="pywhy_graphs.simulate.simulate_var_process_from_summary_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.simulate_var_process_from_summary_graph</span></code></a>(G)</p></td>
-<td><p>Simulate a VAR(max_lag) process starting from a summary graph.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.possible_descendants.html#pywhy_graphs.algorithms.possible_descendants" title="pywhy_graphs.algorithms.possible_descendants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_descendants</span></code></a>(G, source)</p></td>
+<td><p>Possible descendants of a source node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path" title="pywhy_graphs.algorithms.discriminating_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discriminating_path</span></code></a>(graph, u, a, c[, ...])</p></td>
+<td><p>Find the discriminating path for &lt;..., a, u, c&gt;.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider" title="pywhy_graphs.algorithms.is_definite_noncollider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_definite_noncollider</span></code></a>(G, node1, node2, node3)</p></td>
+<td><p>Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html#pywhy_graphs.networkx.bidirected_to_unobserved_confounder" title="pywhy_graphs.networkx.bidirected_to_unobserved_confounder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bidirected_to_unobserved_confounder</span></code></a>(G[, ...])</p></td>
+<td><p>Convert all bidirected edges to unobserved confounders.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated" title="pywhy_graphs.networkx.m_separated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_separated</span></code></a>(G, x, y, z[, ...])</p></td>
+<td><p>Check m-separation among 'x' and 'y' given 'z' in mixed-edge causal graph G, which may contain directed, bidirected, and undirected edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.networkx.is_minimal_m_separator.html#pywhy_graphs.networkx.is_minimal_m_separator" title="pywhy_graphs.networkx.is_minimal_m_separator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_minimal_m_separator</span></code></a>(G, x, y, z[, i, r, ...])</p></td>
+<td><p>Check if a set 'z' is a i-minimal m-separator between 'x' and 'y'.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.networkx.minimal_m_separator.html#pywhy_graphs.networkx.minimal_m_separator" title="pywhy_graphs.networkx.minimal_m_separator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimal_m_separator</span></code></a>(G, x, y[, i, r, ...])</p></td>
+<td><p>Find a i-minimal m-separating set 'z' between 'x' and 'y' in mixed-edge causal graph G.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="algorithms-for-markov-equivalence-classes">
+<h2><span class="section-number">2.2. </span>Algorithms for Markov Equivalence Classes<a class="headerlink" href="#algorithms-for-markov-equivalence-classes" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds" title="pywhy_graphs.algorithms.pds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds</span></code></a>(graph, node_x[, node_y, max_path_length])</p></td>
+<td><p>Find all PDS sets between node_x and node_y.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path" title="pywhy_graphs.algorithms.pds_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
+<td><p>Compute the possibly-d-separating set path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path" title="pywhy_graphs.algorithms.uncovered_pd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncovered_pd_path</span></code></a>(graph, u, c[, ...])</p></td>
+<td><p>Compute uncovered potentially directed (pd) paths from u to c.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="algorithms-for-time-series-graphs">
+<h2><span class="section-number">2.3. </span>Algorithms for Time-Series Graphs<a class="headerlink" href="#algorithms-for-time-series-graphs" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t" title="pywhy_graphs.algorithms.pds_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t</span></code></a>(graph, node_x, node_y[, max_path_length])</p></td>
+<td><p>Compute the possibly-d-separating set over time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path" title="pywhy_graphs.algorithms.pds_t_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
+<td><p>Compute the possibly-d-separating path set over time.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="algorithms-for-handling-acyclicity">
+<h2><span class="section-number">2.4. </span>Algorithms for handling acyclicity<a class="headerlink" href="#algorithms-for-handling-acyclicity" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.algorithms.acyclification.html#pywhy_graphs.algorithms.acyclification" title="pywhy_graphs.algorithms.acyclification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acyclification</span></code></a>(G[, directed_edge_type, ...])</p></td>
+<td><p>Acyclify a cyclic graph.</p></td>
 </tr>
 </tbody>
 </table>
@@ -433,17 +505,17 @@ an underlying graph exists and then data is generated faithful to that graph.</p
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../../generated/pywhy_graphs.sys_info.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="../classes/index.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.sys_info</p>
+          <p class="prev-next-title"><span class="section-number">1. </span>Causal Graphs in PyWhy</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../../use.html" title="next page">
+  <a class='right-next' id="next-link" href="../export/index.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">How to use pywhy-graphs with examples and tutorials</p>
+      <p class="prev-next-title"><span class="section-number">4. </span>Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

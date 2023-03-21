@@ -356,17 +356,13 @@
 <span class="sd">        ----------</span>
 <span class="sd">        edge_type : str, optional</span>
 <span class="sd">            The graph of the edge type to return, by default &#39;all&#39;, which</span>
-<span class="sd">            will then return a list of all edge graphs.</span>
+<span class="sd">            will then return a dictionary of all edge graphs keyed by their</span>
+<span class="sd">            edge type string.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        graph : Graph | dictionary of Graph</span>
 <span class="sd">            The graph representing a specific type of edge, or all edges.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            _description_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">edge_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_graphs</span> <span class="ow">and</span> <span class="n">edge_type</span> <span class="o">!=</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -467,18 +463,6 @@
 <span class="sd">        -------</span>
 <span class="sd">        has : bool</span>
 <span class="sd">            Whether or not the graph has node &#39;n&#39;.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.has_node(0)</span>
-<span class="sd">        True</span>
-
-<span class="sd">        It is more readable and simpler to use</span>
-
-<span class="sd">        &gt;&gt;&gt; 0 in G</span>
-<span class="sd">        True</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node</span>
@@ -492,12 +476,6 @@
 <span class="sd">        --------</span>
 <span class="sd">        order: identical method</span>
 <span class="sd">        __len__: identical method</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.number_of_nodes()</span>
-<span class="sd">        3</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
@@ -508,12 +486,6 @@
 <span class="sd">        --------</span>
 <span class="sd">        number_of_nodes: identical method</span>
 <span class="sd">        __len__: identical method</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.order()</span>
-<span class="sd">        3</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
@@ -538,26 +510,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the nodes. Use: &#39;for n in G&#39;.</span>
 
 <span class="sd">        An iterator over all nodes in the graph.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; [n for n in G]</span>
-<span class="sd">        [0, 1, 2, 3]</span>
-<span class="sd">        &gt;&gt;&gt; list(G)</span>
-<span class="sd">        [0, 1, 2, 3]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MixedEdgeGraph.__contains__"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.__contains__">[docs]</a>    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if n is a node, False otherwise. Use: &#39;n in G&#39;.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; 1 in G</span>
-<span class="sd">        True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if n is a node, False otherwise. Use: &#39;n in G&#39;.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
@@ -570,13 +527,6 @@
 <span class="sd">        --------</span>
 <span class="sd">        number_of_nodes: identical method</span>
 <span class="sd">        order: identical method</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; len(G)</span>
-<span class="sd">        4</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_node</span><span class="p">)</span></div>
 
@@ -589,12 +539,6 @@
 <span class="sd">        -----</span>
 <span class="sd">        G[n] is the same as G.adj[n] and similar to G.neighbors(n)</span>
 <span class="sd">        (which is an iterator over G.adj[n])</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G[0]</span>
-<span class="sd">        AtlasView({1: {}})</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adj</span><span class="p">[</span><span class="n">n</span><span class="p">]</span></div>
 
@@ -610,32 +554,13 @@
 <span class="sd">            Nodes must be hashable (and not None) Python objects.</span>
 <span class="sd">        edge_type : str</span>
 <span class="sd">            Specifies a specific edge type. If &#39;any&#39; (default), then</span>
-<span class="sd">            will check if any edge exists between ``u`` and ``v``.</span>
+<span class="sd">            will check if any edge exists between ``u`` and ``v`` across</span>
+<span class="sd">            all edge types.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        edge_ind : bool</span>
 <span class="sd">            True if edge is in the graph, False otherwise.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.has_edge(0, 1)  # using two nodes</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; e = (0, 1)</span>
-<span class="sd">        &gt;&gt;&gt; G.has_edge(*e)  #  e is a 2-tuple (u, v)</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; e = (0, 1, {&quot;weight&quot;: 7})</span>
-<span class="sd">        &gt;&gt;&gt; G.has_edge(*e[:2])  # e is a 3-tuple (u, v, data_dictionary)</span>
-<span class="sd">        True</span>
-
-<span class="sd">        The following syntax are equivalent:</span>
-
-<span class="sd">        &gt;&gt;&gt; G.has_edge(0, 1)</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; 1 in G[0]  # though this gives KeyError if 0 not in G</span>
-<span class="sd">        True</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="s2">&quot;any&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_apply_to_all_graphs</span><span class="p">(</span><span class="s2">&quot;has_edge&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
@@ -649,7 +574,7 @@
 <span class="sd">        not already in the graph.</span>
 
 <span class="sd">        Edge attributes can be specified with keywords or by directly</span>
-<span class="sd">        accessing the edge&#39;s attribute dictionary. See examples below.</span>
+<span class="sd">        accessing the edge&#39;s attribute dictionary.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -657,7 +582,8 @@
 <span class="sd">            Nodes can be, for example, strings or numbers.</span>
 <span class="sd">            Nodes must be hashable (and not None) Python objects.</span>
 <span class="sd">        edge_type : str</span>
-<span class="sd">            The edge type.</span>
+<span class="sd">            The edge type. By default &#39;all&#39;, which</span>
+<span class="sd">            will then add an edge in all edge type subgraphs.</span>
 <span class="sd">        attr : keyword arguments, optional</span>
 <span class="sd">            Edge data (or labels or objects) can be assigned using</span>
 <span class="sd">            keyword arguments.</span>
@@ -687,7 +613,8 @@
 <span class="sd">            graph. The edges must be given as 2-tuples (u, v) or</span>
 <span class="sd">            3-tuples (u, v, d) where d is a dictionary containing edge data.</span>
 <span class="sd">        edge_type : str</span>
-<span class="sd">            The edge type to add edges to.</span>
+<span class="sd">            The edge type to add edges to. By default &#39;all&#39;, which</span>
+<span class="sd">            will then add an edge in all edge type subgraphs.</span>
 <span class="sd">        attr : keyword arguments, optional</span>
 <span class="sd">            Edge data (or labels or objects) can be assigned using</span>
 <span class="sd">            keyword arguments.</span>
@@ -703,18 +630,6 @@
 
 <span class="sd">        Edge attributes specified in an ebunch take precedence over</span>
 <span class="sd">        attributes specified via keyword arguments.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.Graph()  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edges_from([(0, 1), (1, 2)])  # using a list of edge tuples</span>
-<span class="sd">        &gt;&gt;&gt; e = zip(range(0, 3), range(1, 4))</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edges_from(e)  # Add the path graph 0-1-2-3</span>
-
-<span class="sd">        Associate data to edges</span>
-
-<span class="sd">        &gt;&gt;&gt; G.add_edges_from([(1, 2), (2, 3)], weight=3)</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edges_from([(3, 4), (1, 4)], label=&quot;WN2898&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ebunch_to_add</span><span class="p">:</span>
             <span class="n">ne</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -749,7 +664,8 @@
 <span class="sd">        u, v : nodes</span>
 <span class="sd">            Remove an edge between nodes u and v.</span>
 <span class="sd">        edge_type : str</span>
-<span class="sd">            The edge type.</span>
+<span class="sd">            The edge type. By default &#39;all&#39;, which</span>
+<span class="sd">            will then remove the edge in all edge type subgraphs (if it exists).</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -785,12 +701,6 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Will fail silently if an edge in ebunch is not in the graph.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; ebunch = [(1, 2), (2, 3)]</span>
-<span class="sd">        &gt;&gt;&gt; G.remove_edges_from(ebunch)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_apply_to_all_graphs</span><span class="p">(</span><span class="s2">&quot;remove_edges_from&quot;</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">)</span>
@@ -809,47 +719,8 @@
 <span class="sd">        -----</span>
 <span class="sd">        All copies reproduce the graph structure, but data attributes</span>
 <span class="sd">        may be handled in different ways. There are four types of copies</span>
-<span class="sd">        of a graph that people might want.</span>
-
-<span class="sd">        Deepcopy -- A &quot;deepcopy&quot; copies the graph structure as well as</span>
-<span class="sd">        all data attributes and any objects they might contain.</span>
-<span class="sd">        The entire graph object is new so that changes in the copy</span>
-<span class="sd">        do not affect the original object. (see Python&#39;s copy.deepcopy)</span>
-
-<span class="sd">        Data Reference (Shallow) -- For a shallow copy the graph structure</span>
-<span class="sd">        is copied but the edge, node and graph attribute dicts are</span>
-<span class="sd">        references to those in the original graph. This saves</span>
-<span class="sd">        time and memory but could cause confusion if you change an attribute</span>
-<span class="sd">        in one graph and it changes the attribute in the other.</span>
-<span class="sd">        NetworkX does not provide this level of shallow copy.</span>
-
-<span class="sd">        Independent Shallow -- This copy creates new independent attribute</span>
-<span class="sd">        dicts and then does a shallow copy of the attributes. That is, any</span>
-<span class="sd">        attributes that are containers are shared between the new graph</span>
-<span class="sd">        and the original. This is exactly what ``dict.copy()`` provides.</span>
-<span class="sd">        You can obtain this style copy using:</span>
-
-<span class="sd">            &gt;&gt;&gt; G = nx.path_graph(5)</span>
-<span class="sd">            &gt;&gt;&gt; H = G.copy()</span>
-<span class="sd">            &gt;&gt;&gt; H = G.copy(as_view=False)</span>
-<span class="sd">            &gt;&gt;&gt; H = nx.Graph(G)</span>
-<span class="sd">            &gt;&gt;&gt; H = G.__class__(G)</span>
-
-<span class="sd">        Fresh Data -- For fresh data, the graph structure is copied while</span>
-<span class="sd">        new empty data attribute dicts are created. The resulting graph</span>
-<span class="sd">        is independent of the original and it has no edge, node or graph</span>
-<span class="sd">        attributes. Fresh copies are not enabled. Instead use:</span>
-
-<span class="sd">            &gt;&gt;&gt; H = G.__class__()</span>
-<span class="sd">            &gt;&gt;&gt; H.add_nodes_from(G)</span>
-<span class="sd">            &gt;&gt;&gt; H.add_edges_from(G.edges)</span>
-
-<span class="sd">        View -- Inspired by dict-views, graph-views act like read-only</span>
-<span class="sd">        versions of the original graph, providing a copy of the original</span>
-<span class="sd">        structure without requiring any memory for copying the information.</span>
-
-<span class="sd">        See the Python copy module for more information on shallow</span>
-<span class="sd">        and deep copies, https://docs.python.org/3/library/copy.html.</span>
+<span class="sd">        of a graph that people might want. See :meth:`networkx.Graph.copy`</span>
+<span class="sd">        for doc string.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -865,12 +736,7 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        to_directed: return a directed copy of the graph.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; H = G.copy()</span>
-
+<span class="sd">        networkx.Graph.copy: for full copy docstring.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
         <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
@@ -959,16 +825,6 @@
 <span class="sd">        Warning: If you have subclassed MultiDiGraph to use dict-like</span>
 <span class="sd">        objects in the data structure, those changes do not transfer</span>
 <span class="sd">        to the MultiGraph created by this method.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(2)  # or MultiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; H = G.to_directed()</span>
-<span class="sd">        &gt;&gt;&gt; list(H.edges)</span>
-<span class="sd">        [(0, 1), (1, 0)]</span>
-<span class="sd">        &gt;&gt;&gt; G2 = H.to_undirected()</span>
-<span class="sd">        &gt;&gt;&gt; list(G2.edges)</span>
-<span class="sd">        [(0, 1)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">graph_class</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span>
 
@@ -1009,22 +865,6 @@
 <span class="sd">        Warning: If you have subclassed Graph to use dict-like objects</span>
 <span class="sd">        in the data structure, those changes do not transfer to the</span>
 <span class="sd">        DiGraph created by this method.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.Graph()  # or MultiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(0, 1)</span>
-<span class="sd">        &gt;&gt;&gt; H = G.to_directed()</span>
-<span class="sd">        &gt;&gt;&gt; list(H.edges)</span>
-<span class="sd">        [(0, 1), (1, 0)]</span>
-
-<span class="sd">        If already directed, return a (deep) copy</span>
-
-<span class="sd">        &gt;&gt;&gt; G = nx.DiGraph()  # or MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(0, 1)</span>
-<span class="sd">        &gt;&gt;&gt; H = G.to_directed()</span>
-<span class="sd">        &gt;&gt;&gt; list(H.edges)</span>
-<span class="sd">        [(0, 1)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">graph_class</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span>
 
@@ -1040,7 +880,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">G</span></div>
 
-<div class="viewcode-block" id="MixedEdgeGraph.number_of_edges"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.number_of_edges">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedEdgeGraph.number_of_edges"><a class="viewcode-back" href="../../../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.number_of_edges">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of edges between two nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1049,7 +889,8 @@
 <span class="sd">            If u and v are specified, return the number of edges between</span>
 <span class="sd">            u and v. Otherwise return the total number of all edges.</span>
 <span class="sd">        edge_type : str, optional</span>
-<span class="sd">            The edge type to query for number of edges.</span>
+<span class="sd">            The edge type to query for number of edges. If &#39;all&#39; (default)</span>
+<span class="sd">            will count the number of edges regardless of edge type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1062,32 +903,8 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        size</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        For undirected graphs, this method counts the total number of</span>
-<span class="sd">        edges in the graph:</span>
-
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)</span>
-<span class="sd">        &gt;&gt;&gt; G.number_of_edges()</span>
-<span class="sd">        3</span>
-
-<span class="sd">        If you specify two nodes, this counts the total number of edges</span>
-<span class="sd">        joining the two nodes:</span>
-
-<span class="sd">        &gt;&gt;&gt; G.number_of_edges(0, 1)</span>
-<span class="sd">        1</span>
-
-<span class="sd">        For directed graphs, this method can count the total number of</span>
-<span class="sd">        directed edges from ``u`` to ``v``:</span>
-
-<span class="sd">        &gt;&gt;&gt; G = nx.DiGraph()</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(0, 1)</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(1, 0)</span>
-<span class="sd">        &gt;&gt;&gt; G.number_of_edges(0, 1)</span>
-<span class="sd">        1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">edge_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">edge_type</span> <span class="o">!=</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
 
         <span class="n">n_edges</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_apply_to_all_graphs</span><span class="p">(</span><span class="s2">&quot;number_of_edges&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
@@ -1328,20 +1145,6 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        number_of_edges</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.size()</span>
-<span class="sd">        3</span>
-
-<span class="sd">        &gt;&gt;&gt; G = nx.Graph()  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(&quot;a&quot;, &quot;b&quot;, weight=2)</span>
-<span class="sd">        &gt;&gt;&gt; G.add_edge(&quot;b&quot;, &quot;c&quot;, weight=4)</span>
-<span class="sd">        &gt;&gt;&gt; G.size()</span>
-<span class="sd">        2</span>
-<span class="sd">        &gt;&gt;&gt; G.size(weight=&quot;weight&quot;)</span>
-<span class="sd">        6.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="n">edge_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_types</span>
@@ -1371,30 +1174,6 @@
 <span class="sd">        -------</span>
 <span class="sd">        edge_dict : dictionary</span>
 <span class="sd">            The edge attribute dictionary.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G[0][1]</span>
-<span class="sd">        {}</span>
-
-<span class="sd">        Warning: Assigning to ``G[u][v]`` is not permitted.</span>
-<span class="sd">        But it is safe to assign attributes ``G[u][v][&#39;foo&#39;]``</span>
-
-<span class="sd">        &gt;&gt;&gt; G[0][1][&quot;weight&quot;] = 7</span>
-<span class="sd">        &gt;&gt;&gt; G[0][1][&quot;weight&quot;]</span>
-<span class="sd">        7</span>
-<span class="sd">        &gt;&gt;&gt; G[1][0][&quot;weight&quot;]</span>
-<span class="sd">        7</span>
-
-<span class="sd">        &gt;&gt;&gt; G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc</span>
-<span class="sd">        &gt;&gt;&gt; G.get_edge_data(0, 1)  # default edge data is {}</span>
-<span class="sd">        {}</span>
-<span class="sd">        &gt;&gt;&gt; e = (0, 1)</span>
-<span class="sd">        &gt;&gt;&gt; G.get_edge_data(*e)  # tuple form</span>
-<span class="sd">        {}</span>
-<span class="sd">        &gt;&gt;&gt; G.get_edge_data(&quot;a&quot;, &quot;b&quot;, default=0)  # edge not in graph, return 0</span>
-<span class="sd">        0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edge_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">edge_type_</span><span class="p">,</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
