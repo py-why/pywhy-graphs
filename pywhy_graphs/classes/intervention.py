@@ -15,7 +15,7 @@ class InterventionMixin:
     nodes: NodeView
 
     @abstractmethod
-    def add_edge(self, u, v, edge_type: Optional[str]):
+    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
         pass
 
     @abstractmethod
@@ -82,6 +82,15 @@ class InterventionMixin:
         for intervention_set in intervention_sets:
             self.add_f_node(intervention_set)
 
+    def set_f_node(self, f_node, targets: Optional[Set] = None):
+        if f_node not in self.nodes:
+            raise RuntimeError(f"{f_node} is not a node in the existing graph.")
+
+        if targets is not None and not all(target in self.nodes for target in targets):
+            raise RuntimeError(f"Not all targets {targets} are in the existing graph.")
+
+        self.graph["F-nodes"][f_node] = targets
+
     @property
     def f_nodes(self) -> Set[Node]:
         """Return set of F-nodes."""
@@ -139,6 +148,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
     networkx.DiGraph
     networkx.Graph
     ADMG
+    pywhy_graphs.networkx.MixedEdgeGraph
 
     Notes
     -----
@@ -189,20 +199,6 @@ class AugmentedGraph(ADMG, InterventionMixin):
         if n in self.f_nodes:
             del self.graph["F-nodes"][n]
         return super().remove_node(n)
-
-    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
-        if u_of_edge in self.f_nodes or v_of_edge in self.f_nodes:
-            raise RuntimeError("Adding edges to F-nodes is not allowed.")
-        return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
-
-    def remove_edge(self, u, v, edge_type="all"):
-        if u in self.f_nodes or v in self.f_nodes:
-            raise RuntimeError(
-                "Removing edges from F-nodes is not allowed. "
-                "Please just call `remove_node` to remove the F-node "
-                "and its corresponding edges"
-            )
-        return super().remove_edge(u, v, edge_type)
 
 
 class IPAG(PAG, InterventionMixin):
@@ -305,20 +301,6 @@ class IPAG(PAG, InterventionMixin):
             del self.graph["F-nodes"][n]
         return super().remove_node(n)
 
-    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
-        if u_of_edge in self.f_nodes or v_of_edge in self.f_nodes:
-            raise RuntimeError("Adding edges to F-nodes is not allowed.")
-        return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
-
-    def remove_edge(self, u, v, edge_type="all"):
-        if u in self.f_nodes or v in self.f_nodes:
-            raise RuntimeError(
-                "Removing edges from F-nodes is not allowed. "
-                "Please just call `remove_node` to remove the F-node "
-                "and its corresponding edges"
-            )
-        return super().remove_edge(u, v, edge_type)
-
 
 class PsiPAG(PAG, InterventionMixin):
     """A Psi-PAG Markov equivalence class of causal graphs.
@@ -416,17 +398,3 @@ class PsiPAG(PAG, InterventionMixin):
         if n in self.f_nodes:
             del self.graph["F-nodes"][n]
         return super().remove_node(n)
-
-    def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
-        if u_of_edge in self.f_nodes or v_of_edge in self.f_nodes:
-            raise RuntimeError("Adding edges to F-nodes is not allowed.")
-        return super().add_edge(u_of_edge, v_of_edge, edge_type, **attr)
-
-    def remove_edge(self, u, v, edge_type="all"):
-        if u in self.f_nodes or v in self.f_nodes:
-            raise RuntimeError(
-                "Removing edges from F-nodes is not allowed. "
-                "Please just call `remove_node` to remove the F-node "
-                "and its corresponding edges"
-            )
-        return super().remove_edge(u, v, edge_type)

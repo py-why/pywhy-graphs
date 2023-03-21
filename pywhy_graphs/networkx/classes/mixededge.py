@@ -162,17 +162,13 @@ class MixedEdgeGraph:
         ----------
         edge_type : str, optional
             The graph of the edge type to return, by default 'all', which
-            will then return a list of all edge graphs.
+            will then return a dictionary of all edge graphs keyed by their
+            edge type string.
 
         Returns
         -------
         graph : Graph | dictionary of Graph
             The graph representing a specific type of edge, or all edges.
-
-        Raises
-        ------
-        ValueError
-            _description_
         """
         if edge_type not in self._edge_graphs and edge_type != "all":
             raise ValueError(
@@ -273,18 +269,6 @@ class MixedEdgeGraph:
         -------
         has : bool
             Whether or not the graph has node 'n'.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.has_node(0)
-        True
-
-        It is more readable and simpler to use
-
-        >>> 0 in G
-        True
-
         """
         try:
             return n in self._node
@@ -298,12 +282,6 @@ class MixedEdgeGraph:
         --------
         order: identical method
         __len__: identical method
-
-        Examples
-        --------
-        >>> G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.number_of_nodes()
-        3
         """
         return len(self.nodes)
 
@@ -314,12 +292,6 @@ class MixedEdgeGraph:
         --------
         number_of_nodes: identical method
         __len__: identical method
-
-        Examples
-        --------
-        >>> G = nx.path_graph(3)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.order()
-        3
         """
         return len(self.nodes)
 
@@ -344,26 +316,11 @@ class MixedEdgeGraph:
         """Iterate over the nodes. Use: 'for n in G'.
 
         An iterator over all nodes in the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> [n for n in G]
-        [0, 1, 2, 3]
-        >>> list(G)
-        [0, 1, 2, 3]
         """
         return iter(self.nodes)
 
     def __contains__(self, n):
-        """Returns True if n is a node, False otherwise. Use: 'n in G'.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> 1 in G
-        True
-        """
+        """Returns True if n is a node, False otherwise. Use: 'n in G'."""
         try:
             return n in self.nodes
         except TypeError:
@@ -376,13 +333,6 @@ class MixedEdgeGraph:
         --------
         number_of_nodes: identical method
         order: identical method
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> len(G)
-        4
-
         """
         return len(self._node)
 
@@ -395,12 +345,6 @@ class MixedEdgeGraph:
         -----
         G[n] is the same as G.adj[n] and similar to G.neighbors(n)
         (which is an iterator over G.adj[n])
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G[0]
-        AtlasView({1: {}})
         """
         return self.adj[n]
 
@@ -416,32 +360,13 @@ class MixedEdgeGraph:
             Nodes must be hashable (and not None) Python objects.
         edge_type : str
             Specifies a specific edge type. If 'any' (default), then
-            will check if any edge exists between ``u`` and ``v``.
+            will check if any edge exists between ``u`` and ``v`` across
+            all edge types.
 
         Returns
         -------
         edge_ind : bool
             True if edge is in the graph, False otherwise.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.has_edge(0, 1)  # using two nodes
-        True
-        >>> e = (0, 1)
-        >>> G.has_edge(*e)  #  e is a 2-tuple (u, v)
-        True
-        >>> e = (0, 1, {"weight": 7})
-        >>> G.has_edge(*e[:2])  # e is a 3-tuple (u, v, data_dictionary)
-        True
-
-        The following syntax are equivalent:
-
-        >>> G.has_edge(0, 1)
-        True
-        >>> 1 in G[0]  # though this gives KeyError if 0 not in G
-        True
-
         """
         if edge_type == "any":
             return any(self._apply_to_all_graphs("has_edge", u, v))
@@ -455,7 +380,7 @@ class MixedEdgeGraph:
         not already in the graph.
 
         Edge attributes can be specified with keywords or by directly
-        accessing the edge's attribute dictionary. See examples below.
+        accessing the edge's attribute dictionary.
 
         Parameters
         ----------
@@ -463,7 +388,8 @@ class MixedEdgeGraph:
             Nodes can be, for example, strings or numbers.
             Nodes must be hashable (and not None) Python objects.
         edge_type : str
-            The edge type.
+            The edge type. By default 'all', which
+            will then add an edge in all edge type subgraphs.
         attr : keyword arguments, optional
             Edge data (or labels or objects) can be assigned using
             keyword arguments.
@@ -493,7 +419,8 @@ class MixedEdgeGraph:
             graph. The edges must be given as 2-tuples (u, v) or
             3-tuples (u, v, d) where d is a dictionary containing edge data.
         edge_type : str
-            The edge type to add edges to.
+            The edge type to add edges to. By default 'all', which
+            will then add an edge in all edge type subgraphs.
         attr : keyword arguments, optional
             Edge data (or labels or objects) can be assigned using
             keyword arguments.
@@ -509,18 +436,6 @@ class MixedEdgeGraph:
 
         Edge attributes specified in an ebunch take precedence over
         attributes specified via keyword arguments.
-
-        Examples
-        --------
-        >>> G = nx.Graph()  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.add_edges_from([(0, 1), (1, 2)])  # using a list of edge tuples
-        >>> e = zip(range(0, 3), range(1, 4))
-        >>> G.add_edges_from(e)  # Add the path graph 0-1-2-3
-
-        Associate data to edges
-
-        >>> G.add_edges_from([(1, 2), (2, 3)], weight=3)
-        >>> G.add_edges_from([(3, 4), (1, 4)], label="WN2898")
         """
         for e in ebunch_to_add:
             ne = len(e)
@@ -555,7 +470,8 @@ class MixedEdgeGraph:
         u, v : nodes
             Remove an edge between nodes u and v.
         edge_type : str
-            The edge type.
+            The edge type. By default 'all', which
+            will then remove the edge in all edge type subgraphs (if it exists).
 
         Raises
         ------
@@ -591,12 +507,6 @@ class MixedEdgeGraph:
         Notes
         -----
         Will fail silently if an edge in ebunch is not in the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> ebunch = [(1, 2), (2, 3)]
-        >>> G.remove_edges_from(ebunch)
         """
         if edge_type == "all":
             self._apply_to_all_graphs("remove_edges_from", ebunch)
@@ -615,47 +525,8 @@ class MixedEdgeGraph:
         -----
         All copies reproduce the graph structure, but data attributes
         may be handled in different ways. There are four types of copies
-        of a graph that people might want.
-
-        Deepcopy -- A "deepcopy" copies the graph structure as well as
-        all data attributes and any objects they might contain.
-        The entire graph object is new so that changes in the copy
-        do not affect the original object. (see Python's copy.deepcopy)
-
-        Data Reference (Shallow) -- For a shallow copy the graph structure
-        is copied but the edge, node and graph attribute dicts are
-        references to those in the original graph. This saves
-        time and memory but could cause confusion if you change an attribute
-        in one graph and it changes the attribute in the other.
-        NetworkX does not provide this level of shallow copy.
-
-        Independent Shallow -- This copy creates new independent attribute
-        dicts and then does a shallow copy of the attributes. That is, any
-        attributes that are containers are shared between the new graph
-        and the original. This is exactly what ``dict.copy()`` provides.
-        You can obtain this style copy using:
-
-            >>> G = nx.path_graph(5)
-            >>> H = G.copy()
-            >>> H = G.copy(as_view=False)
-            >>> H = nx.Graph(G)
-            >>> H = G.__class__(G)
-
-        Fresh Data -- For fresh data, the graph structure is copied while
-        new empty data attribute dicts are created. The resulting graph
-        is independent of the original and it has no edge, node or graph
-        attributes. Fresh copies are not enabled. Instead use:
-
-            >>> H = G.__class__()
-            >>> H.add_nodes_from(G)
-            >>> H.add_edges_from(G.edges)
-
-        View -- Inspired by dict-views, graph-views act like read-only
-        versions of the original graph, providing a copy of the original
-        structure without requiring any memory for copying the information.
-
-        See the Python copy module for more information on shallow
-        and deep copies, https://docs.python.org/3/library/copy.html.
+        of a graph that people might want. See :meth:`networkx.Graph.copy`
+        for doc string.
 
         Parameters
         ----------
@@ -671,12 +542,7 @@ class MixedEdgeGraph:
         See Also
         --------
         to_directed: return a directed copy of the graph.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> H = G.copy()
-
+        networkx.Graph.copy: for full copy docstring.
         """
         G = self.__class__()
         G.graph.update(self.graph)
@@ -765,16 +631,6 @@ class MixedEdgeGraph:
         Warning: If you have subclassed MultiDiGraph to use dict-like
         objects in the data structure, those changes do not transfer
         to the MultiGraph created by this method.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(2)  # or MultiGraph, etc
-        >>> H = G.to_directed()
-        >>> list(H.edges)
-        [(0, 1), (1, 0)]
-        >>> G2 = H.to_undirected()
-        >>> list(G2.edges)
-        [(0, 1)]
         """
         graph_class = nx.Graph
 
@@ -815,22 +671,6 @@ class MixedEdgeGraph:
         Warning: If you have subclassed Graph to use dict-like objects
         in the data structure, those changes do not transfer to the
         DiGraph created by this method.
-
-        Examples
-        --------
-        >>> G = nx.Graph()  # or MultiGraph, etc
-        >>> G.add_edge(0, 1)
-        >>> H = G.to_directed()
-        >>> list(H.edges)
-        [(0, 1), (1, 0)]
-
-        If already directed, return a (deep) copy
-
-        >>> G = nx.DiGraph()  # or MultiDiGraph, etc
-        >>> G.add_edge(0, 1)
-        >>> H = G.to_directed()
-        >>> list(H.edges)
-        [(0, 1)]
         """
         graph_class = nx.DiGraph
 
@@ -846,7 +686,7 @@ class MixedEdgeGraph:
         )
         return G
 
-    def number_of_edges(self, u=None, v=None, edge_type=None):
+    def number_of_edges(self, u=None, v=None, edge_type="all"):
         """Returns the number of edges between two nodes.
 
         Parameters
@@ -855,7 +695,8 @@ class MixedEdgeGraph:
             If u and v are specified, return the number of edges between
             u and v. Otherwise return the total number of all edges.
         edge_type : str, optional
-            The edge type to query for number of edges.
+            The edge type to query for number of edges. If 'all' (default)
+            will count the number of edges regardless of edge type.
 
         Returns
         -------
@@ -868,32 +709,8 @@ class MixedEdgeGraph:
         See Also
         --------
         size
-
-        Examples
-        --------
-        For undirected graphs, this method counts the total number of
-        edges in the graph:
-
-        >>> G = nx.path_graph(4)
-        >>> G.number_of_edges()
-        3
-
-        If you specify two nodes, this counts the total number of edges
-        joining the two nodes:
-
-        >>> G.number_of_edges(0, 1)
-        1
-
-        For directed graphs, this method can count the total number of
-        directed edges from ``u`` to ``v``:
-
-        >>> G = nx.DiGraph()
-        >>> G.add_edge(0, 1)
-        >>> G.add_edge(1, 0)
-        >>> G.number_of_edges(0, 1)
-        1
         """
-        if edge_type is not None:
+        if edge_type != "all":
             return self._get_internal_graph(edge_type).number_of_edges(u=u, v=v)
 
         n_edges = sum(self._apply_to_all_graphs("number_of_edges", u, v))
@@ -1134,20 +951,6 @@ class MixedEdgeGraph:
         See Also
         --------
         number_of_edges
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.size()
-        3
-
-        >>> G = nx.Graph()  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.add_edge("a", "b", weight=2)
-        >>> G.add_edge("b", "c", weight=4)
-        >>> G.size()
-        2
-        >>> G.size(weight="weight")
-        6.0
         """
         if edge_type == "all":
             edge_types = self.edge_types
@@ -1177,30 +980,6 @@ class MixedEdgeGraph:
         -------
         edge_dict : dictionary
             The edge attribute dictionary.
-
-        Examples
-        --------
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G[0][1]
-        {}
-
-        Warning: Assigning to ``G[u][v]`` is not permitted.
-        But it is safe to assign attributes ``G[u][v]['foo']``
-
-        >>> G[0][1]["weight"] = 7
-        >>> G[0][1]["weight"]
-        7
-        >>> G[1][0]["weight"]
-        7
-
-        >>> G = nx.path_graph(4)  # or DiGraph, MultiGraph, MultiDiGraph, etc
-        >>> G.get_edge_data(0, 1)  # default edge data is {}
-        {}
-        >>> e = (0, 1)
-        >>> G.get_edge_data(*e)  # tuple form
-        {}
-        >>> G.get_edge_data("a", "b", default=0)  # edge not in graph, return 0
-        0
         """
         edge_dict = dict()
         for edge_type_, graph in self.get_graphs().items():

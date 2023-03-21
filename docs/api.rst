@@ -32,8 +32,8 @@ graphs encountered in the literature.
    IPAG
    PsiPAG
 
-Algorithms for Markov Equivalence Classes
-=========================================
+:mod:`pywhy_graphs.algorithms`: Algorithms for Mixed-Edge Graphs
+================================================================
 Traditional graph algorithms operate over graphs with only one type of edge.
 Equivalence class graphs in causality generally consist of more than one type of
 edge. These algorithms are common algorithms used in a variety of different

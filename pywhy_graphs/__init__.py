@@ -15,6 +15,7 @@ from .classes import (
 from .algorithms import *  # noqa: F403
 from .config import sys_info
 
+from . import algorithms
 from . import export
 from . import classes
 from . import networkx
