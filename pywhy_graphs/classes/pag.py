@@ -45,6 +45,7 @@ class PAG(ADMG, ConservativeMixin):
     networkx.DiGraph
     networkx.Graph
     pywhy_graphs.ADMG
+    pywhy_graphs.networkx.MixedEdgeGraph
 
     Notes
     -----
