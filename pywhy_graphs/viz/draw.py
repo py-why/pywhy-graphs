@@ -75,7 +75,7 @@ def draw(
         By default None, which will
         use the default layout from graphviz.
     name : str, optional
-        Name of the graph used in source code.
+        Label for the generated graph.
     shape : str
         The shape of each node. By default 'square'. Can be 'circle', 'plaintext'.
     attrs : dict
