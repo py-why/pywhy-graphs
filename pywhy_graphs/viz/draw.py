@@ -54,7 +54,14 @@ def _draw_pag_edges(
     return dot, found_circle_sibs
 
 
-def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, name: Optional[str] = None,shape="square", **attrs):
+def draw(
+    G,
+    direction: Optional[str] = None,
+    pos: Optional[dict] = None,
+    name: Optional[str] = None,
+    shape="square",
+    **attrs,
+):
     """Visualize the graph.
 
     Parameters
