@@ -67,6 +67,10 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="
         The positions of the nodes keyed by node with (x, y) coordinates as values.
         By default None, which will
         use the default layout from graphviz.
+    name : str, optional
+        Name of the graph used in source code.
+    comment : str, optional
+        Comment added to the first line of the source.
     shape : str
         The shape of each node. By default 'square'. Can be 'circle', 'plaintext'.
     attrs : dict
