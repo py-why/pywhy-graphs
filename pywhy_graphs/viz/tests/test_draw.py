@@ -105,3 +105,14 @@ def test_draw_with_ts_layout():
     pos_G = timeseries_layout(G, variable_order=["x", "y", "z"], scale=10)
 
     assert all(node in pos_G for node in G.nodes)
+
+def test_draw_name_is_given():
+    """
+    Ensure the generated graph contains the lable provided by the user.
+    """
+    # create a dummy graph x --> y <-- z and z --> x
+    graph = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "x")])
+    # draw the graphs
+    dot = draw(graph, name="test")
+    # assert that the produced graph contains the label for the graph
+    assert "label=test" in dot.source
