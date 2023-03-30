@@ -84,6 +84,7 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, name: O
 
     # make a dict to pass to the Digraph object
     g_attr = {"label": name}
+
     if name is not None:
         dot = Digraph(graph_attr=g_attr)
     else:
