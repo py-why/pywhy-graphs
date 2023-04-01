@@ -106,6 +106,7 @@ def test_draw_with_ts_layout():
 
     assert all(node in pos_G for node in G.nodes)
 
+
 def test_draw_name_is_given():
     """
     Ensure the generated graph contains the label provided by the user.
@@ -117,9 +118,10 @@ def test_draw_name_is_given():
     # assert that the produced graph contains a label
     assert "label=test" in dot.source
 
+
 def test_draw_name_is_not_given():
     """
-    Ensure the generated graph does not contains any label.
+    Ensure the generated graph does not contain a label.
     """
     # create a dummy graph x --> y <-- z and z --> x
     graph = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "x")])
