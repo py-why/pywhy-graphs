@@ -108,11 +108,22 @@ def test_draw_with_ts_layout():
 
 def test_draw_name_is_given():
     """
-    Ensure the generated graph contains the lable provided by the user.
+    Ensure the generated graph contains the label provided by the user.
     """
     # create a dummy graph x --> y <-- z and z --> x
     graph = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "x")])
     # draw the graphs
     dot = draw(graph, name="test")
-    # assert that the produced graph contains the label for the graph
+    # assert that the produced graph contains a label
     assert "label=test" in dot.source
+
+def test_draw_name_is_not_given():
+    """
+    Ensure the generated graph does not contains any label.
+    """
+    # create a dummy graph x --> y <-- z and z --> x
+    graph = nx.DiGraph([("x", "y"), ("z", "y"), ("z", "x")])
+    # draw the graphs
+    dot = draw(graph)
+    # assert that the produced graph does not contain a label
+    assert "label=" not in dot.source
