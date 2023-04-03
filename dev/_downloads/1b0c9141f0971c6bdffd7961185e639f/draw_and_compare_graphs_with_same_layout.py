@@ -47,10 +47,10 @@ print(pos_G)
 
 # draw the graphs (i.e., generate a graphviz object that can be rendered)
 # each time we call draw() we pass the layout position of G
-dot_G = draw(G, pos=pos_G)
-dot_admg = draw(admg, pos=pos_G)
-dot_cpdag = draw(cpdag, pos=pos_G)
-dot_pag = draw(pag, pos=pos_G)
+dot_G = draw(G, name="A DiGraph", pos=pos_G)
+dot_admg = draw(admg, name="An ADMG", pos=pos_G)
+dot_cpdag = draw(cpdag, name="A CPDAG", pos=pos_G)
+dot_pag = draw(pag, name="A PAG", pos=pos_G)
 
 # render the graphs using graphviz render() function
 dot_G.render(outfile="G.png", view=True, engine="neato")

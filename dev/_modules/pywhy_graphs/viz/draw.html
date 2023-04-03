@@ -248,7 +248,14 @@
     <span class="k">return</span> <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span>
 
 
-<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize the graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -261,6 +268,8 @@
 <span class="sd">        The positions of the nodes keyed by node with (x, y) coordinates as values.</span>
 <span class="sd">        By default None, which will</span>
 <span class="sd">        use the default layout from graphviz.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Label for the generated graph.</span>
 <span class="sd">    shape : str</span>
 <span class="sd">        The shape of each node. By default &#39;square&#39;. Can be &#39;circle&#39;, &#39;plaintext&#39;.</span>
 <span class="sd">    attrs : dict</span>
@@ -274,7 +283,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Digraph</span>
 
-    <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">()</span>
+    <span class="c1"># make a dict to pass to the Digraph object</span>
+    <span class="n">g_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">(</span><span class="n">graph_attr</span><span class="o">=</span><span class="n">g_attr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">()</span>
 
     <span class="c1"># set direction from left to right if that&#39;s preferred</span>
     <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;LR&quot;</span><span class="p">:</span>
