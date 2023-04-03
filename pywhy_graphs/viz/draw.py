@@ -54,7 +54,14 @@ def _draw_pag_edges(
     return dot, found_circle_sibs
 
 
-def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="square", **attrs):
+def draw(
+    G,
+    direction: Optional[str] = None,
+    pos: Optional[dict] = None,
+    name: Optional[str] = None,
+    shape="square",
+    **attrs,
+):
     """Visualize the graph.
 
     Parameters
@@ -67,6 +74,8 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="
         The positions of the nodes keyed by node with (x, y) coordinates as values.
         By default None, which will
         use the default layout from graphviz.
+    name : str, optional
+        Label for the generated graph.
     shape : str
         The shape of each node. By default 'square'. Can be 'circle', 'plaintext'.
     attrs : dict
@@ -80,7 +89,13 @@ def draw(G, direction: Optional[str] = None, pos: Optional[dict] = None, shape="
     """
     from graphviz import Digraph
 
-    dot = Digraph()
+    # make a dict to pass to the Digraph object
+    g_attr = {"label": name}
+
+    if name is not None:
+        dot = Digraph(graph_attr=g_attr)
+    else:
+        dot = Digraph()
 
     # set direction from left to right if that's preferred
     if direction == "LR":

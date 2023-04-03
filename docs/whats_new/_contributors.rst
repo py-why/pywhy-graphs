@@ -23,3 +23,5 @@
 .. _Adam Li: https://github.com/adam2392
 .. _Julien Siebert: https://github.com/siebert-julien
 .. _Jaron Lee: https://github.com/jaron-lee
+.. _Aryan Roy: https://github.com/aryan26roy
+
