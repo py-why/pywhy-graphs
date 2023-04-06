@@ -225,7 +225,7 @@ class CG(DiUnGraph):
     Undirected edges ``A - B`` in a chain graph represent a symmetric association of
     two variables due to processes such as dynamic feedback (where ``A``
     influences ``B`` and vice versa) or an artefact of selection bias (where the selection
-    of the sample induces association between ``A`` and ``B``).
+    of the sample induces association between ``A`` and ``B``) [1]_.
 
 
     The implementation supports representation of both Lauritzen-Wermuth-Frydenberg (LWF)
@@ -246,6 +246,16 @@ class CG(DiUnGraph):
         The name for the directed edges. By default 'undirected'.
     attr : keyword arguments, optional (default= no attributes)
         Attributes to add to graph as key=value pairs.
+
+    References
+    ----------
+    .. [1] Lauritzen, Steffen L., and Thomas S. Richardson. "Chain
+    graph models and their causal interpretations." Journal of the
+    Royal Statistical Society: Series B (Statistical Methodology)
+    64.3 (2002): 321-348.
+
+
+
 
     See Also
     --------
