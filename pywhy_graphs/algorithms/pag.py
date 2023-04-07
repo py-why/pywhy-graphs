@@ -908,3 +908,45 @@ def _check_ts_node(node):
         )
     if node[1] > 0:
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
+
+
+def is_valid_PAG(graph: PAG) -> bool:
+    """Checks if the provided graph is a valid PAG.
+    Parameters
+    ----------
+    graph : PAG
+        The graph.
+    Returns
+    -------
+    is_valid : bool
+        A boolean which is set to true if the graph is a valid PAG, false otherwise.
+    """
+    is_valid = True
+
+    #check if the provided PAG has circle edges
+
+    if len(graph.circle_edges()) == 0:
+        is_valid = False
+
+    #orient certain uncertain edges into arrow heads
+    cedges = graph.circle_edges()
+    dedges = graph.directed_edges()
+
+    to_remove = []
+    for u,v in cedges:
+        if (v,u) in dedges:
+            to_remove.append((u,v))
+
+    for u,v in to_remove:
+        graph.remove_edge(u,v,graph.circle_edge_name)
+
+    #convert the graph into a DAG with no unshielded colliders
+
+    #check the validity of the MAG
+
+    #convert the MAG back to a PAG
+
+    #assert the PAG is the same as provided
+
+
+    return is_valid
