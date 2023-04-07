@@ -923,30 +923,29 @@ def is_valid_PAG(graph: PAG) -> bool:
     """
     is_valid = True
 
-    #check if the provided PAG has circle edges
+    # check if the provided PAG has circle edges
 
-    if len(graph.circle_edges()) == 0:
+    if len(graph.circle_edges) == 0:
         is_valid = False
 
-    #orient certain uncertain edges into arrow heads
-    cedges = graph.circle_edges()
-    dedges = graph.directed_edges()
+    # orient certain uncertain edges into arrow heads
+    cedges = graph.circle_edges
+    dedges = graph.directed_edges
 
     to_remove = []
-    for u,v in cedges:
-        if (v,u) in dedges:
-            to_remove.append((u,v))
+    for u, v in cedges:
+        if (v, u) in dedges:
+            to_remove.append((u, v))
 
-    for u,v in to_remove:
-        graph.remove_edge(u,v,graph.circle_edge_name)
+    for u, v in to_remove:
+        graph.remove_edge(u, v, graph.circle_edge_name)
 
-    #convert the graph into a DAG with no unshielded colliders
+    # convert the graph into a DAG with no unshielded colliders
 
-    #check the validity of the MAG
+    # check the validity of the MAG
 
-    #convert the MAG back to a PAG
+    # convert the MAG back to a PAG
 
-    #assert the PAG is the same as provided
-
+    # assert the PAG is the same as provided
 
     return is_valid

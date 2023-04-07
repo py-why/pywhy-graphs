@@ -4,7 +4,7 @@ name = "pywhy_graphs"
 # 0.0.0 is standard placeholder for poetry-dynamic-versioning
 # any changes to this should not be checked in
 #
-version = "0.0.0"
+version = "0.0.0.post73.dev0+59941cd"
 description = "Causal Graphs for Python"
 authors = ["PyWhy Community <adam.li@columbia.edu>"]
 license = "MIT"
@@ -21,7 +21,7 @@ classifiers = [
 keywords = ['causality', 'graphs', 'causal-inference', 'graphical-model']
 
 [tool.poetry-dynamic-versioning]
-enable = true
+enable = false
 vcs = "git"
 
 [tool.poetry-dynamic-versioning.substitution]
