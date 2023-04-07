@@ -159,7 +159,7 @@ Mixed Edge Graph Properties
     MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types is directed: False because there are directed edges.
     False
     ['directed', 'bidirected']
-    {'directed': <networkx.classes.digraph.DiGraph object at 0x7f574afe5610>, 'bidirected': <networkx.classes.graph.Graph object at 0x7f574b27e520>}
+    {'directed': <networkx.classes.digraph.DiGraph object at 0x7f4cb6fefdf0>, 'bidirected': <networkx.classes.graph.Graph object at 0x7f4cb49f1a00>}
 
 
 
@@ -199,7 +199,7 @@ Mixed Edge Graph Operations on Nodes
 
  .. code-block:: none
 
-    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types has nodes: ['X', 'Z', 'Y']
+    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types has nodes: ['X', 'Y', 'Z']
     Graph has node A: False
     Now graph has node A: True
     Graph has node A: False
@@ -317,7 +317,7 @@ class properties. Moreover, one can specify the edge type.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.562 seconds)
+   **Total running time of the script:** ( 0 minutes  1.861 seconds)
 
 **Estimated memory usage:**  45 MB
 
