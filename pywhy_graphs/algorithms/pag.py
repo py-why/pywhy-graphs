@@ -925,8 +925,8 @@ def is_valid_PAG(graph: PAG) -> bool:
 
     # check if the provided PAG has circle edges
 
-    if len(graph.circle_edges) == 0:
-        is_valid = False
+    # if len(graph.circle_edges) == 0:
+    #     is_valid = False
 
     # orient certain circle edges into directed edges
     cedges = graph.circle_edges
