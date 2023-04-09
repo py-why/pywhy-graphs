@@ -934,15 +934,23 @@ def is_valid_PAG(graph: PAG) -> bool:
 
     to_remove = []
     to_reorient = []
+    to_replace = []
     for u, v in cedges:
         if (v, u) in dedges:
             to_remove.append((u, v))
         elif (v, u) not in cedges:
             to_reorient.append((u, v))
+        elif (v, u) in cedges and (v, u) not in to_replace:
+            to_replace.append((u, v))
+    print(to_replace)
     for u, v in to_remove:
         graph.remove_edge(u, v, graph.circle_edge_name)
     for u, v in to_reorient:
         graph.orient_uncertain_edge(u, v)
+    for u, v in to_replace:
+        graph.remove_edge(u, v, graph.circle_edge_name)
+        graph.remove_edge(v, u, graph.circle_edge_name)
+        graph.add_edge(v, u, graph.undirected_edge_name)
 
     # convert the graph into a DAG with no unshielded colliders
 
