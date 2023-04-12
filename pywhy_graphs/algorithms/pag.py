@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Tuple
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs import PAG, StationaryTimeSeriesPAG
+from pywhy_graphs import CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
 from pywhy_graphs.typing import Node, TsNode
 
@@ -932,9 +932,12 @@ def is_valid_PAG(graph: PAG) -> bool:
     cedges = set(graph.circle_edges)
     dedges = set(graph.directed_edges)
 
+    temp_cpdag = CPDAG()
+
     to_remove = []
     to_reorient = []
-    to_replace = []
+    to_add = []
+
     for u, v in cedges:
         if (v, u) in dedges:  # remove the circle end from a 'o-->' edge to make a '-->' edge
             to_remove.append((u, v))
@@ -943,19 +946,40 @@ def is_valid_PAG(graph: PAG) -> bool:
         elif (v, u) in cedges and (
             v,
             u,
-        ) not in to_replace:  # replace all 'o--o' edges with undirected edges
-            to_replace.append((u, v))
-    print(to_replace)
+        ) not in to_add:  # add all 'o--o' edges to the cpdag
+            to_add.append((u, v))
     for u, v in to_remove:
         graph.remove_edge(u, v, graph.circle_edge_name)
     for u, v in to_reorient:
         graph.orient_uncertain_edge(u, v)
-    for u, v in to_replace:
-        graph.remove_edge(u, v, graph.circle_edge_name)
-        graph.remove_edge(v, u, graph.circle_edge_name)
-        graph.add_edge(v, u, graph.undirected_edge_name)
+    for u, v in to_add:
+        temp_cpdag.add_edge(v, u, temp_cpdag.undirected_edge_name)
+
+    flag = True
 
     # convert the graph into a DAG with no unshielded colliders
+
+    while flag:
+        undedges = temp_cpdag.undirected_edges
+        if len(undedges) != 0:
+            for (u, v) in undedges:
+                temp_cpdag.remove_edge(u, v, temp_cpdag.undirected_edge_name)
+                temp_cpdag.add_edge(u, v, temp_cpdag.directed_edge_name)
+                # cpdag = applyMeekRules(cpdag)
+                print(temp_cpdag.directed_edges)
+                break
+        else:
+            flag = False
+
+    mag = CPDAG()  # provisional MAG
+
+    # construct the final MAG
+
+    for (u, v) in graph.directed_edges():
+        mag.add_edge(u, v, mag.directed_edge_name)
+
+    for (u, v) in graph.directed_edges():
+        mag.add_edge(u, v, mag.directed_edge_name)
 
     # check the validity of the MAG
 
