@@ -975,10 +975,10 @@ def is_valid_PAG(graph: PAG) -> bool:
 
     # construct the final MAG
 
-    for (u, v) in graph.directed_edges():
+    for (u, v) in graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
-    for (u, v) in graph.directed_edges():
+    for (u, v) in graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
     # check the validity of the MAG
