@@ -929,18 +929,21 @@ def is_valid_PAG(graph: PAG) -> bool:
     #     is_valid = False
 
     # orient certain circle edges into directed edges
-    cedges = graph.circle_edges
-    dedges = graph.directed_edges
+    cedges = set(graph.circle_edges)
+    dedges = set(graph.directed_edges)
 
     to_remove = []
     to_reorient = []
     to_replace = []
     for u, v in cedges:
-        if (v, u) in dedges:
+        if (v, u) in dedges:  # remove the circle end from a 'o-->' edge to make a '-->' edge
             to_remove.append((u, v))
-        elif (v, u) not in cedges:
+        elif (v, u) not in cedges:  # reorient a '--o' edge to '-->'
             to_reorient.append((u, v))
-        elif (v, u) in cedges and (v, u) not in to_replace:
+        elif (v, u) in cedges and (
+            v,
+            u,
+        ) not in to_replace:  # replace all 'o--o' edges with undirected edges
             to_replace.append((u, v))
     print(to_replace)
     for u, v in to_remove:
