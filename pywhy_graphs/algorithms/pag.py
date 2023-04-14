@@ -1,6 +1,6 @@
 import logging
 from collections import deque
-from itertools import chain
+from itertools import chain, combinations
 from typing import List, Optional, Set, Tuple
 
 import networkx as nx
@@ -910,6 +910,155 @@ def _check_ts_node(node):
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
 
 
+def orient_edges(graph: CPDAG) -> None:
+    """Orient edges in a skeleton graph to estimate the causal DAG, or CPDAG.
+    These are known as the Meek rules :footcite:`Meek1995`. They are deterministic
+    in the sense that they are logical characterizations of what edges must be
+    present given the rest of the local graph structure.
+    Parameters
+    ----------
+    graph : CPDAG
+        A graph containing directed and undirected edges.
+    """
+    # For all the combination of nodes i and j, apply the following
+    # rules.
+    finished = False
+    while not finished:  # type: ignore
+        change_flag = False
+        for i in graph.nodes:
+            for j in graph.neighbors(i):
+                if i == j:
+                    continue
+                # Rule 1: Orient i-j into i->j whenever there is an arrow k->i
+                # such that k and j are nonadjacent.
+                r1_add = _apply_meek_rule1(graph, i, j)
+
+                # Rule 2: Orient i-j into i->j whenever there is a chain
+                # i->k->j.
+                r2_add = _apply_meek_rule2(graph, i, j)
+
+                # Rule 3: Orient i-j into i->j whenever there are two chains
+                # i-k->j and i-l->j such that k and l are nonadjacent.
+                r3_add = _apply_meek_rule3(graph, i, j)
+
+                # Rule 4: Orient i-j into i->j whenever there are two chains
+                # i-k->l and k->l->j such that k and j are nonadjacent.
+                #
+                # This rule needs to be added.
+
+                if any([r1_add, r2_add, r3_add]) and not change_flag:
+                    change_flag = True
+        if not change_flag:
+            finished = True
+            break
+
+
+def _apply_meek_rule1(graph: CPDAG, i: str, j: str) -> bool:
+    """Apply rule 1 of Meek's rules.
+    Looks for i - j such that k -> i, such that (k,i,j)
+    is an unshielded triple. Then can orient i - j as i -> j.
+    """
+    added_arrows = False
+
+    # Check if i-j.
+    if graph.has_edge(i, j, graph.undirected_edge_name):
+        for k in graph.predecessors(i):
+            # Skip if k and j are adjacent because then it is a
+            # shielded triple
+            if j in graph.neighbors(k):
+                continue
+
+            # check if the triple is in the graph's excluded triples
+            if frozenset((k, i, j)) in graph.excluded_triples:
+                continue
+
+            # Make i-j into i->j
+            graph.orient_uncertain_edge(i, j)
+
+            added_arrows = True
+            break
+    return added_arrows
+
+
+def _apply_meek_rule2(graph: CPDAG, i: str, j: str) -> bool:
+    """Apply rule 2 of Meek's rules.
+    Check for i - j, and then looks for i -> k -> j
+    triple, to orient i - j as i -> j.
+    """
+    added_arrows = False
+
+    # Check if i-j.
+    if graph.has_edge(i, j, graph.undirected_edge_name):
+        # Find nodes k where k is i->k
+        succs_i = set()
+        for k in graph.successors(i):
+            if not graph.has_edge(k, i, graph.directed_edge_name):
+                succs_i.add(k)
+        # Find nodes j where j is k->j.
+        preds_j = set()
+        for k in graph.predecessors(j):
+            if not graph.has_edge(j, k, graph.directed_edge_name):
+                preds_j.add(k)
+
+        # Check if there is any node k where i->k->j.
+        candidate_k = succs_i.intersection(preds_j)
+        # if the graph has excluded triples, we would check at this point
+        if graph.excluded_triples:
+            # check if the triple is in the graph's excluded triples
+            # if so, remove them from the candidates
+            for k in candidate_k:
+                if frozenset((i, k, j)) in graph.excluded_triples:
+                    candidate_k.remove(k)
+
+        # if there are candidate 'k' nodes, then orient the edge accordingly
+        if len(candidate_k) > 0:
+            # Make i-j into i->j
+            graph.orient_uncertain_edge(i, j)
+            added_arrows = True
+    return added_arrows
+
+
+def _apply_meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
+    """Apply rule 3 of Meek's rules.
+    Check for i - j, and then looks for k -> j <- l
+    collider, and i - k and i - l, then orient i -> j.
+    """
+    added_arrows = False
+
+    # Check if i-j first
+    if graph.has_edge(i, j, graph.undirected_edge_name):
+        # For all the pairs of nodes adjacent to i,
+        # look for (k, l), such that j -> l and k -> l
+        for (k, l) in combinations(graph.neighbors(i), 2):
+            # Skip if k and l are adjacent.
+            if l in graph.neighbors(k):
+                continue
+            # Skip if not k->j.
+            if graph.has_edge(j, k, graph.directed_edge_name) or (
+                not graph.has_edge(k, j, graph.directed_edge_name)
+            ):
+                continue
+            # Skip if not l->j.
+            if graph.has_edge(j, l, graph.directed_edge_name) or (
+                not graph.has_edge(l, j, graph.directed_edge_name)
+            ):
+                continue
+
+            # check if the triple is inside graph's excluded triples
+            if frozenset((l, i, k)) in graph.excluded_triples:
+                continue
+
+            # if i - k and i - l, then  at this point, we have a valid path
+            # to orient
+            if graph.has_edge(k, i, graph.undirected_edge_name) and graph.has_edge(
+                l, i, graph.undirected_edge_name
+            ):
+                graph.orient_uncertain_edge(i, j)
+                added_arrows = True
+                break
+    return added_arrows
+
+
 def is_valid_PAG(graph: PAG) -> bool:
     """Checks if the provided graph is a valid PAG.
     Parameters
@@ -965,7 +1114,7 @@ def is_valid_PAG(graph: PAG) -> bool:
             for (u, v) in undedges:
                 temp_cpdag.remove_edge(u, v, temp_cpdag.undirected_edge_name)
                 temp_cpdag.add_edge(u, v, temp_cpdag.directed_edge_name)
-                # cpdag = applyMeekRules(cpdag)
+                orient_edges(temp_cpdag)
                 print(temp_cpdag.directed_edges)
                 break
         else:
