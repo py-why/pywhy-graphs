@@ -22,6 +22,7 @@ __all__ = [
     "pds_t",
     "pds_t_path",
     "is_definite_noncollider",
+    "is_valid_PAG",
 ]
 
 
@@ -551,6 +552,7 @@ def pds(
     ----------
     .. footbibliography::
     """
+    print("HAHAHAHAHHA")
     if max_path_length is None:
         max_path_length = 1000
 
@@ -910,7 +912,7 @@ def _check_ts_node(node):
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
 
 
-def orient_edges(graph: CPDAG) -> None:
+def _apply_meek_rules(graph: CPDAG) -> None:
     """Orient edges in a skeleton graph to estimate the causal DAG, or CPDAG.
     These are known as the Meek rules :footcite:`Meek1995`. They are deterministic
     in the sense that they are logical characterizations of what edges must be
@@ -922,8 +924,8 @@ def orient_edges(graph: CPDAG) -> None:
     """
     # For all the combination of nodes i and j, apply the following
     # rules.
-    finished = False
-    while not finished:  # type: ignore
+    completed = False
+    while not completed:  # type: ignore
         change_flag = False
         for i in graph.nodes:
             for j in graph.neighbors(i):
@@ -931,15 +933,15 @@ def orient_edges(graph: CPDAG) -> None:
                     continue
                 # Rule 1: Orient i-j into i->j whenever there is an arrow k->i
                 # such that k and j are nonadjacent.
-                r1_add = _apply_meek_rule1(graph, i, j)
+                r1_add = _meek_rule1(graph, i, j)
 
                 # Rule 2: Orient i-j into i->j whenever there is a chain
                 # i->k->j.
-                r2_add = _apply_meek_rule2(graph, i, j)
+                r2_add = _meek_rule2(graph, i, j)
 
                 # Rule 3: Orient i-j into i->j whenever there are two chains
                 # i-k->j and i-l->j such that k and l are nonadjacent.
-                r3_add = _apply_meek_rule3(graph, i, j)
+                r3_add = _meek_rule3(graph, i, j)
 
                 # Rule 4: Orient i-j into i->j whenever there are two chains
                 # i-k->l and k->l->j such that k and j are nonadjacent.
@@ -949,11 +951,11 @@ def orient_edges(graph: CPDAG) -> None:
                 if any([r1_add, r2_add, r3_add]) and not change_flag:
                     change_flag = True
         if not change_flag:
-            finished = True
+            completed = True
             break
 
 
-def _apply_meek_rule1(graph: CPDAG, i: str, j: str) -> bool:
+def _meek_rule1(graph: CPDAG, i: str, j: str) -> bool:
     """Apply rule 1 of Meek's rules.
     Looks for i - j such that k -> i, such that (k,i,j)
     is an unshielded triple. Then can orient i - j as i -> j.
@@ -980,7 +982,7 @@ def _apply_meek_rule1(graph: CPDAG, i: str, j: str) -> bool:
     return added_arrows
 
 
-def _apply_meek_rule2(graph: CPDAG, i: str, j: str) -> bool:
+def _meek_rule2(graph: CPDAG, i: str, j: str) -> bool:
     """Apply rule 2 of Meek's rules.
     Check for i - j, and then looks for i -> k -> j
     triple, to orient i - j as i -> j.
@@ -990,18 +992,18 @@ def _apply_meek_rule2(graph: CPDAG, i: str, j: str) -> bool:
     # Check if i-j.
     if graph.has_edge(i, j, graph.undirected_edge_name):
         # Find nodes k where k is i->k
-        succs_i = set()
+        child_i = set()
         for k in graph.successors(i):
             if not graph.has_edge(k, i, graph.directed_edge_name):
-                succs_i.add(k)
+                child_i.add(k)
         # Find nodes j where j is k->j.
-        preds_j = set()
+        parent_j = set()
         for k in graph.predecessors(j):
             if not graph.has_edge(j, k, graph.directed_edge_name):
-                preds_j.add(k)
+                parent_j.add(k)
 
         # Check if there is any node k where i->k->j.
-        candidate_k = succs_i.intersection(preds_j)
+        candidate_k = child_i.intersection(parent_j)
         # if the graph has excluded triples, we would check at this point
         if graph.excluded_triples:
             # check if the triple is in the graph's excluded triples
@@ -1018,7 +1020,7 @@ def _apply_meek_rule2(graph: CPDAG, i: str, j: str) -> bool:
     return added_arrows
 
 
-def _apply_meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
+def _meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
     """Apply rule 3 of Meek's rules.
     Check for i - j, and then looks for k -> j <- l
     collider, and i - k and i - l, then orient i -> j.
@@ -1114,7 +1116,7 @@ def is_valid_PAG(graph: PAG) -> bool:
             for (u, v) in undedges:
                 temp_cpdag.remove_edge(u, v, temp_cpdag.undirected_edge_name)
                 temp_cpdag.add_edge(u, v, temp_cpdag.directed_edge_name)
-                orient_edges(temp_cpdag)
+                _apply_meek_rules(temp_cpdag)
                 print(temp_cpdag.directed_edges)
                 break
         else:
