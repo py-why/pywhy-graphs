@@ -1,6 +1,6 @@
 import logging
 from collections import deque
-from itertools import chain, combinations
+from itertools import chain, combinations, permutations
 from typing import List, Optional, Set, Tuple
 
 import networkx as nx
@@ -946,9 +946,9 @@ def _apply_meek_rules(graph: CPDAG) -> None:
                 # Rule 4: Orient i-j into i->j whenever there are two chains
                 # i-k->l and k->l->j such that k and j are nonadjacent.
                 #
-                # This rule needs to be added.
+                r4_add = _meek_rule4(graph, i, j)
 
-                if any([r1_add, r2_add, r3_add]) and not change_flag:
+                if any([r1_add, r2_add, r3_add, r4_add]) and not change_flag:
                     change_flag = True
         if not change_flag:
             completed = True
@@ -1058,6 +1058,49 @@ def _meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
                 graph.orient_uncertain_edge(i, j)
                 added_arrows = True
                 break
+    return added_arrows
+
+
+def _meek_rule4(graph: CPDAG, i: str, j: str) -> bool:
+    """Apply rule 4 of Meek's rules.
+    Check for i - j, and then looks for i - k -> l -> j, to orient i - j as i -> j.
+    """
+    added_arrows = False
+
+    # Check if i-j.
+    if graph.has_edge(i, j, graph.undirected_edge_name):
+        # Find nodes k where k is i-k
+        adj_i = set()
+        for k in graph.neighbors(i):
+            if not graph.has_edge(k, i, graph.directed_edge_name):
+                adj_i.add(k)
+        # Find nodes l where j is l->j.
+        parent_j = set()
+        for k in graph.predecessors(j):
+            if not graph.has_edge(j, k, graph.directed_edge_name):
+                parent_j.add(k)
+        # generate all permutations of sets containing neighbors of i and parents of j
+        permut = permutations(adj_i, len(parent_j))
+        unq = set()
+        for comb in permut:
+            zipped = zip(comb, parent_j)
+            unq.update(zipped)
+
+        # check if these pairs have a directed edge between them and that k-j does not exist
+        dedges = set(graph.directed_edges())
+        undedges = set(graph.undirected_edges())
+        candidate_k = set()
+        for pair in unq:
+            if pair in dedges:
+                if (pair[0], j) not in undedges:
+                    candidate_k.add(pair)
+
+        # if there are candidate 'k->l' pairs, then orient the edge accordingly
+        if len(candidate_k) > 0:
+            # Make i-j into i->j
+            # logger.info(f"R2: Removing edge {i}-{j} to form {i}->{j}.")
+            graph.orient_uncertain_edge(i, j)
+            added_arrows = True
     return added_arrows
 
 
