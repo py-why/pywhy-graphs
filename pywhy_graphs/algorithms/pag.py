@@ -1074,21 +1074,23 @@ def _meek_rule4(graph: CPDAG, i: str, j: str) -> bool:
         for k in graph.neighbors(i):
             if not graph.has_edge(k, i, graph.directed_edge_name):
                 adj_i.add(k)
+
         # Find nodes l where j is l->j.
         parent_j = set()
         for k in graph.predecessors(j):
             if not graph.has_edge(j, k, graph.directed_edge_name):
                 parent_j.add(k)
+
         # generate all permutations of sets containing neighbors of i and parents of j
         permut = permutations(adj_i, len(parent_j))
-        unq = set()
+        unq = set()  # type: ignore
         for comb in permut:
             zipped = zip(comb, parent_j)
             unq.update(zipped)
 
         # check if these pairs have a directed edge between them and that k-j does not exist
-        dedges = set(graph.directed_edges())
-        undedges = set(graph.undirected_edges())
+        dedges = set(graph.directed_edges)
+        undedges = set(graph.undirected_edges)
         candidate_k = set()
         for pair in unq:
             if pair in dedges:
