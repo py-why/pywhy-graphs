@@ -25,6 +25,7 @@ Version 0.1
 
 Changelog
 ---------
+- |Feature|| Introduce chain graphs and validity checks, and refactor CPDAG and chain graphs to use a directed-undirected private class, by `Jaron Lee`_ (:pr:`73`)
 - |Feature| Add keyword argument for graph labels in :func:`pywhy_graphs.viz.draw`, by `Aryan Roy`_ (:pr:`71`)
 - |Feature| Implement minimal m-separator function in :func:`pywhy_graphs.networkx.minimal_m_separator` with a BFS approach, by `Jaron Lee`_ (:pr:`53`)
 - |Feature| Implement m-separation :func:`pywhy_graphs.networkx.m_separated` with the BallTree approach, by `Jaron Lee`_ (:pr:`48`)
