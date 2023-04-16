@@ -1,6 +1,7 @@
+import pytest
+
 from pywhy_graphs import CG
 from pywhy_graphs.algorithms import is_valid_cg
-import pytest
 
 
 @pytest.fixture
@@ -80,12 +81,27 @@ def fig_g3_frydenberg():
     return graph
 
 
+@pytest.fixture
+def fig_g4_frydenberg():
+    graph = CG()
+    graph.add_nodes_from(["b", "g", "d", "m", "a"])
+    graph.add_edge("b", "g", graph.directed_edge_name)
+    graph.add_edge("a", "b", graph.undirected_edge_name)
+    graph.add_edge("g", "d", graph.undirected_edge_name)
+    graph.add_edge("d", "m", graph.undirected_edge_name)
+    graph.add_edge("m", "a", graph.undirected_edge_name)
+    graph.add_edge("a", "g", graph.directed_edge_name)
+
+    return graph
+
+
 @pytest.mark.parametrize(
     "G",
     [
         "cg_simple_partially_directed_cycle",
         "cg_multiple_blocks_partially_directed_cycle",
         "fig_g3_frydenberg",
+        "fig_g4_frydenberg",
     ],
 )
 def test_graphs_are_not_valid_cg(G, request):

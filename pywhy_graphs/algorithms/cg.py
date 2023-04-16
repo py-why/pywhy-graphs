@@ -1,7 +1,5 @@
-from collections import deque
-
-import networkx as nx
-import numpy as np
+import copy
+from collections import OrderedDict, deque
 
 from pywhy_graphs import CG
 
@@ -42,36 +40,47 @@ def is_valid_cg(graph: CG):
     # Check if directed edges are acyclic
     undirected_edge_name = graph.undirected_edge_name
     directed_edge_name = graph.directed_edge_name
-    visited = set()
     all_nodes = graph.nodes()
     G_undirected = graph.get_graphs(edge_type=undirected_edge_name)
     G_directed = graph.get_graphs(edge_type=directed_edge_name)
-    # TODO: keep track of paths as first class in queue
+
+    # Search over all nodes.
     for v in all_nodes:
-        print("v:", v)
-        seen = {v}
-        queue = deque([z for _, z in G_directed.out_edges(nbunch=v)])
-        if v in visited:
+        queue = deque([])
+        # Fill queue with paths from v starting with outgoing directed edge
+        # OrderedDict used for O(1) set membership and ordering
+        for _, z in G_directed.out_edges(nbunch=v):
+            d = OrderedDict()
+            d[v] = None
+            d[z] = None
+            queue.append(d)
 
-            continue
         while queue:
-            print(queue)
-            x = queue.popleft()
-            print("pop", x)
-            print("seen", seen)
-            if x in seen:
-                print("appeared in seen", x)
-                return False
+            # For each path in queue, progress along edges in certain
+            # manner
+            path = queue.popleft()
+            rev_path = reversed(path)
+            last_added = next(rev_path)
+            second_last_added = next(rev_path)
 
-            seen.add(x)
+            # For directed edges progress is allowed for outgoing edges
+            # only
+            for _, node in G_directed.out_edges(nbunch=last_added):
+                if node in path:
+                    return False
+                new_path = copy.deepcopy(path)
+                new_path[node] = None
+                queue.append(new_path)
 
-            for _, node in G_directed.out_edges(nbunch=x):
-                print("add out edge", node)
-                queue.append(node)
-            for nbr in G_undirected.neighbors(x):
-                print("add nbr edge", nbr)
-                queue.append(nbr)
-
-        visited.add(v)
+            # For undirected edges, progress is allowed for neighbors
+            # which were not visited. E.g. if the path is currently A - B,
+            # do not consider adding A when iterating over neighbors of B.
+            for node in G_undirected.neighbors(last_added):
+                if node != second_last_added:
+                    if node in path:
+                        return False
+                    new_path = copy.deepcopy(path)
+                    new_path[node] = None
+                    queue.append(new_path)
 
     return True
