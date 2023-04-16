@@ -9,7 +9,34 @@ from .base import AncestralMixin, ConservativeMixin
 
 
 class DiUnGraph(pywhy_nx.MixedEdgeGraph, AncestralMixin):
-    """ """
+    """
+    Private class that represents an abstract MixedEdgeGraph with
+    only directed and undirected edges.
+
+    This class is not intended for public use, and exists to reduce
+    duplication of code.
+
+    Parameters
+    ----------
+    incoming_directed_edges : input directed edges (optional, default: None)
+        Data to initialize directed edges. All arguments that are accepted
+        by `networkx.DiGraph` are accepted.
+    incoming_undirected_edges : input undirected edges (optional, default: None)
+        Data to initialize undirected edges. All arguments that are accepted
+        by `networkx.Graph` are accepted.
+    directed_edge_name : str
+        The name for the directed edges. By default 'directed'.
+    undirected_edge_name : str
+        The name for the directed edges. By default 'undirected'.
+    attr : keyword arguments, optional (default= no attributes)
+        Attributes to add to graph as key=value pairs.
+
+    See also
+    --------
+
+    pywhy_graphs.CG
+    pywhy_graphs.CPDAG
+    """
 
     def __init__(
         self,
