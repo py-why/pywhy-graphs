@@ -10,7 +10,7 @@ def is_valid_cg(graph: CG):
     """
     Checks if a supplied chain graph is valid.
 
-    This implements the original defintion of a (Lauritzen Wermuth Frydenberg) chain graph as
+    This implements the original definition of a (Lauritzen Wermuth Frydenberg) chain graph as
     presented in [1]_.
 
     Define a cycle as a series of nodes X_1 -o X_2 ... X_n -o X_1 where the edges may be directed or
