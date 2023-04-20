@@ -162,6 +162,14 @@ Finally, you should run some mypy type checks:
 
     poetry run poe type_check
 
+### Pre-commit Hooks
+
+To improve development workflows, you can use pre-commit hooks that automatically check for all of the `poe` tasks above:
+    
+    pre-commit install
+
+Whenever a commit is performed, these hooks will run to ensure that the code satisfies all formatting, style, and test checks.
+
 ### Documentation
 
 If you need to build the documentation locally and check for doc errors:
