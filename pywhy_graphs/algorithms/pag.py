@@ -914,6 +914,7 @@ def _check_ts_node(node):
 
 def _apply_meek_rules(graph: CPDAG) -> None:
     """Orient edges in a skeleton graph to estimate the causal DAG, or CPDAG.
+
     These are known as the Meek rules :footcite:`Meek1995`. They are deterministic
     in the sense that they are logical characterizations of what edges must be
     present given the rest of the local graph structure.
