@@ -918,6 +918,7 @@ def _apply_meek_rules(graph: CPDAG) -> None:
     These are known as the Meek rules :footcite:`Meek1995`. They are deterministic
     in the sense that they are logical characterizations of what edges must be
     present given the rest of the local graph structure.
+
     Parameters
     ----------
     graph : CPDAG
