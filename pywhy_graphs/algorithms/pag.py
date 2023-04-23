@@ -552,7 +552,6 @@ def pds(
     ----------
     .. footbibliography::
     """
-    print("HAHAHAHAHHA")
     if max_path_length is None:
         max_path_length = 1000
 
