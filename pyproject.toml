@@ -52,6 +52,7 @@ joblib = { version = "^1.1.0" }               # needed in dowhy's package
 memory_profiler = { version = "^0.60.0" }
 causal-learn = { version = "^0.1.2.8" }
 ananke-causal = { version = "^0.3.3" }
+pre-commit = "^3.0.4"
 
 [tool.poetry.group.style]
 optional = true
@@ -59,7 +60,7 @@ optional = true
 poethepoet = "^0.16.0"
 mypy = "^0.971"
 black = {extras = ["jupyter"], version = "^22.12.0"}
-isort = "^5.10.1"
+isort = "^5.12.0"
 flake8 = "^5.0.4"
 bandit = "^1.7.4"
 pydocstyle = "^6.1.1"
