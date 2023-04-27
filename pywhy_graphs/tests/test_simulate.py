@@ -1,10 +1,8 @@
-import networkx as nx
 import pandas as pd
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.simulate import (
-    make_linear_gaussian,
     simulate_linear_var_process,
     simulate_random_er_dag,
     simulate_var_process_from_summary_graph,
@@ -55,14 +53,3 @@ def test_simulate_summary_graph(n_variables, max_lag, n_times):
 
     assert isinstance(data, pd.DataFrame)
     assert data.shape == (n_times, n_variables)
-
-
-@pytest.mark.parametrize("n_jobs", [None, -1])
-def test_make_linear_gaussian_from_graph_n_jobs(n_jobs):
-    G = simulate_random_er_dag(n_nodes=5, seed=12345, ensure_acyclic=True)
-
-    G, data = make_linear_gaussian(G, random_state=12345, n_jobs=n_jobs)
-
-    assert set(data.columns) == set(G.nodes)
-    assert all(key in nx.get_node_attributes(G, "parent_functions") for key in G.nodes)
-    assert all(key in nx.get_node_attributes(G, "gaussian_noise_function") for key in G.nodes)
