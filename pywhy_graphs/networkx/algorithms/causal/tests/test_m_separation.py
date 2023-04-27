@@ -348,7 +348,6 @@ def test_m_separation_with_tuple_nodenames():
     assert not pywhy_nx.m_separated(G, {("A", 0)}, {"C"}, {"D"})
     assert pywhy_nx.m_separated(G, {("A", 0)}, {"C"}, set())
 
-
     # first create the oracle
     directed_edges = [
         ("x", "w"),
@@ -356,12 +355,12 @@ def test_m_separation_with_tuple_nodenames():
         ("y", "w"),
         ("z", "y"),
         ("z", "x"),
-        (('F', 0), 'x'),
-        (('F', 0), 'w'),
+        (("F", 0), "x"),
+        (("F", 0), "w"),
     ]
     bidirected_edges = [("x", "w")]
     digraph = nx.DiGraph(directed_edges)
     bigraph = nx.Graph(bidirected_edges)
     G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
-    
-    assert pywhy_nx.m_separated(G, {'y'}, {('F', 0)}, {'x', 'z'})
+
+    assert pywhy_nx.m_separated(G, {"y"}, {("F", 0)}, {"x", "z"})

@@ -1,13 +1,177 @@
-from typing import Callable, List, Optional
+from typing import Callable, Dict, List, Optional
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 import scipy.stats
+from joblib import Parallel, delayed
 
 import pywhy_graphs.networkx as pywhy_nx
 from pywhy_graphs.classes import StationaryTimeSeriesDiGraph
 from pywhy_graphs.classes.timeseries import numpy_to_tsgraph, tsgraph_to_numpy
 from pywhy_graphs.typing import Node
+
+
+def _sample_from_graph(
+    G,
+    top_sort_idx,
+    node_mean_lims,
+    node_std_lims,
+    edge_weight_lims,
+    edge_functions,
+    rng: np.random.Generator,
+) -> Dict:
+    """Private function to sample a single iid sample from a graph for all nodes.
+
+    Used to parallelize the sampling of multiple iid samples from a graph.
+    See `make_linear_gaussian` for more details.
+
+    Returns
+    -------
+    Dict
+        _description_
+    """
+    nodes_sample = dict()
+
+    for node_idx in top_sort_idx:
+        # get all parents
+        parents = sorted(list(G.predecessors(node_idx)))
+
+        # sample noise
+        mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
+        std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+        node_noise = rng.normal(loc=mean, scale=std)
+        node_sample = 0
+
+        # sample weight and edge function for each parent
+        node_function = dict()
+        for parent in parents:
+            weight = rng.uniform(low=edge_weight_lims[0], high=edge_weight_lims[1])
+            func = rng.choice(edge_functions)
+            node_sample += weight * func(parent)
+
+            node_function.update({parent: {"weight": weight, "func": func}})
+
+        # set the node attribute "functions" to hold the weight and function wrt each parent
+        nx.set_node_attributes(G, {node_idx: node_function}, "parent_functions")
+        nx.set_node_attributes(G, {node_idx: {"mean": mean, "std": std}}, "gaussian_noise_function")
+        node_sample += node_noise
+
+        nodes_sample[node_idx] = node_sample
+    return nodes_sample
+
+
+def make_linear_gaussian(
+    G,
+    node_mean_lims: Optional[List[float]] = None,
+    node_std_lims: Optional[List[float]] = None,
+    edge_functions: List[Callable[[float], float]] = None,
+    edge_weight_lims: Optional[List[float]] = None,
+    n_samples: int = 100,
+    n_jobs: Optional[int] = None,
+    random_state=None,
+):
+    r"""Sample a dataset from a linear Gaussian graphical model.
+
+    All nodes are sampled from a normal distribution with parametrizations
+    defined uniformly at random between the limits set by the input parameters.
+    The edges apply then a weight and a function based on the inputs in an additive fashion.
+    For node :math:`X_i`, we have:
+
+    .. math::
+
+        X_i = \\sum_{j \in parents} w_j f_j(X_j) + \\epsilon_i
+
+    where:
+
+    - :math:`\\epsilon_i \sim N(\mu_i, \sigma_i)`
+    - :math:`w_j \sim U(\\text{edge_weight_lims})`
+    - :math:`f_j` is a function sampled uniformly at random
+        from `edge_functions`
+
+    Parameters
+    ----------
+    G : NetworkX DiGraph
+        The graph to sample data from. The graph will be modified in-place
+        to get the weights and functions of the edges.
+    node_mean_lims : Optional[List[float]], optional
+        The lower and upper bounds of the mean of the Gaussian random variable, by default None,
+        which defaults to a mean of 0.
+    node_std_lims : Optional[List[float]], optional
+        The lower and upper bounds of the std of the Gaussian random variable, by default None,
+        which defaults to a std of 1.
+    edge_functions : List[Callable[float]], optional
+        The set of edge functions that take in an iid sample from the parent and computes
+        a transformation (possibly nonlinear), such as ``(lambda x: x**2, lambda x: x)``,
+        by default None, which defaults to the identity function ``lambda x: x``.
+    edge_weight_lims : Optional[List[float]], optional
+        The lower and upper bounds of the edge weight, by default None,
+        which defaults to a weight of 1.
+    n_jobs : int, optional
+        Number of jobs to run in parallel, by default None, which uses a single core.
+    random_state : int, optional
+        Random seed, by default None.
+
+    Returns
+    -------
+    G : NetworkX DiGraph
+        NetworkX graph with the edge weights and functions set.
+    data : pd.DataFrame
+        Dataframe with the iid samples from the graph.
+    """
+    if not nx.is_directed_acyclic_graph(G):
+        raise ValueError("The input graph must be a DAG.")
+    rng = np.random.default_rng(random_state)
+
+    if node_mean_lims is None:
+        node_mean_lims = [0, 0]
+    elif len(node_mean_lims) != 2:
+        raise ValueError("node_mean_lims must be a list of length 2.")
+    if node_std_lims is None:
+        node_std_lims = [1, 1]
+    elif len(node_std_lims) != 2:
+        raise ValueError("node_std_lims must be a list of length 2.")
+    if edge_functions is None:
+        edge_functions = [lambda x: x]
+    if edge_weight_lims is None:
+        edge_weight_lims = [1, 1]
+    elif len(edge_weight_lims) != 2:
+        raise ValueError("edge_weight_lims must be a list of length 2.")
+
+    # Create list of topologically sorted nodes
+    top_sort_idx = list(nx.topological_sort(G))
+
+    # Sample from graph
+    if n_jobs is None:
+        data = []
+        for _ in range(n_samples):
+            node_samples = _sample_from_graph(
+                G,
+                top_sort_idx,
+                node_mean_lims,
+                node_std_lims,
+                edge_weight_lims,
+                edge_functions,
+                rng,
+            )
+            data.append(node_samples)
+        data = pd.DataFrame.from_records(data)
+    else:
+        out = Parallel(n_jobs=n_jobs, verbose=0)(
+            delayed(_sample_from_graph)(
+                G,
+                top_sort_idx,
+                node_mean_lims,
+                node_std_lims,
+                edge_weight_lims,
+                edge_functions,
+                rng,
+            )
+            for _ in range(n_samples)
+        )
+        data = pd.DataFrame.from_records(out)
+
+    return G, data
 
 
 def simulate_random_er_dag(
