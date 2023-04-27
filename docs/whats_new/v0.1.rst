@@ -43,6 +43,7 @@ Changelog
 - |Feature| Implement export/import functions to go to/from pywhy-graphs to pcalg and tetrad, by `Adam Li`_ (:pr:`60`)
 - |Feature| Implement export/import functions to go to/from pywhy-graphs to ananke-causal, by `Jaron Lee`_ (:pr:`63`)
 - |Feature| Implement pre-commit hooks for development, by `Jaron Lee`_ (:pr:`68`)
+- |Feature| Implement a new submodule for converting graphs to a functional model, with :func:`pywhy_graphs.make_graph_linear_gaussian`, by `Adam Li`_ (:pr:`80`)
 
 Code and Documentation Contributors
 -----------------------------------
