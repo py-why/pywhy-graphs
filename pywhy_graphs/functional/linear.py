@@ -56,8 +56,7 @@ def make_graph_linear_gaussian(
     G : NetworkX DiGraph
         NetworkX graph with the edge weights and functions set with node attributes
         set with ``'parent_functions'``, and ``'gaussian_noise_function'``. Moreover
-        the graph attribute ``'linear_gaussian'`` is set to ``True``. One can then
-        sample from this graph using :func:`pywhy_graphs.functional.sample_from_graph`.
+        the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
     if not nx.is_directed_acyclic_graph(G):
         raise ValueError("The input graph must be a DAG.")
