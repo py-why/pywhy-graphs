@@ -1,5 +1,4 @@
 import networkx as nx
-import pytest
 
 from pywhy_graphs.functional import make_graph_linear_gaussian
 from pywhy_graphs.simulate import simulate_random_er_dag
