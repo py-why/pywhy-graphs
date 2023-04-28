@@ -25,7 +25,9 @@ def make_graph_linear_gaussian(
 
     where:
 
-    - :math:`\\epsilon_i \sim N(\mu_i, \sigma_i)`
+    - :math:`\\epsilon_i \sim N(\mu_i, \sigma_i)`, where :math:`\mu_i` is sampled
+        uniformly at random from `node_mean_lims` and :math:`\sigma_i` is sampled
+        uniformly at random from `node_std_lims`.
     - :math:`w_j \sim U(\\text{edge_weight_lims})`
     - :math:`f_j` is a function sampled uniformly at random
         from `edge_functions`
