@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Tuple
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs import CPDAG, PAG, StationaryTimeSeriesPAG
+from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
 from pywhy_graphs.typing import Node, TsNode
 
@@ -1107,6 +1107,42 @@ def _meek_rule4(graph: CPDAG, i: str, j: str) -> bool:
     return added_arrows
 
 
+def _find_adc(graph: CPDAG):
+    """Finds an Almost Directed Cycles in a MAG.
+
+    Args:
+        graph (CPDAG): The MAG
+    """
+
+    undedges = graph.undirected_edges
+    for elem in graph.nodes:
+        ancestors = nx.ancestors(graph.sub_directed_graph(), elem)
+        descendants = nx.descendants(graph.sub_directed_graph(), elem)
+        for elem in undedges:
+            if (elem[0] in ancestors and elem[1] in descendants) or (
+                elem[1] in ancestors and elem[0] in descendants
+            ):  # there is an undirected edge from one of the ancestors to a descendant
+                return True
+
+    return False
+
+
+def _check_parent_spouse(graph: CPDAG):
+    """Checks to see if the nodes with undirected edges have parents or spouses
+    Args:
+        graph (CPDAG): The MAG
+    """
+
+    un_nodes = graph.sub_directed_graph().nodes()
+
+    for elem in un_nodes:
+        if (len(list(graph.sub_directed_graph().predecessors(elem))) != 0) or (
+            len(list(graph.sub_bidirected_graph().neighbors(elem))) > 1
+        ):
+            return True
+    return False
+
+
 def is_valid_PAG(graph: PAG) -> bool:
     """Checks if the provided graph is a valid PAG.
     Parameters
@@ -1126,8 +1162,11 @@ def is_valid_PAG(graph: PAG) -> bool:
     #     is_valid = False
 
     # orient certain circle edges into directed edges
-    cedges = set(graph.circle_edges)
-    dedges = set(graph.directed_edges)
+
+    copy_graph = graph.copy()
+
+    cedges = set(copy_graph.circle_edges)
+    dedges = set(copy_graph.directed_edges)
 
     temp_cpdag = CPDAG()
 
@@ -1146,9 +1185,9 @@ def is_valid_PAG(graph: PAG) -> bool:
         ) not in to_add:  # add all 'o--o' edges to the cpdag
             to_add.append((u, v))
     for u, v in to_remove:
-        graph.remove_edge(u, v, graph.circle_edge_name)
+        copy_graph.remove_edge(u, v, graph.circle_edge_name)
     for u, v in to_reorient:
-        graph.orient_uncertain_edge(u, v)
+        copy_graph.orient_uncertain_edge(u, v)
     for u, v in to_add:
         temp_cpdag.add_edge(v, u, temp_cpdag.undirected_edge_name)
 
@@ -1167,18 +1206,45 @@ def is_valid_PAG(graph: PAG) -> bool:
                 break
         else:
             flag = False
+    # dot_graph = draw(copy_graph, name="temp_cpdag")
+    # dot_graph.render(outfile="pa112532.png", view=True)
 
-    mag = CPDAG()  # provisional MAG
+    mag = ADMG()  # provisional MAG
 
     # construct the final MAG
 
-    for (u, v) in graph.directed_edges:
+    for (u, v) in copy_graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
-    for (u, v) in graph.directed_edges:
+    for (u, v) in copy_graph.undirected_edges:
+        mag.add_edge(u, v, mag.undirected_edge_name)
+
+    for (u, v) in temp_cpdag.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
+    # dot_graph = draw(mag, name="mag")
+    # dot_graph.render(outfile="pa11242.png", view=True)
     # check the validity of the MAG
+
+    # find any directed cycles
+    try:
+        nx.find_cycle(mag.sub_directed_graph())  # raises a NetworkXNoCycle error
+        return False
+    except nx.NetworkXNoCycle:
+        pass
+
+    # find any almost directed cycles
+    adc_bool = _find_adc(mag)
+
+    if adc_bool:  # if there is an ADC, it's not a valid MAG
+        return False
+
+    # check to see if nodes with undirected edges have parents or spouses
+
+    ps_bool = _check_parent_spouse(mag)
+
+    if ps_bool:  # if there are parents or spouses, it's not a valid MAG
+        return False
 
     # convert the MAG back to a PAG
 
