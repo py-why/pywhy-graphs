@@ -8,7 +8,10 @@ import numpy as np
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
+from pywhy_graphs.networkx import m_separated
 from pywhy_graphs.typing import Node, TsNode
+
+# from pywhy_graphs.viz import draw
 
 logger = logging.getLogger()
 
@@ -1107,7 +1110,8 @@ def _meek_rule4(graph: CPDAG, i: str, j: str) -> bool:
     return added_arrows
 
 
-def _find_adc(graph: CPDAG):
+def _find_adc(graph: ADMG):
+
     """Finds an Almost Directed Cycles in a MAG.
 
     Args:
@@ -1127,13 +1131,14 @@ def _find_adc(graph: CPDAG):
     return False
 
 
-def _check_parent_spouse(graph: CPDAG):
+def _check_parent_spouse(graph: ADMG):
+
     """Checks to see if the nodes with undirected edges have parents or spouses
     Args:
         graph (CPDAG): The MAG
     """
 
-    un_nodes = graph.sub_directed_graph().nodes()
+    un_nodes = graph.sub_undirected_graph().nodes()
 
     for elem in un_nodes:
         if (len(list(graph.sub_directed_graph().predecessors(elem))) != 0) or (
@@ -1141,6 +1146,29 @@ def _check_parent_spouse(graph: CPDAG):
         ):
             return True
     return False
+
+
+def _check_m_seperation(graph: ADMG):
+    """Checks to see if every pair of non-adjacent node is m-seperated or not.
+
+    Args:
+        graph (ADMG): The MAG.
+    """
+    nodes = set(graph.nodes)
+    z = {}
+    # z = _find_all_colliders(graph) #create z containing all the colliders in the graph
+    for source in nodes:
+        nb = set(graph.neighbors(source))
+        curset = nodes - nb
+        curset.remove(source)  # set of non-adjacent nodes
+
+        for dest in curset:
+            if not m_separated(graph, source, dest, z):
+                return False
+    return True
+
+    print(nodes, "fefef")
+    return True
 
 
 def is_valid_PAG(graph: PAG) -> bool:
@@ -1206,7 +1234,8 @@ def is_valid_PAG(graph: PAG) -> bool:
                 break
         else:
             flag = False
-    # dot_graph = draw(copy_graph, name="temp_cpdag")
+    # print(temp_cpdag.edges())
+    # dot_graph = draw(temp_cpdag, name="temp_cpdag")
     # dot_graph.render(outfile="pa112532.png", view=True)
 
     mag = ADMG()  # provisional MAG
@@ -1218,6 +1247,9 @@ def is_valid_PAG(graph: PAG) -> bool:
 
     for (u, v) in copy_graph.undirected_edges:
         mag.add_edge(u, v, mag.undirected_edge_name)
+
+    for (u, v) in copy_graph.bidirected_edges:
+        mag.add_edge(u, v, mag.bidirected_edge_name)
 
     for (u, v) in temp_cpdag.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
@@ -1234,16 +1266,18 @@ def is_valid_PAG(graph: PAG) -> bool:
         pass
 
     # find any almost directed cycles
-    adc_bool = _find_adc(mag)
 
-    if adc_bool:  # if there is an ADC, it's not a valid MAG
+    if _find_adc(mag):  # if there is an ADC, it's not a valid MAG
         return False
 
     # check to see if nodes with undirected edges have parents or spouses
 
-    ps_bool = _check_parent_spouse(mag)
+    if _check_parent_spouse(mag):  # if there are parents or spouses, it's not a valid MAG
+        return False
 
-    if ps_bool:  # if there are parents or spouses, it's not a valid MAG
+    # assert M-seperation of between any two set of nodes
+
+    if not _check_m_seperation(mag):
         return False
 
     # convert the MAG back to a PAG
