@@ -1148,6 +1148,22 @@ def _check_parent_spouse(graph: ADMG):
     return False
 
 
+def _find_all_colliders(graph: ADMG):
+    """Finds and returns a set of all the colliders in a given graph.
+
+    Args:
+        graph (ADMG): The graph.
+    """
+    nodes = graph.nodes
+    print(nodes, "efefeef")
+    out = set()
+    for elem in nodes:
+        parents = list(graph.parents(elem))
+        if len(parents) > 1:
+            out.add(elem)
+    return out
+
+
 def _check_m_seperation(graph: ADMG):
     """Checks to see if every pair of non-adjacent node is m-seperated or not.
 
@@ -1155,14 +1171,16 @@ def _check_m_seperation(graph: ADMG):
         graph (ADMG): The MAG.
     """
     nodes = set(graph.nodes)
-    z = {}
-    # z = _find_all_colliders(graph) #create z containing all the colliders in the graph
+    z = _find_all_colliders(graph)  # create z containing all the colliders in the graph
     for source in nodes:
         nb = set(graph.neighbors(source))
         curset = nodes - nb
         curset.remove(source)  # set of non-adjacent nodes
-
+        if source in z:
+            z.remove(source)
         for dest in curset:
+            if dest in z:
+                z.remove(dest)
             if not m_separated(graph, source, dest, z):
                 return False
     return True
