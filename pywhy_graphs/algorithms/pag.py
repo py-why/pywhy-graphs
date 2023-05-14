@@ -8,7 +8,7 @@ import numpy as np
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
-from pywhy_graphs.networkx import m_separated
+from pywhy_graphs.networkx import minimal_m_separator
 from pywhy_graphs.typing import Node, TsNode
 
 # from pywhy_graphs.viz import draw
@@ -1171,21 +1171,12 @@ def _check_m_seperation(graph: ADMG):
         graph (ADMG): The MAG.
     """
     nodes = set(graph.nodes)
-    z = _find_all_colliders(graph)  # create z containing all the colliders in the graph
     for source in nodes:
         nb = set(graph.neighbors(source))
         curset = nodes - nb
-        curset.remove(source)  # set of non-adjacent nodes
-        if source in z:
-            z.remove(source)
         for dest in curset:
-            if dest in z:
-                z.remove(dest)
-            if not m_separated(graph, source, dest, z):
+            if minimal_m_separator(graph, source, dest) is None:
                 return False
-    return True
-
-    print(nodes, "fefef")
     return True
 
 
@@ -1293,7 +1284,7 @@ def is_valid_PAG(graph: PAG) -> bool:
     if _check_parent_spouse(mag):  # if there are parents or spouses, it's not a valid MAG
         return False
 
-    # assert M-seperation of between any two set of nodes
+    # assert M-seperation between any two non-adjacent nodes
 
     if not _check_m_seperation(mag):
         return False
