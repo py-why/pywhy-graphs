@@ -14,6 +14,7 @@ from pywhy_graphs.algorithms import (
     possible_ancestors,
     possible_descendants,
     uncovered_pd_path,
+    is_valid_PAG
 )
 
 
@@ -647,3 +648,25 @@ def test_pdst(pdst_graph):
     ex_pdsep_t = pds_t(G, ("E", 0), ("x", -1))
     assert ("y", -2) not in xe_pdsep_t
     assert ("y", -2) not in ex_pdsep_t
+
+
+def test_valid_pag():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u , v in circle_edges:
+        pag.add_edge(u,v, pag.circle_edge_name)
+        pag.add_edge(v,u, pag.circle_edge_name)
+
+    # A o--o B o--o C o--o D o--o F
+    assert is_valid_PAG(pag)
+
+    pag.orient_uncertain_edge("A", "B")
+    pag.orient_uncertain_edge("B", "C")
+    # A o--> B o--> C o--o D o--o F
+    assert not is_valid_PAG(pag)
+
+    pag.remove_edge("B","C")
+    pag.add_edge("B","C", pag.circle_edge_name)
+    pag.add_edge("C", "B",pag.directed_edge_name)
+    # A o--> B <--o C o--o D o--o F
+    assert is_valid_PAG(pag)
