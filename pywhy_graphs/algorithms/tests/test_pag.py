@@ -7,6 +7,7 @@ from pywhy_graphs import PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
     is_definite_noncollider,
+    is_valid_PAG,
     pds,
     pds_path,
     pds_t,
@@ -14,7 +15,6 @@ from pywhy_graphs.algorithms import (
     possible_ancestors,
     possible_descendants,
     uncovered_pd_path,
-    is_valid_PAG
 )
 
 
@@ -653,20 +653,58 @@ def test_pdst(pdst_graph):
 def test_valid_pag():
     pag = PAG()
     circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
-    for u , v in circle_edges:
-        pag.add_edge(u,v, pag.circle_edge_name)
-        pag.add_edge(v,u, pag.circle_edge_name)
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
 
     # A o--o B o--o C o--o D o--o F
     assert is_valid_PAG(pag)
 
+    cpag = pag.copy()
+
+    cpag.add_edge("A", "C", cpag.undirected_edge_name)
+
+    #  _____________
+    # |             |
+    # A o--o B o--o C o--o D o--o F
+    assert not is_valid_PAG(cpag)
+
+    cpag.remove_edge("A", "C", cpag.circle_edge_name)
+    cpag.remove_edge("C", "A", cpag.circle_edge_name)
+    cpag.add_edge("A", "C", cpag.circle_edge_name)
+    cpag.orient_uncertain_edge("C", "A")
+
+    #  _____________
+    # ↓             o
+    # A o--o B o--o C o--o D o--o F
+    assert not is_valid_PAG(cpag)
+
+    cpag.remove_edge("A", "C", cpag.circle_edge_name)
+    cpag.remove_edge("C", "A", cpag.circle_edge_name)
+    cpag.add_edge("C", "F", cpag.bidirected_edge_name)
+
+    #                _____________
+    #               ↓             ↓
+    # A o--o B o--o C o--o D o--o F
+    assert not is_valid_PAG(cpag)
+
+    cpag = pag.copy()
+
+    cpag.orient_uncertain_edge("B", "C")
+    cpag.orient_uncertain_edge("C", "B")
+
+    # A <--o B o--> C o--o D o--o F
+    assert not is_valid_PAG(pag)
+
     pag.orient_uncertain_edge("A", "B")
     pag.orient_uncertain_edge("B", "C")
+
     # A o--> B o--> C o--o D o--o F
     assert not is_valid_PAG(pag)
 
-    pag.remove_edge("B","C")
-    pag.add_edge("B","C", pag.circle_edge_name)
-    pag.add_edge("C", "B",pag.directed_edge_name)
+    pag.remove_edge("B", "C")
+    pag.add_edge("B", "C", pag.circle_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+
     # A o--> B <--o C o--o D o--o F
     assert is_valid_PAG(pag)
