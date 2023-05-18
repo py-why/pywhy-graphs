@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Iterable, List, Optional, Set
+from typing import Iterable, List, Optional, Set, Tuple
 
 from networkx.classes.reportviews import NodeView
 
@@ -9,7 +9,7 @@ from .admg import ADMG
 from .pag import PAG
 
 
-class InterventionMixin:
+class AugmentedNodeMixin:
     known_targets: bool
     graph: dict
     nodes: NodeView
@@ -27,7 +27,7 @@ class InterventionMixin:
     def directed_edge_name(self) -> str:
         pass
 
-    def _verify_fnode_dict(self):
+    def _verify_augmentednode_dict(self):
         # verify validity of F nodes
         if "F-nodes" not in self.graph:
             self.graph["F-nodes"] = dict()
@@ -36,7 +36,14 @@ class InterventionMixin:
                 "There is a graph property named F-nodes already that is not of type dict."
             )
 
-    def add_f_node(self, intervention_set: Set[Node]):
+        if "S-nodes" not in self.graph:
+            self.graph["S-nodes"] = dict()
+        elif not isinstance(self.graph["S-nodes"], dict):
+            raise RuntimeError(
+                "There is a graph property named S-nodes already that is not of type dict."
+            )
+
+    def add_f_node(self, intervention_set: Set[Node], require_unique=True):
         """Add an F-node to the graph.
 
         Parameters
@@ -54,7 +61,7 @@ class InterventionMixin:
             raise RuntimeError("The intervention set must be a set of unique nodes.")
 
         # check that the F-node intervention set has variables within the graph
-        if intervention_set in self.intervention_sets:
+        if require_unique and intervention_set in self.intervention_sets:
             raise RuntimeError(
                 f"You cannot add an F-node for {intervention_set} because "
                 f"there is already an F-node."
@@ -92,14 +99,19 @@ class InterventionMixin:
         self.graph["F-nodes"][f_node] = targets
 
     @property
+    def augmented_nodes(self):
+        """Return set of augmented nodes."""
+        return self.f_nodes.union(self.s_nodes)
+
+    @property
     def f_nodes(self) -> Set[Node]:
         """Return set of F-nodes."""
         return set(self.graph["F-nodes"].keys())
 
     @property
-    def non_f_nodes(self):
-        """Return set of non F-nodes."""
-        return set(self.nodes) - self.f_nodes
+    def non_augmented_nodes(self):
+        """Return set of non augmented-nodes."""
+        return set(self.nodes) - self.f_nodes - self.s_nodes
 
     @property
     def intervention_sets(self):
@@ -114,9 +126,48 @@ class InterventionMixin:
             nodes = nodes.union(iset)
         return nodes
 
+    @property
+    def domain_ids(self):
+        """Return set of domain ids."""
+        return set(self.graph["S-nodes"].values())
 
-class AugmentedGraph(ADMG, InterventionMixin):
-    """An augmented ADMG causal graph.
+    @property
+    def s_nodes(self) -> Set[Node]:
+        """Return set of S-nodes."""
+        return set(self.graph["S-nodes"].keys())
+
+    def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
+        if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
+            raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
+
+        # check that there are no duplicates and perform set conversion
+        orig_len = len(node_changes)
+        node_changes = frozenset(node_changes)  # type: ignore
+        if len(node_changes) != orig_len:
+            raise RuntimeError("The set must be a set of unique nodes.")
+
+        # check that the F-node intervention set has variables within the graph
+        if domain_ids in self.domain_ids:
+            raise RuntimeError(
+                f"You cannot add an augmneted-node for {node_changes} because "
+                f"there is already an augmented-node."
+            )
+
+        # add a new S-node into the graph
+        s_node_name = ("S", len(self.s_nodes))
+        self.add_node(s_node_name)
+
+        # add edge between the F-node and its intervention set
+        for perturbed_node in node_changes:
+            self.add_edge(s_node_name, perturbed_node, self.directed_edge_name)
+
+        # adding nodes to F-node container occurs last, because of the error checks
+        # that occur in adding edges
+        self.graph["S-nodes"][s_node_name] = domain_ids
+
+
+class AugmentedGraph(ADMG, AugmentedNodeMixin):
+    """An augmented causal diagram.
 
     An augmented graph is one where interventions are represented by F-nodes.
     See :footcite:`pearl_aspects_1993`, where they were first introduced. They
@@ -193,7 +244,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
         )
 
         # verify validity of F nodes
-        self._verify_fnode_dict()
+        self._verify_augmentednode_dict()
 
     def remove_node(self, n):
         if n in self.f_nodes:
@@ -201,7 +252,7 @@ class AugmentedGraph(ADMG, InterventionMixin):
         return super().remove_node(n)
 
 
-class IPAG(PAG, InterventionMixin):
+class IPAG(PAG, AugmentedNodeMixin):
     """A I-PAG Markov equivalence class of causal graphs.
 
     A I-PAG is an equivalence class representing causal graphs that
@@ -294,7 +345,7 @@ class IPAG(PAG, InterventionMixin):
             **attr,
         )
 
-        self._verify_fnode_dict()
+        self._verify_augmentednode_dict()
 
     def remove_node(self, n):
         if n in self.f_nodes:
@@ -302,7 +353,7 @@ class IPAG(PAG, InterventionMixin):
         return super().remove_node(n)
 
 
-class PsiPAG(PAG, InterventionMixin):
+class PsiPAG(PAG, AugmentedNodeMixin):
     """A Psi-PAG Markov equivalence class of causal graphs.
 
     A Psi-PAG is an equivalence class representing causal graphs that
@@ -392,7 +443,7 @@ class PsiPAG(PAG, InterventionMixin):
             **attr,
         )
 
-        self._verify_fnode_dict()
+        self._verify_augmentednode_dict()
 
     def remove_node(self, n):
         if n in self.f_nodes:

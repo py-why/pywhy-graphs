@@ -64,7 +64,7 @@ class InterventionTester:
 
     def test_add_f_nodes(self):
         G = self.G.copy()
-        non_f_nodes = set(G.nodes)
+        non_augmented_nodes = set(G.nodes)
 
         # adding an f-node should result in an error if not in graph
         with pytest.raises(
@@ -102,7 +102,7 @@ class InterventionTester:
         assert G.intervened_nodes == {0, 1}
 
         # non-f-nodes should still be the original nodes before F-nodes were added
-        assert G.non_f_nodes == non_f_nodes
+        assert G.non_augmented_nodes == non_augmented_nodes
 
     def test_remove_f_nodes(self):
         G = self.G.copy()
@@ -456,3 +456,17 @@ class TestAugmentedGraph(TestADMG, InterventionTester):
         ed1, ed2 = ({}, {})
         self.incoming_graph_data = {0: {1: ed1, 2: ed2}}
         self.G = self.Graph(self.incoming_graph_data, self.incoming_latent_data)
+
+    def test_fnode_msep(self):
+        directed_edges = [
+            ("x", "y"),
+            ("y", "z"),
+        ]
+        bidirected_edges = [("x", "y")]
+        graph = self.Graph(
+            incoming_directed_edges=directed_edges, incoming_bidirected_edges=bidirected_edges
+        )
+        graph.add_f_node({"x", "z"})
+
+        assert not pywhy_nx.m_separated(graph, {"x"}, {"z"}, set())
+        assert pywhy_nx.m_separated(graph, {"x"}, {"z"}, set(["y", ("F", 0)]))

@@ -1,7 +1,9 @@
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Set
 
 import networkx as nx
 import numpy as np
+
+from pywhy_graphs.typing import Node
 
 
 def make_graph_linear_gaussian(
@@ -11,7 +13,7 @@ def make_graph_linear_gaussian(
     edge_functions: List[Callable[[float], float]] = None,
     edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
-):
+) -> nx.DiGraph:
     r"""Convert an existing DAG to a linear Gaussian graphical model.
 
     All nodes are sampled from a normal distribution with parametrizations
@@ -101,4 +103,21 @@ def make_graph_linear_gaussian(
         nx.set_node_attributes(G, {node_idx: node_function}, "parent_functions")
         nx.set_node_attributes(G, {node_idx: {"mean": mean, "std": std}}, "gaussian_noise_function")
     G.graph["linear_gaussian"] = True
+    return G
+
+
+def apply_linear_soft_intervention(
+    G, targets: Set[Node], type: str = "additive", random_state=None
+):
+    if not G.graph.get("linear_gaussian", True):
+        raise ValueError("The input graph must be a linear Gaussian graph.")
+    if not all(target in G.nodes for target in targets):
+        raise ValueError("All targets must be in the graph.")
+
+    rng = np.random.default_rng(random_state)
+
+    for target in targets:
+        if type == "additive":
+            G.nodes[target]["gaussian_noise_function"]["mean"] += rng.uniform(low=-1, high=1)
+
     return G
