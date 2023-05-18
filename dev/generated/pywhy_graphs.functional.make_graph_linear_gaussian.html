@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.IPAG &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.functional.make_graph_linear_gaussian &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.PsiPAG" href="pywhy_graphs.PsiPAG.html" />
-    <link rel="prev" title="pywhy_graphs.AugmentedGraph" href="pywhy_graphs.AugmentedGraph.html" />
+    <link rel="next" title="pywhy_graphs.viz.draw" href="pywhy_graphs.viz.draw.html" />
+    <link rel="prev" title="3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -172,7 +172,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
+    <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.ADMG.html">
    pywhy_graphs.ADMG
@@ -193,8 +193,8 @@
    pywhy_graphs.AugmentedGraph
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.IPAG.html">
    pywhy_graphs.IPAG
   </a>
  </li>
@@ -418,9 +418,9 @@
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.functional.make_graph_linear_gaussian.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.functional.make_graph_linear_gaussian
   </a>
  </li>
@@ -497,10 +497,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.IPAG">
+  <a class="reference internal nav-link" href="#pywhy_graphs.functional.make_graph_linear_gaussian">
    <code class="docutils literal notranslate">
     <span class="pre">
-     IPAG
+     make_graph_linear_gaussian()
     </span>
    </code>
   </a>
@@ -524,99 +524,78 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-ipag">
-<h1>pywhy_graphs.IPAG<a class="headerlink" href="#pywhy-graphs-ipag" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="pywhy_graphs.IPAG">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.</span></span><span class="sig-name descname"><span class="pre">IPAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_circle_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'circle'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/intervention.html#IPAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.IPAG" title="Permalink to this definition">#</a></dt>
-<dd><p>A I-PAG Markov equivalence class of causal graphs.</p>
-<p>A I-PAG is an equivalence class representing causal graphs that
-have known-target soft interventions associated with it. The interventions are
-represented by special nodes, known as F-nodes. See
-<a class="footnote-reference brackets" href="#footcite-kocaoglu2019characterization" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for details.</p>
+  <section id="pywhy-graphs-functional-make-graph-linear-gaussian">
+<h1>pywhy_graphs.functional.make_graph_linear_gaussian<a class="headerlink" href="#pywhy-graphs-functional-make-graph-linear-gaussian" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pywhy_graphs.functional.make_graph_linear_gaussian">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.functional.</span></span><span class="sig-name descname"><span class="pre">make_graph_linear_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.2rc0.dev0)"><span class="pre">DiGraph</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_mean_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_std_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_functions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_weight_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/functional/linear.html#make_graph_linear_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.functional.make_graph_linear_gaussian" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert an existing DAG to a linear Gaussian graphical model.</p>
+<p>All nodes are sampled from a normal distribution with parametrizations
+defined uniformly at random between the limits set by the input parameters.
+The edges apply then a weight and a function based on the inputs in an additive fashion.
+For node <span class="math notranslate nohighlight">\(X_i\)</span>, we have:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}X_i = \\sum_{j \in parents} w_j f_j(X_j) + \\epsilon_i\end{split}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(\\epsilon_i \sim N(\mu_i, \sigma_i)\)</span>, where <span class="math notranslate nohighlight">\(\mu_i\)</span> is sampled</dt><dd><p>uniformly at random from <code class="docutils literal notranslate"><span class="pre">node_mean_lims</span></code> and <span class="math notranslate nohighlight">\(\sigma_i\)</span> is sampled
+uniformly at random from <code class="docutils literal notranslate"><span class="pre">node_std_lims</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><p><span class="math notranslate nohighlight">\(w_j \sim U(\\text{edge_weight_lims})\)</span></p></li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(f_j\)</span> is a function sampled uniformly at random</dt><dd><p>from <code class="docutils literal notranslate"><span class="pre">edge_functions</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
+<dd class="field-odd"><p><strong>G</strong> : NetworkX DiGraph</p>
 <blockquote>
-<div><p>Data to initialize directed edges. All arguments that are accepted
-by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+<div><p>The graph to sample data from. The graph will be modified in-place
+to get the weights and functions of the edges.</p>
 </div></blockquote>
-<p><strong>incoming_undirected_edges</strong> : input undirected edges (optional, default: None)</p>
+<p><strong>node_mean_lims</strong> : Optional[List[float]], optional</p>
 <blockquote>
-<div><p>Data to initialize undirected edges. All arguments that are accepted
-by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+<div><p>The lower and upper bounds of the mean of the Gaussian random variable, by default None,
+which defaults to a mean of 0.</p>
 </div></blockquote>
-<p><strong>incoming_bidirected_edges</strong> : input bidirected edges (optional, default: None)</p>
+<p><strong>node_std_lims</strong> : Optional[List[float]], optional</p>
 <blockquote>
-<div><p>Data to initialize bidirected edges. All arguments that are accepted
-by <code class="docutils literal notranslate"><span class="pre">networkx.Graph</span></code> are accepted.</p>
+<div><p>The lower and upper bounds of the std of the Gaussian random variable, by default None,
+which defaults to a std of 1.</p>
 </div></blockquote>
-<p><strong>incoming_circle_edges</strong> : input circular endpoint edges (optional, default: None)</p>
+<p><strong>edge_functions</strong> : List[Callable[float]], optional</p>
 <blockquote>
-<div><p>Data to initialize edges with circle endpoints. All arguments that are accepted
-by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> are accepted.</p>
+<div><p>The set of edge functions that take in an iid sample from the parent and computes
+a transformation (possibly nonlinear), such as <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">x:</span> <span class="pre">x**2,</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x)</span></code>,
+by default None, which defaults to the identity function <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span></code>.</p>
 </div></blockquote>
-<p><strong>directed_edge_name</strong> : str</p>
+<p><strong>edge_weight_lims</strong> : Optional[List[float]], optional</p>
 <blockquote>
-<div><p>The name for the directed edges. By default ‘directed’.</p>
+<div><p>The lower and upper bounds of the edge weight, by default None,
+which defaults to a weight of 1.</p>
 </div></blockquote>
-<p><strong>undirected_edge_name</strong> : str</p>
+<p><strong>random_state</strong> : int, optional</p>
 <blockquote>
-<div><p>The name for the undirected edges. By default ‘undirected’.</p>
+<div><p>Random seed, by default None.</p>
 </div></blockquote>
-<p><strong>bidirected_edge_name</strong> : str</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>G</strong> : NetworkX DiGraph</p>
 <blockquote>
-<div><p>The name for the bidirected edges. By default ‘bidirected’.</p>
-</div></blockquote>
-<p><strong>circle_edge_name</strong> : str</p>
-<blockquote>
-<div><p>The name for the circle edges. By default ‘circle’.</p>
-</div></blockquote>
-<p><strong>f_nodes</strong> : List[Node], optional</p>
-<blockquote>
-<div><p>List of corresponding nodes that are F nodes, by default None.</p>
+<div><p>NetworkX graph with the edge weights and functions set with node attributes
+set with <code class="docutils literal notranslate"><span class="pre">'parent_functions'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'gaussian_noise_function'</span></code>. Moreover
+the graph attribute <code class="docutils literal notranslate"><span class="pre">'linear_gaussian'</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div></blockquote>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="pywhy_graphs.PsiPAG.html#pywhy_graphs.PsiPAG" title="pywhy_graphs.PsiPAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PsiPAG</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAG</span></code></a></dt><dd></dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>F-nodes are just nodes that are added to a causal graph, and
-represent an “augmentation” of the original causal graph to handle
-interventions. Each F-node is mapped to a 2-tuple representing the
-index pair of unknown interventions. Since intervention targets are known,
-then the 2-tuple contains nodes in the graph. This is called <span class="math notranslate nohighlight">\(\sigma\)</span>
-in <a class="footnote-reference brackets" href="#footcite-jaber2020causal" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
-<p>Since F-nodes in an IPAG is defined by its source pair of interventions.</p>
-<p><strong>Edge Type Subgraphs</strong></p>
-<p>Different edge types in an I-PAG are represented exactly as they are in a
-<a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-class docutils literal notranslate"><span class="pre">pywhy_graphs.PAG</span></code></a>.</p>
-<p><strong>F-nodes</strong></p>
-<p>F-nodes are represented in pywhy-graphs as a tuple as <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">&lt;index&gt;)</span></code>, where <code class="docutils literal notranslate"><span class="pre">index</span></code>
-is just a random index number. Each F-node is mapped to the intervention-set that they
-are applied on. For example in the graph <span class="math notranslate nohighlight">\(('F', 0) \rightarrow X \rightarrow Y\)</span>,
-<code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> is the F-node added that models an intervention on <code class="docutils literal notranslate"><span class="pre">X</span></code>. Each intervention-set
-is a set of regular nodes in the causal graph.</p>
-<p class="rubric">References</p>
-<div class="docutils container" id="id3">
-<aside class="footnote brackets" id="footcite-kocaoglu2019characterization" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Murat Kocaoglu, Amin Jaber, Karthikeyan Shanmugam, and Elias Bareinboim. Characterization and learning of causal graphs with latent variables from soft interventions. <em>Advances in Neural Information Processing Systems</em>, 2019.</p>
-</aside>
-<aside class="footnote brackets" id="footcite-jaber2020causal" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Amin Jaber, Murat Kocaoglu, Karthikeyan Shanmugam, and Elias Bareinboim. Causal discovery from soft interventions with unknown targets: characterization and learning. <em>Advances in neural information processing systems</em>, 33:9551–9561, 2020.</p>
-</aside>
-</aside>
-</div>
 </dd></dl>
 
-</section>
+<div style='clear:both'></div></section>
 
 
               </article>
@@ -626,17 +605,17 @@ is a set of regular nodes in the causal graph.</p>
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.AugmentedGraph.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.AugmentedGraph</p>
+          <p class="prev-next-title"><span class="section-number">3.1.3. </span>pywhy_graphs.simulate.simulate_var_process_from_summary_graph</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.PsiPAG.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.viz.draw.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.PsiPAG</p>
+      <p class="prev-next-title">pywhy_graphs.viz.draw</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

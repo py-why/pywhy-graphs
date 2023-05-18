@@ -147,6 +147,17 @@ a SCM and their data starting from the causal graph.
    simulate.simulate_data_from_var
    simulate.simulate_var_process_from_summary_graph
 
+Converting graphs to functional models
+======================================
+An experimental submodule for converting graphs to functional models, such as
+linear structural equation Gaussian models (SEMs).
+
+.. currentmodule:: pywhy_graphs.functional
+
+.. autosummary::
+   :toctree: generated/
+
+   make_graph_linear_gaussian
 
 Visualization of causal graphs
 ==============================
