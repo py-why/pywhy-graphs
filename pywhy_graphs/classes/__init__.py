@@ -1,7 +1,8 @@
 from . import timeseries
 from .admg import ADMG
+from .augmented import AugmentedGraph
 from .cpdag import CPDAG
-from .intervention import IPAG, AugmentedGraph, PsiPAG
+from .intervention import IPAG, PsiPAG
 from .pag import PAG
 from .timeseries import (
     StationaryTimeSeriesCPDAG,

@@ -109,6 +109,27 @@ def make_graph_linear_gaussian(
 def apply_linear_soft_intervention(
     G, targets: Set[Node], type: str = "additive", random_state=None
 ):
+    """Applies a soft intervention to a linear Gaussian graph.
+
+    Parameters
+    ----------
+    G : Graph
+        Linear functional causal graph.
+    targets : Set[Node]
+        The set of nodes to intervene on simultanenously.
+    type : str, optional
+        Type of intervention, by default "additive".
+    random_state : RandomState, optional
+        Random seed, by default None.
+
+    Returns
+    -------
+    G : Graph
+        The functional linear causal graph with the intervention applied on the
+        target nodes. The perturbation occurs on the ``gaussian_noise_function``
+        of the target nodes. That is, the soft intervention, perturbs the
+        exogenous noise of the target nodes.
+    """
     if not G.graph.get("linear_gaussian", True):
         raise ValueError("The input graph must be a linear Gaussian graph.")
     if not all(target in G.nodes for target in targets):
