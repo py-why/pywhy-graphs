@@ -715,7 +715,7 @@ def test_valid_pag_five():
         pag.add_edge(v, u, pag.circle_edge_name)
 
     pag.orient_uncertain_edge("B", "C")
-    pag.orient_uncertain_edge("C", "B")
+    pag.orient_uncertain_edge("B", "A")
 
     # A <--o B o--> C o--o D o--o F
     assert not is_valid_PAG(pag)
