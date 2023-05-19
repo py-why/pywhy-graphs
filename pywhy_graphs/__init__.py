@@ -1,6 +1,7 @@
 from ._version import __version__  # noqa: F401
 from .classes import (
     ADMG,
+    CG,
     CPDAG,
     PAG,
     AugmentedGraph,
