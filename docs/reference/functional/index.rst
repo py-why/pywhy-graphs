@@ -59,3 +59,42 @@ In order to represent linear functions, we imbue nodes with a set of node attrib
 
    make_graph_linear_gaussian
    apply_linear_soft_intervention
+
+Multidomain
+===========
+
+Currently, this submodule only supports linear functions.
+
+Multiple-domain causal graphs are represented by selection diagrams :footcite:`bareinboim_causal_2016`,
+or augmented selection diagrams (TODO: CITATION FOR LEARNING SEL DIAGRAMS).
+
+In order to represent multidomain functions, we imbue nodes with a set of node attributes
+in addition to the ones for linear functions. The nodes that are imbued with extra attributes
+are the direct children of an S-node.
+
+- ``invariant_domains``: a list of domain IDs that are invariant for this node.
+- ``domain_gaussian_noise_function``: a dictionary with keys ``mean`` and ``std`` that
+    encodes the data-generating function for the Gaussian noise for each non-invariant domain.
+    
+    .. code-block:: python
+        {
+            'X': {
+                'domain_gaussian_noise_function': {
+                    <domain_id>: {
+                        'mean': <mean of gaussian noise added to X>,
+                        'std': <std of gaussian noise added to X>,
+                    },
+                'invariant_domains': [<domain_id>, ...],
+                }
+            }
+        }
+
+:mod:`pywhy_graphs.functional.multidomain`: Linear functional selection diagrams
+================================================================================
+.. currentmodule:: pywhy_graphs.functional.multidomain
+    
+.. autosummary::
+   :toctree: ../../generated/
+
+   make_graph_multidomain
+   find_connected_pairs
