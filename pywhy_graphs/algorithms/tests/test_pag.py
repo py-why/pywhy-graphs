@@ -650,7 +650,7 @@ def test_pdst(pdst_graph):
     assert ("y", -2) not in ex_pdsep_t
 
 
-def test_valid_pag():
+def test_valid_pag_one():
     pag = PAG()
     circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
     for u, v in circle_edges:
@@ -660,41 +660,73 @@ def test_valid_pag():
     # A o--o B o--o C o--o D o--o F
     assert is_valid_PAG(pag)
 
-    cpag = pag.copy()
 
-    cpag.add_edge("A", "C", cpag.undirected_edge_name)
+def test_valid_pag_two():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
+
+    pag.add_edge("A", "C", pag.undirected_edge_name)
 
     #  _____________
     # |             |
     # A o--o B o--o C o--o D o--o F
-    assert not is_valid_PAG(cpag)
+    assert not is_valid_PAG(pag)
 
-    cpag.remove_edge("A", "C", cpag.circle_edge_name)
-    cpag.remove_edge("C", "A", cpag.circle_edge_name)
-    cpag.add_edge("A", "C", cpag.circle_edge_name)
-    cpag.orient_uncertain_edge("C", "A")
+
+def test_valid_pag_three():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
+
+    pag.add_edge("A", "C", pag.circle_edge_name)
+    pag.add_edge("C", "A", pag.directed_edge_name)
 
     #  _____________
     # ↓             o
     # A o--o B o--o C o--o D o--o F
-    assert not is_valid_PAG(cpag)
+    assert not is_valid_PAG(pag)
 
-    cpag.remove_edge("A", "C", cpag.circle_edge_name)
-    cpag.remove_edge("C", "A", cpag.circle_edge_name)
-    cpag.add_edge("C", "F", cpag.bidirected_edge_name)
+
+def test_valid_pag_four():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
+
+    pag.add_edge("C", "F", pag.bidirected_edge_name)
 
     #                _____________
     #               ↓             ↓
     # A o--o B o--o C o--o D o--o F
-    assert not is_valid_PAG(cpag)
+    assert not is_valid_PAG(pag)
 
-    cpag = pag.copy()
 
-    cpag.orient_uncertain_edge("B", "C")
-    cpag.orient_uncertain_edge("C", "B")
+def test_valid_pag_five():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
+
+    pag.orient_uncertain_edge("B", "C")
+    pag.orient_uncertain_edge("C", "B")
 
     # A <--o B o--> C o--o D o--o F
     assert not is_valid_PAG(pag)
+
+
+def test_valid_pag_six():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
 
     pag.orient_uncertain_edge("A", "B")
     pag.orient_uncertain_edge("B", "C")
@@ -702,9 +734,16 @@ def test_valid_pag():
     # A o--> B o--> C o--o D o--o F
     assert not is_valid_PAG(pag)
 
-    pag.remove_edge("B", "C")
-    pag.add_edge("B", "C", pag.circle_edge_name)
-    pag.add_edge("C", "B", pag.directed_edge_name)
+
+def test_valid_pag_seven():
+    pag = PAG()
+    circle_edges = [("A", "B"), ("B", "C"), ("C", "D"), ("D", "F")]
+    for u, v in circle_edges:
+        pag.add_edge(u, v, pag.circle_edge_name)
+        pag.add_edge(v, u, pag.circle_edge_name)
+
+    pag.orient_uncertain_edge("A", "B")
+    pag.orient_uncertain_edge("C", "B")
 
     # A o--> B <--o C o--o D o--o F
     assert is_valid_PAG(pag)
