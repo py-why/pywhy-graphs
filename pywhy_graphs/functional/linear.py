@@ -5,6 +5,9 @@ import numpy as np
 
 from pywhy_graphs.typing import Node
 
+from .additive import generate_edge_functions_for_node
+from .utils import _preprocess_parameter_inputs
+
 
 def make_graph_linear_gaussian(
     G: nx.DiGraph,
@@ -62,46 +65,40 @@ def make_graph_linear_gaussian(
         set with ``'parent_functions'``, and ``'gaussian_noise_function'``. Moreover
         the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
-    if not nx.is_directed_acyclic_graph(G):
+    G = G.copy()
+
+    if hasattr(G, "get_graphs"):
+        directed_G = G.get_graphs("directed")
+    else:
+        directed_G = G
+
+    if not nx.is_directed_acyclic_graph(directed_G):
         raise ValueError("The input graph must be a DAG.")
     rng = np.random.default_rng(random_state)
 
-    if node_mean_lims is None:
-        node_mean_lims = [0, 0]
-    elif len(node_mean_lims) != 2:
-        raise ValueError("node_mean_lims must be a list of length 2.")
-    if node_std_lims is None:
-        node_std_lims = [1, 1]
-    elif len(node_std_lims) != 2:
-        raise ValueError("node_std_lims must be a list of length 2.")
-    if edge_functions is None:
-        edge_functions = [lambda x: x]
-    if edge_weight_lims is None:
-        edge_weight_lims = [1, 1]
-    elif len(edge_weight_lims) != 2:
-        raise ValueError("edge_weight_lims must be a list of length 2.")
+    # preprocess hyperparameters and check for validity
+    node_mean_lims, node_std_lims, edge_functions, edge_weight_lims = _preprocess_parameter_inputs(
+        node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
+    )
 
     # Create list of topologically sorted nodes
-    top_sort_idx = list(nx.topological_sort(G))
+    top_sort_idx = list(nx.topological_sort(directed_G))
 
-    for node_idx in top_sort_idx:
-        # get all parents
-        parents = sorted(list(G.predecessors(node_idx)))
-
+    # sample noise and edge functions for each node and its parents
+    for node in top_sort_idx:
         # sample noise
         mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
         std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+        G.nodes[node]["gaussian_noise_function"] = {"mean": mean, "std": std}
 
-        # sample weight and edge function for each parent
-        node_function = dict()
-        for parent in parents:
-            weight = rng.uniform(low=edge_weight_lims[0], high=edge_weight_lims[1])
-            func = rng.choice(edge_functions)
-            node_function.update({parent: {"weight": weight, "func": func}})
-
-        # set the node attribute "functions" to hold the weight and function wrt each parent
-        nx.set_node_attributes(G, {node_idx: node_function}, "parent_functions")
-        nx.set_node_attributes(G, {node_idx: {"mean": mean, "std": std}}, "gaussian_noise_function")
+        # sample edge functions and weights
+        generate_edge_functions_for_node(
+            G,
+            node=node,
+            edge_weight_lims=edge_weight_lims,
+            edge_functions=edge_functions,
+            random_state=random_state,
+        )
     G.graph["linear_gaussian"] = True
     return G
 

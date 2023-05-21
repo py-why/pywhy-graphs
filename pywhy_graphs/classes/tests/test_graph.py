@@ -2,7 +2,7 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
-from pywhy_graphs import ADMG, CPDAG, IPAG, PAG, AugmentedGraph, PsiPAG
+from pywhy_graphs import ADMG, CPDAG, PAG, AugmentedGraph, AugmentedPAG
 
 
 class BaseGraph:
@@ -90,14 +90,10 @@ class InterventionTester:
         with pytest.raises(RuntimeError, match="You cannot add an F-node for {1}"):
             G.add_f_node({1})
 
-        if self.G.known_targets:
-            with pytest.raises(RuntimeError, match="All intervention sets must be nodes already"):
-                G.add_f_node({"blah"})
-
         # adding F-node for intervention set on multiple variables is
         # allowed
         G.add_f_node({1, 0})
-        assert G.f_nodes == {("F", 0), ("F", 1)}
+        assert set(G.f_nodes) == {("F", 0), ("F", 1)}
         assert G.intervention_sets == {frozenset((0, 1)), frozenset([1])}
         assert G.intervened_nodes == {0, 1}
 
@@ -418,27 +414,14 @@ class TestPAG(TestADMG):
         assert not pywhy_nx.m_separated(G, {3}, {1}, {4})
 
 
-class TestIPAG(TestPAG, InterventionTester):
+class TestAugmentedPAG(TestPAG, InterventionTester):
     def setup_method(self):
         # setup the causal graph in previous method
         # start every graph with the confounded graph
-        self.Graph = IPAG
-        self.G = IPAG()
+        self.Graph = AugmentedPAG
+        self.G = AugmentedPAG()
 
-        # Create a IPAG: 2 <- 0 <-> 1
-        # handle the bidirected edge from 0 to 1
-        self.G.add_edge(0, 1, "bidirected")
-        self.G.add_edge(0, 2, "directed")
-
-
-class TestPsiPAG(TestPAG, InterventionTester):
-    def setup_method(self):
-        # setup the causal graph in previous method
-        # start every graph with the confounded graph
-        self.Graph = PsiPAG
-        self.G = PsiPAG()
-
-        # Create a IPAG: 2 <- 0 <-> 1
+        # Create a AugmentedPAG: 2 <- 0 <-> 1
         # handle the bidirected edge from 0 to 1
         self.G.add_edge(0, 1, "bidirected")
         self.G.add_edge(0, 2, "directed")

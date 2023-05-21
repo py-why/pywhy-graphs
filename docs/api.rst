@@ -29,8 +29,7 @@ graphs encountered in the literature.
    CPDAG
    PAG
    AugmentedGraph
-   IPAG
-   PsiPAG
+   AugmentedPAG
 
 :mod:`pywhy_graphs.algorithms`: Algorithms for Mixed-Edge Graphs
 ================================================================

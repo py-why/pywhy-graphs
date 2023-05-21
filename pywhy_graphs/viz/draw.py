@@ -9,6 +9,10 @@ def _draw_pag_edges(
     bidirected_edges: List[Tuple] = None,
     **attrs,
 ):
+    """Draw the PAG edges.
+
+    PAG edges may have different endpoints.
+    """
     # keep track of edges with circular edges between each other because we want to
     # draw edges correctly when there are circular edges
     found_circle_sibs = set()
@@ -123,6 +127,11 @@ def draw(
         bidirected_edges=bidirected_edges,
     )
 
+    if hasattr(G, "get_graphs"):
+        directed_G = G.get_graphs("directed")
+    else:
+        directed_G = G
+
     for v in G.nodes:
         child = str(v)
         if pos and pos.get(v) is not None:
@@ -130,7 +139,10 @@ def draw(
         else:
             dot.node(child, shape=shape, height=".5", width=".5")
 
-        for parent in G.predecessors(v):
+        for parent in directed_G.predecessors(v):
+            if parent == v or not directed_G.has_edge(parent, v):
+                continue
+
             # memoize if we have seen the bidirected circular edge before
             if f"{child}-{parent}" in found_circle_sibs or f"{parent}-{child}" in found_circle_sibs:
                 continue

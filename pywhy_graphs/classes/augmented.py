@@ -7,10 +7,10 @@ from networkx.classes.reportviews import NodeView
 from pywhy_graphs.typing import Node
 
 from .admg import ADMG
+from .pag import PAG
 
 
 class AugmentedNodeMixin:
-    known_targets: bool
     graph: dict
     nodes: NodeView
 
@@ -75,7 +75,7 @@ class AugmentedNodeMixin:
                 f"there is already an F-node."
             )
         for node in intervention_set:
-            if self.known_targets and node not in self.nodes:
+            if node not in self.nodes:
                 raise RuntimeError(
                     f"All intervention sets must be nodes already in the graph. {node} is not."
                 )
@@ -110,17 +110,17 @@ class AugmentedNodeMixin:
     @property
     def augmented_nodes(self):
         """Return set of augmented nodes."""
-        return self.f_nodes.union(self.s_nodes)
+        return self.f_nodes + self.s_nodes
 
     @property
-    def f_nodes(self) -> Set[Node]:
+    def f_nodes(self) -> List[Node]:
         """Return set of F-nodes."""
-        return set(self.graph["F-nodes"].keys())
+        return list(self.graph["F-nodes"].keys())
 
     @property
     def non_augmented_nodes(self):
         """Return set of non augmented-nodes."""
-        return set(self.nodes) - self.f_nodes - self.s_nodes
+        return set(self.nodes).difference(self.f_nodes).difference(self.s_nodes)
 
     @property
     def intervention_sets(self):
@@ -141,12 +141,17 @@ class AugmentedNodeMixin:
     @property
     def domain_ids(self):
         """Return set of domain ids."""
-        return set(self.graph["S-nodes"].values())
+        domain_ids = set()
+        for src, target in self.graph["S-nodes"].values():
+            domain_ids.add(src)
+            domain_ids.add(target)
+
+        return list(domain_ids)
 
     @property
-    def s_nodes(self) -> Set[Node]:
+    def s_nodes(self) -> List[Node]:
         """Return set of S-nodes."""
-        return set(self.graph["S-nodes"].keys())
+        return list(self.graph["S-nodes"].keys())
 
     def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
         if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
@@ -167,7 +172,7 @@ class AugmentedNodeMixin:
 
         # add a new S-node into the graph
         s_node_name = ("S", len(self.s_nodes))
-        self.add_node(s_node_name)
+        self.add_node(s_node_name, domain_ids=domain_ids)
 
         # add edge between the F-node and its intervention set
         for perturbed_node in node_changes:
@@ -233,8 +238,6 @@ class AugmentedGraph(ADMG, AugmentedNodeMixin):
     .. footbibliography::
     """
 
-    known_targets: bool = True
-
     def __init__(
         self,
         incoming_directed_edges=None,
@@ -261,4 +264,112 @@ class AugmentedGraph(ADMG, AugmentedNodeMixin):
     def remove_node(self, n):
         if n in self.f_nodes:
             del self.graph["F-nodes"][n]
+        return super().remove_node(n)
+
+
+class AugmentedPAG(PAG, AugmentedNodeMixin):
+    """An augmented PAG.
+
+    An augmented PAG is a PAG that has been augmented with either F-nodes or
+    S-nodes, or both. It is a Markov equivalence class of causal diagrams.
+
+    Parameters
+    ----------
+    incoming_directed_edges : input directed edges (optional, default: None)
+        Data to initialize directed edges. All arguments that are accepted
+        by `networkx.DiGraph` are accepted.
+    incoming_undirected_edges : input undirected edges (optional, default: None)
+        Data to initialize undirected edges. All arguments that are accepted
+        by `networkx.Graph` are accepted.
+    incoming_bidirected_edges : input bidirected edges (optional, default: None)
+        Data to initialize bidirected edges. All arguments that are accepted
+        by `networkx.Graph` are accepted.
+    incoming_circle_edges : input circular endpoint edges (optional, default: None)
+        Data to initialize edges with circle endpoints. All arguments that are accepted
+        by `networkx.DiGraph` are accepted.
+    directed_edge_name : str
+        The name for the directed edges. By default 'directed'.
+    undirected_edge_name : str
+        The name for the undirected edges. By default 'undirected'.
+    bidirected_edge_name : str
+        The name for the bidirected edges. By default 'bidirected'.
+    circle_edge_name : str
+        The name for the circle edges. By default 'circle'.
+    f_nodes : List[Node], optional
+        List of corresponding nodes that are F nodes, by default None.
+
+    Notes
+    -----
+    F-nodes are just nodes that are added to a causal graph, and
+    represent an "augmentation" of the original causal graph to handle
+    interventions. Each F-node is mapped to a 2-tuple representing the
+    index pair of intervention-targets.
+
+    If the intervention targets are unknown, then the 2-tuple contains
+    integer indices representing the index of an interventional distribution.
+    This is called :math:`\\sigma` in :footcite:`Jaber2020causal`.
+
+    **Edge Type Subgraphs**
+
+    Different edge types in an AugmentedPAG are represented exactly as they are in a
+    :class:`pywhy_graphs.PAG`.
+
+    **F-nodes**
+
+    Interventions are represented by special nodes, known as F-nodes. See
+    :footcite:`Jaber2020causal`, or :footcite:`Kocaoglu2019characterization` for details.
+
+    F-nodes are represented in pywhy-graphs as a tuple as ``('F', <index>)``, where ``index``
+    is just a random index number. Each F-node is mapped to the intervention-set that they
+    are applied on. For example in the graph :math:`('F', 0) \\rightarrow X \\rightarrow Y`,
+    ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
+    is a set of regular nodes in the causal graph.
+
+    **S-nodes**
+
+    Different domains and environments are represented by special nodes, known as S-nodes. See
+    :footcite:`bareinboim_causal_2016` for details.
+
+    S-nodes are represented in pywhy-graphs as a tuple as ``('S', <index>)``, where ``index``
+    is just a random index number. Each F-node is mapped to the intervention-set that they
+    are applied on. For example in the graph :math:`('F', 0) \\rightarrow X \\rightarrow Y`,
+    ``('F', 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set
+    is a set of regular nodes in the causal graph.
+
+    References
+    ----------
+    .. footbibliography::
+    """
+
+    def __init__(
+        self,
+        incoming_directed_edges=None,
+        incoming_undirected_edges=None,
+        incoming_bidirected_edges=None,
+        incoming_circle_edges=None,
+        directed_edge_name: str = "directed",
+        undirected_edge_name: str = "undirected",
+        bidirected_edge_name: str = "bidirected",
+        circle_edge_name: str = "circle",
+        **attr,
+    ):
+        super().__init__(
+            incoming_directed_edges,
+            incoming_undirected_edges,
+            incoming_bidirected_edges,
+            incoming_circle_edges,
+            directed_edge_name,
+            undirected_edge_name,
+            bidirected_edge_name,
+            circle_edge_name,
+            **attr,
+        )
+
+        self._verify_augmentednode_dict()
+
+    def remove_node(self, n):
+        if n in self.f_nodes:
+            del self.graph["F-nodes"][n]
+        if n in self.s_nodes:
+            del self.graph["S-nodes"][n]
         return super().remove_node(n)

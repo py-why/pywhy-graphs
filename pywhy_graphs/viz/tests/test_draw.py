@@ -2,7 +2,7 @@ import re
 
 import networkx as nx
 
-from pywhy_graphs import PAG, StationaryTimeSeriesDiGraph
+from pywhy_graphs import CPDAG, PAG, StationaryTimeSeriesDiGraph
 from pywhy_graphs.viz import draw, timeseries_layout
 
 
@@ -129,3 +129,17 @@ def test_draw_name_is_not_given():
     dot = draw(graph)
     # assert that the produced graph does not contain a label
     assert "label=" not in dot.source
+
+
+def test_draw_cpdag():
+    """Regression test to make sure CPDAG draws correctly."""
+    cpdag = CPDAG()
+
+    cpdag.add_edge("xy", "x", cpdag.directed_edge_name)
+    cpdag.add_edge("x", "z", cpdag.directed_edge_name)
+    cpdag.add_edge("z", "w", cpdag.directed_edge_name)
+    cpdag.add_edge("w", "xy", cpdag.undirected_edge_name)
+
+    dot_graph = draw(cpdag, name="bug")
+    assert "xy -> z" not in str(dot_graph)
+    assert "xy -> x" in str(dot_graph)
