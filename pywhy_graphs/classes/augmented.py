@@ -19,7 +19,7 @@ class AugmentedNodeMixin:
         pass
 
     @abstractmethod
-    def add_node(self, u):
+    def add_node(self, u, **attrs):
         pass
 
     @property

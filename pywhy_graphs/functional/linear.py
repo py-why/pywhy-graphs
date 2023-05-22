@@ -11,10 +11,10 @@ from .utils import _preprocess_parameter_inputs
 
 def make_graph_linear_gaussian(
     G: nx.DiGraph,
-    node_mean_lims: Optional[List[float]] = None,
-    node_std_lims: Optional[List[float]] = None,
+    node_mean_lims: List[float] = None,
+    node_std_lims: List[float] = None,
     edge_functions: List[Callable[[float], float]] = None,
-    edge_weight_lims: Optional[List[float]] = None,
+    edge_weight_lims: List[float] = None,
     random_state=None,
 ) -> nx.DiGraph:
     r"""Convert an existing DAG to a linear Gaussian graphical model.
@@ -77,7 +77,7 @@ def make_graph_linear_gaussian(
     rng = np.random.default_rng(random_state)
 
     # preprocess hyperparameters and check for validity
-    node_mean_lims, node_std_lims, edge_functions, edge_weight_lims = _preprocess_parameter_inputs(
+    node_mean_lims_, node_std_lims_, edge_functions_, edge_weight_lims_ = _preprocess_parameter_inputs(
         node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
     )
 
@@ -87,16 +87,16 @@ def make_graph_linear_gaussian(
     # sample noise and edge functions for each node and its parents
     for node in top_sort_idx:
         # sample noise
-        mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
-        std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+        mean = rng.uniform(low=node_mean_lims_[0], high=node_mean_lims_[1])
+        std = rng.uniform(low=node_std_lims_[0], high=node_std_lims_[1])
         G.nodes[node]["gaussian_noise_function"] = {"mean": mean, "std": std}
 
         # sample edge functions and weights
         generate_edge_functions_for_node(
             G,
             node=node,
-            edge_weight_lims=edge_weight_lims,
-            edge_functions=edge_functions,
+            edge_weight_lims=edge_weight_lims_,
+            edge_functions=edge_functions_,
             random_state=random_state,
         )
     G.graph["linear_gaussian"] = True
