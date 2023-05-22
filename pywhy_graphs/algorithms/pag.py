@@ -908,3 +908,32 @@ def _check_ts_node(node):
         )
     if node[1] > 0:
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
+
+
+def inducing_path(G, node_x, node_y, relative_to=None):
+    """Checks if an inducing path exists between node_x and node_y and if it does returns it.
+
+    Args:
+        G : Graph
+            The graph.
+        node_x : node
+            The source node.
+        node_y : node
+            The final node.
+        relative_to : set
+            The set relative to which the path has to be found. Defaults to None.
+
+
+    Returns:
+        path : Tuple[bool, path]
+            A tuple containing a bool and a path if the bool is true.
+    """
+
+    nodes = G.nodes
+    if node_x not in nodes or node_y not in nodes:
+        raise ValueError("The provided nodes are not in the graph.")
+
+    path = []  # this will contain the path.
+    path.append(node_x)
+
+    return (False, [])
