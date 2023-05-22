@@ -77,7 +77,12 @@ def make_graph_linear_gaussian(
     rng = np.random.default_rng(random_state)
 
     # preprocess hyperparameters and check for validity
-    node_mean_lims_, node_std_lims_, edge_functions_, edge_weight_lims_ = _preprocess_parameter_inputs(
+    (
+        node_mean_lims_,
+        node_std_lims_,
+        edge_functions_,
+        edge_weight_lims_,
+    ) = _preprocess_parameter_inputs(
         node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
     )
 

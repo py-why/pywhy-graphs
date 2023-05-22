@@ -68,14 +68,14 @@ jobs:
       - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
-      - run:
-          name: Setup Python Packages
-          command: |
-            poetry install --with docs
-      # - python/install-packages:
-      #     pkg-manager: poetry
-      #     cache-version: "v1" # change to clear cache
-      #     args: "--with docs"
+      # - run:
+      #     name: Setup Python Packages
+      #     command: |
+      #       poetry install --with docs
+      - python/install-packages:
+          pkg-manager: poetry
+          cache-version: "v1" # change to clear cache
+          args: "--with docs"
       - run:
           name: Check poetry package versions
           command: |
