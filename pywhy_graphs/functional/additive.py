@@ -1,4 +1,3 @@
-import networkx as nx
 import numpy as np
 
 from pywhy_graphs.typing import Node
@@ -46,7 +45,7 @@ def generate_edge_functions_for_node(
     rng = np.random.default_rng(random_state)
 
     # get all parents
-    parents = nx.predecessor(directed_G, node, cutoff=1)
+    parents = directed_G.predecessors(node)
 
     # sample weight and edge function for each parent
     node_function = dict()
