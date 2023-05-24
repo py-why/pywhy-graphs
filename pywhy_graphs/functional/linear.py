@@ -1,4 +1,4 @@
-from typing import Callable, List, Optional, Set
+from typing import Callable, List, Set
 
 import networkx as nx
 import numpy as np
