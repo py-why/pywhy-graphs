@@ -64,14 +64,11 @@ jobs:
       - run:
           name: Install pysal dependencies
           command: |
-            sudo apt install libspatialindex-dev xdg-utils
+            sudo apt install libspatialindex-dev xdg-utils shared-mime-info
       - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
-      # - run:
-      #     name: Setup Python Packages
-      #     command: |
-      #       poetry install --with docs
+
       - python/install-packages:
           pkg-manager: poetry
           cache-version: "v1" # change to clear cache
