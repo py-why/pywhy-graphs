@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.functional.multidomain &#8212; pywhy-graphs v0.0.0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.0.0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.functional.multidomain</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">add_all_snode_combinations</span><span class="p">,</span>
+    <span class="n">compute_invariant_domains_per_node</span><span class="p">,</span>
+    <span class="n">find_connected_pairs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.classes</span> <span class="kn">import</span> <span class="n">AugmentedGraph</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.functional.utils</span> <span class="kn">import</span> <span class="n">_preprocess_parameter_inputs</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+
+<span class="kn">from</span> <span class="nn">.additive</span> <span class="kn">import</span> <span class="n">generate_edge_functions_for_node</span>
+
+
+<div class="viewcode-block" id="make_graph_multidomain"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.make_graph_multidomain.html#pywhy_graphs.functional.make_graph_multidomain">[docs]</a><span class="k">def</span> <span class="nf">make_graph_multidomain</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
+    <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">n_nodes_with_s_nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_invariances_to_try</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_weight_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert an existing linear Gaussian DAG to a multi-domain selection diagram model.</span>
+
+<span class="sd">    The multi-domain selection diagram model is a generalization of the regular causal</span>
+<span class="sd">    diagram in that S-nodes represent possible changes in mechanisms for the underlying node.</span>
+<span class="sd">    In particular, missing S-node edges to a specific node implies invariances in the</span>
+<span class="sd">    distribution of that node across domain. For example, if you have a graph</span>
+<span class="sd">    :math:`X \rightarrow Y`, then the S-node :math:`S^{1,2} \rightarrow Y` represents</span>
+<span class="sd">    the change in the distribution of :math:`Y` given a change in domain. If there is no</span>
+<span class="sd">    S-node :math:`S^{1,2} \rightarrow Y`, then the distribution of :math:`Y` is invariant</span>
+<span class="sd">    across domain 1 and 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : NetworkX DiGraph</span>
+<span class="sd">        The graph to sample data from. The graph will be modified in-place</span>
+<span class="sd">        to get the weights and functions of the edges.</span>
+<span class="sd">    n_domains : int</span>
+<span class="sd">        The number of domains to split the graph into. By default 2.</span>
+<span class="sd">    n_nodes_with_s_nodes : int | tuple[int]</span>
+<span class="sd">        The number of nodes to have S-node edges. By default 1. If a tuple, then will sample</span>
+<span class="sd">        uniformly a number between the two values.</span>
+<span class="sd">    n_invariances_to_try : int</span>
+<span class="sd">        The number of invariances to try to set by deleting S-nodes. By default 1. More S-nodes than</span>
+<span class="sd">        what is specified by this parameter may be deleted if there are inconsistencies in the</span>
+<span class="sd">        S-nodes. See Notes for details.</span>
+<span class="sd">    node_mean_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the mean of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a mean of 0.</span>
+<span class="sd">    node_std_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the std of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a std of 1.</span>
+<span class="sd">    edge_functions : List[Callable[float]], optional</span>
+<span class="sd">        The set of edge functions that take in an iid sample from the parent and computes</span>
+<span class="sd">        a transformation (possibly nonlinear), such as ``(lambda x: x**2, lambda x: x)``,</span>
+<span class="sd">        by default None, which defaults to the identity function ``lambda x: x``.</span>
+<span class="sd">    edge_weight_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the edge weight, by default None,</span>
+<span class="sd">        which defaults to a weight of 1.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    G : NetworkX DiGraph</span>
+<span class="sd">        NetworkX graph with the edge weights and functions set with node attributes</span>
+<span class="sd">        set with ``&#39;parent_functions&#39;``, and ``&#39;gaussian_noise_function&#39;``. Moreover</span>
+<span class="sd">        the graph attribute ``&#39;linear_gaussian&#39;`` is set to ``True``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    make_graph_linear_gaussian : Create a linear Gaussian graph</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    To determine the missing S-node structure, we first construct all possible S-nodes given</span>
+<span class="sd">    the number of domains, ``n_domains``. The total number of S-nodes will then be</span>
+<span class="sd">    :math:`\binom{n_{domains}}{2}`. Then, we randomly sample a subset of nodes in the graph</span>
+<span class="sd">    with S-node edges. The remaining nodes will be missing S-node edges. Then among the nodes</span>
+<span class="sd">    with S-node edges, we will randomly sample a subset of S-nodes to be missing edges.</span>
+
+<span class="sd">    At this stage, there may be inconsistency in the S-nodes connected still. For example,</span>
+<span class="sd">    if we have the S-nodes :math:`S^{1,2} \rightarrow Y` among 3 domains, then we must</span>
+<span class="sd">    have either one of the other S-nodes, or none at all. This is because the missing</span>
+<span class="sd">    :math:`S^{2,3} \rightarrow Y` and :math:`S^{1,3} \rightarrow Y` implies that the</span>
+<span class="sd">    distribution of :math:`Y` is invariant across domains 1 and 3 and 2 and 3, which</span>
+<span class="sd">    also implies they are invariant between domain 1 and 3. To fix this, for each node</span>
+<span class="sd">    with S-node connections, we will delete random set of S-nodes and construct a connected</span>
+<span class="sd">    component of the S-nodes domains to then remove any remaining S-nodes to keep the</span>
+<span class="sd">    graph consistent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;get_graphs&quot;</span><span class="p">):</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="s2">&quot;directed&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">AugmentedGraph</span><span class="p">(</span><span class="n">incoming_directed_edges</span><span class="o">=</span><span class="n">G</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">directed_G</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a DAG.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a linear Gaussian graph.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_nodes_with_s_nodes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">n_nodes_with_s_nodes_</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_nodes_with_s_nodes</span><span class="p">,</span> <span class="n">n_nodes_with_s_nodes</span><span class="p">)</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="n">s_node_domains</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="c1"># choose nodes with S-nodes</span>
+    <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">n_nodes_with_s_nodes_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_nodes_with_s_nodes_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># choose the nodes to have S-nodes at random</span>
+    <span class="n">node_idx</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">)</span>
+    <span class="n">nodes_with_s_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">node_idx</span><span class="p">]</span>
+
+    <span class="c1"># compute all possible S-nodes given the number of domains</span>
+    <span class="n">G</span><span class="p">,</span> <span class="n">s_node_domains</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
+    <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_with_s_nodes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s_node</span> <span class="ow">in</span> <span class="n">all_poss_snodes</span><span class="p">:</span>
+            <span class="c1"># XXX: maybe use directed_G?</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">s_node</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+    <span class="n">s_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span>
+
+    <span class="c1"># loop through each node with S-nodes</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_with_s_nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_invariances_to_try</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">remove_s_node</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s_nodes</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">n_invariances_to_try</span><span class="p">)</span>
+            <span class="n">remove_s_node</span> <span class="o">=</span> <span class="p">[</span><span class="n">s_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+
+        <span class="c1"># find all connected pairs</span>
+        <span class="n">tuples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s_node</span> <span class="ow">in</span> <span class="n">remove_s_node</span><span class="p">:</span>
+            <span class="n">source_domain</span><span class="p">,</span> <span class="n">target_domain</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">s_node</span><span class="p">][</span><span class="s2">&quot;domain_ids&quot;</span><span class="p">]</span>
+            <span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">source_domain</span><span class="p">,</span> <span class="n">target_domain</span><span class="p">))</span>
+
+        <span class="n">connected_pairs</span> <span class="o">=</span> <span class="n">find_connected_pairs</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
+        <span class="n">invariant_domains</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">domain_pair</span> <span class="ow">in</span> <span class="n">connected_pairs</span><span class="p">:</span>
+            <span class="c1"># remove all the S-nodes that are not in the connected component</span>
+            <span class="n">s_node</span> <span class="o">=</span> <span class="n">s_node_domains</span><span class="p">[</span><span class="n">domain_pair</span><span class="p">]</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">s_node</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="c1"># for each removed S-node, there are invariances in the SCM for this node</span>
+            <span class="n">invariant_domains</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">domain_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">invariant_domains</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">domain_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># now set the functional relationships based on the invariances</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;invariant_domains&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">invariant_domains</span>
+
+        <span class="c1"># now set a random function for each domain that is not invariant</span>
+        <span class="n">generate_multidomain_noise_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">node</span><span class="p">,</span>
+            <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">,</span>
+            <span class="n">node_mean_lims</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">,</span>
+            <span class="n">node_std_lims</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">check_s_node_consistency</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># sample edge functions and weights as a function of the parents</span>
+        <span class="n">generate_edge_functions_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+            <span class="n">edge_weight_lims</span><span class="o">=</span><span class="n">edge_weight_lims</span><span class="p">,</span>
+            <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_nodes</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;n_domains&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_domains</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+<span class="k">def</span> <span class="nf">generate_multidomain_noise_for_node</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">node_mean_lims</span><span class="p">,</span>
+    <span class="n">node_std_lims</span><span class="p">,</span>
+    <span class="n">check_s_node_consistency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample a linear function for the exogenous noise of a node with S-nodes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : AugmentedGraph</span>
+<span class="sd">        The selection diagram to sample from.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node to sample exogenous noise for.</span>
+<span class="sd">    n_domains : int</span>
+<span class="sd">        The number of domains to sample from.</span>
+<span class="sd">    node_mean_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the mean of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a mean of 0.</span>
+<span class="sd">    node_std_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the std of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a std of 1.</span>
+<span class="sd">    check_s_node_consistency : bool, optional</span>
+<span class="sd">        Whether to check that the S-nodes are consistent with the invariant domains, by default</span>
+<span class="sd">        True.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    _type_</span>
+<span class="sd">        _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">check_s_node_consistency</span><span class="p">:</span>
+        <span class="c1"># compute all possible S-nodes given the number of domains</span>
+        <span class="n">G</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
+        <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+
+        <span class="c1"># for each node with S-nodes and compute the invariant domains</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">compute_invariant_domains_per_node</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">all_poss_snodes</span><span class="p">,</span> <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;invariant_domains&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()[</span><span class="n">node</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must specify invariant domains for node </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+
+    <span class="c1"># compute the invariant domains</span>
+    <span class="n">invariant_domains</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;invariant_domains&quot;</span><span class="p">]</span>
+
+    <span class="c1"># now set a random function for each domain that is not invariant</span>
+    <span class="n">domain_noise_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">domain_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_domains</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">domain_id</span> <span class="ow">in</span> <span class="n">invariant_domains</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># for domains that are not invariant, we need to set the noise function to a</span>
+        <span class="c1"># new random function</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># set the node attribute &quot;functions&quot; to hold the weight and function wrt each parent</span>
+        <span class="n">domain_noise_params</span><span class="p">[</span><span class="n">domain_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;domain_gaussian_noise_function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain_noise_params</span>
+    <span class="k">return</span> <span class="n">G</span>
+
+
+<span class="k">def</span> <span class="nf">sample_multidomain_lin_functions</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_weight_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a selection diagram, sample linear functions for each node.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : AugmentedGraph</span>
+<span class="sd">        The selection diagram to sample from.</span>
+<span class="sd">    n_domains : int</span>
+<span class="sd">        The number of domains to sample from.</span>
+<span class="sd">    node_mean_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the mean of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a mean of 0.</span>
+<span class="sd">    node_std_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the std of the Gaussian random variable, by default None,</span>
+<span class="sd">        which defaults to a std of 1.</span>
+<span class="sd">    edge_functions : List[Callable[float]], optional</span>
+<span class="sd">        The set of edge functions that take in an iid sample from the parent and computes</span>
+<span class="sd">        a transformation (possibly nonlinear), such as ``(lambda x: x**2, lambda x: x)``,</span>
+<span class="sd">        by default None, which defaults to the identity function ``lambda x: x``.</span>
+<span class="sd">    edge_weight_lims : Optional[List[float]], optional</span>
+<span class="sd">        The lower and upper bounds of the edge weight, by default None,</span>
+<span class="sd">        which defaults to a weight of 1.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    G : AugmentedGraph</span>
+<span class="sd">        The selection diagram with the sampled functions and weights.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="n">_preprocess_parameter_inputs</span><span class="p">(</span>
+        <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
+    <span class="p">)</span>
+
+    <span class="n">s_node_domains</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="n">s_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">G</span>
+
+    <span class="c1"># compute all nodes that have S-node connections</span>
+    <span class="n">nodes_with_s_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">s_node</span> <span class="ow">in</span> <span class="n">s_nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;domain_ids&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">s_node</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must specify domain_ids for S-node </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_node</span><span class="p">))</span>
+
+        <span class="n">domain_pair</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">s_node</span><span class="p">][</span><span class="s2">&quot;domain_ids&quot;</span><span class="p">]</span>
+        <span class="n">s_node_domains</span><span class="p">[</span><span class="n">domain_pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_node</span>
+        <span class="n">nodes_with_s_nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">s_node</span><span class="p">)</span> <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">s_node</span><span class="p">,</span> <span class="n">node</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+    <span class="c1"># compute all possible S-nodes given the number of domains</span>
+    <span class="n">G</span><span class="p">,</span> <span class="n">s_node_domains</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
+    <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_with_s_nodes</span><span class="p">:</span>
+        <span class="c1"># for each node with S-nodes and compute the invariant domains</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">compute_invariant_domains_per_node</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">all_poss_snodes</span><span class="p">,</span> <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">)</span>
+
+        <span class="c1"># now set a random function for each domain that is not invariant</span>
+        <span class="n">generate_multidomain_noise_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">node</span><span class="p">,</span>
+            <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">,</span>
+            <span class="n">node_mean_lims</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">,</span>
+            <span class="n">node_std_lims</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">check_s_node_consistency</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># sample edge functions and weights as a function of the parents</span>
+        <span class="n">generate_edge_functions_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+            <span class="n">edge_weight_lims</span><span class="o">=</span><span class="n">edge_weight_lims</span><span class="p">,</span>
+            <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;n_domains&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_domains</span>
+    <span class="k">return</span> <span class="n">G</span>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

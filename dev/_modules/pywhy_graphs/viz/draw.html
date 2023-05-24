@@ -203,6 +203,10 @@
     <span class="n">bidirected_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
 <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the PAG edges.</span>
+
+<span class="sd">    PAG edges may have different endpoints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># keep track of edges with circular edges between each other because we want to</span>
     <span class="c1"># draw edges correctly when there are circular edges</span>
     <span class="n">found_circle_sibs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -317,6 +321,11 @@
         <span class="n">bidirected_edges</span><span class="o">=</span><span class="n">bidirected_edges</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;get_graphs&quot;</span><span class="p">):</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="s2">&quot;directed&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span>
+
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
         <span class="n">child</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -324,7 +333,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                <span class="k">continue</span>
+
             <span class="c1"># memoize if we have seen the bidirected circular edge before</span>
             <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span><span class="p">:</span>
                 <span class="k">continue</span>

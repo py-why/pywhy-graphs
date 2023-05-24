@@ -1,0 +1,12 @@
+﻿pywhy_graphs.functional.set_node_attributes_with_G
+==================================================
+
+.. currentmodule:: pywhy_graphs.functional
+
+.. autofunction:: set_node_attributes_with_G
+
+.. include:: pywhy_graphs.functional.set_node_attributes_with_G.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

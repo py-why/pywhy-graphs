@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pywhy_graphs.classes.intervention &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.classes.augmented &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -191,9 +191,10 @@
               
               <article class="bd-article" role="main">
                 
-  <h1>Source code for pywhy_graphs.classes.intervention</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+  <h1>Source code for pywhy_graphs.classes.augmented</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">networkx.classes.reportviews</span> <span class="kn">import</span> <span class="n">NodeView</span>
 
@@ -203,8 +204,7 @@
 <span class="kn">from</span> <span class="nn">.pag</span> <span class="kn">import</span> <span class="n">PAG</span>
 
 
-<span class="k">class</span> <span class="nc">InterventionMixin</span><span class="p">:</span>
-    <span class="n">known_targets</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="k">class</span> <span class="nc">AugmentedNodeMixin</span><span class="p">:</span>
     <span class="n">graph</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="n">nodes</span><span class="p">:</span> <span class="n">NodeView</span>
 
@@ -213,7 +213,7 @@
         <span class="k">pass</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="nd">@property</span>
@@ -221,25 +221,40 @@
     <span class="k">def</span> <span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">_verify_fnode_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_verify_augmentednode_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># verify validity of F nodes</span>
         <span class="k">if</span> <span class="s2">&quot;F-nodes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">))</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="s2">&quot;There is a graph property named F-nodes already that is not of type dict.&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_f_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervention_set</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="s2">&quot;S-nodes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;There is a graph property named S-nodes already that is not of type dict.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_f_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervention_set</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">require_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an F-node to the graph.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        intervention_set : Set[Node]</span>
 <span class="sd">            A set of regular nodes that already exist in the causal graph.</span>
+<span class="sd">        require_unique : bool, optional</span>
+<span class="sd">            Whether or not to require that the intervention set is unique. If False,</span>
+<span class="sd">            then the intervention set is added to the graph, even if it is already</span>
+<span class="sd">            an F-node. The default is True.</span>
+<span class="sd">        domain : Optional[Set[int]], optional</span>
+<span class="sd">            The domain of the F-node. If None, then the domain is just set to 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">intervention_set</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">intervention_set</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The intervention set nodes must be an iterable set of node(s).&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">domain</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># check that there are no duplicates and perform set conversion</span>
         <span class="n">orig_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intervention_set</span><span class="p">)</span>
@@ -248,13 +263,13 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The intervention set must be a set of unique nodes.&quot;</span><span class="p">)</span>
 
         <span class="c1"># check that the F-node intervention set has variables within the graph</span>
-        <span class="k">if</span> <span class="n">intervention_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervention_sets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">require_unique</span> <span class="ow">and</span> <span class="n">intervention_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervention_sets</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;You cannot add an F-node for </span><span class="si">{</span><span class="n">intervention_set</span><span class="si">}</span><span class="s2"> because &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;there is already an F-node.&quot;</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">intervention_set</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">known_targets</span> <span class="ow">and</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;All intervention sets must be nodes already in the graph. </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> is not.&quot;</span>
                 <span class="p">)</span>
@@ -269,7 +284,8 @@
 
         <span class="c1"># adding nodes to F-node container occurs last, because of the error checks</span>
         <span class="c1"># that occur in adding edges</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">intervention_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node_name</span><span class="p">][</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intervention_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node_name</span><span class="p">][</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
 
     <span class="k">def</span> <span class="nf">add_f_nodes_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervention_sets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a bunch of F-nodes at once.&quot;&quot;&quot;</span>
@@ -283,22 +299,30 @@
         <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not all targets </span><span class="si">{</span><span class="n">targets</span><span class="si">}</span><span class="s2"> are in the existing graph.&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">targets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node</span><span class="p">][</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">targets</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">f_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">augmented_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of augmented nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">f_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of F-nodes.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">non_f_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of non F-nodes.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span>
+    <span class="k">def</span> <span class="nf">non_augmented_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of non augmented-nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">intervention_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of intervention-sets.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">f_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span><span class="p">:</span>
+            <span class="n">targets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">f_node</span><span class="p">][</span><span class="s2">&quot;targets&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">targets</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">intervened_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -308,9 +332,53 @@
             <span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">iset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">nodes</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">domain_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of domain ids.&quot;&quot;&quot;</span>
+        <span class="n">domain_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">domain_ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+            <span class="n">domain_ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 
-<div class="viewcode-block" id="AugmentedGraph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.AugmentedGraph.html#pywhy_graphs.AugmentedGraph">[docs]</a><span class="k">class</span> <span class="nc">AugmentedGraph</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">InterventionMixin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An augmented ADMG causal graph.</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">domain_ids</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">s_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of S-nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">add_s_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_ids</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">node_changes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_changes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_changes</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The intervention set nodes must be an iterable set of node(s).&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check that there are no duplicates and perform set conversion</span>
+        <span class="n">orig_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_changes</span><span class="p">)</span>
+        <span class="n">node_changes</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">node_changes</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_changes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">orig_len</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The set must be a set of unique nodes.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check that the F-node intervention set has variables within the graph</span>
+        <span class="k">if</span> <span class="n">domain_ids</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_ids</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;You cannot add an augmneted-node for </span><span class="si">{</span><span class="n">node_changes</span><span class="si">}</span><span class="s2"> because &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;there is already an augmented-node.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># add a new S-node into the graph</span>
+        <span class="n">s_node_name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">s_node_name</span><span class="p">,</span> <span class="n">domain_ids</span><span class="o">=</span><span class="n">domain_ids</span><span class="p">)</span>
+
+        <span class="c1"># add edge between the F-node and its intervention set</span>
+        <span class="k">for</span> <span class="n">perturbed_node</span> <span class="ow">in</span> <span class="n">node_changes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">s_node_name</span><span class="p">,</span> <span class="n">perturbed_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+
+        <span class="c1"># adding nodes to F-node container occurs last, because of the error checks</span>
+        <span class="c1"># that occur in adding edges</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">][</span><span class="n">s_node_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain_ids</span>
+
+
+<div class="viewcode-block" id="AugmentedGraph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.AugmentedGraph.html#pywhy_graphs.AugmentedGraph">[docs]</a><span class="k">class</span> <span class="nc">AugmentedGraph</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">AugmentedNodeMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An augmented causal diagram.</span>
 
 <span class="sd">    An augmented graph is one where interventions are represented by F-nodes.</span>
 <span class="sd">    See :footcite:`pearl_aspects_1993`, where they were first introduced. They</span>
@@ -364,8 +432,6 @@
 <span class="sd">    .. footbibliography::</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">known_targets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -387,7 +453,7 @@
         <span class="p">)</span>
 
         <span class="c1"># verify validity of F nodes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_fnode_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_augmentednode_dict</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span><span class="p">:</span>
@@ -395,117 +461,11 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="IPAG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.IPAG.html#pywhy_graphs.IPAG">[docs]</a><span class="k">class</span> <span class="nc">IPAG</span><span class="p">(</span><span class="n">PAG</span><span class="p">,</span> <span class="n">InterventionMixin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A I-PAG Markov equivalence class of causal graphs.</span>
+<div class="viewcode-block" id="AugmentedPAG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.AugmentedPAG.html#pywhy_graphs.AugmentedPAG">[docs]</a><span class="k">class</span> <span class="nc">AugmentedPAG</span><span class="p">(</span><span class="n">PAG</span><span class="p">,</span> <span class="n">AugmentedNodeMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An augmented PAG.</span>
 
-<span class="sd">    A I-PAG is an equivalence class representing causal graphs that</span>
-<span class="sd">    have known-target soft interventions associated with it. The interventions are</span>
-<span class="sd">    represented by special nodes, known as F-nodes. See</span>
-<span class="sd">    :footcite:`Kocaoglu2019characterization` for details.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    incoming_directed_edges : input directed edges (optional, default: None)</span>
-<span class="sd">        Data to initialize directed edges. All arguments that are accepted</span>
-<span class="sd">        by `networkx.DiGraph` are accepted.</span>
-<span class="sd">    incoming_undirected_edges : input undirected edges (optional, default: None)</span>
-<span class="sd">        Data to initialize undirected edges. All arguments that are accepted</span>
-<span class="sd">        by `networkx.Graph` are accepted.</span>
-<span class="sd">    incoming_bidirected_edges : input bidirected edges (optional, default: None)</span>
-<span class="sd">        Data to initialize bidirected edges. All arguments that are accepted</span>
-<span class="sd">        by `networkx.Graph` are accepted.</span>
-<span class="sd">    incoming_circle_edges : input circular endpoint edges (optional, default: None)</span>
-<span class="sd">        Data to initialize edges with circle endpoints. All arguments that are accepted</span>
-<span class="sd">        by `networkx.DiGraph` are accepted.</span>
-<span class="sd">    directed_edge_name : str</span>
-<span class="sd">        The name for the directed edges. By default &#39;directed&#39;.</span>
-<span class="sd">    undirected_edge_name : str</span>
-<span class="sd">        The name for the undirected edges. By default &#39;undirected&#39;.</span>
-<span class="sd">    bidirected_edge_name : str</span>
-<span class="sd">        The name for the bidirected edges. By default &#39;bidirected&#39;.</span>
-<span class="sd">    circle_edge_name : str</span>
-<span class="sd">        The name for the circle edges. By default &#39;circle&#39;.</span>
-<span class="sd">    f_nodes : List[Node], optional</span>
-<span class="sd">        List of corresponding nodes that are F nodes, by default None.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    PsiPAG</span>
-<span class="sd">    PAG</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    F-nodes are just nodes that are added to a causal graph, and</span>
-<span class="sd">    represent an &quot;augmentation&quot; of the original causal graph to handle</span>
-<span class="sd">    interventions. Each F-node is mapped to a 2-tuple representing the</span>
-<span class="sd">    index pair of unknown interventions. Since intervention targets are known,</span>
-<span class="sd">    then the 2-tuple contains nodes in the graph. This is called :math:`\\sigma`</span>
-<span class="sd">    in :footcite:`Jaber2020causal`.</span>
-
-<span class="sd">    Since F-nodes in an IPAG is defined by its source pair of interventions.</span>
-
-<span class="sd">    **Edge Type Subgraphs**</span>
-
-<span class="sd">    Different edge types in an I-PAG are represented exactly as they are in a</span>
-<span class="sd">    :class:`pywhy_graphs.PAG`.</span>
-
-<span class="sd">    **F-nodes**</span>
-
-<span class="sd">    F-nodes are represented in pywhy-graphs as a tuple as ``(&#39;F&#39;, &lt;index&gt;)``, where ``index``</span>
-<span class="sd">    is just a random index number. Each F-node is mapped to the intervention-set that they</span>
-<span class="sd">    are applied on. For example in the graph :math:`(&#39;F&#39;, 0) \\rightarrow X \\rightarrow Y`,</span>
-<span class="sd">    ``(&#39;F&#39;, 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set</span>
-<span class="sd">    is a set of regular nodes in the causal graph.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. footbibliography::</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">known_targets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">incoming_bidirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">incoming_circle_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">directed_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;directed&quot;</span><span class="p">,</span>
-        <span class="n">undirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
-        <span class="n">bidirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
-        <span class="n">circle_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">incoming_directed_edges</span><span class="p">,</span>
-            <span class="n">incoming_undirected_edges</span><span class="p">,</span>
-            <span class="n">incoming_bidirected_edges</span><span class="p">,</span>
-            <span class="n">incoming_circle_edges</span><span class="p">,</span>
-            <span class="n">directed_edge_name</span><span class="p">,</span>
-            <span class="n">undirected_edge_name</span><span class="p">,</span>
-            <span class="n">bidirected_edge_name</span><span class="p">,</span>
-            <span class="n">circle_edge_name</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_fnode_dict</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="PsiPAG"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PsiPAG.html#pywhy_graphs.PsiPAG">[docs]</a><span class="k">class</span> <span class="nc">PsiPAG</span><span class="p">(</span><span class="n">PAG</span><span class="p">,</span> <span class="n">InterventionMixin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Psi-PAG Markov equivalence class of causal graphs.</span>
-
-<span class="sd">    A Psi-PAG is an equivalence class representing causal graphs that</span>
-<span class="sd">    have unknown-target soft interventions associated with it. The interventions</span>
-<span class="sd">    are represented by special nodes, known as F-nodes. See</span>
-<span class="sd">    :footcite:`Jaber2020causal` for details.</span>
-
-<span class="sd">    A PsiPAG is inherently different from a IPAG in that the F-nodes are not</span>
-<span class="sd">    associated with any node because the interventions have &quot;unknown targets&quot;.</span>
+<span class="sd">    An augmented PAG is a PAG that has been augmented with either F-nodes or</span>
+<span class="sd">    S-nodes, or both. It is a Markov equivalence class of causal diagrams.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -537,19 +497,34 @@
 <span class="sd">    F-nodes are just nodes that are added to a causal graph, and</span>
 <span class="sd">    represent an &quot;augmentation&quot; of the original causal graph to handle</span>
 <span class="sd">    interventions. Each F-node is mapped to a 2-tuple representing the</span>
-<span class="sd">    index pair of unknown interventions. Since intervention targets are unknown,</span>
-<span class="sd">    then the 2-tuple contains integer indices representing the index of</span>
-<span class="sd">    an interventional distribution. This is called :math:`\\sigma` in</span>
-<span class="sd">    :footcite:`Jaber2020causal`.</span>
+<span class="sd">    index pair of intervention-targets.</span>
+
+<span class="sd">    If the intervention targets are unknown, then the 2-tuple contains</span>
+<span class="sd">    integer indices representing the index of an interventional distribution.</span>
+<span class="sd">    This is called :math:`\\sigma` in :footcite:`Jaber2020causal`.</span>
 
 <span class="sd">    **Edge Type Subgraphs**</span>
 
-<span class="sd">    Different edge types in an I-PAG are represented exactly as they are in a</span>
+<span class="sd">    Different edge types in an AugmentedPAG are represented exactly as they are in a</span>
 <span class="sd">    :class:`pywhy_graphs.PAG`.</span>
 
 <span class="sd">    **F-nodes**</span>
 
+<span class="sd">    Interventions are represented by special nodes, known as F-nodes. See</span>
+<span class="sd">    :footcite:`Jaber2020causal`, or :footcite:`Kocaoglu2019characterization` for details.</span>
+
 <span class="sd">    F-nodes are represented in pywhy-graphs as a tuple as ``(&#39;F&#39;, &lt;index&gt;)``, where ``index``</span>
+<span class="sd">    is just a random index number. Each F-node is mapped to the intervention-set that they</span>
+<span class="sd">    are applied on. For example in the graph :math:`(&#39;F&#39;, 0) \\rightarrow X \\rightarrow Y`,</span>
+<span class="sd">    ``(&#39;F&#39;, 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set</span>
+<span class="sd">    is a set of regular nodes in the causal graph.</span>
+
+<span class="sd">    **S-nodes**</span>
+
+<span class="sd">    Different domains and environments are represented by special nodes, known as S-nodes. See</span>
+<span class="sd">    :footcite:`bareinboim_causal_2016` for details.</span>
+
+<span class="sd">    S-nodes are represented in pywhy-graphs as a tuple as ``(&#39;S&#39;, &lt;index&gt;)``, where ``index``</span>
 <span class="sd">    is just a random index number. Each F-node is mapped to the intervention-set that they</span>
 <span class="sd">    are applied on. For example in the graph :math:`(&#39;F&#39;, 0) \\rightarrow X \\rightarrow Y`,</span>
 <span class="sd">    ``(&#39;F&#39;, 0)`` is the F-node added that models an intervention on ``X``. Each intervention-set</span>
@@ -559,8 +534,6 @@
 <span class="sd">    ----------</span>
 <span class="sd">    .. footbibliography::</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">known_targets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -586,11 +559,13 @@
             <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_fnode_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_augmentednode_dict</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_nodes</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;F-nodes&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 </pre></div>
 

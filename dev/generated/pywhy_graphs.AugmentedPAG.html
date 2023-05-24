@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.IPAG &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.AugmentedPAG &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,7 +47,7 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.PsiPAG" href="pywhy_graphs.PsiPAG.html" />
+    <link rel="next" title="3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" />
     <link rel="prev" title="pywhy_graphs.AugmentedGraph" href="pywhy_graphs.AugmentedGraph.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
@@ -195,111 +195,121 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   pywhy_graphs.IPAG
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
-   pywhy_graphs.PsiPAG
+   pywhy_graphs.AugmentedPAG
   </a>
  </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
-   2.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
+   3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.possible_ancestors.html">
-   2.1.2. pywhy_graphs.algorithms.possible_ancestors
+   3.1.2. pywhy_graphs.algorithms.possible_ancestors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.possible_descendants.html">
-   2.1.3. pywhy_graphs.algorithms.possible_descendants
+   3.1.3. pywhy_graphs.algorithms.possible_descendants
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.discriminating_path.html">
-   2.1.4. pywhy_graphs.algorithms.discriminating_path
+   3.1.4. pywhy_graphs.algorithms.discriminating_path
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.pds.html">
-   2.2.1. pywhy_graphs.algorithms.pds
+   3.2.1. pywhy_graphs.algorithms.pds
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.pds_path.html">
-   2.2.2. pywhy_graphs.algorithms.pds_path
+   3.2.2. pywhy_graphs.algorithms.pds_path
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
-   2.3.1. pywhy_graphs.algorithms.pds_t
+   3.3.1. pywhy_graphs.algorithms.pds_t
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.pds_t_path.html">
-   2.3.2. pywhy_graphs.algorithms.pds_t_path
+   3.3.2. pywhy_graphs.algorithms.pds_t_path
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.uncovered_pd_path.html">
-   2.2.3. pywhy_graphs.algorithms.uncovered_pd_path
+   3.2.3. pywhy_graphs.algorithms.uncovered_pd_path
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
-   2.4.1. pywhy_graphs.algorithms.acyclification
+   3.4.1. pywhy_graphs.algorithms.acyclification
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.is_definite_noncollider.html">
-   2.1.5. pywhy_graphs.algorithms.is_definite_noncollider
+   3.1.5. pywhy_graphs.algorithms.is_definite_noncollider
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.find_connected_pairs.html">
+   pywhy_graphs.algorithms.find_connected_pairs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.add_all_snode_combinations.html">
+   pywhy_graphs.algorithms.add_all_snode_combinations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.compute_invariant_domains_per_node.html">
+   pywhy_graphs.algorithms.compute_invariant_domains_per_node
   </a>
  </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.graph_to_clearn.html">
-   4.1.1. pywhy_graphs.export.graph_to_clearn
+   5.1.1. pywhy_graphs.export.graph_to_clearn
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.clearn_to_graph.html">
-   4.1.2. pywhy_graphs.export.clearn_to_graph
+   5.1.2. pywhy_graphs.export.clearn_to_graph
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.graph_to_numpy.html">
-   4.2.1. pywhy_graphs.export.graph_to_numpy
+   5.2.1. pywhy_graphs.export.graph_to_numpy
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.numpy_to_graph.html">
-   4.2.2. pywhy_graphs.export.numpy_to_graph
+   5.2.2. pywhy_graphs.export.numpy_to_graph
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.graph_to_tetrad.html">
-   4.4.1. pywhy_graphs.export.graph_to_tetrad
+   5.4.1. pywhy_graphs.export.graph_to_tetrad
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.tetrad_to_graph.html">
-   4.4.2. pywhy_graphs.export.tetrad_to_graph
+   5.4.2. pywhy_graphs.export.tetrad_to_graph
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.graph_to_pcalg.html">
-   4.3.1. pywhy_graphs.export.graph_to_pcalg
+   5.3.1. pywhy_graphs.export.graph_to_pcalg
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.export.pcalg_to_graph.html">
-   4.3.2. pywhy_graphs.export.pcalg_to_graph
+   5.3.2. pywhy_graphs.export.pcalg_to_graph
   </a>
  </li>
 </ul>
@@ -311,22 +321,22 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
-   2.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+   3.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
-   2.1.7. pywhy_graphs.networkx.m_separated
+   3.1.7. pywhy_graphs.networkx.m_separated
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.networkx.is_minimal_m_separator.html">
-   2.1.8. pywhy_graphs.networkx.is_minimal_m_separator
+   3.1.8. pywhy_graphs.networkx.is_minimal_m_separator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.networkx.minimal_m_separator.html">
-   2.1.9. pywhy_graphs.networkx.minimal_m_separator
+   3.1.9. pywhy_graphs.networkx.minimal_m_separator
   </a>
  </li>
 </ul>
@@ -404,24 +414,39 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
-   3.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+   4.1.1. pywhy_graphs.simulate.simulate_linear_var_process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
-   3.1.2. pywhy_graphs.simulate.simulate_data_from_var
+   4.1.2. pywhy_graphs.simulate.simulate_data_from_var
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-   3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+   4.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
   </a>
  </li>
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.functional.make_graph_linear_gaussian.html">
-   pywhy_graphs.functional.make_graph_linear_gaussian
+   2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.functional.apply_linear_soft_intervention.html">
+   2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.functional.set_node_attributes_with_G.html">
+   pywhy_graphs.functional.set_node_attributes_with_G
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.functional.make_graph_multidomain.html">
+   2.4.1. pywhy_graphs.functional.make_graph_multidomain
   </a>
  </li>
 </ul>
@@ -447,7 +472,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../reference/simulation/index.html">
-   3. Simulation module
+   4. Simulation module
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -457,17 +482,17 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
-     3.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+     4.1.1. pywhy_graphs.simulate.simulate_linear_var_process
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
-     3.1.2. pywhy_graphs.simulate.simulate_data_from_var
+     4.1.2. pywhy_graphs.simulate.simulate_data_from_var
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-     3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+     4.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
     </a>
    </li>
   </ul>
@@ -497,10 +522,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.IPAG">
+  <a class="reference internal nav-link" href="#pywhy_graphs.AugmentedPAG">
    <code class="docutils literal notranslate">
     <span class="pre">
-     IPAG
+     AugmentedPAG
     </span>
    </code>
   </a>
@@ -524,16 +549,14 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-ipag">
-<h1>pywhy_graphs.IPAG<a class="headerlink" href="#pywhy-graphs-ipag" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-augmentedpag">
+<h1>pywhy_graphs.AugmentedPAG<a class="headerlink" href="#pywhy-graphs-augmentedpag" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pywhy_graphs.IPAG">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.</span></span><span class="sig-name descname"><span class="pre">IPAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_circle_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'circle'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/intervention.html#IPAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.IPAG" title="Permalink to this definition">#</a></dt>
-<dd><p>A I-PAG Markov equivalence class of causal graphs.</p>
-<p>A I-PAG is an equivalence class representing causal graphs that
-have known-target soft interventions associated with it. The interventions are
-represented by special nodes, known as F-nodes. See
-<a class="footnote-reference brackets" href="#footcite-kocaoglu2019characterization" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for details.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.AugmentedPAG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywhy_graphs.</span></span><span class="sig-name descname"><span class="pre">AugmentedPAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incoming_directed_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_undirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_bidirected_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incoming_circle_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'directed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'undirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bidirected_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bidirected'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_edge_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'circle'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/classes/augmented.html#AugmentedPAG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.AugmentedPAG" title="Permalink to this definition">#</a></dt>
+<dd><p>An augmented PAG.</p>
+<p>An augmented PAG is a PAG that has been augmented with either F-nodes or
+S-nodes, or both. It is a Markov equivalence class of causal diagrams.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>incoming_directed_edges</strong> : input directed edges (optional, default: None)</p>
@@ -578,39 +601,47 @@ by <code class="docutils literal notranslate"><span class="pre">networkx.DiGraph
 </div></blockquote>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="pywhy_graphs.PsiPAG.html#pywhy_graphs.PsiPAG" title="pywhy_graphs.PsiPAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PsiPAG</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PAG</span></code></a></dt><dd></dd>
-</dl>
-</div>
 <p class="rubric">Notes</p>
 <p>F-nodes are just nodes that are added to a causal graph, and
 represent an “augmentation” of the original causal graph to handle
 interventions. Each F-node is mapped to a 2-tuple representing the
-index pair of unknown interventions. Since intervention targets are known,
-then the 2-tuple contains nodes in the graph. This is called <span class="math notranslate nohighlight">\(\sigma\)</span>
-in <a class="footnote-reference brackets" href="#footcite-jaber2020causal" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
-<p>Since F-nodes in an IPAG is defined by its source pair of interventions.</p>
+index pair of intervention-targets.</p>
+<p>If the intervention targets are unknown, then the 2-tuple contains
+integer indices representing the index of an interventional distribution.
+This is called <span class="math notranslate nohighlight">\(\sigma\)</span> in <a class="footnote-reference brackets" href="#footcite-jaber2020causal" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p><strong>Edge Type Subgraphs</strong></p>
-<p>Different edge types in an I-PAG are represented exactly as they are in a
+<p>Different edge types in an AugmentedPAG are represented exactly as they are in a
 <a class="reference internal" href="pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG"><code class="xref py py-class docutils literal notranslate"><span class="pre">pywhy_graphs.PAG</span></code></a>.</p>
 <p><strong>F-nodes</strong></p>
+<p>Interventions are represented by special nodes, known as F-nodes. See
+<a class="footnote-reference brackets" href="#footcite-jaber2020causal" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, or <a class="footnote-reference brackets" href="#footcite-kocaoglu2019characterization" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for details.</p>
 <p>F-nodes are represented in pywhy-graphs as a tuple as <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">&lt;index&gt;)</span></code>, where <code class="docutils literal notranslate"><span class="pre">index</span></code>
 is just a random index number. Each F-node is mapped to the intervention-set that they
 are applied on. For example in the graph <span class="math notranslate nohighlight">\(('F', 0) \rightarrow X \rightarrow Y\)</span>,
 <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> is the F-node added that models an intervention on <code class="docutils literal notranslate"><span class="pre">X</span></code>. Each intervention-set
 is a set of regular nodes in the causal graph.</p>
+<p><strong>S-nodes</strong></p>
+<p>Different domains and environments are represented by special nodes, known as S-nodes. See
+<a class="footnote-reference brackets" href="#footcite-bareinboim-causal-2016" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> for details.</p>
+<p>S-nodes are represented in pywhy-graphs as a tuple as <code class="docutils literal notranslate"><span class="pre">('S',</span> <span class="pre">&lt;index&gt;)</span></code>, where <code class="docutils literal notranslate"><span class="pre">index</span></code>
+is just a random index number. Each F-node is mapped to the intervention-set that they
+are applied on. For example in the graph <span class="math notranslate nohighlight">\(('F', 0) \rightarrow X \rightarrow Y\)</span>,
+<code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> is the F-node added that models an intervention on <code class="docutils literal notranslate"><span class="pre">X</span></code>. Each intervention-set
+is a set of regular nodes in the causal graph.</p>
 <p class="rubric">References</p>
-<div class="docutils container" id="id3">
+<div class="docutils container" id="id5">
+<aside class="footnote brackets" id="footcite-jaber2020causal" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Amin Jaber, Murat Kocaoglu, Karthikeyan Shanmugam, and Elias Bareinboim. Causal discovery from soft interventions with unknown targets: characterization and learning. <em>Advances in neural information processing systems</em>, 33:9551–9561, 2020.</p>
+</aside>
 <aside class="footnote brackets" id="footcite-kocaoglu2019characterization" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
 <p>Murat Kocaoglu, Amin Jaber, Karthikeyan Shanmugam, and Elias Bareinboim. Characterization and learning of causal graphs with latent variables from soft interventions. <em>Advances in Neural Information Processing Systems</em>, 2019.</p>
 </aside>
-<aside class="footnote brackets" id="footcite-jaber2020causal" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Amin Jaber, Murat Kocaoglu, Karthikeyan Shanmugam, and Elias Bareinboim. Causal discovery from soft interventions with unknown targets: characterization and learning. <em>Advances in neural information processing systems</em>, 33:9551–9561, 2020.</p>
+<aside class="footnote brackets" id="footcite-bareinboim-causal-2016" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">3</a><span class="fn-bracket">]</span></span>
+<p>Elias Bareinboim and Judea Pearl. Causal inference and the data-fusion problem. <em>Proceedings of the National Academy of Sciences</em>, 113(27):7345–7352, July 2016. Publisher: National Academy of Sciences. URL: <a class="reference external" href="https://www.pnas.org/content/113/27/7345">https://www.pnas.org/content/113/27/7345</a>, <a class="reference external" href="https://doi.org/10.1073/PNAS.1510507113">doi:10.1073/PNAS.1510507113</a>.</p>
 </aside>
 </aside>
 </div>
@@ -633,10 +664,10 @@ is a set of regular nodes in the causal graph.</p>
           <p class="prev-next-title">pywhy_graphs.AugmentedGraph</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.PsiPAG.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.PsiPAG</p>
+      <p class="prev-next-title"><span class="section-number">3.1.1. </span>pywhy_graphs.algorithms.is_valid_mec_graph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

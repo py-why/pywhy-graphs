@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.functional.make_graph_linear_gaussian &#8212; pywhy-graphs v0.0.0</title>
+    <title>2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.viz.draw" href="pywhy_graphs.viz.draw.html" />
-    <link rel="prev" title="3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html" />
+    <link rel="next" title="2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention" href="pywhy_graphs.functional.apply_linear_soft_intervention.html" />
+    <link rel="prev" title="4.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -102,7 +102,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../api.html">
   Reference API
  </a>
@@ -114,7 +114,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
+<li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../user_guide.html">
   User Guide
  </a>
@@ -172,305 +172,209 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="nav bd-sidenav">
+    <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.ADMG.html">
-   pywhy_graphs.ADMG
+  <a class="reference internal" href="../reference/classes/index.html">
+   1. Causal Graphs in PyWhy
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.CPDAG.html">
-   pywhy_graphs.CPDAG
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../reference/functional/index.html">
+   2. Functional Causal Graphical Models
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.functional.apply_linear_soft_intervention.html">
+     2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.functional.make_graph_multidomain.html">
+     2.4.1. pywhy_graphs.functional.make_graph_multidomain
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.PAG.html">
-   pywhy_graphs.PAG
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../reference/algorithms/index.html">
+   3. Causal Graph Algorithms in PyWhy
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
+     3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.possible_ancestors.html">
+     3.1.2. pywhy_graphs.algorithms.possible_ancestors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.possible_descendants.html">
+     3.1.3. pywhy_graphs.algorithms.possible_descendants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.discriminating_path.html">
+     3.1.4. pywhy_graphs.algorithms.discriminating_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.is_definite_noncollider.html">
+     3.1.5. pywhy_graphs.algorithms.is_definite_noncollider
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
+     3.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
+     3.1.7. pywhy_graphs.networkx.m_separated
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.is_minimal_m_separator.html">
+     3.1.8. pywhy_graphs.networkx.is_minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.networkx.minimal_m_separator.html">
+     3.1.9. pywhy_graphs.networkx.minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds.html">
+     3.2.1. pywhy_graphs.algorithms.pds
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_path.html">
+     3.2.2. pywhy_graphs.algorithms.pds_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.uncovered_pd_path.html">
+     3.2.3. pywhy_graphs.algorithms.uncovered_pd_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
+     3.3.1. pywhy_graphs.algorithms.pds_t
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.pds_t_path.html">
+     3.3.2. pywhy_graphs.algorithms.pds_t_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
+     3.4.1. pywhy_graphs.algorithms.acyclification
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.AugmentedGraph.html">
-   pywhy_graphs.AugmentedGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.IPAG.html">
-   pywhy_graphs.IPAG
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.PsiPAG.html">
-   pywhy_graphs.PsiPAG
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.is_valid_mec_graph.html">
-   2.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.possible_ancestors.html">
-   2.1.2. pywhy_graphs.algorithms.possible_ancestors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.possible_descendants.html">
-   2.1.3. pywhy_graphs.algorithms.possible_descendants
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.discriminating_path.html">
-   2.1.4. pywhy_graphs.algorithms.discriminating_path
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.pds.html">
-   2.2.1. pywhy_graphs.algorithms.pds
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.pds_path.html">
-   2.2.2. pywhy_graphs.algorithms.pds_path
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.pds_t.html">
-   2.3.1. pywhy_graphs.algorithms.pds_t
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.pds_t_path.html">
-   2.3.2. pywhy_graphs.algorithms.pds_t_path
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.uncovered_pd_path.html">
-   2.2.3. pywhy_graphs.algorithms.uncovered_pd_path
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.acyclification.html">
-   2.4.1. pywhy_graphs.algorithms.acyclification
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.is_definite_noncollider.html">
-   2.1.5. pywhy_graphs.algorithms.is_definite_noncollider
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.graph_to_clearn.html">
-   4.1.1. pywhy_graphs.export.graph_to_clearn
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.clearn_to_graph.html">
-   4.1.2. pywhy_graphs.export.clearn_to_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.graph_to_numpy.html">
-   4.2.1. pywhy_graphs.export.graph_to_numpy
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.numpy_to_graph.html">
-   4.2.2. pywhy_graphs.export.numpy_to_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.graph_to_tetrad.html">
-   4.4.1. pywhy_graphs.export.graph_to_tetrad
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.tetrad_to_graph.html">
-   4.4.2. pywhy_graphs.export.tetrad_to_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.graph_to_pcalg.html">
-   4.3.1. pywhy_graphs.export.graph_to_pcalg
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.export.pcalg_to_graph.html">
-   4.3.2. pywhy_graphs.export.pcalg_to_graph
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.MixedEdgeGraph.html">
-   pywhy_graphs.networkx.MixedEdgeGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
-   2.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.m_separated.html">
-   2.1.7. pywhy_graphs.networkx.m_separated
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.is_minimal_m_separator.html">
-   2.1.8. pywhy_graphs.networkx.is_minimal_m_separator
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.networkx.minimal_m_separator.html">
-   2.1.9. pywhy_graphs.networkx.minimal_m_separator
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.complete_ts_graph.html">
-   pywhy_graphs.classes.timeseries.complete_ts_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.empty_ts_graph.html">
-   pywhy_graphs.classes.timeseries.empty_ts_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.get_summary_graph.html">
-   pywhy_graphs.classes.timeseries.get_summary_graph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.has_homologous_edges.html">
-   pywhy_graphs.classes.timeseries.has_homologous_edges
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.nodes_in_time_order.html">
-   pywhy_graphs.classes.timeseries.nodes_in_time_order
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesGraph.html">
-   pywhy_graphs.classes.timeseries.TimeSeriesGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html">
-   pywhy_graphs.classes.timeseries.TimeSeriesDiGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html">
-   pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html">
-   pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph.html">
-   pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph.html">
-   pywhy_graphs.classes.timeseries.StationaryTimeSeriesGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph.html">
-   pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG.html">
-   pywhy_graphs.classes.timeseries.StationaryTimeSeriesPAG
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
-   3.1.1. pywhy_graphs.simulate.simulate_linear_var_process
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
-   3.1.2. pywhy_graphs.simulate.simulate_data_from_var
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-   3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
-  </a>
- </li>
-</ul>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   pywhy_graphs.functional.make_graph_linear_gaussian
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.viz.draw.html">
-   pywhy_graphs.viz.draw
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.viz.timeseries_layout.html">
-   pywhy_graphs.viz.timeseries_layout
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.sys_info.html">
-   pywhy_graphs.sys_info
-  </a>
- </li>
-</ul>
-<ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../reference/simulation/index.html">
-   3. Simulation module
+   4. Simulation module
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_linear_var_process.html">
-     3.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+     4.1.1. pywhy_graphs.simulate.simulate_linear_var_process
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_data_from_var.html">
-     3.1.2. pywhy_graphs.simulate.simulate_data_from_var
+     4.1.2. pywhy_graphs.simulate.simulate_data_from_var
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-     3.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+     4.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../reference/export/index.html">
+   5. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.graph_to_clearn.html">
+     5.1.1. pywhy_graphs.export.graph_to_clearn
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.clearn_to_graph.html">
+     5.1.2. pywhy_graphs.export.clearn_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.graph_to_numpy.html">
+     5.2.1. pywhy_graphs.export.graph_to_numpy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.numpy_to_graph.html">
+     5.2.2. pywhy_graphs.export.numpy_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.graph_to_pcalg.html">
+     5.3.1. pywhy_graphs.export.graph_to_pcalg
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.pcalg_to_graph.html">
+     5.3.2. pywhy_graphs.export.pcalg_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.graph_to_tetrad.html">
+     5.4.1. pywhy_graphs.export.graph_to_tetrad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.export.tetrad_to_graph.html">
+     5.4.2. pywhy_graphs.export.tetrad_to_graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../glossary.html">
+   6. Glossary of Common Terms and API Elements
+  </a>
  </li>
 </ul>
 
@@ -525,10 +429,10 @@
               <article class="bd-article" role="main">
                 
   <section id="pywhy-graphs-functional-make-graph-linear-gaussian">
-<h1>pywhy_graphs.functional.make_graph_linear_gaussian<a class="headerlink" href="#pywhy-graphs-functional-make-graph-linear-gaussian" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">2.2.1. </span>pywhy_graphs.functional.make_graph_linear_gaussian<a class="headerlink" href="#pywhy-graphs-functional-make-graph-linear-gaussian" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pywhy_graphs.functional.make_graph_linear_gaussian">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.functional.</span></span><span class="sig-name descname"><span class="pre">make_graph_linear_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.2rc0.dev0)"><span class="pre">DiGraph</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_mean_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_std_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_functions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_weight_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/functional/linear.html#make_graph_linear_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.functional.make_graph_linear_gaussian" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.functional.</span></span><span class="sig-name descname"><span class="pre">make_graph_linear_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.2rc0.dev0)"><span class="pre">DiGraph</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_mean_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_std_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_functions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_weight_lims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.2rc0.dev0)"><span class="pre">DiGraph</span></a></span></span><a class="reference internal" href="../_modules/pywhy_graphs/functional/linear.html#make_graph_linear_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.functional.make_graph_linear_gaussian" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert an existing DAG to a linear Gaussian graphical model.</p>
 <p>All nodes are sampled from a normal distribution with parametrizations
 defined uniformly at random between the limits set by the input parameters.
@@ -609,13 +513,13 @@ the graph attribute <code class="docutils literal notranslate"><span class="pre"
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">3.1.3. </span>pywhy_graphs.simulate.simulate_var_process_from_summary_graph</p>
+          <p class="prev-next-title"><span class="section-number">4.1.3. </span>pywhy_graphs.simulate.simulate_var_process_from_summary_graph</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.viz.draw.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.functional.apply_linear_soft_intervention.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.viz.draw</p>
+      <p class="prev-next-title"><span class="section-number">2.2.2. </span>pywhy_graphs.functional.apply_linear_soft_intervention</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

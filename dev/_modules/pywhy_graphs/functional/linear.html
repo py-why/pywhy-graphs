@@ -192,20 +192,25 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.functional.linear</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+
+<span class="kn">from</span> <span class="nn">.additive</span> <span class="kn">import</span> <span class="n">generate_edge_functions_for_node</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_preprocess_parameter_inputs</span>
+
 
 <div class="viewcode-block" id="make_graph_linear_gaussian"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.make_graph_linear_gaussian.html#pywhy_graphs.functional.make_graph_linear_gaussian">[docs]</a><span class="k">def</span> <span class="nf">make_graph_linear_gaussian</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
-    <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">edge_weight_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">edge_weight_lims</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert an existing DAG to a linear Gaussian graphical model.</span>
 
 <span class="sd">    All nodes are sampled from a normal distribution with parametrizations</span>
@@ -254,47 +259,84 @@
 <span class="sd">        set with ``&#39;parent_functions&#39;``, and ``&#39;gaussian_noise_function&#39;``. Moreover</span>
 <span class="sd">        the graph attribute ``&#39;linear_gaussian&#39;`` is set to ``True``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;get_graphs&quot;</span><span class="p">):</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="s2">&quot;directed&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">directed_G</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a DAG.&quot;</span><span class="p">)</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">node_mean_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">node_mean_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_mean_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;node_mean_lims must be a list of length 2.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">node_std_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">node_std_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_std_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;node_std_lims must be a list of length 2.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">edge_functions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">edge_functions</span> <span class="o">=</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">edge_weight_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_weight_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;edge_weight_lims must be a list of length 2.&quot;</span><span class="p">)</span>
+    <span class="c1"># preprocess hyperparameters and check for validity</span>
+    <span class="p">(</span>
+        <span class="n">node_mean_lims_</span><span class="p">,</span>
+        <span class="n">node_std_lims_</span><span class="p">,</span>
+        <span class="n">edge_functions_</span><span class="p">,</span>
+        <span class="n">edge_weight_lims_</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_preprocess_parameter_inputs</span><span class="p">(</span>
+        <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
+    <span class="p">)</span>
 
     <span class="c1"># Create list of topologically sorted nodes</span>
-    <span class="n">top_sort_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+    <span class="n">top_sort_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">directed_G</span><span class="p">))</span>
 
-    <span class="k">for</span> <span class="n">node_idx</span> <span class="ow">in</span> <span class="n">top_sort_idx</span><span class="p">:</span>
-        <span class="c1"># get all parents</span>
-        <span class="n">parents</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node_idx</span><span class="p">)))</span>
-
+    <span class="c1"># sample noise and edge functions for each node and its parents</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">top_sort_idx</span><span class="p">:</span>
         <span class="c1"># sample noise</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;gaussian_noise_function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}</span>
 
-        <span class="c1"># sample weight and edge function for each parent</span>
-        <span class="n">node_function</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
-            <span class="n">weight</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">edge_weight_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">edge_weight_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">func</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">edge_functions</span><span class="p">)</span>
-            <span class="n">node_function</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">parent</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">weight</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="n">func</span><span class="p">}})</span>
-
-        <span class="c1"># set the node attribute &quot;functions&quot; to hold the weight and function wrt each parent</span>
-        <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">{</span><span class="n">node_idx</span><span class="p">:</span> <span class="n">node_function</span><span class="p">},</span> <span class="s2">&quot;parent_functions&quot;</span><span class="p">)</span>
-        <span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">{</span><span class="n">node_idx</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}},</span> <span class="s2">&quot;gaussian_noise_function&quot;</span><span class="p">)</span>
+        <span class="c1"># sample edge functions and weights</span>
+        <span class="n">generate_edge_functions_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
+            <span class="n">edge_weight_lims</span><span class="o">=</span><span class="n">edge_weight_lims_</span><span class="p">,</span>
+            <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions_</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+<div class="viewcode-block" id="apply_linear_soft_intervention"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.apply_linear_soft_intervention.html#pywhy_graphs.functional.apply_linear_soft_intervention">[docs]</a><span class="k">def</span> <span class="nf">apply_linear_soft_intervention</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;additive&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies a soft intervention to a linear Gaussian graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        Linear functional causal graph.</span>
+<span class="sd">    targets : Set[Node]</span>
+<span class="sd">        The set of nodes to intervene on simultanenously.</span>
+<span class="sd">    type : str, optional</span>
+<span class="sd">        Type of intervention, by default &quot;additive&quot;.</span>
+<span class="sd">    random_state : RandomState, optional</span>
+<span class="sd">        Random seed, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The functional linear causal graph with the intervention applied on the</span>
+<span class="sd">        target nodes. The perturbation occurs on the ``gaussian_noise_function``</span>
+<span class="sd">        of the target nodes. That is, the soft intervention, perturbs the</span>
+<span class="sd">        exogenous noise of the target nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a linear Gaussian graph.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">target</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All targets must be in the graph.&quot;</span><span class="p">)</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;additive&quot;</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">target</span><span class="p">][</span><span class="s2">&quot;gaussian_noise_function&quot;</span><span class="p">][</span><span class="s2">&quot;mean&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">G</span></div>
 </pre></div>
 
