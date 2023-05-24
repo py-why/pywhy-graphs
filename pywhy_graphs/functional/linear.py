@@ -1,17 +1,22 @@
-from typing import Callable, List, Optional
+from typing import Callable, List, Set
 
 import networkx as nx
 import numpy as np
 
+from pywhy_graphs.typing import Node
+
+from .additive import generate_edge_functions_for_node
+from .utils import _preprocess_parameter_inputs
+
 
 def make_graph_linear_gaussian(
     G: nx.DiGraph,
-    node_mean_lims: Optional[List[float]] = None,
-    node_std_lims: Optional[List[float]] = None,
+    node_mean_lims: List[float] = None,
+    node_std_lims: List[float] = None,
     edge_functions: List[Callable[[float], float]] = None,
-    edge_weight_lims: Optional[List[float]] = None,
+    edge_weight_lims: List[float] = None,
     random_state=None,
-):
+) -> nx.DiGraph:
     r"""Convert an existing DAG to a linear Gaussian graphical model.
 
     All nodes are sampled from a normal distribution with parametrizations
@@ -60,45 +65,82 @@ def make_graph_linear_gaussian(
         set with ``'parent_functions'``, and ``'gaussian_noise_function'``. Moreover
         the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
-    if not nx.is_directed_acyclic_graph(G):
+    G = G.copy()
+
+    if hasattr(G, "get_graphs"):
+        directed_G = G.get_graphs("directed")
+    else:
+        directed_G = G
+
+    if not nx.is_directed_acyclic_graph(directed_G):
         raise ValueError("The input graph must be a DAG.")
     rng = np.random.default_rng(random_state)
 
-    if node_mean_lims is None:
-        node_mean_lims = [0, 0]
-    elif len(node_mean_lims) != 2:
-        raise ValueError("node_mean_lims must be a list of length 2.")
-    if node_std_lims is None:
-        node_std_lims = [1, 1]
-    elif len(node_std_lims) != 2:
-        raise ValueError("node_std_lims must be a list of length 2.")
-    if edge_functions is None:
-        edge_functions = [lambda x: x]
-    if edge_weight_lims is None:
-        edge_weight_lims = [1, 1]
-    elif len(edge_weight_lims) != 2:
-        raise ValueError("edge_weight_lims must be a list of length 2.")
+    # preprocess hyperparameters and check for validity
+    (
+        node_mean_lims_,
+        node_std_lims_,
+        edge_functions_,
+        edge_weight_lims_,
+    ) = _preprocess_parameter_inputs(
+        node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
+    )
 
     # Create list of topologically sorted nodes
-    top_sort_idx = list(nx.topological_sort(G))
+    top_sort_idx = list(nx.topological_sort(directed_G))
 
-    for node_idx in top_sort_idx:
-        # get all parents
-        parents = sorted(list(G.predecessors(node_idx)))
-
+    # sample noise and edge functions for each node and its parents
+    for node in top_sort_idx:
         # sample noise
-        mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
-        std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+        mean = rng.uniform(low=node_mean_lims_[0], high=node_mean_lims_[1])
+        std = rng.uniform(low=node_std_lims_[0], high=node_std_lims_[1])
+        G.nodes[node]["gaussian_noise_function"] = {"mean": mean, "std": std}
 
-        # sample weight and edge function for each parent
-        node_function = dict()
-        for parent in parents:
-            weight = rng.uniform(low=edge_weight_lims[0], high=edge_weight_lims[1])
-            func = rng.choice(edge_functions)
-            node_function.update({parent: {"weight": weight, "func": func}})
-
-        # set the node attribute "functions" to hold the weight and function wrt each parent
-        nx.set_node_attributes(G, {node_idx: node_function}, "parent_functions")
-        nx.set_node_attributes(G, {node_idx: {"mean": mean, "std": std}}, "gaussian_noise_function")
+        # sample edge functions and weights
+        generate_edge_functions_for_node(
+            G,
+            node=node,
+            edge_weight_lims=edge_weight_lims_,
+            edge_functions=edge_functions_,
+            random_state=random_state,
+        )
     G.graph["linear_gaussian"] = True
+    return G
+
+
+def apply_linear_soft_intervention(
+    G, targets: Set[Node], type: str = "additive", random_state=None
+):
+    """Applies a soft intervention to a linear Gaussian graph.
+
+    Parameters
+    ----------
+    G : Graph
+        Linear functional causal graph.
+    targets : Set[Node]
+        The set of nodes to intervene on simultanenously.
+    type : str, optional
+        Type of intervention, by default "additive".
+    random_state : RandomState, optional
+        Random seed, by default None.
+
+    Returns
+    -------
+    G : Graph
+        The functional linear causal graph with the intervention applied on the
+        target nodes. The perturbation occurs on the ``gaussian_noise_function``
+        of the target nodes. That is, the soft intervention, perturbs the
+        exogenous noise of the target nodes.
+    """
+    if not G.graph.get("linear_gaussian", True):
+        raise ValueError("The input graph must be a linear Gaussian graph.")
+    if not all(target in G.nodes for target in targets):
+        raise ValueError("All targets must be in the graph.")
+
+    rng = np.random.default_rng(random_state)
+
+    for target in targets:
+        if type == "additive":
+            G.nodes[target]["gaussian_noise_function"]["mean"] += rng.uniform(low=-1, high=1)
+
     return G

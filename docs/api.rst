@@ -29,8 +29,7 @@ graphs encountered in the literature.
    CPDAG
    PAG
    AugmentedGraph
-   IPAG
-   PsiPAG
+   AugmentedPAG
 
 :mod:`pywhy_graphs.algorithms`: Algorithms for Mixed-Edge Graphs
 ================================================================
@@ -55,6 +54,9 @@ causal graph operations.
    uncovered_pd_path
    acyclification
    is_definite_noncollider
+   find_connected_pairs
+   add_all_snode_combinations
+   compute_invariant_domains_per_node
 
 Conversions between other package's causal graphs
 =================================================
@@ -158,6 +160,9 @@ linear structural equation Gaussian models (SEMs).
    :toctree: generated/
 
    make_graph_linear_gaussian
+   apply_linear_soft_intervention
+   set_node_attributes_with_G
+   make_graph_multidomain
 
 Visualization of causal graphs
 ==============================
