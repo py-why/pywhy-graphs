@@ -4,7 +4,7 @@
 Functional Causal Graphical Models
 **********************************
 
-.. automodule:: pywhy_graphs.classes
+.. automodule:: pywhy_graphs.functional
     :no-members:
     :no-inherited-members:
 
@@ -33,6 +33,7 @@ In order to represent linear functions, we imbue nodes with a set of node attrib
     and ``gaussian_noise_function`` for node :math:`X` is:
     
     .. code-block:: python
+
         {
             'X': {
                 'parent_functions': {
@@ -52,9 +53,9 @@ In order to represent linear functions, we imbue nodes with a set of node attrib
             }
         }
 
-:mod:`pywhy_graphs.functional.linear`: Linear functional graphs
-================================================================
-.. currentmodule:: pywhy_graphs.functional.linear
+Linear functional graphs
+========================
+.. currentmodule:: pywhy_graphs.functional
     
 .. autosummary::
    :toctree: ../../generated/
@@ -79,6 +80,7 @@ are the direct children of an S-node.
     encodes the data-generating function for the Gaussian noise for each non-invariant domain.
     
     .. code-block:: python
+        
         {
             'X': {
                 'domain_gaussian_noise_function': {
@@ -91,12 +93,11 @@ are the direct children of an S-node.
             }
         }
 
-:mod:`pywhy_graphs.functional.multidomain`: Linear functional selection diagrams
-================================================================================
-.. currentmodule:: pywhy_graphs.functional.multidomain
+Linear functional selection diagrams
+====================================
+.. currentmodule:: pywhy_graphs.functional
     
 .. autosummary::
    :toctree: ../../generated/
 
    make_graph_multidomain
-   find_connected_pairs

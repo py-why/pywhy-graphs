@@ -68,9 +68,10 @@ def compute_invariant_domains_per_node(
         ``domain_ids`` attribute of G.
     inconsistency : str, optional
         How to handle inconsistencies, by default 'raise'. Can be one of:
-            - 'raise': raise an exception
-            - 'ignore': ignore the inconsistency.
-            - 'warn': raise a warning
+        - 'raise': raise an exception
+        - 'ignore': ignore the inconsistency.
+        - 'warn': raise a warning
+
         An inconsistency is when the current included S-nodes are not the same
         after computing the invariant domains. If 'ignore', or 'warn', the
         inconsistent S-node will be removed in `G`.
