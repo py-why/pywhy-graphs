@@ -2,6 +2,7 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs
+from pywhy_graphs import ADMG
 
 
 def test_convert_to_latent_confounder_errors():
@@ -39,3 +40,53 @@ def test_convert_to_latent_confounder(graph_func):
     G.remove_edge(3, 1, G.bidirected_edge_name)
     G.add_edge(3, 1, G.directed_edge_name)
     assert pywhy_graphs.is_node_common_cause(G, 3)
+
+
+def test_inducing_path():
+
+    admg = ADMG()
+
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("z", "H", admg.bidirected_edge_name)
+
+    # X -> Y <-> z <-> H
+
+    S = {"Y", "Z"}
+    L = {}
+    assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    admg.add_edge("H", "J", admg.directed_edge_name)
+
+    # X -> Y <-> z <-> H -> J
+
+    S = {"Y", "Z"}
+    L = {"H"}
+
+    assert pywhy_graphs.inducing_path(admg, "X", "J", L, S)[0]
+
+    admg.add_edge("K", "J", admg.directed_edge_name)
+
+    # X -> Y <-> z <-> H -> J <- K
+    S = {"Y", "Z", "J"}
+    L = {"H"}
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[0]  # no directed path exists
+
+    admg.add_edge("J", "K", admg.directed_edge_name)
+
+    # X -> Y <-> z <-> H -> J <-> K
+
+    S = {"Y", "Z"}
+    L = {"H"}
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[
+        0
+    ]  # A collider on the path is not in S
+
+    S = {"Y", "Z"}
+    L = {}
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[
+        0
+    ]  # A non-collider on the path is not in S

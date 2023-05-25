@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Tuple
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
+from pywhy_graphs import PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
 from pywhy_graphs.typing import Node, TsNode
 
@@ -908,42 +908,3 @@ def _check_ts_node(node):
         )
     if node[1] > 0:
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
-
-
-def inducing_path(G, node_x, node_y, L=None, S=None):
-    """Checks if an inducing path exists between node_x and node_y and if it does returns it.
-
-    Args:
-        G : Graph
-            The graph.
-        node_x : node
-            The source node.
-        node_y : node
-            The final node.
-        L : set
-            The set containing every non-collider on the path.
-        S:  set
-            The set containing every collider on the path that is not an ancestor of the endpoints.
-
-
-    Returns:
-        path : Tuple[bool, path]
-            A tuple containing a bool and a path if the bool is true.
-    """
-
-    graph = ADMG()
-
-    graph.add_edges_from(G.sub_directed_graph())
-
-    if not isinstance(G, CPDAG):
-        graph.add_edges_from(G.sub_bidirected_graph())
-
-    nodes = graph.nodes
-
-    if node_x not in nodes or node_y not in nodes:
-        raise ValueError("The provided nodes are not in the graph.")
-
-    path = []  # this will contain the path.
-    path.append(node_x)
-
-    return (False, [])

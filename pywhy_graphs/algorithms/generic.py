@@ -12,6 +12,7 @@ __all__ = [
     "is_node_common_cause",
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
+    "inducing_path",
 ]
 
 
@@ -333,3 +334,84 @@ def _single_shortest_path_early_stop(G, firstlevel, paths, cutoff, join, valid_p
                     nextlevel[w] = 1
         level += 1
     return paths
+
+
+def _find_directed_parents(G, node):
+    """Finds the parents of a node in the directed and the bidirected subgraphs.
+
+    Args:
+        G : Graph
+            The graph.
+        node : node label
+            The node for which we have to find the parents.
+
+    Returns:
+        out : set
+            The parents of the provided node.
+    """
+    bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
+    directed_parents = set(G.sub_directed_graph().predecessors(node))
+
+    out = bidirected_parents.union(directed_parents)
+
+    return out
+
+
+def _find_directed_children(G, node):
+    """Finds the children of a node in the directed and the bidirected subgraphs.
+
+    Args:
+        G : Graph
+            The graph.
+        node : node label
+            The node for which we have to find the children.
+
+    Returns:
+        out : set
+            The children of the provided node.
+    """
+    bidirected_children = set(G.sub_bidirected_graph().neighbors(node))
+    directed_children = set(G.sub_directed_graph().successors(node))
+
+    out = bidirected_children.union(directed_children)
+
+    return out
+
+
+def inducing_path(G, node_x, node_y, L=None, S=None):
+    """Checks if an inducing path exists between node_x and node_y and if it does returns it.
+
+    Args:
+        G : Graph
+            The graph.
+        node_x : node
+            The source node.
+        node_y : node
+            The destination node.
+        L : set
+            The set containing every non-collider on the path.
+        S:  set
+            The set containing every collider on the path that is not an ancestor of the endpoints.
+
+
+    Returns:
+        path : Tuple[bool, path]
+            A tuple containing a bool and a path if the bool is true.
+    """
+
+    graph = ADMG()
+
+    graph.add_edges_from(G.sub_directed_graph())
+
+    if not isinstance(G, CPDAG):
+        graph.add_edges_from(G.sub_bidirected_graph())
+
+    nodes = graph.nodes
+
+    if node_x not in nodes or node_y not in nodes:
+        raise ValueError("The provided nodes are not in the graph.")
+
+    path = []  # this will contain the path.
+    path.append(node_x)
+
+    return (False, [])
