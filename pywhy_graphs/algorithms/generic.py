@@ -349,7 +349,9 @@ def _find_directed_parents(G, node):
         out : set
             The parents of the provided node.
     """
-    bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
+
+    if not isinstance(G, CPDAG):
+        bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
     directed_parents = set(G.sub_directed_graph().predecessors(node))
 
     out = bidirected_parents.union(directed_parents)
@@ -370,15 +372,86 @@ def _find_directed_children(G, node):
         out : set
             The children of the provided node.
     """
-    bidirected_children = set(G.sub_bidirected_graph().neighbors(node))
+    if not isinstance(G, CPDAG):
+        bidirected_children = set(G.sub_bidirected_graph().neighbors(node))
     directed_children = set(G.sub_directed_graph().successors(node))
 
     out = bidirected_children.union(directed_children)
 
     return out
 
+def _is_collider(G, node):
+    """Checks if the given node is a collider or not.
 
-def inducing_path(G, node_x, node_y, L=None, S=None):
+    Args:
+        G : graph
+            The graph.
+        node : node
+            The node to be checked.
+
+    Returns:
+        iscollider : bool
+            Bool is set true if the node is a collider, false otherwise.
+    """
+    parents = _find_directed_parents(G, node)
+
+    if len(parents) > 1:
+        return True
+    return False
+
+def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
+    """Recursively explores a graph to find a path.
+
+       Finds path that are compliant with the inducing path requirements.
+
+    Args:
+        G : graph
+            The graph.
+        node_x : node
+            The source node.
+        node_y : node
+            The destination node
+        L : set
+            Set containing all the non-colliders.
+        S : set
+            Set containing all the colliders.
+        visited : set
+            Set containing all the nodes already visited.
+        xyancestors : set
+            Set containing the ancestors of X and Y.
+        cur_node : node
+            The current node.
+
+    Returns:
+        path : Tuple[bool, path]
+            A tuple containing a bool and a path if the bool is true.
+    """
+    path_exists = False
+    path = []
+
+    visited.add(cur_node)
+    children =_find_directed_children(G, cur_node)
+
+    if cur_node is node_y:
+        return (True,[node_y])
+
+    for elem in children:
+        if elem in visited:
+            pass
+        else:
+            if _is_collider(G, elem) and (elem not in S) and (elem not in xyancestors) and (elem is not node_y):
+                continue
+            elif not _is_collider(G, elem) and (elem not in L) and (elem is not node_y):
+                continue
+            path_exists, temp_path = _recursive_path(G, node_x, node_y, L, S,visited,xyancestors,elem)
+            if path_exists:
+                path.append(cur_node)
+                path.extend(temp_path)
+                break
+    return (path_exists, path)
+
+
+def inducing_path(G, node_x, node_y, L=set(), S=set()):
     """Checks if an inducing path exists between node_x and node_y and if it does returns it.
 
     Args:
@@ -399,19 +472,41 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
             A tuple containing a bool and a path if the bool is true.
     """
 
-    graph = ADMG()
-
-    graph.add_edges_from(G.sub_directed_graph())
-
-    if not isinstance(G, CPDAG):
-        graph.add_edges_from(G.sub_bidirected_graph())
-
-    nodes = graph.nodes
+    nodes = set(G.nodes)
 
     if node_x not in nodes or node_y not in nodes:
         raise ValueError("The provided nodes are not in the graph.")
 
-    path = []  # this will contain the path.
-    path.append(node_x)
+    if node_x == node_y:
+        raise ValueError("The start and destination nodes are the same.")
 
-    return (False, [])
+
+    visited = set()
+    visited.add(node_x)
+
+    path = []  # this will contain the path.
+
+    xanc = _find_directed_parents(G, node_x)
+    yanc = _find_directed_parents(G, node_y)
+
+    xyancestors = xanc.union(yanc)
+
+
+    children =_find_directed_children(G, node_x)
+
+    path_exists = False
+    for elem in children:
+        if elem not in visited:
+            if _is_collider(G, elem) and (elem not in S) and (elem not in xyancestors) and (elem is not node_y):
+                continue
+            elif not _is_collider(G, elem) and (elem not in L) and (elem is not node_y):
+                continue
+
+            path_exists, temp_path = _recursive_path(G, node_x, node_y, L, S,visited,xyancestors,elem)
+            if path_exists:
+                path.append(node_x)
+                path.extend(temp_path)
+                break
+    
+
+    return (path_exists, path)

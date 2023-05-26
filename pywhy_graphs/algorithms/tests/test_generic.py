@@ -53,7 +53,7 @@ def test_inducing_path():
     # X -> Y <-> z <-> H
 
     S = {"Y", "Z"}
-    L = {}
+    L = set()
     assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
 
     admg.add_edge("H", "J", admg.directed_edge_name)
@@ -85,7 +85,7 @@ def test_inducing_path():
     ]  # A collider on the path is not in S
 
     S = {"Y", "Z"}
-    L = {}
+    L = set()
 
     assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[
         0
@@ -98,8 +98,8 @@ def test_inducing_path_wihtout_LandS():
 
     admg.add_edge("X", "Y", admg.directed_edge_name)
 
-    L = {}
-    S = {}
+    L = set()
+    S = set()
 
     # X -> Y
 
