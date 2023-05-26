@@ -339,15 +339,17 @@ def _single_shortest_path_early_stop(G, firstlevel, paths, cutoff, join, valid_p
 def _find_directed_parents(G, node):
     """Finds the parents of a node in the directed and the bidirected subgraphs.
 
-    Args:
-        G : Graph
-            The graph.
-        node : node label
-            The node for which we have to find the parents.
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : node label
+        The node for which we have to find the parents.
 
-    Returns:
-        out : set
-            The parents of the provided node.
+    Returns
+    -------
+    out : set
+        The parents of the provided node.
     """
 
     if not isinstance(G, CPDAG):
@@ -362,15 +364,17 @@ def _find_directed_parents(G, node):
 def _find_directed_children(G, node):
     """Finds the children of a node in the directed and the bidirected subgraphs.
 
-    Args:
-        G : Graph
-            The graph.
-        node : node label
-            The node for which we have to find the children.
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : node label
+        The node for which we have to find the children.
 
-    Returns:
-        out : set
-            The children of the provided node.
+    Returns
+    -------
+    out : set
+        The children of the provided node.
     """
     if not isinstance(G, CPDAG):
         bidirected_children = set(G.sub_bidirected_graph().neighbors(node))
@@ -384,15 +388,17 @@ def _find_directed_children(G, node):
 def _is_collider(G, node):
     """Checks if the given node is a collider or not.
 
-    Args:
-        G : graph
-            The graph.
-        node : node
-            The node to be checked.
+    Parameters
+    ----------
+    G : graph
+        The graph.
+    node : node
+        The node to be checked.
 
-    Returns:
-        iscollider : bool
-            Bool is set true if the node is a collider, false otherwise.
+    Returns
+    -------
+    iscollider : bool
+        Bool is set true if the node is a collider, false otherwise.
     """
     parents = _find_directed_parents(G, node)
 
@@ -406,27 +412,29 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
 
        Finds path that are compliant with the inducing path requirements.
 
-    Args:
-        G : graph
-            The graph.
-        node_x : node
-            The source node.
-        node_y : node
-            The destination node
-        L : set
-            Set containing all the non-colliders.
-        S : set
-            Set containing all the colliders.
-        visited : set
-            Set containing all the nodes already visited.
-        xyancestors : set
-            Set containing the ancestors of X and Y.
-        cur_node : node
-            The current node.
+    Parameters
+    ----------
+    G : graph
+        The graph.
+    node_x : node
+        The source node.
+    node_y : node
+        The destination node
+    L : set
+        Set containing all the non-colliders.
+    S : set
+        Set containing all the colliders.
+    visited : set
+        Set containing all the nodes already visited.
+    xyancestors : set
+        Set containing the ancestors of X and Y.
+    cur_node : node
+        The current node.
 
-    Returns:
-        path : Tuple[bool, path]
-            A tuple containing a bool and a path if the bool is true.
+    Returns
+    -------
+    path : Tuple[bool, path]
+        A tuple containing a bool and a path which is empty if the bool is false.
     """
     path_exists = False
     path = []
@@ -463,22 +471,24 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
 def inducing_path(G, node_x, node_y, L=set(), S=set()):
     """Checks if an inducing path exists between node_x and node_y and if it does returns it.
 
-    Args:
-        G : Graph
-            The graph.
-        node_x : node
-            The source node.
-        node_y : node
-            The destination node.
-        L : set
-            The set containing every non-collider on the path.
-        S:  set
-            The set containing every collider on the path that is not an ancestor of the endpoints.
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node_x : node
+        The source node.
+    node_y : node
+        The destination node.
+    L : set
+        The set containing every non-collider on the path.
+    S:  set
+        The set containing every collider on the path that is not an ancestor of the endpoints.
 
 
-    Returns:
-        path : Tuple[bool, path]
-            A tuple containing a bool and a path if the bool is true.
+    Returns
+    -------
+    path : Tuple[bool, path]
+        A tuple containing a bool and a path if the bool is true.
     """
 
     nodes = set(G.nodes)
