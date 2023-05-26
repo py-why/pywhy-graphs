@@ -380,6 +380,7 @@ def _find_directed_children(G, node):
 
     return out
 
+
 def _is_collider(G, node):
     """Checks if the given node is a collider or not.
 
@@ -398,6 +399,7 @@ def _is_collider(G, node):
     if len(parents) > 1:
         return True
     return False
+
 
 def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
     """Recursively explores a graph to find a path.
@@ -428,22 +430,29 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
     """
     path_exists = False
     path = []
-
     visited.add(cur_node)
-    children =_find_directed_children(G, cur_node)
+    children = _find_directed_children(G, cur_node)
 
     if cur_node is node_y:
-        return (True,[node_y])
+        return (True, [node_y])
 
     for elem in children:
         if elem in visited:
-            pass
+            continue
         else:
-            if _is_collider(G, elem) and (elem not in S) and (elem not in xyancestors) and (elem is not node_y):
+            print(_is_collider(G, elem))
+            if (
+                _is_collider(G, elem)
+                and (elem not in S)
+                and (elem not in xyancestors)
+                and (elem is not node_y)
+            ):
                 continue
             elif not _is_collider(G, elem) and (elem not in L) and (elem is not node_y):
                 continue
-            path_exists, temp_path = _recursive_path(G, node_x, node_y, L, S,visited,xyancestors,elem)
+            path_exists, temp_path = _recursive_path(
+                G, node_x, node_y, L, S, visited, xyancestors, elem
+            )
             if path_exists:
                 path.append(cur_node)
                 path.extend(temp_path)
@@ -480,7 +489,6 @@ def inducing_path(G, node_x, node_y, L=set(), S=set()):
     if node_x == node_y:
         raise ValueError("The start and destination nodes are the same.")
 
-
     visited = set()
     visited.add(node_x)
 
@@ -491,22 +499,27 @@ def inducing_path(G, node_x, node_y, L=set(), S=set()):
 
     xyancestors = xanc.union(yanc)
 
-
-    children =_find_directed_children(G, node_x)
+    children = _find_directed_children(G, node_x)
 
     path_exists = False
     for elem in children:
         if elem not in visited:
-            if _is_collider(G, elem) and (elem not in S) and (elem not in xyancestors) and (elem is not node_y):
+            if (
+                _is_collider(G, elem)
+                and (elem not in S)
+                and (elem not in xyancestors)
+                and (elem is not node_y)
+            ):
                 continue
             elif not _is_collider(G, elem) and (elem not in L) and (elem is not node_y):
                 continue
 
-            path_exists, temp_path = _recursive_path(G, node_x, node_y, L, S,visited,xyancestors,elem)
+            path_exists, temp_path = _recursive_path(
+                G, node_x, node_y, L, S, visited, xyancestors, elem
+            )
             if path_exists:
                 path.append(node_x)
                 path.extend(temp_path)
                 break
-    
 
     return (path_exists, path)

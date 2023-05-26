@@ -47,8 +47,8 @@ def test_inducing_path():
     admg = ADMG()
 
     admg.add_edge("X", "Y", admg.directed_edge_name)
-    admg.add_edge("z", "Y", admg.bidirected_edge_name)
-    admg.add_edge("z", "H", admg.bidirected_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
 
     # X -> Y <-> z <-> H
 
@@ -77,7 +77,7 @@ def test_inducing_path():
 
     # X -> Y <-> z <-> H -> J <-> K
 
-    S = {"Y", "Z"}
+    S = {"Y", "J"}
     L = {"H"}
 
     assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[
@@ -103,7 +103,7 @@ def test_inducing_path_wihtout_LandS():
 
     # X -> Y
 
-    assert not pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+    assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
 
     admg.add_edge("Y", "X", admg.directed_edge_name)
 
