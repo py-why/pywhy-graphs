@@ -448,7 +448,6 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
         if elem in visited:
             continue
         else:
-            print(_is_collider(G, elem))
             if (
                 _is_collider(G, elem)
                 and (elem not in S)

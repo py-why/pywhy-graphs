@@ -110,3 +110,47 @@ def test_inducing_path_wihtout_LandS():
     # X <-> Y
 
     assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+
+
+def test_inducing_path_one_direction():
+
+    admg = ADMG()
+
+    admg.add_edge("A", "B", admg.directed_edge_name)
+    admg.add_edge("B", "C", admg.directed_edge_name)
+    admg.add_edge("C", "D", admg.directed_edge_name)
+    admg.add_edge("B", "C", admg.bidirected_edge_name)
+
+    L = {"C"}
+    S = {"B"}
+
+    # A -> B -> C -> D
+    # B <-> C
+
+    assert pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+
+    L = set()
+    S = {"B"}
+
+    assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+
+    L = {"C"}
+    S = set()
+
+    assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+
+    admg.add_edge("D", "C", admg.bidirected_edge_name)
+
+    # A -> B -> C -> D
+    # B <-> C
+    # C <-> D
+
+    L = set()
+    S = {"B"}
+
+    assert pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+
+    L = set()
+    S = set()
+
+    assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
