@@ -49,9 +49,7 @@ the addition of "F-nodes", which represent interventions :footcite:`pearl1993asp
 +===================+==========================================+==============+
 | AugmentedGraph    | directed, undirected, bidirected         | Yes          |
 +-------------------+------------------------------------------+--------------+
-| IPAG              | directed, undirected, bidirected, circle | Yes          |
-+-------------------+------------------------------------------+--------------+
-| PsiPAG            | directed, undirected, bidirected, circle | No           |
+| AugmentedPAG      | directed, undirected, bidirected, circle | Yes          |
 +-------------------+------------------------------------------+--------------+
 
 Finally, we also support time-series and create graphs that represent

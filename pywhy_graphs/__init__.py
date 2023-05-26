@@ -4,8 +4,7 @@ from .classes import (
     CPDAG,
     PAG,
     AugmentedGraph,
-    IPAG,
-    PsiPAG,
+    AugmentedPAG,
     StationaryTimeSeriesGraph,
     StationaryTimeSeriesDiGraph,
     StationaryTimeSeriesMixedEdgeGraph,
@@ -20,3 +19,4 @@ from . import export
 from . import classes
 from . import networkx
 from . import simulate
+from . import functional
