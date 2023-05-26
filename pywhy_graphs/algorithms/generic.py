@@ -468,7 +468,7 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
     return (path_exists, path)
 
 
-def inducing_path(G, node_x, node_y, L=set(), S=set()):
+def inducing_path(G, node_x, node_y, L=None, S=None):
     """Checks if an inducing path exists between node_x and node_y and if it does returns it.
 
     Parameters
@@ -480,9 +480,9 @@ def inducing_path(G, node_x, node_y, L=set(), S=set()):
     node_y : node
         The destination node.
     L : set
-        The set containing every non-collider on the path.
+        The set containing every non-collider on the path. Defaults to an empty set.
     S:  set
-        The set containing every collider on the path that is not an ancestor of the endpoints.
+        Contains all colliders on the path. Defaults to an empty set.
 
 
     Returns
@@ -490,6 +490,12 @@ def inducing_path(G, node_x, node_y, L=set(), S=set()):
     path : Tuple[bool, path]
         A tuple containing a bool and a path if the bool is true.
     """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
 
     nodes = set(G.nodes)
 
