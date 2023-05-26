@@ -41,6 +41,7 @@ scipy = "^1.8.0"
 networkx = "^3.1"
 importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
+pgmpy = { version = "*", optional = true }
 
 [tool.poetry.group.test]
 optional = true
@@ -94,6 +95,7 @@ typing-extensions = { version = "*" }         # needed in dowhy's package
 
 [tool.poetry.extras]
 viz = ['pygraphviz']
+sims = ['pgmpy']
 
 [build-system]
 requires = ["poetry-core>=1.0.8"]

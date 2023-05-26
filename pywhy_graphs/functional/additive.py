@@ -4,7 +4,7 @@ from pywhy_graphs.typing import Node
 
 
 def generate_edge_functions_for_node(
-    G, node: Node, edge_weight_lims, edge_functions, random_state=None
+    G, node: Node, edge_weight_lims=None, edge_functions=None, random_state=None
 ):
     """Sample edge functions and weights for a given node as a function of their parents.
 
