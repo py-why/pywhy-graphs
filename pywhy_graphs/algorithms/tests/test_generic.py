@@ -90,3 +90,23 @@ def test_inducing_path():
     assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[
         0
     ]  # A non-collider on the path is not in S
+
+
+def test_inducing_path_wihtout_LandS():
+
+    admg = ADMG()
+
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+
+    L = {}
+    S = {}
+
+    # X -> Y
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+
+    # X <-> Y
+
+    assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
