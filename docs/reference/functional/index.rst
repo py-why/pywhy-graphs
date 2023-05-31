@@ -42,7 +42,7 @@ In order to represent this function, we imbue each node with a set of node attri
 
 Then the node value is a deterministically computed. If there are no parents, then
 the node attribute will contain `None`. This enables stochasticity in the data-generating
-process due to the inherent randomness that we can attach to the distribution of ``exogenous_parent``.
+process due to the inherent randomness that we can attach to the distribution of ``exogenous_function``.
 Due to the multivariate input nature of ``parent_function``, it must be a Callable that takes
 keyword arguments of the observed parents and returns a single value. Due to the univariate input
 nature of ``exogenous_function``, it must be a Callable that takes a single value and
@@ -138,6 +138,36 @@ Specific Functional Graphs
 In this section, we discuss how to represent specific functional graphs with the API and some of their
 intricacies given the assumptions of the API discussed above.
 
+Discrete functional graphs
+--------------------------
+.. currentmodule:: pywhy_graphs.functional
+    
+.. autosummary::
+   :toctree: ../../generated/
+
+   make_graph_discrete_bayesian_network
+
+Discrete graphs can be fully represented by conditional probability tables (CPTs). Here, it is assumed
+each observed variable is discrete and the full set of possible values are known apriori. Hence,
+for each observed node, one can construct a table of their possible output values against the
+combination of different parent discrete values. Within each entry of the table, there is a probability
+value associated. This then gives us a model for :math:`P(X = x| Pa_X)` for each value of ``X=x`` and
+possible value of ``Pa_X``. 
+
+Therefore, each node in the graph has a node attribute ``cpt``, which is associated with a
+:class:`pgmpy.TabularCPD`. We leverage `pgmpy` to represent CPTs and wrap an API around that.
+Given each CPT, the ``parent_function`` is fully defined as just a discrete distribution sampling
+with possibly non-uniform probabilities.
+
+In order to represent a noisy discrete function, we define ``exogenous_function`` as the uniform
+discrete distribution over all possible values of the node. Then, we add a hyperparameter ``noise_ratio``
+which is a value between 0.0 and 1.0, which defines the probability one uses the ``exogenous_function``
+to sample the values of node. If one does not use the ``exogenous_function`` to sample the node,
+then the ``parent_function`` is used. The default value of ``noise_ratio`` is 0.
+
+Adding interventions and multiple-domains is simple as the ``parent_function`` is overridden by their respective
+functions. We can view these different distributions as simply having a different CPT.
+
 Linear
 ======
 
@@ -174,14 +204,7 @@ In order to represent linear functions, we imbue nodes with a set of node attrib
             }
         }
 
-Discrete functional graphs
-==========================
-.. currentmodule:: pywhy_graphs.functional
-    
-.. autosummary::
-   :toctree: ../../generated/
 
-   make_graph_linear_gaussian
 
 
 Linear

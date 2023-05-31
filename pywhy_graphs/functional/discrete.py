@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import networkx as nx
 from pgmpy.factors.discrete import TabularCPD
 
@@ -11,7 +11,7 @@ def generate_noise_for_node(
     pass
 
 
-def add_cpd_for_node(G: nx.DiGraph, node, cpd, overwrite: bool=False):
+def add_cpd_for_node(G: nx.DiGraph, node, cpd: TabularCPD, overwrite: bool=False):
     """Add CPD (Conditional Probability Distribution) to graph.
 
     This is a wrapper around a similar function as BayesianNetwork.add_cpds.
@@ -44,19 +44,24 @@ def add_cpd_for_node(G: nx.DiGraph, node, cpd, overwrite: bool=False):
         raise ValueError(
             f"CPD should be defined for all parents of {node}: "
             f"{G.predecessors(node)}. It is not: {cpd}")
+    
+    # check that the CPD has cardinality of the evidence that matches the cardinality set
+    for cardinality, parent in zip(cpd.cardinality[1:], cpd.get_evidence()):
+        if G.nodes[parent]['cardinality'] != cardinality:
+            raise RuntimeError(f'The cardinality of parent variable {parent} - {G.nodes[parent]["cardinality"]} '
+                               f'does not match the cardinality of the passed in CPT {cardinality}')
 
     # assign the conditional probability distribution
     G.nodes[node]['cpd'] = cpd
+    G.nodes[node]['cardinality'] = cpd.cardinality[0]
     G.graph['functional'] = 'discrete'
     return G
 
 
-def make_graph_discrete_bayesian_network(G,
-    node_mean_lims: List[float] = None,
-    node_std_lims: List[float] = None,
-    edge_functions: List[Callable[[float], float]] = None,
-    edge_weight_lims: List[float] = None,
-    cardinalities: Dict[Node, int]=None,
+def make_random_discrete_graph(G,
+                                cardinality_lims: List[int]=None,
+                                weight_lims: List[int] = None,
+                                noise_ratio_lims: List[float] = None,
     random_state=None,
 ) -> nx.DiGraph:
     if cardinalities is not None and not all(node in cardinalities for node in G.nodes):
