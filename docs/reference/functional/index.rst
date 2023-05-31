@@ -85,6 +85,35 @@ that maps each domain to a possibly new function that is used to compute :math:`
 Note to sample from multiple domain changes, we always set the smallest domain ID to be the reference
 distribution. For example, if domain IDs are ``(0, 1, 4, 5)``, then the reference domain is domain ``0``.
 
+Sampling from the graph
+-----------------------
+
+Now, we have discussed how we generally represent the functional relationships of each node in the graph.
+We now discuss how to sample from the graph. We first sample from the exogenous parent variable of
+every observed node in the graph, which may be a function of the domain ID if the domain ID is defined.
+Then, we sample the observed variables in topological order as a function of their exogenous variables
+and their causal parents. The distribution sampled here is always the observational distribution of the
+first domain (e.g. domain 1 out of N domains).
+
+Given, a functional graph with multiple distributions (e.g. through interventions, or S-nodes), we
+can sample the additional distributions by sampling the observed nodes in topological order again.
+Consider sampling from a different domain. Each node that is a child of a S-node for the domain
+that we are considering is sampled from the following distribution:
+
+    .. math:: node = f'(observed\_parents) + g'(exogenous\_parent)
+
+where f' and g' are new functions that are encoded in the node's ``domain_parent_functions``
+and ``domain_exogenous_distribution`` dictionaries. These uniquely define the new distribution
+as a result of the domain shift. 
+
+Similarly, sampling from interventional distributions will consider each child of an F-node
+for the intervention and domain that we are considering (i.e. the input should specify the
+domain ID and the intervention setting we want to sample). Then we similarly sample the relevant
+``domain_exogenous_distribution`` and ``intervention_functions``. Note that ``domain_parent_functions``
+are not used in the interventional case, since the interventions take precedence over the domain
+shift in terms of altering the functional relationship with respect to observed variables. However,
+we implicitly assume the exogenous distribution is unalterable by the intervention.
+
 Limitations
 -----------
 
