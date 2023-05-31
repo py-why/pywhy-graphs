@@ -130,6 +130,13 @@ It is important to explicitly note some limitations of generating data with this
    distribution. For example, if :math:`X \in \mathbb{R}^d` and a parent of X is :math:`Y \in \mathbb{R}^m`,
    where Y is m-dimensional and X is d-dimensional and ``f`` is a function mapping Y to X, then
    this is not supported.
+5. Randomness: Users cannot pass in a random state, or RNG directly to the ``sample_from_graph`` function,
+   but rather must instantiate any random functions with the RNG during construction of the functional graph.
+
+Specific Functional Graphs
+==========================
+In this section, we discuss how to represent specific functional graphs with the API and some of their
+intricacies given the assumptions of the API discussed above.
 
 Linear
 ======
