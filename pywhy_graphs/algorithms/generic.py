@@ -483,7 +483,6 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     S:  set
         Contains all colliders on the path. Defaults to an empty set.
 
-
     Returns
     -------
     path : Tuple[bool, path]
