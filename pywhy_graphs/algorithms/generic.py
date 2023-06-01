@@ -379,7 +379,6 @@ def _bidirected_sub_graph_parents(G, node):
     return bidirected_parents
 
 
-
 def _is_collider(G, node):
     """Checks if the given node is a collider or not.
 
@@ -463,7 +462,7 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
 
 
 def inducing_path(G, node_x, node_y, L=None, S=None):
-    """Checks if an inducing path exists between node_x and node_y and if it does returns it.
+    """Checks if an inducing path exists between node_x and node_y as defined in :footcite:`Zhang2008`.
 
     Parameters
     ----------
@@ -482,6 +481,10 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     -------
     path : Tuple[bool, path]
         A tuple containing a bool and a path if the bool is true.
+
+    Notes
+    -----
+    <TBD>
     """
     if L is None:
         L = set()
