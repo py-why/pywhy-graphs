@@ -479,7 +479,7 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     node_y : node
         The destination node.
     L : set
-        The set containing every non-collider on the path. Defaults to an empty set.
+        The ``L`` set that contains nodes that are ignored on the path. Defaults to an empty set. See Notes for details.
     S:  set
         Contains all colliders on the path. Defaults to an empty set.
 
