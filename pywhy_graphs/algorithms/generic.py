@@ -480,7 +480,7 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     Returns
     -------
     path : Tuple[bool, path]
-        A tuple containing a bool and a path if the bool is true.
+        A tuple containing a bool and a path if the bool is true, an empty list otherwise.
 
     Notes
     -----
