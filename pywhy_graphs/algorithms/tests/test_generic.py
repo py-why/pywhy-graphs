@@ -71,7 +71,7 @@ def test_inducing_path():
     S = {"Y", "Z", "J"}
     L = {"H"}
 
-    assert not pywhy_graphs.inducing_path(admg, "X", "K", L, S)[0]  # no directed path exists
+    assert pywhy_graphs.inducing_path(admg, "X", "K", L, S)[0]  # no directed path exists
 
     admg.add_edge("J", "K", admg.directed_edge_name)
 
@@ -154,3 +154,50 @@ def test_inducing_path_one_direction():
     S = set()
 
     assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+
+
+def test_inducing_path_corner_cases():
+    # X <- Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    # not an inducing path, since Y is not a collider and Y is not part of L
+    S = {}
+    L = {}
+    assert not pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    # now an inducing path, since Y is not a collider, but is part of L
+    L = {"Y"}
+    assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    # X <-> Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.bidirected_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    # not an inducing path, since Y is not an ancestor of X, H, or S
+    S = {}
+    L = {}
+    assert not pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    # still not an inducing path, since Y is a collider
+    L = {"Y"}
+    assert not pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    # now add an edge Y -> A
+    admg.add_edge("Y", "A", admg.directed_edge_name)
+
+    # an inducing path, since Y is a collider and is an ancestor of X, H, or S
+    L = {}
+    S = {"A"}
+    assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+
+    # an inducing path, since Y is a collider and is an ancestor of X, H, or S
+    L = {}
+    S = {"Y"}
+    assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]

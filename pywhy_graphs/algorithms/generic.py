@@ -336,8 +336,8 @@ def _single_shortest_path_early_stop(G, firstlevel, paths, cutoff, join, valid_p
     return paths
 
 
-def _find_directed_parents(G, node):
-    """Finds the parents of a node in the directed and the bidirected subgraphs.
+def _directed_sub_graph_parents(G, node):
+    """Finds the parents of a node in the directed subgraph.
 
     Parameters
     ----------
@@ -351,38 +351,33 @@ def _find_directed_parents(G, node):
     out : set
         The parents of the provided node.
     """
-
-    if not isinstance(G, CPDAG):
-        bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
     directed_parents = set(G.sub_directed_graph().predecessors(node))
 
-    out = bidirected_parents.union(directed_parents)
-
-    return out
+    return directed_parents
 
 
-def _find_directed_children(G, node):
-    """Finds the children of a node in the directed and the bidirected subgraphs.
+def _bidirected_sub_graph_parents(G, node):
+    """Finds the parents of a node in the bidirected subgraph.
 
     Parameters
     ----------
     G : Graph
         The graph.
     node : node label
-        The node for which we have to find the children.
+        The node for which we have to find the parents.
 
     Returns
     -------
     out : set
-        The children of the provided node.
+        The parents of the provided node.
     """
+    bidirected_parents = set()
+
     if not isinstance(G, CPDAG):
-        bidirected_children = set(G.sub_bidirected_graph().neighbors(node))
-    directed_children = set(G.sub_directed_graph().successors(node))
+        bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
 
-    out = bidirected_children.union(directed_children)
+    return bidirected_parents
 
-    return out
 
 
 def _is_collider(G, node):
@@ -400,9 +395,10 @@ def _is_collider(G, node):
     iscollider : bool
         Bool is set true if the node is a collider, false otherwise.
     """
-    parents = _find_directed_parents(G, node)
+    parents = _directed_sub_graph_parents(G, node)
+    parents = parents.union(_bidirected_sub_graph_parents(G, node))
 
-    if len(parents) > 1:
+    if len(parents) == 2:
         return True
     return False
 
@@ -439,11 +435,10 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node):
     path_exists = False
     path = []
     visited.add(cur_node)
-    children = _find_directed_children(G, cur_node)
+    children = G.neighbors(cur_node)
 
     if cur_node is node_y:
         return (True, [node_y])
-
     for elem in children:
         if elem in visited:
             continue
@@ -488,7 +483,6 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     path : Tuple[bool, path]
         A tuple containing a bool and a path if the bool is true.
     """
-
     if L is None:
         L = set()
 
@@ -508,12 +502,12 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
 
     path = []  # this will contain the path.
 
-    xanc = _find_directed_parents(G, node_x)
-    yanc = _find_directed_parents(G, node_y)
+    xanc = _directed_sub_graph_parents(G, node_x)
+    yanc = _directed_sub_graph_parents(G, node_y)
 
     xyancestors = xanc.union(yanc)
 
-    children = _find_directed_children(G, node_x)
+    children = G.neighbors(node_x)
 
     path_exists = False
     for elem in children:
@@ -526,6 +520,7 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
             ):
                 continue
             elif not _is_collider(G, elem) and (elem not in L) and (elem is not node_y):
+                print(_is_collider(G, elem))
                 continue
 
             path_exists, temp_path = _recursive_path(
