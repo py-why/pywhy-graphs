@@ -3,24 +3,21 @@ import pytest
 
 from pywhy_graphs.functional.base import (
     _check_input_graph,
-    add_parent_function,
     add_domain_shift_function,
     add_noise_function,
+    add_parent_function,
     add_soft_intervention_function,
-    add_domain_shift_function,
 )
 
 
 def test_check_input_graph():
     # Create a valid input graph
     G = nx.DiGraph()
+    G.add_node(1, exogenous_function="func1", exogenous_distribution="dist1")
     G.add_node(
-        1, exogenous_function="func1", exogenous_distribution="dist1"
+        2, exogenous_function="func2", exogenous_distribution="dist2", parent_function="parent2"
     )
-    G.add_node(2, exogenous_function="func2", exogenous_distribution="dist2", parent_function="parent2")
-    G.add_node(
-        3, exogenous_function="func3", exogenous_distribution="dist3"
-    )
+    G.add_node(3, exogenous_function="func3", exogenous_distribution="dist3")
     G.add_edge(1, 2)
     G.add_edge(3, 2)
     G_copy = G.copy()

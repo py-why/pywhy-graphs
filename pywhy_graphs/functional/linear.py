@@ -74,7 +74,6 @@ def make_graph_linear_gaussian(
 
     if not nx.is_directed_acyclic_graph(directed_G):
         raise ValueError("The input graph must be a DAG.")
-    rng = np.random.default_rng(random_state)
 
     # preprocess hyperparameters and check for validity
     (
@@ -93,9 +92,9 @@ def make_graph_linear_gaussian(
     for node in top_sort_idx:
         # sample noise
         G = generate_noise_for_node(
-                G, node, node_mean_lims_, node_std_lims_, random_state=random_state
+            G, node, node_mean_lims_, node_std_lims_, random_state=random_state
         )
-        
+
         # sample edge functions and weights
         generate_edge_functions_for_node(
             G,
@@ -107,11 +106,10 @@ def make_graph_linear_gaussian(
     G.graph["linear_gaussian"] = True
     return G
 
-def generate_noise_for_node(
-        G, node, node_mean_lims, node_std_lims, random_state=None
-):
+
+def generate_noise_for_node(G, node, node_mean_lims, node_std_lims, random_state=None):
     rng = np.random.default_rng(random_state)
-    
+
     # sample noise
     mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
     std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])

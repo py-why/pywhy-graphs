@@ -1,5 +1,5 @@
-import numpy as np
 import networkx as nx
+import numpy as np
 
 
 def set_node_attributes_with_G(G1, G2, node):
@@ -27,8 +27,14 @@ def set_node_attributes_with_G(G1, G2, node):
     return G1
 
 
-def _preprocess_parameter_inputs(node_mean_lims, node_std_lims, edge_functions, edge_weight_lims,
-                                 multi_domain: bool=False, n_domains: int=None):
+def _preprocess_parameter_inputs(
+    node_mean_lims,
+    node_std_lims,
+    edge_functions,
+    edge_weight_lims,
+    multi_domain: bool = False,
+    n_domains: int = None,
+):
     """Helper function to preprocess common parameter inputs for sampling functional graphs.
 
     Nodes' exogenous variables are sampled from a Gaussian distribution.
@@ -53,8 +59,9 @@ def _preprocess_parameter_inputs(node_mean_lims, node_std_lims, edge_functions, 
         for param in [node_mean_lims, node_std_lims, edge_weight_lims]:
             if len(param) != n_domains:
                 raise ValueError(f"{param} must be a list of length 2 or {n_domains} domains.")
-            
-        # if the parameters are not a list of length n_domains, then they must be a list of length n_domains
+
+        # if the parameters are not a list of length n_domains, then they must be a
+        # list of length n_domains
         if len(node_mean_lims) != n_domains:
             node_mean_lims = [node_mean_lims] * n_domains
         if len(node_std_lims) != n_domains:
@@ -64,8 +71,9 @@ def _preprocess_parameter_inputs(node_mean_lims, node_std_lims, edge_functions, 
     return node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
 
 
-
-def _preprocess_md_parameter_inputs(node_mean_lims, node_std_lims, edge_functions, edge_weight_lims, n_domains:int):
+def _preprocess_md_parameter_inputs(
+    node_mean_lims, node_std_lims, edge_functions, edge_weight_lims, n_domains: int
+):
     """Helper function to preprocess common parameter inputs for sampling functional graphs.
 
     Nodes' exogenous variables are sampled from a Gaussian distribution.
@@ -80,22 +88,22 @@ def _preprocess_md_parameter_inputs(node_mean_lims, node_std_lims, edge_function
     ----------
     node_mean_lims : ArrayLike of shape (n_domains, 2)
         A 2D array with rows as the domains and columns as the lower and upper bound
-        of the node's exogenous variable mean. If None, then intiailized to [0, 1]
+        of the node's exogenous variable mean. If None, then initialized to [0, 1]
         for every domain.
     node_std_lims : ArrayLike of shape (n_domains, 2)
-        A 2D array with rows as the domains and columns as the lower and upper bound
-        of the node's exogenous variable standard deviation. If None, then intiailized to [0.1, 1.0]
-        for every domain.
+        A 2D array with rows as the domains and columns as the lower and upper initialized
+        of the node's exogenous variable standard deviation. If None, then initialized
+        to [0.1, 1.0] for every domain.
     edge_functions : ArrayLike of shape (n_functions,)
         A set of different lambda functions.
     edge_weight_lims : ArrayLike of shape (n_domains, 2)
         A 2D array with rows as the domains and columns as the lower and upper bound
         of the edge weights that are used to combine the parents' values linearly. If None,
-        then intiailized to [-1, 1] for every domain.
+        then initialized to [-1, 1] for every domain.
     n_domains : int
         Number of domains.
     """
-    # initialize to defaul values
+    # initialize to default values
     if node_mean_lims is None:
         node_mean_lims = np.zeros((n_domains, 2))
         node_mean_lims[:, 1] = 1

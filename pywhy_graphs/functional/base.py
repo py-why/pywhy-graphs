@@ -1,14 +1,12 @@
-import inspect
-from typing import Callable, Dict
-import networkx as nx
-from pywhy_graphs.typing import Node
-from pywhy_graphs import AugmentedGraph
-from typing import Optional
+from typing import Callable, Dict, Optional
 
 import networkx as nx
 import numpy as np
-import pywhy_graphs as pgraphs
 from joblib import Parallel, delayed
+
+import pywhy_graphs as pgraphs
+from pywhy_graphs import AugmentedGraph
+from pywhy_graphs.typing import Node
 
 
 def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph:
@@ -34,13 +32,15 @@ def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph
 
     # check that the function has the correct number of keyword arguments
     _check_input_func(func, parents)
-    
+
     G.nodes[node]["parent_function"] = func
-    G.graph['functional'] = True
+    G.graph["functional"] = True
     return G
 
 
-def add_noise_function(G: nx.DiGraph, node: Node, distr_func: Callable, func: Callable=None) -> nx.DiGraph:
+def add_noise_function(
+    G: nx.DiGraph, node: Node, distr_func: Callable, func: Callable = None
+) -> nx.DiGraph:
     """Add function and distribution for a node's exogenous variable into the graph.
 
     Parameters
@@ -68,7 +68,7 @@ def add_noise_function(G: nx.DiGraph, node: Node, distr_func: Callable, func: Ca
     else:
         # check that the function has the correct number of keyword arguments
         _check_input_func(func)
-    if distr_func.__code__.co_argcount + + func.__code__.co_kwonlyargcount > 0:
+    if distr_func.__code__.co_argcount + +func.__code__.co_kwonlyargcount > 0:
         raise ValueError(
             f"Function {distr_func} for the exogenous variable distribution takes in "
             f"too many arguments. It should take in 0 arguments."
@@ -76,11 +76,13 @@ def add_noise_function(G: nx.DiGraph, node: Node, distr_func: Callable, func: Ca
 
     G.nodes[node]["exogenous_function"] = func
     G.nodes[node]["exogenous_distribution"] = distr_func
-    G.graph['functional'] = True
+    G.graph["functional"] = True
     return G
 
 
-def add_soft_intervention_function(G: AugmentedGraph, node: Node, f_node: Node, func: Callable) -> nx.DiGraph:
+def add_soft_intervention_function(
+    G: AugmentedGraph, node: Node, f_node: Node, func: Callable
+) -> nx.DiGraph:
     """Add soft intervention function for a node into the graph.
 
     Parameters
@@ -98,29 +100,33 @@ def add_soft_intervention_function(G: AugmentedGraph, node: Node, f_node: Node, 
     Returns
     -------
     G : nx.DiGraph
-        The DAG with the parent function added to ``G.node[node]["intervention_functions"][f_node]``.
+        The DAG with the parent function added to
+        ``G.node[node]["intervention_functions"][f_node]``.
     """
     if node not in G.children(f_node):
         raise RuntimeError(f"Node {node} is not a child of F-node {f_node}.")
-    
+
     # get the observed variable parents of the current node
     parents = set(G.predecessors(node)).difference(set(G.augmented_nodes))
 
     # check that the function has the correct number of keyword arguments
     _check_input_func(parents, func)
-    
+
     G.nodes[node]["intervention_functions"][f_node] = func
-    G.graph['functional'] = True
-    G.graph['interventional'] = True
+    G.graph["functional"] = True
+    G.graph["interventional"] = True
     return G
 
 
-def add_domain_shift_function(G: AugmentedGraph, node: Node, s_node: Node, func: Callable=None, distr_func: Callable=None):
+def add_domain_shift_function(
+    G: AugmentedGraph, node: Node, s_node: Node, func: Callable = None, distr_func: Callable = None
+):
     """Add domain shift function for a node into the graph assuming invariant graph structure.
 
-    A domain shift can either change the functional relationship of the node, or change the distribution
-    of the exogenous variables. This is known as a mechanism change in selection diagrams. This function
-    assumes that the graph structure is invariant before and after the domain shift.
+    A domain shift can either change the functional relationship of the node, or change the
+    distribution of the exogenous variables. This is known as a mechanism change in
+    selection diagrams. This function assumes that the graph structure is invariant
+    before and after the domain shift.
 
     Parameters
     ----------
@@ -129,7 +135,8 @@ def add_domain_shift_function(G: AugmentedGraph, node: Node, s_node: Node, func:
     node : Node
         The node ``s_node`` is pointing to.
     s_node : Node
-        The S-node indicating a change in distribution between the two domains for the nodes it is pointing to.
+        The S-node indicating a change in distribution between the two domains for the
+        nodes it is pointing to.
     func : Callable, optional
         New function for ``node`` for the domain, by default None
     distr_func : Callable, optional
@@ -139,11 +146,12 @@ def add_domain_shift_function(G: AugmentedGraph, node: Node, s_node: Node, func:
         raise RuntimeError(f"Node {node} is not a child of S-node {s_node}.")
     if distr_func is None and func is None:
         raise RuntimeError("Either func or distr_func must be specified.")
-    
+
     # get the observed variable parents of the current node
     parents = set(G.predecessors(node)).difference(set(G.augmented_nodes))
 
-    # get the domain ID of the S-node in sorted order (domain_i, domain_j), where domain_i < domain_j
+    # get the domain ID of the S-node in sorted order (domain_i, domain_j),
+    # where domain_i < domain_j
     domain_ids = sorted(G.nodes[s_node]["domain_ids"])
     src, target = domain_ids
     reference_src = min(G.domain_ids)
@@ -155,22 +163,29 @@ def add_domain_shift_function(G: AugmentedGraph, node: Node, s_node: Node, func:
         # use the existing function
         func = G.nodes[node].get("parent_function", None)
         if func is None:
-            raise RuntimeError(f"Node {node} does not have a parent function and func is not specified.")
+            raise RuntimeError(
+                f"Node {node} does not have a parent function and func is not specified."
+            )
     if distr_func is None:
         distr_func = G.nodes[node].get("exogenous_distribution", None)
         if distr_func is None:
-            raise RuntimeError(f"Node {node} does not have an exogenous distribution and distr_func is not specified.")
-        
+            raise RuntimeError(
+                f"Node {node} does not have an exogenous distribution and distr_func "
+                f"is not specified."
+            )
+
     # check the existing functions are added for the src
     if src != reference_src and src not in G.nodes[node]["domain_parent_functions"]:
         raise RuntimeError(f"Node {node} does not have a parent function for domain {src} yet.")
     if src != reference_src and src not in G.nodes[node]["domain_exogenous_distributions"]:
-        raise RuntimeError(f"Node {node} does not have an exogenous distribution for domain {src} yet.")
-    
+        raise RuntimeError(
+            f"Node {node} does not have an exogenous distribution for domain {src} yet."
+        )
+
     G.nodes[node]["domain_parent_functions"][target] = func
     G.nodes[node]["domain_exogenous_distributions"][target] = distr_func
-    G.graph['functional'] = True
-    G.graph['multidomain'] = True
+    G.graph["functional"] = True
+    G.graph["multidomain"] = True
     return G
 
 
@@ -207,6 +222,7 @@ def sample_from_graph(
     """
     import pandas as pd
 
+    rng = np.random.default_rng(random_state)
     if hasattr(G, "get_graphs"):
         directed_G = G.get_graphs("directed")
     else:
@@ -217,7 +233,11 @@ def sample_from_graph(
 
     # first off, always convert said graph into an AugmentedGraph
     if isinstance(G, nx.DiGraph):
-        G = pgraphs.AugmentedGraph(incoming_directed_edges=directed_G)
+        G = pgraphs.AugmentedGraph(**G.graph)
+        for node in directed_G.nodes:
+            G.add_node(node, **directed_G.nodes[node])
+        for edge in directed_G.edges:
+            G.add_edge(*edge, **directed_G.edges[edge])
 
     # Create list of topologically sorted nodes
     top_sort_idx = list(nx.topological_sort(directed_G))
@@ -233,13 +253,15 @@ def sample_from_graph(
         data = []
         for _ in range(n_samples):
             node_samples = _sample_from_graph(
-                G, top_sort_idx, ignored_nodes=ignored_nodes, **sample_kwargs
+                G, top_sort_idx, rng=rng, ignored_nodes=ignored_nodes, **sample_kwargs
             )
             data.append(node_samples)
         data = pd.DataFrame.from_records(data)
     else:
         out = Parallel(n_jobs=n_jobs, verbose=0)(
-            delayed(_sample_from_graph)(G, top_sort_idx, ignored_nodes=ignored_nodes, **sample_kwargs)
+            delayed(_sample_from_graph)(
+                G, top_sort_idx, rng=rng, ignored_nodes=ignored_nodes, **sample_kwargs
+            )
             for _ in range(n_samples)
         )
         data = pd.DataFrame.from_records(out)
@@ -250,6 +272,7 @@ def sample_from_graph(
 def _sample_from_graph(
     G: nx.DiGraph,
     top_sort_idx,
+    rng,
     ignored_nodes=None,
 ) -> Dict:
     """Private function to sample a single iid sample from a graph for all nodes.
@@ -275,24 +298,37 @@ def _sample_from_graph(
 
     for node in top_sort_idx:
         # get all parents
-        parents = set(G.predecessors(node)).difference(ignored_nodes)
+        parents = list(set(G.predecessors(node)).difference(ignored_nodes))
 
-        # XXX: need to verify that this is reproducible given a RNG passed to the original func
-        # sample exogenous variable, which has no parameters
-        exo_val = G.nodes[node]['exogenous_distribution']()
-        exo_contrib_node = G.nodes[node]['exogenous_function'](exo_val)
+        if G.graph["functional"] == "discrete":
+            # for discrete graphs, use noise ratio to determine whether we sample
+            # from noise, or from the CPT
+            noise_ratio = G.nodes[node]["noise_ratio"]
+            p = [noise_ratio, 1 - noise_ratio]
+            if rng.choice(["exogenous", "cpt"], p=p) == "exogenous":
+                exo_val = G.nodes[node]["exogenous_distribution"]()
+            else:
+                exo_val = 0.0
+
+            exo_contrib_node = G.nodes[node]["exogenous_function"](exo_val)
+        else:
+            # XXX: need to verify that this is reproducible given a RNG passed to the original func
+            # sample exogenous variable, which has no parameters
+            exo_val = G.nodes[node]["exogenous_distribution"]()
+            exo_contrib_node = G.nodes[node]["exogenous_function"](exo_val)
 
         # sample parents if they exist
         parents_contrib_node = 0.0
         if parents:
-            parent_vals = {parent: nodes_sample[parent] for parent in parents}
-            parents_contrib_node = G.nodes[node]['parent_function'](**parent_vals)
-        
+            sorted_idx = np.argsort(parents)
+            parent_vals = [nodes_sample[parents[idx]] for idx in sorted_idx]
+
+            parents_contrib_node = G.nodes[node]["parent_function"](*parent_vals)
+
         # set the node attribute "functions" to hold the weight and function wrt each parent
         node_sample = parents_contrib_node + exo_contrib_node
         nodes_sample[node] = node_sample
     return nodes_sample
-
 
 
 def _check_input_func(func: Callable, parents=None):
@@ -307,24 +343,29 @@ def _check_input_func(func: Callable, parents=None):
             )
     else:
         if func.__code__.co_kwonlyargcount != len(parents):
-            raise ValueError(
-                f"Function {func} should have {len(parents)} keyword-only arguments, "
-            )
-    
+            raise ValueError(f"Function {func} should have {len(parents)} keyword-only arguments, ")
+
 
 def _check_input_graph(G: nx.DiGraph):
     if not nx.is_directed_acyclic_graph(G):
         raise ValueError("The input graph must be a DAG.")
     if not G.graph.get("functional", True):
-        raise ValueError("The input graph must be a functional graph. Please initialize "
-                         "the graph with functions.")
+        raise ValueError(
+            "The input graph must be a functional graph. Please initialize "
+            "the graph with functions."
+        )
     for node in G.nodes:
         if G.nodes[node].get("exogenous_function", None) is None:
             raise ValueError(f"Node {node} does not have an exogenous function.")
         if G.nodes[node].get("exogenous_distribution", None) is None:
             raise ValueError(f"Node {node} does not have an exogenous variable distribution.")
-        if G.nodes[node].get("parent_function", None) is None and len(list(G.predecessors(node))) > 0:
+        if (
+            G.nodes[node].get("parent_function", None) is None
+            and len(list(G.predecessors(node))) > 0
+        ):
             raise ValueError(f"Node {node} does not have a parent function, but it has parents.")
-        if G.nodes[node].get("parent_function", None) is not None and len(list(G.predecessors(node))) == 0:
+        if (
+            G.nodes[node].get("parent_function", None) is not None
+            and len(list(G.predecessors(node))) == 0
+        ):
             raise ValueError(f"Node {node} has a parent function, but it has no parents.")
-        
