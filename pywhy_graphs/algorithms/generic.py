@@ -436,7 +436,6 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, pre
     path = []
     visited.add(cur_node)
     children = G.neighbors(cur_node)
-    print(prev_node, cur_node)
     if cur_node is node_y:
         return (True, [node_y])
     for elem in children:
@@ -455,7 +454,6 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, pre
                 and (cur_node not in L)
                 and (cur_node is not node_y)
             ):
-                print("defef")
                 continue
 
             path_exists, temp_path = _recursive_path(
@@ -513,7 +511,6 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     yanc = _directed_sub_graph_parents(G, node_y)
 
     xyancestors = xanc.union(yanc)
-    print(xyancestors)
     children = G.neighbors(node_x)
 
     path_exists = False
