@@ -195,7 +195,7 @@ def test_inducing_path_corner_cases():
     # an inducing path, since Y is a collider and is an ancestor of X, H, or S
     L = {}
     S = {"A"}
-    assert not pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
+    assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
 
     # an inducing path, since Y is a collider and is an ancestor of X, H, or S
     L = {}

@@ -403,7 +403,7 @@ def _is_collider(G, prev_node, cur_node, node):
     return False
 
 
-def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, prev_node):
+def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node, prev_node):
     """Recursively explores a graph to find a path.
 
        Finds path that are compliant with the inducing path requirements.
@@ -422,8 +422,8 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, pre
         Set containing all the colliders.
     visited : set
         Set containing all the nodes already visited.
-    xyancestors : set
-        Set containing the ancestors of X and Y.
+    check_ancestors : set
+        Set containing all the ancestors to be checked against.
     cur_node : node
         The current node.
 
@@ -442,10 +442,19 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, pre
         if elem in visited:
             continue
         else:
+            print(check_ancestors)
+            print(
+                prev_node,
+                cur_node,
+                elem,
+                _is_collider(G, prev_node, cur_node, elem),
+                cur_node not in check_ancestors,
+                cur_node is not node_y,
+            )
             if (
                 _is_collider(G, prev_node, cur_node, elem)
+                and (cur_node not in check_ancestors)
                 and (cur_node not in S)
-                and (cur_node not in xyancestors)
                 and (cur_node is not node_y)
             ):
                 continue
@@ -457,7 +466,7 @@ def _recursive_path(G, node_x, node_y, L, S, visited, xyancestors, cur_node, pre
                 continue
 
             path_exists, temp_path = _recursive_path(
-                G, node_x, node_y, L, S, visited, xyancestors, elem, cur_node
+                G, node_x, node_y, L, S, visited, check_ancestors, elem, cur_node
             )
             if path_exists:
                 path.append(cur_node)
@@ -511,6 +520,13 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     yanc = _directed_sub_graph_parents(G, node_y)
 
     xyancestors = xanc.union(yanc)
+
+    check_ancestors = set()
+
+    for elem in S:
+        check_ancestors = check_ancestors.union(_directed_sub_graph_parents(G, elem))
+
+    check_ancestors = xyancestors.union(check_ancestors)
     children = G.neighbors(node_x)
 
     path_exists = False
@@ -519,7 +535,7 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
         visited = {node_x}
         if elem not in visited:
             path_exists, temp_path = _recursive_path(
-                G, node_x, node_y, L, S, visited, xyancestors, elem, node_x
+                G, node_x, node_y, L, S, visited, check_ancestors, elem, node_x
             )
             if path_exists:
                 path.append(node_x)
