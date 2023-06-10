@@ -356,15 +356,15 @@ def _directed_sub_graph_parents(G, node):
     return directed_parents
 
 
-def _bidirected_sub_graph_parents(G, node):
-    """Finds the parents of a node in the bidirected subgraph.
+def _bidirected_sub_graph_neighbors(G, node):
+    """Finds the neighbors of a node in the bidirected subgraph.
 
     Parameters
     ----------
     G : Graph
         The graph.
     node : node label
-        The node for which we have to find the parents.
+        The node for which we have to find the neighbors.
 
     Returns
     -------
@@ -379,25 +379,28 @@ def _bidirected_sub_graph_parents(G, node):
     return bidirected_parents
 
 
-def _is_collider(G, prev_node, cur_node, node):
+def _is_collider(G, prev_node, cur_node, next_node):
     """Checks if the given node is a collider or not.
 
     Parameters
     ----------
     G : graph
         The graph.
-    node : node
+    prev_node : node
+        The previous node in the path.
+    cur_node : node
         The node to be checked.
-
+    next_node:
+        The next node in the path.
     Returns
     -------
     iscollider : bool
         Bool is set true if the node is a collider, false otherwise.
     """
     parents = _directed_sub_graph_parents(G, cur_node)
-    parents = parents.union(_bidirected_sub_graph_parents(G, cur_node))
+    parents = parents.union(_bidirected_sub_graph_neighbors(G, cur_node))
 
-    if len(parents) == 2 and parents == {prev_node, node}:
+    if prev_node in parents and next_node in parents:
         return True
 
     return False
@@ -436,21 +439,13 @@ def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node,
     path = []
     visited.add(cur_node)
     children = G.neighbors(cur_node)
+    print(cur_node)
     if cur_node is node_y:
         return (True, [node_y])
     for elem in children:
         if elem in visited:
             continue
         else:
-            print(check_ancestors)
-            print(
-                prev_node,
-                cur_node,
-                elem,
-                _is_collider(G, prev_node, cur_node, elem),
-                cur_node not in check_ancestors,
-                cur_node is not node_y,
-            )
             if (
                 _is_collider(G, prev_node, cur_node, elem)
                 and (cur_node not in check_ancestors)
@@ -464,7 +459,6 @@ def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node,
                 and (cur_node is not node_y)
             ):
                 continue
-
             path_exists, temp_path = _recursive_path(
                 G, node_x, node_y, L, S, visited, check_ancestors, elem, cur_node
             )
