@@ -536,7 +536,7 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
         raise ValueError("The provided nodes are not in the graph.")
 
     if node_x == node_y:
-        raise ValueError("The start and destination nodes are the same.")
+        raise ValueError("The source and destination nodes are the same.")
 
     path = []  # this will contain the path.
 
