@@ -336,6 +336,25 @@ def _single_shortest_path_early_stop(G, firstlevel, paths, cutoff, join, valid_p
     return paths
 
 
+def _directed_sub_graph_ancestors(G, node):
+    """Finds the ancestors of a node in the directed subgraph.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : node label
+        The node for which we have to find the ancestors.
+
+    Returns
+    -------
+    out : set
+        The parents of the provided node.
+    """
+
+    return nx.ancestors(G.sub_directed_graph(), node)
+
+
 def _directed_sub_graph_parents(G, node):
     """Finds the parents of a node in the directed subgraph.
 
@@ -351,9 +370,8 @@ def _directed_sub_graph_parents(G, node):
     out : set
         The parents of the provided node.
     """
-    directed_parents = set(G.sub_directed_graph().predecessors(node))
 
-    return directed_parents
+    return set(G.sub_directed_graph().predecessors(node))
 
 
 def _bidirected_sub_graph_neighbors(G, node):
@@ -392,6 +410,7 @@ def _is_collider(G, prev_node, cur_node, next_node):
         The node to be checked.
     next_node:
         The next node in the path.
+
     Returns
     -------
     iscollider : bool
@@ -439,12 +458,14 @@ def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node,
     path = []
     visited.add(cur_node)
     children = G.neighbors(cur_node)
-    print(cur_node)
+
     if cur_node is node_y:
         return (True, [node_y])
+
     for elem in children:
         if elem in visited:
             continue
+
         else:
             if (
                 _is_collider(G, prev_node, cur_node, elem)
@@ -453,19 +474,23 @@ def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node,
                 and (cur_node is not node_y)
             ):
                 continue
+
             elif (
                 not _is_collider(G, prev_node, cur_node, elem)
                 and (cur_node not in L)
                 and (cur_node is not node_y)
             ):
                 continue
+
             path_exists, temp_path = _recursive_path(
                 G, node_x, node_y, L, S, visited, check_ancestors, elem, cur_node
             )
+
             if path_exists:
                 path.append(cur_node)
                 path.extend(temp_path)
                 break
+
     return (path_exists, path)
 
 
@@ -514,15 +539,15 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
 
     path = []  # this will contain the path.
 
-    xanc = _directed_sub_graph_parents(G, node_x)
-    yanc = _directed_sub_graph_parents(G, node_y)
+    xanc = _directed_sub_graph_ancestors(G, node_x)
+    yanc = _directed_sub_graph_ancestors(G, node_y)
 
     xyancestors = xanc.union(yanc)
 
     check_ancestors = set()
 
     for elem in S:
-        check_ancestors = check_ancestors.union(_directed_sub_graph_parents(G, elem))
+        check_ancestors = check_ancestors.union(_directed_sub_graph_ancestors(G, elem))
 
     check_ancestors = xyancestors.union(check_ancestors)
     children = G.neighbors(node_x)

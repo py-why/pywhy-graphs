@@ -137,7 +137,7 @@ def test_inducing_path_one_direction():
     L = {"C"}
     S = set()
 
-    assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+    assert pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
 
     admg.add_edge("D", "C", admg.bidirected_edge_name)
 
@@ -153,7 +153,7 @@ def test_inducing_path_one_direction():
     L = set()
     S = set()
 
-    assert not pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
+    assert pywhy_graphs.inducing_path(admg, "A", "D", L, S)[0]
 
 
 def test_inducing_path_corner_cases():
@@ -216,3 +216,17 @@ def test_is_collider():
     S = {"A"}
 
     assert pywhy_graphs.inducing_path(admg, "Z", "Y", L, S)[0]
+
+
+def test_ancestors_bug_inducing_path():
+    # X -> Z <- Y, A <- B <- Z
+    admg = ADMG()
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Y", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "B", admg.directed_edge_name)
+    admg.add_edge("B", "A", admg.directed_edge_name)
+
+    L = {}
+    S = {"A"}
+
+    assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
