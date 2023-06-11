@@ -520,7 +520,9 @@ def inducing_path(G, node_x, node_y, L=None, S=None):
     An inducing path intuitively is a path between two non-adjacent nodes that
     cannot be d-separated. Therefore, the path is always "active" regardless of
     what variables we condition on. L contains all the non-colliders, these nodes
-    are ignored along the path. S contains nodes that are always conditioned on (hence if the ancestors of colliders are in S, then those collider paths are always "active").
+    are ignored along the path. S contains nodes that are always conditioned on
+    (hence if the ancestors of colliders are in S, then those collider
+    paths are always "active").
     """
     if L is None:
         L = set()
