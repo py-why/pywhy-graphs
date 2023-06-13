@@ -202,6 +202,18 @@ def test_inducing_path_corner_cases():
     S = {"Y"}
     assert pywhy_graphs.inducing_path(admg, "X", "H", L, S)[0]
 
+    # X -> Z <- Y, A <- B <- Z
+    admg = ADMG()
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Y", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "B", admg.directed_edge_name)
+    admg.add_edge("B", "A", admg.directed_edge_name)
+
+    L = {}
+    S = {"A"}
+
+    assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+
 
 def test_is_collider():
     # Z -> X -> A <- B -> Y; H -> A
@@ -216,17 +228,3 @@ def test_is_collider():
     S = {"A"}
 
     assert pywhy_graphs.inducing_path(admg, "Z", "Y", L, S)[0]
-
-
-def test_ancestors_bug_inducing_path():
-    # X -> Z <- Y, A <- B <- Z
-    admg = ADMG()
-    admg.add_edge("X", "Z", admg.directed_edge_name)
-    admg.add_edge("Y", "Z", admg.directed_edge_name)
-    admg.add_edge("Z", "B", admg.directed_edge_name)
-    admg.add_edge("B", "A", admg.directed_edge_name)
-
-    L = {}
-    S = {"A"}
-
-    assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
