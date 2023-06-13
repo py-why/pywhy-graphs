@@ -467,6 +467,7 @@ def _recursive_path(G, node_x, node_y, L, S, visited, check_ancestors, cur_node,
             continue
 
         else:
+# if the current node is a collider, check that...
             if (
                 _is_collider(G, prev_node, cur_node, elem)
                 and (cur_node not in check_ancestors)
