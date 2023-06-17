@@ -552,7 +552,7 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
         S = set()
 
     nodes = set(G.nodes)
-    
+
     if node_x not in nodes or node_y not in nodes:
         raise ValueError("The provided nodes are not in the graph.")
 
