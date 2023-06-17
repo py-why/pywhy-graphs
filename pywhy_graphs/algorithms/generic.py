@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Set, Union
 
 import networkx as nx
 
@@ -343,7 +343,7 @@ def _directed_sub_graph_ancestors(G, node: Node):
     ----------
     G : Graph
         The graph.
-    node : node label
+    node : Node
         The node for which we have to find the ancestors.
 
     Returns
@@ -362,7 +362,7 @@ def _directed_sub_graph_parents(G, node: Node):
     ----------
     G : Graph
         The graph.
-    node : node label
+    node : Node
         The node for which we have to find the parents.
 
     Returns
@@ -381,7 +381,7 @@ def _bidirected_sub_graph_neighbors(G, node: Node):
     ----------
     G : Graph
         The graph.
-    node : node label
+    node : Node
         The node for which we have to find the neighbors.
 
     Returns
@@ -408,7 +408,7 @@ def _is_collider(G, prev_node: Node, cur_node: Node, next_node: Node):
         The previous node in the path.
     cur_node : node
         The node to be checked.
-    next_node:
+    next_node: Node
         The next node in the path.
 
     Returns
@@ -429,10 +429,10 @@ def _shortest_valid_path(
     G,
     node_x: Node,
     node_y: Node,
-    L: set,
-    S: set,
-    visited: set,
-    all_ancestors: set,
+    L: Set,
+    S: Set,
+    visited: Set,
+    all_ancestors: Set,
     cur_node: Node,
     prev_node: Node,
 ):
@@ -448,13 +448,13 @@ def _shortest_valid_path(
         The source node.
     node_y : node
         The destination node
-    L : set
+    L : Set
         Set containing all the non-colliders.
-    S : set
+    S : Set
         Set containing all the colliders.
-    visited : set
+    visited : Set
         Set containing all the nodes already visited.
-    all_ancestors : set
+    all_ancestors : Set
         Set containing all the ancestors a collider needs to be checked against.
     cur_node : node
         The current node.
@@ -515,7 +515,7 @@ def _shortest_valid_path(
     return (path_exists, path)
 
 
-def inducing_path(G, node_x: Node, node_y: Node, L: set = None, S: set = None):
+def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     """Checks if an inducing path exists between two nodes as defined in :footcite:`Zhang2008`.
 
     Parameters
@@ -526,9 +526,9 @@ def inducing_path(G, node_x: Node, node_y: Node, L: set = None, S: set = None):
         The source node.
     node_y : node
         The destination node.
-    L : set
+    L : Set
         Nodes that are ignored on the path. Defaults to an empty set. See Notes for details.
-    S:  set
+    S:  Set
         Nodes that are always conditioned on. Defaults to an empty set. See Notes for details.
 
     Returns
