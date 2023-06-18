@@ -544,6 +544,10 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     are ignored along the path. S contains nodes that are always conditioned on
     (hence if the ancestors of colliders are in S, then those collider
     paths are always "active").
+
+    References
+    ----------
+    .. footbibliography::
     """
     if L is None:
         L = set()
