@@ -15,6 +15,7 @@ User Guide
    :maxdepth: 2
 
    reference/classes/index
+   reference/functional/index
    reference/algorithms/index
    reference/simulation/index
    reference/export/index

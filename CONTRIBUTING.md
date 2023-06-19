@@ -148,11 +148,11 @@ You can verify that your code will pass certain style, formatting and lint check
 
 ``verify`` runs a sequence of tests that can also be run individually. For example, you can check code formatting with black:
 
-    poetry run poe check_format
+    poetry run poe format_check
 
 If you would like to automatically black format your changes:
 
-    poetry run poe apply_format
+    poetry run poe format
 
 You can then check for code style and general linting:
 
@@ -161,6 +161,14 @@ You can then check for code style and general linting:
 Finally, you should run some mypy type checks:
 
     poetry run poe type_check
+
+### Pre-commit Hooks
+
+To improve development workflows, you can use pre-commit hooks that automatically check for all of the `poe` tasks above:
+    
+    pre-commit install
+
+Whenever a commit is performed, these hooks will run to ensure that the code satisfies all formatting, style, and test checks.
 
 ### Documentation
 

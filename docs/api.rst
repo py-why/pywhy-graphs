@@ -29,8 +29,7 @@ graphs encountered in the literature.
    CPDAG
    PAG
    AugmentedGraph
-   IPAG
-   PsiPAG
+   AugmentedPAG
 
 :mod:`pywhy_graphs.algorithms`: Algorithms for Mixed-Edge Graphs
 ================================================================
@@ -55,6 +54,9 @@ causal graph operations.
    uncovered_pd_path
    acyclification
    is_definite_noncollider
+   find_connected_pairs
+   add_all_snode_combinations
+   compute_invariant_domains_per_node
 
 Conversions between other package's causal graphs
 =================================================
@@ -147,6 +149,20 @@ a SCM and their data starting from the causal graph.
    simulate.simulate_data_from_var
    simulate.simulate_var_process_from_summary_graph
 
+Converting graphs to functional models
+======================================
+An experimental submodule for converting graphs to functional models, such as
+linear structural equation Gaussian models (SEMs).
+
+.. currentmodule:: pywhy_graphs.functional
+
+.. autosummary::
+   :toctree: generated/
+
+   make_graph_linear_gaussian
+   apply_linear_soft_intervention
+   set_node_attributes_with_G
+   make_graph_multidomain
 
 Visualization of causal graphs
 ==============================

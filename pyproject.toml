@@ -38,7 +38,7 @@ exclude = ['*tests']
 python = ">=3.8,<3.11"
 numpy = "^1.21.0"
 scipy = "^1.8.0"
-networkx = "^2.8.8"
+networkx = "^3.1"
 importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
 
@@ -48,9 +48,11 @@ optional = true
 poethepoet = "^0.16.0"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
+joblib = { version = "^1.1.0" }               # needed in dowhy's package
 memory_profiler = { version = "^0.60.0" }
 causal-learn = { version = "^0.1.2.8" }
 ananke-causal = { version = "^0.3.3" }
+pre-commit = "^3.0.4"
 
 [tool.poetry.group.style]
 optional = true
@@ -58,7 +60,7 @@ optional = true
 poethepoet = "^0.16.0"
 mypy = "^0.971"
 black = {extras = ["jupyter"], version = "^22.12.0"}
-isort = "^5.10.1"
+isort = "^5.12.0"
 flake8 = "^5.0.4"
 bandit = "^1.7.4"
 pydocstyle = "^6.1.1"
@@ -116,11 +118,11 @@ build_docs_noplot = 'make -C docs clean html-noplot'
 sequence = ['_flake8', '_bandit', '_codespell', '_pydocstyle']
 ignore_fail = 'return_non_zero'
 
-[[tool.poe.tasks.apply_format]]
+[[tool.poe.tasks.format]]
 sequence = ['_black', '_isort']
 ignore_fail = 'return_non_zero'
 
-[[tool.poe.tasks.check_format]]
+[[tool.poe.tasks.format_check]]
 sequence = ['_black_check', '_isort_check']
 ignore_fail = 'return_non_zero'
 
@@ -128,7 +130,7 @@ ignore_fail = 'return_non_zero'
 # a standard verification sequence for use in pull requests
 #
 [[tool.poe.tasks.verify]]
-sequence = ['apply_format', 'lint', 'type_check', 'unit_test']
+sequence = ['format', 'lint', 'type_check', 'unit_test']
 ignore_fail = "return_non_zero"
 
 [tool.black]

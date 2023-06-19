@@ -334,3 +334,33 @@ def test_minimal_m_separator(fig5_vanderzander):
 
     assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_1"}) == {"Z_1"}
     assert pywhy_nx.minimal_m_separator(G, "X", "Y", i={"Z_2"}) == {"Z_2"}
+
+
+def test_m_separation_with_tuple_nodenames():
+    digraph = nx.DiGraph()
+    digraph.add_nodes_from([("A", 0), "B", "C", "D"])
+    digraph.add_edge("B", "D")
+    digraph.add_edge(("A", 0), "B")
+    bigraph = nx.Graph()
+    bigraph.add_edge("B", "C")
+    G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
+
+    assert not pywhy_nx.m_separated(G, {("A", 0)}, {"C"}, {"D"})
+    assert pywhy_nx.m_separated(G, {("A", 0)}, {"C"}, set())
+
+    # first create the oracle
+    directed_edges = [
+        ("x", "w"),
+        ("x", "y"),
+        ("y", "w"),
+        ("z", "y"),
+        ("z", "x"),
+        (("F", 0), "x"),
+        (("F", 0), "w"),
+    ]
+    bidirected_edges = [("x", "w")]
+    digraph = nx.DiGraph(directed_edges)
+    bigraph = nx.Graph(bidirected_edges)
+    G = pywhy_nx.MixedEdgeGraph([digraph, bigraph], ["directed", "bidirected"])
+
+    assert pywhy_nx.m_separated(G, {"y"}, {("F", 0)}, {"x", "z"})
