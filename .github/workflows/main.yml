@@ -137,7 +137,7 @@ jobs:
         run: pip install poetry-dynamic-versioning
       - name: Install packages via poetry
         run: |
-          poetry install --with test,ts
+          poetry install --with test
       - name: Install Networkx (main)
         if: "matrix.networkx == 'main'"
         run: |

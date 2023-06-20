@@ -36,7 +36,7 @@ include = ['pywhy_graphs*']
 exclude = ['*tests']
 
 [tool.poetry.dependencies]
-python = ">=3.9,<=3.11"
+python = ">=3.8,<3.12"
 numpy = "^1.21.0"
 scipy = "^1.8.0"
 networkx = "^3.1"
