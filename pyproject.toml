@@ -45,7 +45,7 @@ pygraphviz = { version = "*", optional = true }
 [tool.poetry.group.test]
 optional = true
 [tool.poetry.group.test.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 joblib = { version = "^1.1.0" }               # needed in dowhy's package
@@ -57,7 +57,7 @@ pre-commit = "^3.0.4"
 [tool.poetry.group.style]
 optional = true
 [tool.poetry.group.style.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 mypy = "^0.971"
 black = {extras = ["jupyter"], version = "^22.12.0"}
 isort = "^5.12.0"
@@ -70,9 +70,9 @@ toml = "^0.10.2"
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 portray = "^1.7.0"
-matplotlib = { version = "^3.5" }
+matplotlib = { version = "^3.7.1" }
 numpydoc = { version = "1.4" }
 pydata-sphinx-theme = { version = "^0.9.0" }
 sphinx = { version = "^5.1.1" }
@@ -93,6 +93,7 @@ tqdm = { version = "^4.64.0" }                # needed in dowhy's package
 typing-extensions = { version = "*" }         # needed in dowhy's package 
 pillow = "^9.5.0"
 cycler = "^0.11.0"
+kiwisolver = "^1.4.4"
 
 [tool.poetry.extras]
 viz = ['pygraphviz']
