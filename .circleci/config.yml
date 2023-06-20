@@ -1,22 +1,17 @@
 version: 2.1
 
-# orbs:
-#   python: circleci/python@2.0.3
+orbs:
+  python: circleci/python@2.0.3
 
 jobs:
   build_doc:
-    docker:
-      - image: cimg/python:3.10
-    # executor: python/default
-
+    executor: python/default
     steps:
-      - checkout
-
       - restore_cache:
           name: Restore .git
           keys:
             - source-cache-graphs
-
+      - checkout
       - run:
           name: Complete checkout
           command: |
@@ -25,13 +20,11 @@ jobs:
             fi
             git remote set-url upstream https://github.com/py-why/pywhy-graphs.git
             git fetch upstream
-
       - save_cache:
           name: Save .git
           key: source-cache-graphs
           paths:
             - ".git"
-
       - run:
           name: Check-skip
           command: |
@@ -41,67 +34,61 @@ jobs:
               echo "Skip detected, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
               circleci-agent step halt;
             fi
-
+      - run:
+          name: Merge with upstream
+          command: |
+            echo $(git log -1 --pretty=%B) | tee gitlog.txt
+            echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
+            if [[ $(cat merge.txt) != "" ]]; then
+              echo "Merging $(cat merge.txt)";
+              git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
+            fi
       - run:
           name: Install the latest version of Poetry
           command: |
             curl -sSL https://install.python-poetry.org | python3 - --version 1.5.0
             poetry --version
-
       - run:
-          name: Update apt-get
+          name: Set BASH_ENV
           command: |
-            sudo apt-get update
-
-      - run:
-          name: Install Graphviz
-          command: |
-            sudo apt-get install graphviz libgraphviz-dev
-
+            set -e
+            sudo apt update
+            sudo apt install -qq graphviz optipng libxft2 graphviz-dev
+            echo "set -e" >> $BASH_ENV
+            echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
+            echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
+            echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
+            echo "export DISPLAY=:99" >> $BASH_ENV
+            echo "BASH_ENV:"
+            cat $BASH_ENV
       - run:
           name: Install pysal dependencies
           command: |
-            sudo apt install libspatialindex-dev xdg-utils shared-mime-info desktop-file-utils
-
+            sudo apt install libspatialindex-dev xdg-utils shared-mime-info
       - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
 
-      - restore_cache:
-          keys:
-            - pip-cache-v1
-
+      - python/install-packages:
+          pkg-manager: poetry
+          cache-version: "v1" # change to clear cache
+          args: "--with docs"
       - run:
           name: Check poetry package versions
           command: |
             poetry --version
             poetry show
-
-      - run:
-          name: Install Python dependencies
-          command: |
-            poetry install
-            poetry install --with docs
-            pip list
-     
       - run:
           name: Check installation
           command: |
             poetry run python -c "import pywhy_graphs;"
             poetry run python -c "import numpy; numpy.show_config()"
             LIBGL_DEBUG=verbose poetry run python -c "import matplotlib.pyplot as plt; plt.figure()"
-
-      - save_cache:
-          key: pip-cache-v1
-          paths:
-            - ~/.cache/pip
-
       - run:
           name: Build documentation
           command: |
             cd docs
             poetry run poe build_docs
-
       # Save the example test results
       - store_test_results:
           path: docs/_build/test-results
@@ -125,6 +112,55 @@ jobs:
           paths:
             - html
             - html_stable
+
+  linkcheck:
+    parameters:
+      scheduled:
+        type: string
+        default: "false"
+    executor: python/default
+    steps:
+      - restore_cache:
+          keys:
+            - source-cache-graphs
+      - checkout
+      - run:
+          name: Check-skip
+          command: |
+            export COMMIT_MESSAGE=$(git log --format=oneline -n 1);
+            if [[ "$COMMIT_MESSAGE" != *"[circle linkcheck]"* ]] && [ "<< parameters.scheduled >>" != "true" ]; then
+              echo "Skip detected, exiting job ${CIRCLE_JOB}."
+              circleci-agent step halt;
+            fi
+      - run:
+          name: Set BASH_ENV
+          command: |
+            set -e
+            sudo apt update
+            sudo apt install -qq graphviz optipng libxft2 graphviz-dev
+            echo "set -e" >> $BASH_ENV
+            echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
+            echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
+            echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
+            echo "export DISPLAY=:99" >> $BASH_ENV
+            echo "BASH_ENV:"
+            cat $BASH_ENV
+      - python/install-packages:
+          pkg-manager: poetry
+          cache-version: "v1" # change to clear cache
+          args: "--with docs"
+      - run:
+          name: make linkcheck
+          command: |
+            poetry run make -C docs linkcheck
+      - run:
+          name: make linkcheck-grep
+          when: always
+          command: |
+            poetry run make -C docs linkcheck-grep
+      - store_artifacts:
+          path: docs/_build/linkcheck
+          destination: linkcheck
 
   deploy:
     docker:
@@ -175,6 +211,8 @@ workflows:
     jobs:
       - build_doc:
           name: build_doc
+      - linkcheck:
+          name: linkcheck
       - deploy:
           requires:
             - build_doc
@@ -196,6 +234,20 @@ workflows:
           # "At 00:00" (once a day) should be enough "0 0 * * *",
           # But for testing at first, let's do once an hour (6 AM GMT)
           cron: "0 6 * * *"
+          filters:
+            branches:
+              only:
+                - main
+
+  weekly:
+    jobs:
+      - linkcheck:
+          name: linkcheck_weekly
+          scheduled: "true"
+    triggers:
+      - schedule:
+          # "At 00:00 on Sunday" should be often enough
+          cron: "0 0 * * 0"
           filters:
             branches:
               only:
