@@ -80,6 +80,7 @@ jobs:
       - run:
           name: Install Python dependencies
           command: |
+            poetry install
             poetry install --with docs
             pip list
      
@@ -89,6 +90,11 @@ jobs:
             poetry run python -c "import pywhy_graphs;"
             poetry run python -c "import numpy; numpy.show_config()"
             LIBGL_DEBUG=verbose poetry run python -c "import matplotlib.pyplot as plt; plt.figure()"
+
+      - save_cache:
+          key: pip-cache-v1
+          paths:
+            - ~/.cache/pip
 
       - run:
           name: Build documentation
