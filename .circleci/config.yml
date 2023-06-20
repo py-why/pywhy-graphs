@@ -43,16 +43,6 @@ jobs:
             fi
 
       - run:
-          name: Merge with upstream
-          command: |
-            echo $(git log -1 --pretty=%B) | tee gitlog.txt
-            echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
-            if [[ $(cat merge.txt) != "" ]]; then
-              echo "Merging $(cat merge.txt)";
-              git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
-            fi
-
-      - run:
           name: Install the latest version of Poetry
           command: |
             curl -sSL https://install.python-poetry.org | python3 - --version 1.5.0
@@ -68,19 +58,6 @@ jobs:
           command: |
             sudo apt-get install graphviz libgraphviz-dev
 
-      # - run:
-      #     name: Set BASH_ENV
-      #     command: |
-      #       set -e
-      #       sudo apt update
-      #       sudo apt install -qq graphviz optipng libxft2 graphviz-dev
-      #       echo "set -e" >> $BASH_ENV
-      #       echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
-      #       echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
-      #       echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
-      #       echo "export DISPLAY=:99" >> $BASH_ENV
-      #       echo "BASH_ENV:"
-      #       cat $BASH_ENV
       - run:
           name: Install pysal dependencies
           command: |
