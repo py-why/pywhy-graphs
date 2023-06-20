@@ -17,6 +17,7 @@ classifiers = [
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
 ]
 keywords = ['causality', 'graphs', 'causal-inference', 'graphical-model']
 
@@ -35,11 +36,10 @@ include = ['pywhy_graphs*']
 exclude = ['*tests']
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.9,<=3.11"
 numpy = "^1.21.0"
 scipy = "^1.8.0"
 networkx = "^3.1"
-importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
 
 [tool.poetry.group.test]
