@@ -17,6 +17,7 @@ classifiers = [
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
 ]
 keywords = ['causality', 'graphs', 'causal-inference', 'graphical-model']
 
@@ -35,18 +36,17 @@ include = ['pywhy_graphs*']
 exclude = ['*tests']
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.8,<3.12"
 numpy = "^1.21.0"
 scipy = "^1.8.0"
 networkx = "^3.1"
-importlib-resources = { version = "*", python = "<3.9" }
 pygraphviz = { version = "*", optional = true }
 pgmpy = { version = "*", optional = true }
 
 [tool.poetry.group.test]
 optional = true
 [tool.poetry.group.test.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 joblib = { version = "^1.1.0" }               # needed in dowhy's package
@@ -59,7 +59,7 @@ pandas = { version = "^1.1" }                # needed for simulation
 [tool.poetry.group.style]
 optional = true
 [tool.poetry.group.style.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 mypy = "^0.971"
 black = {extras = ["jupyter"], version = "^22.12.0"}
 isort = "^5.12.0"
@@ -72,9 +72,9 @@ toml = "^0.10.2"
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
-poethepoet = "^0.16.0"
+poethepoet = "^0.20.0"
 portray = "^1.7.0"
-matplotlib = { version = "^3.5" }
+matplotlib = { version = "^3.7.1" }
 numpydoc = { version = "1.4" }
 pydata-sphinx-theme = { version = "^0.9.0" }
 sphinx = { version = "^5.1.1" }
@@ -93,6 +93,9 @@ pandas = { version = "^1.1" }                 # needed in dowhy's package
 joblib = { version = "^1.1.0" }               # needed in dowhy's package
 tqdm = { version = "^4.64.0" }                # needed in dowhy's package
 typing-extensions = { version = "*" }         # needed in dowhy's package 
+pillow = "^9.5.0"
+cycler = "^0.11.0"
+kiwisolver = "^1.4.4"
 
 [tool.poetry.extras]
 viz = ['pygraphviz']
