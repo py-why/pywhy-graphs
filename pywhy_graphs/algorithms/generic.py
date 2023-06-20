@@ -516,7 +516,9 @@ def _shortest_valid_path(
 
 
 def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
-    """Checks if an inducing path exists between two nodes as defined in :footcite:`Zhang2008`.
+    """Checks if an inducing path exists between two nodes.
+
+    An inducing path is defined in :footcite:`Zhang2008`.
 
     Parameters
     ----------

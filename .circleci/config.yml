@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Install pysal dependencies
           command: |
-            sudo apt install libspatialindex-dev xdg-utils shared-mime-info
+            sudo apt install libspatialindex-dev xdg-utils shared-mime-info desktop-file-utils
       - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
