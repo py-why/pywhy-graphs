@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Set, Union
 
 import networkx as nx
 
@@ -12,6 +12,7 @@ __all__ = [
     "is_node_common_cause",
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
+    "inducing_path",
 ]
 
 
@@ -333,3 +334,265 @@ def _single_shortest_path_early_stop(G, firstlevel, paths, cutoff, join, valid_p
                     nextlevel[w] = 1
         level += 1
     return paths
+
+
+def _directed_sub_graph_ancestors(G, node: Node):
+    """Finds the ancestors of a node in the directed subgraph.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : Node
+        The node for which we have to find the ancestors.
+
+    Returns
+    -------
+    out : set
+        The parents of the provided node.
+    """
+
+    return nx.ancestors(G.sub_directed_graph(), node)
+
+
+def _directed_sub_graph_parents(G, node: Node):
+    """Finds the parents of a node in the directed subgraph.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : Node
+        The node for which we have to find the parents.
+
+    Returns
+    -------
+    out : set
+        The parents of the provided node.
+    """
+
+    return set(G.sub_directed_graph().predecessors(node))
+
+
+def _bidirected_sub_graph_neighbors(G, node: Node):
+    """Finds the neighbors of a node in the bidirected subgraph.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node : Node
+        The node for which we have to find the neighbors.
+
+    Returns
+    -------
+    out : set
+        The parents of the provided node.
+    """
+    bidirected_parents = set()
+
+    if not isinstance(G, CPDAG):
+        bidirected_parents = set(G.sub_bidirected_graph().neighbors(node))
+
+    return bidirected_parents
+
+
+def _is_collider(G, prev_node: Node, cur_node: Node, next_node: Node):
+    """Checks if the given node is a collider or not.
+
+    Parameters
+    ----------
+    G : graph
+        The graph.
+    prev_node : node
+        The previous node in the path.
+    cur_node : node
+        The node to be checked.
+    next_node: Node
+        The next node in the path.
+
+    Returns
+    -------
+    iscollider : bool
+        Bool is set true if the node is a collider, false otherwise.
+    """
+    parents = _directed_sub_graph_parents(G, cur_node)
+    parents = parents.union(_bidirected_sub_graph_neighbors(G, cur_node))
+
+    if prev_node in parents and next_node in parents:
+        return True
+
+    return False
+
+
+def _shortest_valid_path(
+    G,
+    node_x: Node,
+    node_y: Node,
+    L: Set,
+    S: Set,
+    visited: Set,
+    all_ancestors: Set,
+    cur_node: Node,
+    prev_node: Node,
+):
+    """Recursively explores a graph to find a path.
+
+       Finds path that are compliant with the inducing path requirements.
+
+    Parameters
+    ----------
+    G : graph
+        The graph.
+    node_x : node
+        The source node.
+    node_y : node
+        The destination node
+    L : Set
+        Set containing all the non-colliders.
+    S : Set
+        Set containing all the colliders.
+    visited : Set
+        Set containing all the nodes already visited.
+    all_ancestors : Set
+        Set containing all the ancestors a collider needs to be checked against.
+    cur_node : node
+        The current node.
+    prev_node : node
+        The previous node in the path.
+
+    Returns
+    -------
+    path : Tuple[bool, path]
+        A tuple containing a bool and a path which is empty if the bool is false.
+    """
+    path_exists = False
+    path = []
+    visited.add(cur_node)
+    neighbors = G.neighbors(cur_node)
+
+    if cur_node is node_y:
+        return (True, [node_y])
+
+    for elem in neighbors:
+        if elem in visited:
+            continue
+
+        else:
+            # If the current node is a collider, check that it is either an
+            # ancestor of X, Y or any element of S or that it is
+            # the destination node itself.
+            if (
+                _is_collider(G, prev_node, cur_node, elem)
+                and (cur_node not in all_ancestors)
+                and (cur_node not in S)
+                and (cur_node is not node_y)
+            ):
+                continue
+
+            # If the current node is not a collider, check that it is
+            # either in L or the destination node itself.
+
+            elif (
+                not _is_collider(G, prev_node, cur_node, elem)
+                and (cur_node not in L)
+                and (cur_node is not node_y)
+            ):
+                continue
+
+            # if it is a valid node and not the destination node,
+            # check if it has a path to the destination node
+
+            path_exists, temp_path = _shortest_valid_path(
+                G, node_x, node_y, L, S, visited, all_ancestors, elem, cur_node
+            )
+
+            if path_exists:
+                path.append(cur_node)
+                path.extend(temp_path)
+                break
+
+    return (path_exists, path)
+
+
+def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
+    """Checks if an inducing path exists between two nodes.
+
+    An inducing path is defined in :footcite:`Zhang2008`.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+    node_x : node
+        The source node.
+    node_y : node
+        The destination node.
+    L : Set
+        Nodes that are ignored on the path. Defaults to an empty set. See Notes for details.
+    S:  Set
+        Nodes that are always conditioned on. Defaults to an empty set. See Notes for details.
+
+    Returns
+    -------
+    path : Tuple[bool, path]
+        A tuple containing a bool and a path if the bool is true, an empty list otherwise.
+
+    Notes
+    -----
+    An inducing path intuitively is a path between two non-adjacent nodes that
+    cannot be d-separated. Therefore, the path is always "active" regardless of
+    what variables we condition on. L contains all the non-colliders, these nodes
+    are ignored along the path. S contains nodes that are always conditioned on
+    (hence if the ancestors of colliders are in S, then those collider
+    paths are always "active").
+
+    References
+    ----------
+    .. footbibliography::
+    """
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    nodes = set(G.nodes)
+
+    if node_x not in nodes or node_y not in nodes:
+        raise ValueError("The provided nodes are not in the graph.")
+
+    if node_x == node_y:
+        raise ValueError("The source and destination nodes are the same.")
+
+    path = []  # this will contain the path.
+
+    x_ancestors = _directed_sub_graph_ancestors(G, node_x)
+    y_ancestors = _directed_sub_graph_ancestors(G, node_y)
+
+    xy_ancestors = x_ancestors.union(y_ancestors)
+
+    s_ancestors: set[Node] = set()
+
+    for elem in S:
+        s_ancestors = s_ancestors.union(_directed_sub_graph_ancestors(G, elem))
+
+    # ancestors of X, Y and all the elements of S
+
+    all_ancestors = xy_ancestors.union(s_ancestors)
+    x_neighbors = G.neighbors(node_x)
+
+    path_exists = False
+    for elem in x_neighbors:
+
+        visited = {node_x}
+        if elem not in visited:
+            path_exists, temp_path = _shortest_valid_path(
+                G, node_x, node_y, L, S, visited, all_ancestors, elem, node_x
+            )
+            if path_exists:
+                path.append(node_x)
+                path.extend(temp_path)
+                break
+
+    return (path_exists, path)
