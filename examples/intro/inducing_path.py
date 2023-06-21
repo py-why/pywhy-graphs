@@ -18,8 +18,9 @@ import pywhy_graphs
 from pywhy_graphs import PAG
 from pywhy_graphs.viz import draw
 
-# construct a causal graph that will result in
-# X <- Y <-> Z <-> H; Z -> X
+# construct the causal graph from figure 2 of
+# https://arxiv.org/pdf/1104.5617.pdf
+
 G = PAG()
 G.add_edge("X4", "X1", G.directed_edge_name)
 G.add_edge("X2", "X5", G.directed_edge_name)
@@ -36,6 +37,9 @@ G.add_edge("X4", "X3", G.circle_edge_name)
 G.add_edge("X6", "X4", G.circle_edge_name)
 G.add_edge("X6", "X5", G.circle_edge_name)
 
+
+dot_graph = draw(G)
+dot_graph.render(outfile="pag.png", view=True)
 
 # X2 is the only collider on the path
 L = {}
