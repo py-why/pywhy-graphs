@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.inducing_path
+=====================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: inducing_path
+
+.. include:: pywhy_graphs.algorithms.inducing_path.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

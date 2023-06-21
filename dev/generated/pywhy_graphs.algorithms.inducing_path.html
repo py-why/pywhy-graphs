@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.viz.draw &#8212; pywhy-graphs v0.0.0</title>
+    <title>pywhy_graphs.algorithms.inducing_path &#8212; pywhy-graphs v0.0.0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -46,8 +46,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.viz.timeseries_layout" href="pywhy_graphs.viz.timeseries_layout.html" />
-    <link rel="prev" title="2.4.1. pywhy_graphs.functional.make_graph_multidomain" href="pywhy_graphs.functional.make_graph_multidomain.html" />
+    <link rel="next" title="3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" />
+    <link rel="prev" title="pywhy_graphs.AugmentedPAG" href="pywhy_graphs.AugmentedPAG.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -198,9 +198,9 @@
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.inducing_path.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.algorithms.inducing_path
   </a>
  </li>
@@ -454,9 +454,9 @@
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.viz.draw.html">
    pywhy_graphs.viz.draw
   </a>
  </li>
@@ -526,20 +526,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.viz.draw">
+  <a class="reference internal nav-link" href="#pywhy_graphs.algorithms.inducing_path">
    <code class="docutils literal notranslate">
     <span class="pre">
-     draw()
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-using-pywhy-graphs-viz-draw">
-   Examples using
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     pywhy_graphs.viz.draw
+     inducing_path()
     </span>
    </code>
   </a>
@@ -563,64 +553,61 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-viz-draw">
-<h1>pywhy_graphs.viz.draw<a class="headerlink" href="#pywhy-graphs-viz-draw" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-algorithms-inducing-path">
+<h1>pywhy_graphs.algorithms.inducing_path<a class="headerlink" href="#pywhy-graphs-algorithms-inducing-path" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.viz.draw">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.viz.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'square'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/viz/draw.html#draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.viz.draw" title="Permalink to this definition">#</a></dt>
-<dd><p>Visualize the graph.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.algorithms.inducing_path">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">inducing_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/generic.html#inducing_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.inducing_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks if an inducing path exists between two nodes.</p>
+<p>An inducing path is defined in <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G</strong> : pywhy_nx.MixedEdgeGraph</p>
+<dd class="field-odd"><p><strong>G</strong> : Graph</p>
 <blockquote>
-<div><p>The mixed edge graph.</p>
+<div><p>The graph.</p>
 </div></blockquote>
-<p><strong>direction</strong> : str, optional</p>
+<p><strong>node_x</strong> : node</p>
 <blockquote>
-<div><p>The direction, by default None. See: <a class="reference external" href="https://graphviz.org/docs/attrs/rankdir/">https://graphviz.org/docs/attrs/rankdir/</a>.</p>
+<div><p>The source node.</p>
 </div></blockquote>
-<p><strong>pos</strong> : dict, optional</p>
+<p><strong>node_y</strong> : node</p>
 <blockquote>
-<div><p>The positions of the nodes keyed by node with (x, y) coordinates as values.
-By default None, which will
-use the default layout from graphviz.</p>
+<div><p>The destination node.</p>
 </div></blockquote>
-<p><strong>name</strong> : str, optional</p>
+<p><strong>L</strong> : Set</p>
 <blockquote>
-<div><p>Label for the generated graph.</p>
+<div><p>Nodes that are ignored on the path. Defaults to an empty set. See Notes for details.</p>
 </div></blockquote>
-<p><strong>shape</strong> : str</p>
+<p><strong>S:  Set</strong></p>
 <blockquote>
-<div><p>The shape of each node. By default ‘square’. Can be ‘circle’, ‘plaintext’.</p>
-</div></blockquote>
-<p><strong>attrs</strong> : dict</p>
-<blockquote>
-<div><p>Any additional edge attributes (must be strings). For more
-information, see documentation for GraphViz.</p>
+<div><p>Nodes that are always conditioned on. Defaults to an empty set. See Notes for details.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>dot</strong> : graphviz.Digraph</p>
+<dd class="field-even"><p><strong>path</strong> : Tuple[bool, path]</p>
 <blockquote>
-<div><p>DOT language representation of the graph.</p>
+<div><p>A tuple containing a bool and a path if the bool is true, an empty list otherwise.</p>
 </div></blockquote>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>An inducing path intuitively is a path between two non-adjacent nodes that
+cannot be d-separated. Therefore, the path is always “active” regardless of
+what variables we condition on. L contains all the non-colliders, these nodes
+are ignored along the path. S contains nodes that are always conditioned on
+(hence if the ancestors of colliders are in S, then those collider
+paths are always “active”).</p>
+<p class="rubric">References</p>
+<div class="docutils container" id="id2">
+<aside class="footnote brackets" id="footcite-zhang2008" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Jiji Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and selection bias. <em>Artificial Intelligence</em>, 172(16):1873–1896, 2008. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0004370208001008">https://www.sciencedirect.com/science/article/pii/S0004370208001008</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.artint.2008.08.001">doi:https://doi.org/10.1016/j.artint.2008.08.001</a>.</p>
+</aside>
+</aside>
+</div>
 </dd></dl>
 
-<section id="examples-using-pywhy-graphs-viz-draw">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.viz.draw</span></code><a class="headerlink" href="#examples-using-pywhy-graphs-viz-draw" title="Permalink to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W..."><img alt="An introduction to causal graphs and how to use them" src="../_images/sphx_glr_intro_causal_graphs_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/intro/intro_causal_graphs.html#sphx-glr-auto-examples-intro-intro-causal-graphs-py"><span class="std std-ref">An introduction to causal graphs and how to use them</span></a></p>
-  <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to..."><img alt="Drawing graphs and setting their layout for visual comparison" src="../_images/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/visualization/draw_and_compare_graphs_with_same_layout.html#sphx-glr-auto-examples-visualization-draw-and-compare-graphs-with-same-layout-py"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Drawing graphs and setting their layout for visual comparison</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will cho..."><img alt="Drawing timeseries graphs and setting their layout" src="../_images/sphx_glr_plot_timeseries_graphs_thumb.png" />
-<p><a class="reference internal" href="../auto_examples/visualization/plot_timeseries_graphs.html#sphx-glr-auto-examples-visualization-plot-timeseries-graphs-py"><span class="std std-ref">Drawing timeseries graphs and setting their layout</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Drawing timeseries graphs and setting their layout</div>
-</div></div><div style='clear:both'></div></section>
-</section>
+<div style='clear:both'></div></section>
 
 
               </article>
@@ -630,17 +617,17 @@ information, see documentation for GraphViz.</p>
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.functional.make_graph_multidomain.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.AugmentedPAG.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">2.4.1. </span>pywhy_graphs.functional.make_graph_multidomain</p>
+          <p class="prev-next-title">pywhy_graphs.AugmentedPAG</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.viz.timeseries_layout.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.is_valid_mec_graph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.viz.timeseries_layout</p>
+      <p class="prev-next-title"><span class="section-number">3.1.1. </span>pywhy_graphs.algorithms.is_valid_mec_graph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

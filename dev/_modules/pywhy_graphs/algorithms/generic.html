@@ -192,7 +192,7 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.algorithms.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
@@ -206,6 +206,7 @@
     <span class="s2">&quot;is_node_common_cause&quot;</span><span class="p">,</span>
     <span class="s2">&quot;set_nodes_as_latent_confounders&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_valid_mec_graph&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inducing_path&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -527,6 +528,268 @@
                     <span class="n">nextlevel</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">level</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">paths</span>
+
+
+<span class="k">def</span> <span class="nf">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the ancestors of a node in the directed subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the ancestors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">ancestors</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">(),</span> <span class="n">node</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the parents of a node in the directed subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the parents.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the neighbors of a node in the bidirected subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the neighbors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bidirected_parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">):</span>
+        <span class="n">bidirected_parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_bidirected_graph</span><span class="p">()</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">bidirected_parents</span>
+
+
+<span class="k">def</span> <span class="nf">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the given node is a collider or not.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    prev_node : node</span>
+<span class="sd">        The previous node in the path.</span>
+<span class="sd">    cur_node : node</span>
+<span class="sd">        The node to be checked.</span>
+<span class="sd">    next_node: Node</span>
+<span class="sd">        The next node in the path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    iscollider : bool</span>
+<span class="sd">        Bool is set true if the node is a collider, false otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="n">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">)</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="n">parents</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">prev_node</span> <span class="ow">in</span> <span class="n">parents</span> <span class="ow">and</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_shortest_valid_path</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">L</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">S</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">visited</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">all_ancestors</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively explores a graph to find a path.</span>
+
+<span class="sd">       Finds path that are compliant with the inducing path requirements.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The source node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The destination node</span>
+<span class="sd">    L : Set</span>
+<span class="sd">        Set containing all the non-colliders.</span>
+<span class="sd">    S : Set</span>
+<span class="sd">        Set containing all the colliders.</span>
+<span class="sd">    visited : Set</span>
+<span class="sd">        Set containing all the nodes already visited.</span>
+<span class="sd">    all_ancestors : Set</span>
+<span class="sd">        Set containing all the ancestors a collider needs to be checked against.</span>
+<span class="sd">    cur_node : node</span>
+<span class="sd">        The current node.</span>
+<span class="sd">    prev_node : node</span>
+<span class="sd">        The previous node in the path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : Tuple[bool, path]</span>
+<span class="sd">        A tuple containing a bool and a path which is empty if the bool is false.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path_exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cur_node</span> <span class="ow">is</span> <span class="n">node_y</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">[</span><span class="n">node_y</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the current node is a collider, check that it is either an</span>
+            <span class="c1"># ancestor of X, Y or any element of S or that it is</span>
+            <span class="c1"># the destination node itself.</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_ancestors</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">S</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">node_y</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># If the current node is not a collider, check that it is</span>
+            <span class="c1"># either in L or the destination node itself.</span>
+
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">node_y</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># if it is a valid node and not the destination node,</span>
+            <span class="c1"># check if it has a path to the destination node</span>
+
+            <span class="n">path_exists</span><span class="p">,</span> <span class="n">temp_path</span> <span class="o">=</span> <span class="n">_shortest_valid_path</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">all_ancestors</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">cur_node</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">path_exists</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">path_exists</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="inducing_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path">[docs]</a><span class="k">def</span> <span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if an inducing path exists between two nodes.</span>
+
+<span class="sd">    An inducing path is defined in :footcite:`Zhang2008`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The source node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The destination node.</span>
+<span class="sd">    L : Set</span>
+<span class="sd">        Nodes that are ignored on the path. Defaults to an empty set. See Notes for details.</span>
+<span class="sd">    S:  Set</span>
+<span class="sd">        Nodes that are always conditioned on. Defaults to an empty set. See Notes for details.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : Tuple[bool, path]</span>
+<span class="sd">        A tuple containing a bool and a path if the bool is true, an empty list otherwise.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    An inducing path intuitively is a path between two non-adjacent nodes that</span>
+<span class="sd">    cannot be d-separated. Therefore, the path is always &quot;active&quot; regardless of</span>
+<span class="sd">    what variables we condition on. L contains all the non-colliders, these nodes</span>
+<span class="sd">    are ignored along the path. S contains nodes that are always conditioned on</span>
+<span class="sd">    (hence if the ancestors of colliders are in S, then those collider</span>
+<span class="sd">    paths are always &quot;active&quot;).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. footbibliography::</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">node_x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="ow">or</span> <span class="n">node_y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The provided nodes are not in the graph.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">node_x</span> <span class="o">==</span> <span class="n">node_y</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The source and destination nodes are the same.&quot;</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># this will contain the path.</span>
+
+    <span class="n">x_ancestors</span> <span class="o">=</span> <span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">)</span>
+    <span class="n">y_ancestors</span> <span class="o">=</span> <span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_y</span><span class="p">)</span>
+
+    <span class="n">xy_ancestors</span> <span class="o">=</span> <span class="n">x_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">y_ancestors</span><span class="p">)</span>
+
+    <span class="n">s_ancestors</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">S</span><span class="p">:</span>
+        <span class="n">s_ancestors</span> <span class="o">=</span> <span class="n">s_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">elem</span><span class="p">))</span>
+
+    <span class="c1"># ancestors of X, Y and all the elements of S</span>
+
+    <span class="n">all_ancestors</span> <span class="o">=</span> <span class="n">xy_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">s_ancestors</span><span class="p">)</span>
+    <span class="n">x_neighbors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+
+    <span class="n">path_exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">x_neighbors</span><span class="p">:</span>
+
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="n">node_x</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="n">path_exists</span><span class="p">,</span> <span class="n">temp_path</span> <span class="o">=</span> <span class="n">_shortest_valid_path</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">all_ancestors</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">node_x</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">path_exists</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">path_exists</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
 </pre></div>
 
               </article>

@@ -35,14 +35,13 @@ General Concepts
     API
         Refers to both the *specific* interfaces for graphs implemented in
         pywhy-graphs and the *generalized* conventions across types of
-        graphs as described in this glossary and :ref:`overviewed in the
-        contributor documentation <api_overview>`.
+        graphs as described in this glossary.
 
         The specific interfaces that constitute pywhy-graphs's public API are
         largely documented in :ref:`api_ref`. However, we less formally consider
         anything as public API if none of the identifiers required to access it
-        begins with ``_``.  We generally try to maintain :term:`backwards
-        compatibility` for all objects in the public API.
+        begins with ``_``.  We generally try to maintain backwards
+        compatibility for all objects in the public API.
 
         Private API, including functions, modules and methods beginning ``_``
         are not assured to be stable.
@@ -85,7 +84,7 @@ General Concepts
     experimental
         An experimental tool is already usable but its public API, such as
         default parameter values or fitted attributes, is still subject to
-        change in future versions without the usual :term:`deprecation`
+        change in future versions without the usual deprecation
         warning policy.
 
     F-node
