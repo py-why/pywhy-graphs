@@ -30,8 +30,10 @@ G.add_edge("X3", "X6", G.directed_edge_name)
 G.add_edge("X3", "X4", G.directed_edge_name)
 G.add_edge("X3", "X2", G.directed_edge_name)
 G.add_edge("X5", "X6", G.directed_edge_name)
-G.add_edge("X2", "X1", G.bidirected_edge_name)
-G.add_edge("X4", "X5", G.bidirected_edge_name)
+G.add_edge("L2", "X4", G.directed_edge_name)
+G.add_edge("L2", "X5", G.directed_edge_name)
+G.add_edge("L1", "X1", G.directed_edge_name)
+G.add_edge("L1", "X2", G.directed_edge_name)
 G.add_edge("X2", "X3", G.circle_edge_name)
 G.add_edge("X4", "X3", G.circle_edge_name)
 G.add_edge("X6", "X4", G.circle_edge_name)
@@ -41,10 +43,46 @@ G.add_edge("X6", "X5", G.circle_edge_name)
 dot_graph = draw(G)
 dot_graph.render(outfile="pag.png", view=True)
 
-# X2 is the only collider on the path
+# All adjacent nodes have a trivial inducing path
+# which is the edge between them
 L = {}
-S = {"X2"}
+S = {}
+
+# All such tests will return True.
+print(pywhy_graphs.inducing_path(G, "X1", "X4", L, S))
+print(pywhy_graphs.inducing_path(G, "X3", "X2", L, S))
 
 
-# returns true
+# Including all the 'L' nodes is not enough to
+# open up an inducing path between X1 and X5
+L = {"L1", "L2"}
+S = {}
+
+
+# returns False
+print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
+
+
+# However, if we add X3, a non-collider on the path
+# from X1 to X5 to L, we open up an inducing path.
+
+
+L = {"L1", "L2", "X3"}
+S = {}
+
+# now it returns True
+print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
+
+# Even now, some inducing paths are not opened.
+# For example, the path between X1 and X3 is not available
+
+# this returns False
+print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
+
+# We need add X6, a collider on the path, to S
+
+L = {"L1", "L2", "X3"}
+S = {"X6"}
+
+# now it returns True
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
