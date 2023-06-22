@@ -18,8 +18,12 @@ import pywhy_graphs
 from pywhy_graphs import PAG
 from pywhy_graphs.viz import draw
 
-# construct the causal graph from figure 2 of
-# https://arxiv.org/pdf/1104.5617.pdf
+# %%
+# The Graph
+# ----------------------------------------------
+# To illustrate the workings of the inducing path algorithm, we will
+# construct the causal graph from figure 2 of https://arxiv.org/pdf/1104.5617.pdf.
+
 
 G = PAG()
 G.add_edge("X4", "X1", G.directed_edge_name)
@@ -43,8 +47,13 @@ G.add_edge("X6", "X5", G.circle_edge_name)
 dot_graph = draw(G)
 dot_graph.render(outfile="pag.png", view=True)
 
-# All adjacent nodes have a trivial inducing path
-# which is the edge between them
+
+# %%
+# Inducing Path Between Adjacent Nodes
+# ----------------------------------------------
+# By definition, all adjacent nodes have a trivial inducing path between them,
+# that path only consists of one edge, which is the edge between those two nodes.
+
 L = {}
 S = {}
 
@@ -52,9 +61,13 @@ S = {}
 print(pywhy_graphs.inducing_path(G, "X1", "X4", L, S))
 print(pywhy_graphs.inducing_path(G, "X3", "X2", L, S))
 
+# %%
+# Inducing Path Two Arbitrary Nodes
+# ----------------------------------------------
+# Given the definition of an inducing path, we need to satisfy all
+# requirements for the function to return True. Adding the latent
+# variables to L is not enough for the pair [X1,X5]
 
-# Including all the 'L' nodes is not enough to
-# open up an inducing path between X1 and X5
 L = {"L1", "L2"}
 S = {}
 
@@ -73,6 +86,14 @@ S = {}
 # now it returns True
 print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
 
+
+# %%
+# The Role of Colliders
+# ----------------------------------------------
+# Adding Colliders to the set S has a downstream effect.
+# Since adding the collider opens up all the inducing paths containing
+# the collider ancestors of that node.
+
 # Even now, some inducing paths are not opened.
 # For example, the path between X1 and X3 is not available
 
@@ -81,6 +102,7 @@ print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
 
 # We need to add X6, which will open up paths
 # including all the collider ancestors of X6
+# in this case that node is X2.
 
 L = {"L1", "L2", "X3"}
 S = {"X6"}
