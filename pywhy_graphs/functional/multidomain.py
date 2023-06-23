@@ -303,7 +303,12 @@ def sample_multidomain_lin_functions(
     if len(s_nodes) == 0:
         return G
 
-    node_mean_lims, node_std_lims, edge_functions, edge_weight_lims = _preprocess_parameter_inputs(
+    (
+        node_mean_lims_,
+        node_std_lims_,
+        edge_functions_,
+        edge_weight_lims_,
+    ) = _preprocess_parameter_inputs(
         node_mean_lims,
         node_std_lims,
         edge_functions,
@@ -337,23 +342,23 @@ def sample_multidomain_lin_functions(
                 G,
                 node,
                 n_domains=n_domains,
-                node_mean_lims=node_mean_lims,
-                node_std_lims=node_std_lims,
+                node_mean_lims=node_mean_lims_,
+                node_std_lims=node_std_lims_,
                 random_state=random_state,
                 check_s_node_consistency=False,
             )
         else:
             # sample single-domain noise
             G = generate_noise_for_node(
-                G, node, node_mean_lims[0], node_std_lims[0], random_state=random_state
+                G, node, node_mean_lims_[0], node_std_lims_[0], random_state=random_state
             )
 
         # sample edge functions and weights as a function of the parents
         generate_edge_functions_for_node(
             G,
             node=node,
-            edge_weight_lims=edge_weight_lims,
-            edge_functions=edge_functions,
+            edge_weight_lims=edge_weight_lims_,
+            edge_functions=edge_functions_,
             random_state=random_state,
         )
 

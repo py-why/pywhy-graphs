@@ -110,7 +110,7 @@ def add_soft_intervention_function(
     parents = set(G.predecessors(node)).difference(set(G.augmented_nodes))
 
     # check that the function has the correct number of keyword arguments
-    _check_input_func(parents, func)
+    _check_input_func(func, parents=parents)
 
     G.nodes[node]["intervention_functions"][f_node] = func
     G.graph["functional"] = True
@@ -294,7 +294,7 @@ def _sample_from_graph(
     if ignored_nodes is None:
         ignored_nodes = set()
 
-    nodes_sample = dict()
+    nodes_sample: Dict = dict()
 
     for node in top_sort_idx:
         # get all parents

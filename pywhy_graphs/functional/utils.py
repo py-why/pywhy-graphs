@@ -63,11 +63,11 @@ def _preprocess_parameter_inputs(
         # if the parameters are not a list of length n_domains, then they must be a
         # list of length n_domains
         if len(node_mean_lims) != n_domains:
-            node_mean_lims = [node_mean_lims] * n_domains
+            node_mean_lims = [node_mean_lims] * n_domains  # type: ignore
         if len(node_std_lims) != n_domains:
-            node_std_lims = [node_std_lims] * n_domains
+            node_std_lims = [node_std_lims] * n_domains  # type: ignore
         if len(edge_weight_lims) != n_domains:
-            edge_weight_lims = [edge_weight_lims] * n_domains
+            edge_weight_lims = [edge_weight_lims] * n_domains  # type: ignore
     return node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
 
 
