@@ -102,7 +102,7 @@ print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
 # this returns False
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
 
-# We need to add X6, which will open up paths
+# If we add X6, we will open up certain collider paths
 # including all the collider ancestors of X6
 # in this case that node is X2.
 
