@@ -44,6 +44,7 @@ G.add_edge("X6", "X4", G.circle_edge_name)
 G.add_edge("X6", "X5", G.circle_edge_name)
 
 
+# this is the Figure 2(a) in the paper as we see.
 dot_graph = draw(G)
 dot_graph.render(outfile="pag.png", view=True)
 
