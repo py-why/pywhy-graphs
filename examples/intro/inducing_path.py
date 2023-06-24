@@ -91,7 +91,7 @@ print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
 # %%
 # The Role of Colliders
 # ----------------------------------------------
-# Adding Colliders to the set S has a downstream effect.
+# Adding colliders to the set S has a downstream effect.
 # Since adding the collider opens up all the inducing paths containing
 # the collider ancestors of that node.
 
