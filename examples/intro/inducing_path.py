@@ -19,7 +19,7 @@ from pywhy_graphs import PAG
 from pywhy_graphs.viz import draw
 
 # %%
-# The Graph
+# Construct an example graph
 # ----------------------------------------------
 # To illustrate the workings of the inducing path algorithm, we will
 # construct the causal graph from figure 2 of :footcite:`Colombo2012`.
