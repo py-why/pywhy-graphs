@@ -50,7 +50,7 @@ dot_graph.render(outfile="pag.png", view=True)
 
 
 # %%
-# Inducing Path Between Adjacent Nodes
+# Adjacent nodes trivially have an inducing path
 # ----------------------------------------------
 # By definition, all adjacent nodes have a trivial inducing path between them,
 # that path only consists of one edge, which is the edge between those two nodes.
