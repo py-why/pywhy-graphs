@@ -63,8 +63,8 @@ print(pywhy_graphs.inducing_path(G, "X1", "X4", L, S))
 print(pywhy_graphs.inducing_path(G, "X3", "X2", L, S))
 
 # %%
-# Inducing Path Two Arbitrary Nodes
-# ----------------------------------------------
+# Inducing paths between non-adjacent nodes
+# ---------------------------------------------
 # Given the definition of an inducing path, we need to satisfy all
 # requirements for the function to return True. Adding the latent
 # variables to L is not enough for the pair [X1,X5]
