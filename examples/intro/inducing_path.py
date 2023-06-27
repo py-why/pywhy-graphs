@@ -80,7 +80,7 @@ print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
 
 
 # However, if we add X3, a non-collider on the path
-# from X1 to X5 to L, we open up an inducing path.
+# from X1 to X5 to L, we make a valid inducing path.
 
 
 L = {"L1", "L2", "X3"}
@@ -95,19 +95,19 @@ print(pywhy_graphs.inducing_path(G, "X1", "X5", L, S))
 # ----------------------
 # Adding colliders to the set S has a downstream effect.
 # Conditioning on a collider, or descendant of a collider opens up that collider path.
-# For example, we will add the node 'X6' to the set ``S``. This will open up the collider
-# path ``(X1, X2, X3)``, since 'X2' is an ancestor of 'X6'.
+# For example, we will add the node 'X6' to the set ``S``. This will make the
+# path ``(X1, X2, X3)`` a valid inducing path, since 'X2' is an ancestor of 'X6'.
 
-# Even now, some inducing paths are not opened.
-# For example, the path between X1 and X3 is not available
+# Some node pairs still do not have a valid inducing path between them.
+# For example, the path between X1 and X3 is not available.
 
 # this returns False
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
 
-# If we add X6, we will open up certain collider paths
-# including all the collider ancestors of X6.
-# Since X2 is a collider and an ancestor of X6,
-# there should be a path from X1 to X3 now.
+# If we add X6 to ``S``, paths containing all the collider ancestors of X6
+# will be valid inducing paths.
+# Since X2 is a collider and an ancestor of X6, there should be a valid inducing
+# path from X1 to X3 now.
 
 L = {"L1", "L2", "X3"}
 S = {"X6"}
