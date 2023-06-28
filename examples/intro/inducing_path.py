@@ -66,11 +66,14 @@ print(pywhy_graphs.inducing_path(G, "X3", "X2", L, S))
 # ------------------------------------------
 # Given the definition of an inducing path, we need to satisfy all
 # requirements for the function to return True. Adding the latent
-# variables to L is not enough for the pair [X1,X5]. As we see in Figure 2(c) in :footcite:`Colombo2012`,
-# (X1, X5) are not adjacent in the final skeleton of the equivalence class, which makes sense because a
-# MAG is an equivalence class of a DAG and contains an edge among two nodes if i) the two nodes are
-# adjacent in the DAG, or ii) the two nodes have a primitive inducing path between them. Since there
-# is no adjacency among (X1, X5) in the final skeleton, there is no primitive inducing path between them.
+# variables to L is not enough for the pair [X1,X5]. As we see in
+# Figure 2(c) in :footcite:`Colombo2012`,  (X1, X5) are not adjacent
+# in the final skeleton of the equivalence class, which makes sense
+# because a MAG is an equivalence class of a DAG and contains an
+# edge among two nodes if i) the two nodes are adjacent in the DAG,
+# or ii) the two nodes have a primitive inducing path between them.
+# Since there is no adjacency among (X1, X5) in the final skeleton,
+# there is no primitive inducing path between them.
 
 L = {"L1", "L2"}
 S = {}
@@ -117,8 +120,6 @@ S = {"X6"}
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
 
 
-"""
-References
-----------
-.. footbibliography::
-"""
+# References
+# ----------
+# .. footbibliography::
