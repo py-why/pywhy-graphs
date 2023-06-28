@@ -564,11 +564,11 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     if node_x == node_y:
         raise ValueError("The source and destination nodes are the same.")
-    
+
     edges = G.edges()
 
     for elem in edges.keys():
-        if elem not in {"directed","bidirected"}:
+        if elem not in {"directed", "bidirected"}:
             if len(edges[elem]) != 0:
                 raise ValueError("Inducing Path is not defined for this graph.")
 
