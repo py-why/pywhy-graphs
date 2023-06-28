@@ -119,7 +119,7 @@ S = {"X6"}
 # now it returns True
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
 
-
+# %%
 # References
 # ----------
 # .. footbibliography::
