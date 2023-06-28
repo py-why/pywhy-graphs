@@ -15,9 +15,6 @@ we condition on.
 
 More details on inducing paths can be found at :footcite:Zhang2008.
 
-References
-----------
-.. footbibliography::
 """
 
 import pywhy_graphs
@@ -48,7 +45,7 @@ G.add_edge("L1", "X2", G.directed_edge_name)
 
 # this is the Figure 2(a) in the paper as we see.
 dot_graph = draw(G)
-dot_graph.render(outfile="pag.png", view=True)
+dot_graph.render(outfile="graph.png", view=True)
 
 
 # %%
@@ -118,3 +115,10 @@ S = {"X6"}
 
 # now it returns True
 print(pywhy_graphs.inducing_path(G, "X1", "X3", L, S))
+
+
+"""
+References
+----------
+.. footbibliography::
+"""
