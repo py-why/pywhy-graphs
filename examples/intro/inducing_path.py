@@ -13,7 +13,7 @@ In other words, it is a path between two nodes that cannot be
 d-seperated, making it active regardless of what variables
 we condition on.
 
-More details on inducing paths can be found at :footcite:Zhang2008.
+More details on inducing paths can be found at :footcite:`Zhang2008`.
 
 """
 
