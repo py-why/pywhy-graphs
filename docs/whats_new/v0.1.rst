@@ -20,9 +20,6 @@ Here we list a changelog of pywhy-graphs.
 Version 0.1
 ===========
 
-**In Development**
-
-
 Changelog
 ---------
 - |Feature| Add keyword argument for graph labels in :func:`pywhy_graphs.viz.draw`, by `Aryan Roy`_ (:pr:`71`)
