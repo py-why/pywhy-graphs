@@ -759,6 +759,14 @@
     <span class="k">if</span> <span class="n">node_x</span> <span class="o">==</span> <span class="n">node_y</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The source and destination nodes are the same.&quot;</span><span class="p">)</span>
 
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+
+    <span class="c1"># XXX: fix this when graphs are refactored to only check for directed/bidirected edge types</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="n">elem</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inducing Path is not defined for this graph.&quot;</span><span class="p">)</span>
+
     <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># this will contain the path.</span>
 
     <span class="n">x_ancestors</span> <span class="o">=</span> <span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">)</span>
