@@ -72,7 +72,7 @@ jobs:
       - python/install-packages:
           pkg-manager: poetry
           cache-version: "v2" # change to clear cache
-          args: "--with docs --extras viz,sims"
+          args: "--with docs --extras viz --extras sims"
       - run:
           name: Check poetry package versions
           command: |
