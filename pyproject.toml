@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "pywhy_graphs"
+name = "pywhy-graphs"
 #
 # 0.0.0 is standard placeholder for poetry-dynamic-versioning
 # any changes to this should not be checked in
 #
-version = "0.0.0"
+version = "0.2.0dev0"
 description = "Causal Graphs for Python"
 authors = ["PyWhy Community <adam.li@columbia.edu>"]
 license = "MIT"
@@ -40,6 +40,7 @@ python = ">=3.8,<3.12"
 numpy = "^1.21.0"
 scipy = "^1.8.0"
 networkx = "^3.1"
+importlib-resources = { version = "*", python = "<3.10" }
 pygraphviz = { version = "*", optional = true }
 pgmpy = { version = "*", optional = true }
 

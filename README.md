@@ -54,8 +54,11 @@ Additional functionality may be required when running unit-tests and documentati
 
 If you already have a working installation of numpy, scipy and networkx, the easiest way to install pywhy-graphs is using `pip`:
 
-    # doesn't work until we make an official release :p
-    pip install -U pywhy-graphs
+    pip install pywhy-graphs
+
+or you can add it via poetry
+
+    poetry add pywhy-graphs
 
 To install the package from github, clone the repository and then `cd` into the directory. You can then use `poetry` to install:
 
