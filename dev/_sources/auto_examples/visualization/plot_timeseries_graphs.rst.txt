@@ -135,9 +135,9 @@ which creates a nice default layout for time-series graphs.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.791 seconds)
+   **Total running time of the script:** ( 0 minutes  0.699 seconds)
 
-**Estimated memory usage:**  9 MB
+**Estimated memory usage:**  8 MB
 
 
 .. _sphx_glr_download_auto_examples_visualization_plot_timeseries_graphs.py:
