@@ -145,7 +145,8 @@ Discrete functional graphs
 .. autosummary::
    :toctree: ../../generated/
 
-   make_graph_discrete_bayesian_network
+   make_random_discrete_graph
+   add_cpd_for_node
 
 Discrete graphs can be fully represented by conditional probability tables (CPTs). Here, it is assumed
 each observed variable is discrete and the full set of possible values are known apriori. Hence,
@@ -155,7 +156,7 @@ value associated. This then gives us a model for :math:`P(X = x| Pa_X)` for each
 possible value of ``Pa_X``. 
 
 Therefore, each node in the graph has a node attribute ``cpt``, which is associated with a
-:class:`pgmpy.TabularCPD`. We leverage `pgmpy` to represent CPTs and wrap an API around that.
+:class:`pgmpy.factors.discrete.CPD.TabularCPD`. We leverage `pgmpy` to represent CPTs and wrap an API around that.
 Given each CPT, the ``parent_function`` is fully defined as just a discrete distribution sampling
 with possibly non-uniform probabilities.
 

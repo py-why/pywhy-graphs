@@ -12,3 +12,4 @@ from .multidomain import (
     sample_multidomain_lin_functions,
 )
 from .utils import set_node_attributes_with_G
+from .discrete import make_random_discrete_graph, add_cpd_for_node
