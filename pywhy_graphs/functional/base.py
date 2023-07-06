@@ -2,7 +2,6 @@ from typing import Callable, Dict, Optional
 
 import networkx as nx
 import numpy as np
-from joblib import Parallel, delayed
 
 import pywhy_graphs as pgraphs
 from pywhy_graphs import AugmentedGraph
@@ -221,6 +220,7 @@ def sample_from_graph(
         A pandas DataFrame with the iid samples.
     """
     import pandas as pd
+    from joblib import Parallel, delayed
 
     rng = np.random.default_rng(random_state)
     if hasattr(G, "get_graphs"):
@@ -342,8 +342,11 @@ def _check_input_func(func: Callable, parents=None):
                 f"arguments."
             )
     else:
-        if func.__code__.co_kwonlyargcount != len(parents):
-            raise ValueError(f"Function {func} should have {len(parents)} keyword-only arguments, ")
+        if func.__code__.co_argcount + func.__code__.co_kwonlyargcount != len(parents):
+            raise ValueError(
+                f"Function {func} should have {len(parents)} arguments, "
+                f"rather than {func.__code__.co_argcount + func.__code__.co_kwonlyargcount}."
+            )
 
 
 def _check_input_graph(G: nx.DiGraph):

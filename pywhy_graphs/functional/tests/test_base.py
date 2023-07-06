@@ -79,13 +79,11 @@ def test_add_parent_function():
     assert updated_G.graph.get("functional", False) is True
 
     # Test checking the keyword arguments of the parent function
-    with pytest.raises(ValueError, match="The parent function should take 2 argument"):
-        add_parent_function(G, 2, lambda x, y, z: x + y + z)
+    with pytest.raises(ValueError, match="should have 1 arguments"):
+        add_parent_function(G, 2, lambda x, y: x + y)
 
     # Test checking a node without any parents
-    with pytest.raises(
-        ValueError, match="Node 1 does not have a parent function, but it has parents."
-    ):
+    with pytest.raises(ValueError, match="should have 0 arguments"):
         add_parent_function(G, 1, parent_func)
 
 

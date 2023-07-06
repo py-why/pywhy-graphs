@@ -44,9 +44,16 @@ Then the node value is a deterministically computed. If there are no parents, th
 the node attribute will contain `None`. This enables stochasticity in the data-generating
 process due to the inherent randomness that we can attach to the distribution of ``exogenous_function``.
 Due to the multivariate input nature of ``parent_function``, it must be a Callable that takes
-keyword arguments of the observed parents and returns a single value. Due to the univariate input
+(keyword) arguments of the observed parents and returns a single value. Due to the univariate input
 nature of ``exogenous_function``, it must be a Callable that takes a single value and
 returns a single value.
+
+**Ordering of parent function arguments**
+
+It is presumed that the ``parent_function`` is a function of the observed parents in the sorted order
+that they are specified in the ``G.predecessors(node)`` list. For example, if the node ``node`` has
+observed parents ``[parent_1, parent_2]``, then the ``parent_function`` must be a function of
+``parent_1`` and ``parent_2`` in that order.
 
 Multiple Distributions: Interventions and Domain Shifts
 -------------------------------------------------------
