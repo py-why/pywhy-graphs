@@ -1,0 +1,37 @@
+:orphan:
+
+.. include:: _contributors.rst
+
+.. _changes_0_2:
+
+What's new?
+===========
+
+Here we list a changelog of pywhy-graphs.
+
+.. contents:: Contents
+   :local:
+   :depth: 3
+
+.. currentmodule:: pywhy_graphs
+
+.. _current:
+
+Version 0.2
+===========
+
+**In Development**
+
+
+Changelog
+---------
+- 
+
+Code and Documentation Contributors
+-----------------------------------
+
+Thanks to everyone who has contributed to the maintenance and improvement of
+the project since version inception, including:
+
+* `Adam Li`_
+
