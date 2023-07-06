@@ -145,6 +145,7 @@ jobs:
           pip install --progress-bar off git+https://github.com/networkx/networkx
       
       - name: Setup torch for pgmpy
+        if: "matrix.os == 'ubuntu'"
         shell: bash
         run: |
           sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
