@@ -19,4 +19,3 @@ from . import export
 from . import classes
 from . import networkx
 from . import simulate
-from . import functional
