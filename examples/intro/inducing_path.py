@@ -3,8 +3,8 @@
 An introduction to Inducing Paths and how to find them
 ======================================================
 
-A path p is called an ``inducing path`` relateve to <L,S>
-on an ancestral graph, where every non-endpoint vertex on p
+A path p is called an ``inducing path`` relative to <L,S>
+on an mixed-edge graph with directed and bidirected edges, where every non-endpoint vertex on p
 is either in L or a collider, and every collider on p is an ancestor
 of either X , Y or a member of S.
 
