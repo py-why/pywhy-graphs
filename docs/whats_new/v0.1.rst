@@ -15,7 +15,7 @@ Here we list a changelog of pywhy-graphs.
 
 .. currentmodule:: pywhy_graphs
 
-.. _current:
+.. _0_1:
 
 Version 0.1
 ===========
