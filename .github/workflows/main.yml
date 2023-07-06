@@ -143,6 +143,11 @@ jobs:
         run: |
           pip uninstall -yq networkx
           pip install --progress-bar off git+https://github.com/networkx/networkx
+      
+      - name: Setup torch for pgmpy
+        run: |
+          sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
+  
       - name: Run pytest  # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov
