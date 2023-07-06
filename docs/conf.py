@@ -235,6 +235,7 @@ intersphinx_mapping = {
     "pygraphviz": ("https://pygraphviz.github.io/documentation/stable/", None),
     "graphviz": ("https://graphviz.readthedocs.io/en/stable/", None),
     "sphinx-gallery": ("https://sphinx-gallery.github.io/stable/", None),
+    "pgmpy": ("https://pgmpy.org/", None),
 }
 intersphinx_timeout = 5
 
