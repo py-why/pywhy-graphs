@@ -567,6 +567,7 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     edges = G.edges()
 
+    # XXX: fix this when graph classes are refactored to only check for directed/bidirected edge types
     for elem in edges.keys():
         if elem not in {"directed", "bidirected"}:
             if len(edges[elem]) != 0:
