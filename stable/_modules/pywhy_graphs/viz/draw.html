@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.viz.draw &#8212; pywhy-graphs v0.1.0.dev0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.1.0.dev0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.viz.draw</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_pag_edges</span><span class="p">(</span>
+    <span class="n">dot</span><span class="p">,</span>
+    <span class="n">directed_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">circle_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">undirected_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bidirected_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the PAG edges.</span>
+
+<span class="sd">    PAG edges may have different endpoints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># keep track of edges with circular edges between each other because we want to</span>
+    <span class="c1"># draw edges correctly when there are circular edges</span>
+    <span class="n">found_circle_sibs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># draw all possible causal edges on a graph</span>
+    <span class="k">if</span> <span class="n">circle_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="ow">in</span> <span class="n">circle_edges</span><span class="p">:</span>
+            <span class="c1"># memoize if we have seen the bidirected circular edge before</span>
+            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sib1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">sib2</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sib2</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">sib1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">found_circle_sibs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sib1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">sib2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># set directionality of the edges</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;forward&quot;</span>
+
+            <span class="c1"># check if the circular edge is bidirectional</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sib2</span><span class="p">,</span> <span class="n">sib1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">circle_edges</span><span class="p">:</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
+                <span class="n">arrowtail</span> <span class="o">=</span> <span class="s2">&quot;odot&quot;</span>
+            <span class="k">elif</span> <span class="n">directed_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sib2</span><span class="p">,</span> <span class="n">sib1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">directed_edges</span><span class="p">:</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
+                <span class="n">arrowtail</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
+            <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib1</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib2</span><span class="p">)</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span>
+                <span class="n">sib1</span><span class="p">,</span>
+                <span class="n">sib2</span><span class="p">,</span>
+                <span class="n">arrowhead</span><span class="o">=</span><span class="s2">&quot;odot&quot;</span><span class="p">,</span>
+                <span class="n">arrowtail</span><span class="o">=</span><span class="n">arrowtail</span><span class="p">,</span>
+                <span class="nb">dir</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">undirected_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span> <span class="ow">in</span> <span class="n">undirected_edges</span><span class="p">:</span>
+            <span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">neb1</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">neb2</span><span class="p">)</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bidirected_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="ow">in</span> <span class="n">bidirected_edges</span><span class="p">:</span>
+            <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib1</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib2</span><span class="p">)</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span>
+
+
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize the graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : pywhy_nx.MixedEdgeGraph</span>
+<span class="sd">        The mixed edge graph.</span>
+<span class="sd">    direction : str, optional</span>
+<span class="sd">        The direction, by default None. See: https://graphviz.org/docs/attrs/rankdir/.</span>
+<span class="sd">    pos : dict, optional</span>
+<span class="sd">        The positions of the nodes keyed by node with (x, y) coordinates as values.</span>
+<span class="sd">        By default None, which will</span>
+<span class="sd">        use the default layout from graphviz.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Label for the generated graph.</span>
+<span class="sd">    shape : str</span>
+<span class="sd">        The shape of each node. By default &#39;square&#39;. Can be &#39;circle&#39;, &#39;plaintext&#39;.</span>
+<span class="sd">    attrs : dict</span>
+<span class="sd">        Any additional edge attributes (must be strings). For more</span>
+<span class="sd">        information, see documentation for GraphViz.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dot : graphviz.Digraph</span>
+<span class="sd">        DOT language representation of the graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Digraph</span>
+
+    <span class="c1"># make a dict to pass to the Digraph object</span>
+    <span class="n">g_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">(</span><span class="n">graph_attr</span><span class="o">=</span><span class="n">g_attr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">()</span>
+
+    <span class="c1"># set direction from left to right if that&#39;s preferred</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;LR&quot;</span><span class="p">:</span>
+        <span class="n">dot</span><span class="o">.</span><span class="n">graph_attr</span><span class="p">[</span><span class="s2">&quot;rankdir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">direction</span>
+
+    <span class="n">circle_edges</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">directed_edges</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">undirected_edges</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">bidirected_edges</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;circle_edges&quot;</span><span class="p">):</span>
+        <span class="n">circle_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">circle_edges</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;directed_edges&quot;</span><span class="p">):</span>
+        <span class="n">directed_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edges</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;undirected_edges&quot;</span><span class="p">):</span>
+        <span class="n">undirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">undirected_edges</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;bidirected_edges&quot;</span><span class="p">):</span>
+        <span class="n">bidirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edges</span>
+
+    <span class="c1"># draw PAG edges and keep track of the circular endpoints found</span>
+    <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span> <span class="o">=</span> <span class="n">_draw_pag_edges</span><span class="p">(</span>
+        <span class="n">dot</span><span class="p">,</span>
+        <span class="n">directed_edges</span><span class="p">,</span>
+        <span class="n">circle_edges</span><span class="o">=</span><span class="n">circle_edges</span><span class="p">,</span>
+        <span class="n">undirected_edges</span><span class="o">=</span><span class="n">undirected_edges</span><span class="p">,</span>
+        <span class="n">bidirected_edges</span><span class="o">=</span><span class="n">bidirected_edges</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;get_graphs&quot;</span><span class="p">):</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="s2">&quot;directed&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span>
+
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># memoize if we have seen the bidirected circular edge before</span>
+            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;invis&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dot</span></div>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

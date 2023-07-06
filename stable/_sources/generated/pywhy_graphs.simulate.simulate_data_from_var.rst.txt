@@ -1,0 +1,12 @@
+﻿pywhy_graphs.simulate.simulate_data_from_var
+============================================
+
+.. currentmodule:: pywhy_graphs.simulate
+
+.. autofunction:: simulate_data_from_var
+
+.. include:: pywhy_graphs.simulate.simulate_data_from_var.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+﻿pywhy_graphs.classes.timeseries.empty_ts_graph
+==============================================
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+
+.. autofunction:: empty_ts_graph
+
+.. include:: pywhy_graphs.classes.timeseries.empty_ts_graph.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

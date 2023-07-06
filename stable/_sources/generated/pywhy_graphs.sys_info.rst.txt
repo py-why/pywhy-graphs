@@ -1,0 +1,12 @@
+﻿pywhy_graphs.sys_info
+=====================
+
+.. currentmodule:: pywhy_graphs
+
+.. autofunction:: sys_info
+
+.. include:: pywhy_graphs.sys_info.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

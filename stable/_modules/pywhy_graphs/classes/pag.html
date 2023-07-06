@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.classes.pag &#8212; pywhy-graphs v0.1.0.dev0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.1.0.dev0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.classes.pag</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">FrozenSet</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">.admg</span> <span class="kn">import</span> <span class="n">ADMG</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ConservativeMixin</span>
+
+
+<div class="viewcode-block" id="PAG"><a class="viewcode-back" href="../../../reference/classes/index.html#pywhy_graphs.PAG">[docs]</a><span class="k">class</span> <span class="nc">PAG</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">ConservativeMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Partial ancestral graph (PAG).</span>
+
+<span class="sd">    PAGs are a Markov equivalence class with mixed edges of directed,</span>
+<span class="sd">    bidirected, undirected and edges with circle endpoints. In terms</span>
+<span class="sd">    of graph functionality, they essentially extend the definition of</span>
+<span class="sd">    an ADMG with edges with circular endpoints.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    incoming_directed_edges : input directed edges (optional, default: None)</span>
+<span class="sd">        Data to initialize directed edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.DiGraph` are accepted.</span>
+<span class="sd">    incoming_undirected_edges : input undirected edges (optional, default: None)</span>
+<span class="sd">        Data to initialize undirected edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.Graph` are accepted.</span>
+<span class="sd">    incoming_bidirected_edges : input bidirected edges (optional, default: None)</span>
+<span class="sd">        Data to initialize bidirected edges. All arguments that are accepted</span>
+<span class="sd">        by `networkx.Graph` are accepted.</span>
+<span class="sd">    incoming_circle_edges : input circular endpoint edges (optional, default: None)</span>
+<span class="sd">        Data to initialize edges with circle endpoints. All arguments that are accepted</span>
+<span class="sd">        by `networkx.DiGraph` are accepted.</span>
+<span class="sd">    directed_edge_name : str</span>
+<span class="sd">        The name for the directed edges. By default &#39;directed&#39;.</span>
+<span class="sd">    undirected_edge_name : str</span>
+<span class="sd">        The name for the undirected edges. By default &#39;undirected&#39;.</span>
+<span class="sd">    bidirected_edge_name : str</span>
+<span class="sd">        The name for the bidirected edges. By default &#39;bidirected&#39;.</span>
+<span class="sd">    circle_edge_name : str</span>
+<span class="sd">        The name for the circle edges. By default &#39;circle&#39;.</span>
+<span class="sd">    attr : keyword arguments, optional (default= no attributes)</span>
+<span class="sd">        Attributes to add to graph as key=value pairs.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    networkx.DiGraph</span>
+<span class="sd">    networkx.Graph</span>
+<span class="sd">    pywhy_graphs.ADMG</span>
+<span class="sd">    pywhy_graphs.networkx.MixedEdgeGraph</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    PAGs are Markov equivalence class of causal ADMGs. The implicit assumption in</span>
+<span class="sd">    these causal graphs are the Structural Causal Model (or SCM) is Semi-Markovian, such</span>
+<span class="sd">    that latent confounders may be present. This allows PAGs to be learned from</span>
+<span class="sd">    constraint-based (such as the FCI algorithm) approaches for causal structure learning.</span>
+
+<span class="sd">    **Edge Type Subgraphs**</span>
+
+<span class="sd">    The data structure underneath the hood is stored in two types of networkx graphs:</span>
+<span class="sd">    ``networkx.Graph`` and ``networkx.DiGraph``.</span>
+
+<span class="sd">    - Directed edges (&lt;-, -&gt;, indicating causal relationship) = `networkx.DiGraph`</span>
+<span class="sd">        The subgraph of directed edges may be accessed by the</span>
+<span class="sd">        `~.PAG.sub_directed_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by :attr:`~.ADMG.directed_edges` and the corresponding</span>
+<span class="sd">        name of the edge type by :attr:`~.ADMG.directed_edge_name`.</span>
+<span class="sd">    - Bidirected edges (&lt;-&gt;, indicating latent confounder) = `networkx.Graph`</span>
+<span class="sd">        The subgraph of bidirected edges may be accessed by the</span>
+<span class="sd">        `~.PAG.sub_bidirected_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by :attr:`~.ADMG.bidirected_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by :attr:`~.ADMG.bidirected_edge_name`.</span>
+<span class="sd">    - Undirected edges (--, indicating selection bias) = `networkx.Graph`</span>
+<span class="sd">        The subgraph of undirected edges may be accessed by the</span>
+<span class="sd">        `~.PAG.sub_undirected_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by `~.PAG.undirected_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by `~.PAG.undirected_edge_name`.</span>
+<span class="sd">    - Circle edges (*-o, o-*, indicating uncertainty) = `networkx.DiGraph`</span>
+<span class="sd">        The subgraph of undirected edges may be accessed by the</span>
+<span class="sd">        `~.PAG.sub_circle_graph`. Their edges in networkx format can be</span>
+<span class="sd">        accessed by `~.PAG.circle_edges` and the corresponding name of the</span>
+<span class="sd">        edge type by `~.PAG.circle_edge_name`.</span>
+
+<span class="sd">    **How different edges are represented in the PAG**</span>
+
+<span class="sd">    Compared to an `~pywhy_graphs.classes.ADMG` and `~pywhy_graphs.classes.CPDAG` and a</span>
+<span class="sd">    :class:`networkx.DiGraph`, a PAG is more complex in that it generalizes endpoints an edge can</span>
+<span class="sd">    take, exponentially increasing the number of possible edges that can occur between two</span>
+<span class="sd">    nodes. The main complication arises in edges with circle endpoints. Rather than store all</span>
+<span class="sd">    possible edges as separate networkx graphs, we have a set of rules that map a combination</span>
+<span class="sd">    of the above edge-type subgraphs to a certain edge.</span>
+
+<span class="sd">    Bidirected and undirected edges are represented by one networkx graph (`networkx.Graph`).</span>
+<span class="sd">    They are simple in that they do not require pairing with another edge-type subgraph.</span>
+
+<span class="sd">    - ``x &lt;-&gt; y``: is a bidirected edge present? (Note by definition of a PAG no other edge</span>
+<span class="sd">        can be present between x and y)</span>
+<span class="sd">    - ``x - y``: is an undirected present? (Note no other edge should be present in any</span>
+<span class="sd">        other direction, so an undirected edge is similar to a bidirected edge in that it</span>
+<span class="sd">        represents only one kind of edge)</span>
+
+<span class="sd">    Edges with arrowheads, tails and circular endpoints are represented by another networkx</span>
+<span class="sd">    graph (`networkx.DiGraph`). They complicate matters because the</span>
+<span class="sd">    `~.PAG.sub_directed_graph` and</span>
+<span class="sd">    `~.PAG.sub_circle_graph` can be combined in different ways to</span>
+<span class="sd">    result in different edges between x and y.</span>
+
+<span class="sd">    Without loss of generality, we will be dealing with the ordered tuple (x, y). If you want</span>
+<span class="sd">    the other direction of the edge, you can just flip the order of x and y. For example,</span>
+<span class="sd">    ``x &lt;- y`` would just be ``y -&gt; x``, so we will only discuss the ``-&gt;`` edge. The following</span>
+<span class="sd">    rules dictate what sort of edge we are dealing with:</span>
+
+<span class="sd">    - ``x o-o y``: is circle edge present in both directions? There are **only** edges present</span>
+<span class="sd">        in the `~.PAG.sub_circle_graph` between x and y.</span>
+<span class="sd">    - ``x o-&gt; y``: is circle edge one way and directed edge another way? There is an edge from</span>
+<span class="sd">        the `~.PAG.sub_circle_graph` and the</span>
+<span class="sd">        `~.PAG.sub_directed_graph` between x and y in opposite</span>
+<span class="sd">        directions.</span>
+<span class="sd">    - ``x o- y``: is there only one circle edge? In this special case, we do not use the</span>
+<span class="sd">        `~.PAG.sub_undirected_graph` to represent the tail endpoint at y. There is **only**</span>
+<span class="sd">        one edge in the `~.PAG.sub_circle_graph` between x and y.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">incoming_bidirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">incoming_circle_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">directed_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;directed&quot;</span><span class="p">,</span>
+        <span class="n">undirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;undirected&quot;</span><span class="p">,</span>
+        <span class="n">bidirected_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>
+        <span class="n">circle_edge_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="n">incoming_directed_edges</span><span class="p">,</span>
+            <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="n">incoming_undirected_edges</span><span class="p">,</span>
+            <span class="n">incoming_bidirected_edges</span><span class="o">=</span><span class="n">incoming_bidirected_edges</span><span class="p">,</span>
+            <span class="n">directed_edge_name</span><span class="o">=</span><span class="n">directed_edge_name</span><span class="p">,</span>
+            <span class="n">undirected_edge_name</span><span class="o">=</span><span class="n">undirected_edge_name</span><span class="p">,</span>
+            <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="n">bidirected_edge_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">attr</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># add circular edges</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_type</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">incoming_circle_edges</span><span class="p">),</span> <span class="n">circle_edge_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_circle_name</span> <span class="o">=</span> <span class="n">circle_edge_name</span>
+
+        <span class="c1"># extended patterns store unfaithful triples</span>
+        <span class="c1"># these can be used for conservative structure learning algorithm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unfaithful_triples</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">FrozenSet</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="c1"># check that construction of PAG was valid</span>
+        <span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">is_valid_mec_graph</span>
+
+        <span class="n">is_valid_mec_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">circle_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the circle edge subgraph.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circle_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">circle_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the circle edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
+
+<div class="viewcode-block" id="PAG.sub_circle_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.sub_circle_graph">[docs]</a>    <span class="k">def</span> <span class="nf">sub_circle_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the circle edges.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PAG.orient_uncertain_edge"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge">[docs]</a>    <span class="k">def</span> <span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
+
+<span class="sd">        If there is an undirected edge u - v, then the arrowhead</span>
+<span class="sd">        will orient u -&gt; v. If the correct order is v &lt;- u, then</span>
+<span class="sd">        simply pass the arguments in different order.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : node</span>
+<span class="sd">            The parent node</span>
+<span class="sd">        v : node</span>
+<span class="sd">            The node that &#39;u&#39; points to in the graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There is no uncertain circular edge between </span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Performs orientation of edges</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">):</span>
+            <span class="c1"># Orients: u &lt;-o v =&gt; u &lt;-&gt; v</span>
+            <span class="c1"># when we orient (u,v) now as an arrowhead, it is a bidirected arrow</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">):</span>
+            <span class="c1"># Orients: u o-o v =&gt; u o-&gt; v</span>
+            <span class="c1"># In this case, we have a bidirected circle edge</span>
+            <span class="c1"># we only need to remove the circle edge and orient</span>
+            <span class="c1"># it as a normal edge</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">):</span>
+            <span class="c1"># In this case, we have a circle edge that is oriented into an arrowhead</span>
+            <span class="c1"># we only need to remove the circle edge and orient</span>
+            <span class="c1"># it as a normal edge</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># noqa</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The current PAG is invalid.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PAG.possible_children"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_children">[docs]</a>    <span class="k">def</span> <span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
+
+<span class="sd">        Possible children of &#39;n&#39; are nodes with an edge like</span>
+<span class="sd">        ``&#39;n&#39; o-&gt; &#39;x&#39;``. Nodes with ``&#39;n&#39; &lt;-* &#39;x&#39;``</span>
+<span class="sd">        are not considered possible children.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : node</span>
+<span class="sd">            A node in the causal DAG.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        possible_children : Iterator</span>
+<span class="sd">            An iterator of the children of node &#39;n&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">nbr</span></div>
+
+<div class="viewcode-block" id="PAG.possible_parents"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_parents">[docs]</a>    <span class="k">def</span> <span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over possible parents of node n.</span>
+
+<span class="sd">        Possible parents of &#39;n&#39; are nodes with an edge like</span>
+<span class="sd">        ``&#39;n&#39; &lt;-* &#39;x&#39;``. Nodes with ``&#39;n&#39; *-&gt; &#39;x&#39;`` are not considered</span>
+<span class="sd">        possible parents.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : node</span>
+<span class="sd">            A node in the causal DAG.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        possible_parents : Iterator</span>
+<span class="sd">            An iterator of the parents of node &#39;n&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">nbr</span></div>
+
+<div class="viewcode-block" id="PAG.parents"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.parents">[docs]</a>    <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite parents of node &#39;n&#39; in a PAG.</span>
+
+<span class="sd">        Definite parents are parents of node &#39;n&#39; with only</span>
+<span class="sd">        a directed edge between them from &#39;n&#39; &lt;- &#39;x&#39;. For example,</span>
+<span class="sd">        &#39;n&#39; &lt;-o &#39;x&#39; does not qualify &#39;x&#39; as a parent of &#39;n&#39;.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : node</span>
+<span class="sd">            A node in the causal DAG.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        parents : Iterator</span>
+<span class="sd">            An iterator of the definite parents of node &#39;n&#39;.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        possible_children</span>
+<span class="sd">        children</span>
+<span class="sd">        possible_parents</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">possible_parents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">possible_parents</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_parents</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                <span class="n">node</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">node</span></div>
+
+<div class="viewcode-block" id="PAG.children"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.children">[docs]</a>    <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite children of node &#39;n&#39; in a PAG.</span>
+
+<span class="sd">        Definite children are children of node &#39;n&#39; with only</span>
+<span class="sd">        a directed edge between them from &#39;n&#39; -&gt; &#39;x&#39;. For example,</span>
+<span class="sd">        &#39;n&#39; o-&gt; &#39;x&#39; does not qualify &#39;x&#39; as a children of &#39;n&#39;.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : node</span>
+<span class="sd">            A node in the causal DAG.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        children : Iterator</span>
+<span class="sd">            An iterator of the children of node &#39;n&#39;.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        possible_children</span>
+<span class="sd">        parents</span>
+<span class="sd">        possible_parents</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">possible_children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">possible_children</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_children</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                <span class="n">n</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directed_edge_name</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">node</span></div>
+
+<div class="viewcode-block" id="PAG.add_edge"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
+
+        <span class="n">_check_adding_pag_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PAG.add_edges_from"><a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edges_from">[docs]</a>    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
+
+        <span class="k">for</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span> <span class="ow">in</span> <span class="n">ebunch_to_add</span><span class="p">:</span>
+            <span class="n">_check_adding_pag_edge</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div></div>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

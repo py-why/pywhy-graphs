@@ -1,0 +1,12 @@
+﻿pywhy_graphs.functional.apply_linear_soft_intervention
+======================================================
+
+.. currentmodule:: pywhy_graphs.functional
+
+.. autofunction:: apply_linear_soft_intervention
+
+.. include:: pywhy_graphs.functional.apply_linear_soft_intervention.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

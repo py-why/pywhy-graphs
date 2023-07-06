@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Drawing timeseries graphs and setting their layout &#8212; pywhy-graphs v0.1.0.dev0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="User Guide" href="../../user_guide.html" />
+    <link rel="prev" title="Drawing graphs and setting their layout for visual comparison" href="draw_and_compare_graphs_with_same_layout.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.1.0.dev0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../mixededge/index.html">
+   Networkx MixedEdgeGraph Examples
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mixededge/plot_mixed_edge_graph.html">
+     MixedEdgeGraph - Graph with different types of edges
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/index.html">
+   Introduction to causal graphs
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/inducing_path.html">
+     An introduction to Inducing Paths and how to find them
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/intro_causal_graphs.html">
+     An introduction to causal graphs and how to use them
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Visualization of causal graphs
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="draw_and_compare_graphs_with_same_layout.html">
+     Drawing graphs and setting their layout for visual comparison
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Drawing timeseries graphs and setting their layout
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+
+<nav id="bd-toc-nav">
+    
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-visualization-plot-timeseries-graphs-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="drawing-timeseries-graphs-and-setting-their-layout">
+<span id="ex-draw-timeseries-graphs"></span><span id="sphx-glr-auto-examples-visualization-plot-timeseries-graphs-py"></span><h1>Drawing timeseries graphs and setting their layout<a class="headerlink" href="#drawing-timeseries-graphs-and-setting-their-layout" title="Permalink to this heading">#</a></h1>
+<p>One can draw timeseries graphs without setting the <code class="docutils literal notranslate"><span class="pre">pos</span></code> argument,
+in that case graphviz will choose how to place the nodes. This can look rather
+messy in the final output.</p>
+<p>In this example, we demonstrate how to visualize timeseries graphs effectively.</p>
+<p>For comparing different graphs with the same layout, see <a class="reference internal" href="draw_and_compare_graphs_with_same_layout.html#ex-draw-graphs"><span class="std std-ref">Drawing graphs and setting their layout for visual comparison</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" class="sphx-glr-backref-module-pywhy_graphs-classes-timeseries sphx-glr-backref-type-py-class"><span class="n">StationaryTimeSeriesDiGraph</span></a>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">,</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a>
+
+<span class="c1"># create some dummy graphs: G, admg, cpdag, and pag</span>
+<span class="c1"># this code is borrowed from the other example: intro_causal_graphs.py ;)</span>
+<span class="n">G</span> <span class="o">=</span> <a href="../../generated/pywhy_graphs.classes.timeseries.TimeSeriesDiGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" title="pywhy_graphs.classes.timeseries.TimeSeriesDiGraph" class="sphx-glr-backref-module-pywhy_graphs-classes-timeseries sphx-glr-backref-type-py-class"><span class="n">StationaryTimeSeriesDiGraph</span></a><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ts_edges</span></a> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">((</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">((</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">((</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x3&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+<span class="p">]</span>
+<a href="https://networkx.org/documentation/latest/reference/classes/generated/networkx.DiGraph.add_edges_from.html#networkx.DiGraph.add_edges_from" title="networkx.DiGraph.add_edges_from" class="sphx-glr-backref-module-networkx sphx-glr-backref-type-py-method"><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ts_edges</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>First we will draw the graph without setting positions</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+<span class="c1"># render the graphs using graphviz render() function</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_G</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;default_G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_timeseries_graphs_001.png" srcset="../../_images/sphx_glr_plot_timeseries_graphs_001.png" alt="plot timeseries graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;default_G.png&#39;
+</pre></div>
+</div>
+<p>Next, we will set positions using the <code class="docutils literal notranslate"><span class="pre">pywhy_graphs.viz.timeseries_layout</span></code> function,
+which creates a nice default layout for time-series graphs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the layout position for the graph G using networkx</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout" title="pywhy_graphs.viz.timeseries_layout" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">timeseries_layout</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># let us inspect the positions.</span>
+<span class="c1"># Notice that networkx and graphviz related software store positions as</span>
+<span class="c1"># a dictionary keyed by node with (x, y) coordinates as values.</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+
+<span class="c1"># draw the graphs (i.e., generate a graphviz object that can be rendered)</span>
+<span class="c1"># each time we call draw() we pass the layout position of G</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_G</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pos_G</span></a><span class="p">)</span>
+
+<span class="c1"># render the graphs using graphviz render() function</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_G</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;G.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;neato&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_timeseries_graphs_002.png" srcset="../../_images/sphx_glr_plot_timeseries_graphs_002.png" alt="plot timeseries graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{(&#39;x1&#39;, 0): array([10. , -7.5]), (&#39;x1&#39;, -1): array([ 3.33333333, -7.5       ]), (&#39;x1&#39;, -2): array([-3.33333333, -7.5       ]), (&#39;x1&#39;, -3): array([-10. ,  -7.5]), (&#39;x2&#39;, 0): array([10.,  0.]), (&#39;x2&#39;, -1): array([3.33333333, 0.        ]), (&#39;x2&#39;, -2): array([-3.33333333,  0.        ]), (&#39;x2&#39;, -3): array([-10.,   0.]), (&#39;x3&#39;, 0): array([10. ,  7.5]), (&#39;x3&#39;, -1): array([3.33333333, 7.5       ]), (&#39;x3&#39;, -2): array([-3.33333333,  7.5       ]), (&#39;x3&#39;, -3): array([-10. ,   7.5])}
+
+&#39;G.png&#39;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.264 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-visualization-plot-timeseries-graphs-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cc1f46a1d658fe2d0057773186877d73/plot_timeseries_graphs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_timeseries_graphs.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/452d11d46ae43bdbd389ae3a69d72818/plot_timeseries_graphs.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_timeseries_graphs.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="draw_and_compare_graphs_with_same_layout.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Drawing graphs and setting their layout for visual comparison</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../../user_guide.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">User Guide</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

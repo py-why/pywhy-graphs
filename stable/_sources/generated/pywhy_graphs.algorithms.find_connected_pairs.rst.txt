@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.find_connected_pairs
+============================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: find_connected_pairs
+
+.. include:: pywhy_graphs.algorithms.find_connected_pairs.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

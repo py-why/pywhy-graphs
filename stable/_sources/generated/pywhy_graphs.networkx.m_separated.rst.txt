@@ -1,0 +1,12 @@
+﻿pywhy_graphs.networkx.m_separated
+=================================
+
+.. currentmodule:: pywhy_graphs.networkx
+
+.. autofunction:: m_separated
+
+.. include:: pywhy_graphs.networkx.m_separated.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

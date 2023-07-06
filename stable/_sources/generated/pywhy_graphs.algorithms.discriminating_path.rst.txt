@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.discriminating_path
+===========================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: discriminating_path
+
+.. include:: pywhy_graphs.algorithms.discriminating_path.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+﻿pywhy_graphs.functional.make_graph_linear_gaussian
+==================================================
+
+.. currentmodule:: pywhy_graphs.functional
+
+.. autofunction:: make_graph_linear_gaussian
+
+.. include:: pywhy_graphs.functional.make_graph_linear_gaussian.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

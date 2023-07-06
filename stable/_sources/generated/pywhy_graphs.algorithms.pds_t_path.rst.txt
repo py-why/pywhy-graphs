@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.pds_t_path
+==================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: pds_t_path
+
+.. include:: pywhy_graphs.algorithms.pds_t_path.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>5. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package &#8212; pywhy-graphs v0.1.0.dev0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6. Glossary of Common Terms and API Elements" href="../../glossary.html" />
+    <link rel="prev" title="3. Causal Graph Algorithms in PyWhy" href="../algorithms/index.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.1.0.dev0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classes/index.html">
+   1. Causal Graphs in PyWhy
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../functional/index.html">
+   2. Functional Causal Graphical Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_linear_gaussian.html">
+     2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.functional.apply_linear_soft_intervention.html">
+     2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_multidomain.html">
+     2.4.1. pywhy_graphs.functional.make_graph_multidomain
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../algorithms/index.html">
+   3. Causal Graph Algorithms in PyWhy
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.is_valid_mec_graph.html">
+     3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.possible_ancestors.html">
+     3.1.2. pywhy_graphs.algorithms.possible_ancestors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.possible_descendants.html">
+     3.1.3. pywhy_graphs.algorithms.possible_descendants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.discriminating_path.html">
+     3.1.4. pywhy_graphs.algorithms.discriminating_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.is_definite_noncollider.html">
+     3.1.5. pywhy_graphs.algorithms.is_definite_noncollider
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
+     3.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.networkx.m_separated.html">
+     3.1.7. pywhy_graphs.networkx.m_separated
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.networkx.is_minimal_m_separator.html">
+     3.1.8. pywhy_graphs.networkx.is_minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.networkx.minimal_m_separator.html">
+     3.1.9. pywhy_graphs.networkx.minimal_m_separator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds.html">
+     3.2.1. pywhy_graphs.algorithms.pds
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_path.html">
+     3.2.2. pywhy_graphs.algorithms.pds_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.uncovered_pd_path.html">
+     3.2.3. pywhy_graphs.algorithms.uncovered_pd_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_t.html">
+     3.3.1. pywhy_graphs.algorithms.pds_t
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.pds_t_path.html">
+     3.3.2. pywhy_graphs.algorithms.pds_t_path
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.algorithms.acyclification.html">
+     3.4.1. pywhy_graphs.algorithms.acyclification
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../simulation/index.html">
+   4. Simulation module
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_linear_var_process.html">
+     4.1.1. pywhy_graphs.simulate.simulate_linear_var_process
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_data_from_var.html">
+     4.1.2. pywhy_graphs.simulate.simulate_data_from_var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
+     4.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   5. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_clearn.html">
+     5.1.1. pywhy_graphs.export.graph_to_clearn
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.clearn_to_graph.html">
+     5.1.2. pywhy_graphs.export.clearn_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_numpy.html">
+     5.2.1. pywhy_graphs.export.graph_to_numpy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.numpy_to_graph.html">
+     5.2.2. pywhy_graphs.export.numpy_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_pcalg.html">
+     5.3.1. pywhy_graphs.export.graph_to_pcalg
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.pcalg_to_graph.html">
+     5.3.2. pywhy_graphs.export.pcalg_to_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_tetrad.html">
+     5.4.1. pywhy_graphs.export.graph_to_tetrad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.export.tetrad_to_graph.html">
+     5.4.2. pywhy_graphs.export.tetrad_to_graph
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../glossary.html">
+   6. Glossary of Common Terms and API Elements
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#causal-learn">
+   5.1. Causal-Learn
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numpy-graphviz-and-dagitty">
+   5.2. Numpy (graphviz and dagitty)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pcalg-from-r-experimental">
+   5.3. PCAlg from R (Experimental)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tetrad-from-java">
+   5.4. Tetrad from Java
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="module-pywhy_graphs.export">
+<span id="importing-causal-graphs-to-pywhy-graphs-or-exporting-pywhy-graphs-to-another-package"></span><span id="export"></span><h1><span class="section-number">5. </span>Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package<a class="headerlink" href="#module-pywhy_graphs.export" title="Permalink to this heading">#</a></h1>
+<p>Pywhy-graphs provides light-weight data structures and networkx-like methods for
+storing causal graphs.</p>
+<p>The causality community is quite large and currently there is no de-facto standard
+for representing causal graphs with mixed edges. Therefore, we provide an interface
+for importing/exporting graphs from other packages.</p>
+<p>We currently only offer support for a package if they have a way of representing
+all types of causal graphs (not just DAGs). We welcome contributions here!</p>
+<section id="causal-learn">
+<h2><span class="section-number">5.1. </span>Causal-Learn<a class="headerlink" href="#causal-learn" title="Permalink to this heading">#</a></h2>
+<p>Causal-learn maintains its own graph interpretation in the form of a structured
+upper-triangular numpy array.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_clearn.html#pywhy_graphs.export.graph_to_clearn" title="pywhy_graphs.export.graph_to_clearn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_clearn</span></code></a>(G)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.clearn_to_graph.html#pywhy_graphs.export.clearn_to_graph" title="pywhy_graphs.export.clearn_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clearn_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
+<td><p>Convert causal-learn array to a graph object.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="numpy-graphviz-and-dagitty">
+<h2><span class="section-number">5.2. </span>Numpy (graphviz and dagitty)<a class="headerlink" href="#numpy-graphviz-and-dagitty" title="Permalink to this heading">#</a></h2>
+<p>GraphViz stores a graph that allows mixed-edges using a numpy array with values filled
+in following a specific enumeration, so all values can be mapped to an edge, or multiple
+edges if more than one edge is allowed between nodes.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_numpy.html#pywhy_graphs.export.graph_to_numpy" title="pywhy_graphs.export.graph_to_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_numpy</span></code></a>(causal_graph)</p></td>
+<td><p>Convert causal graph to a numpy adjacency array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.numpy_to_graph.html#pywhy_graphs.export.numpy_to_graph" title="pywhy_graphs.export.numpy_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy_to_graph</span></code></a>(arr, arr_idx, graph_type)</p></td>
+<td><p>Convert an enumerated numpy array into causal graph.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pcalg-from-r-experimental">
+<h2><span class="section-number">5.3. </span>PCAlg from R (Experimental)<a class="headerlink" href="#pcalg-from-r-experimental" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pcalg</span></code> from R uses the following mapping for their array:</p>
+<ul class="simple">
+<li><p>0: no edge</p></li>
+<li><p>1: -o</p></li>
+<li><p>2: -&gt; (arrowhead)</p></li>
+<li><p>3: - (tail)</p></li>
+</ul>
+<p>and stores a structured numpy array following this format. This functionality
+is experimental because this is not tested against the actual implementation in R.
+Please raise an issue if you encounter errors, or issues.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_pcalg.html#pywhy_graphs.export.graph_to_pcalg" title="pywhy_graphs.export.graph_to_pcalg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_pcalg</span></code></a>(causal_graph)</p></td>
+<td><p>Convert causal graph to a pcalg type adjacency array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.pcalg_to_graph.html#pywhy_graphs.export.pcalg_to_graph" title="pywhy_graphs.export.pcalg_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pcalg_to_graph</span></code></a>(arr, arr_idx, amat_type)</p></td>
+<td><p>Convert an array from R's pcalg into causal graph.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tetrad-from-java">
+<h2><span class="section-number">5.4. </span>Tetrad from Java<a class="headerlink" href="#tetrad-from-java" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tetrad</span></code> from Java uses the following mapping for their endpoints
+stored in a text file:</p>
+<ul class="simple">
+<li><p>TAIL = “-”</p></li>
+<li><p>ARROW = “&gt;”</p></li>
+<li><p>CIRCLE = “o”</p></li>
+</ul>
+<p>This functionality is experimental because this is not tested against the actual implementation in Java.
+Please raise an issue if you encounter errors, or issues.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.graph_to_tetrad.html#pywhy_graphs.export.graph_to_tetrad" title="pywhy_graphs.export.graph_to_tetrad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_tetrad</span></code></a>(G, filename)</p></td>
+<td><p>Convert a pywhy causal graph to a tetrad text file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.export.tetrad_to_graph.html#pywhy_graphs.export.tetrad_to_graph" title="pywhy_graphs.export.tetrad_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tetrad_to_graph</span></code></a>(filename, graph_type)</p></td>
+<td><p>Convert a tetrad stored graph from a text file to causal graph in pywhy.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../algorithms/index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title"><span class="section-number">3. </span>Causal Graph Algorithms in PyWhy</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../../glossary.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title"><span class="section-number">6. </span>Glossary of Common Terms and API Elements</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

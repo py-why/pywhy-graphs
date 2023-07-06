@@ -1,0 +1,12 @@
+﻿pywhy_graphs.export.numpy_to_graph
+==================================
+
+.. currentmodule:: pywhy_graphs.export
+
+.. autofunction:: numpy_to_graph
+
+.. include:: pywhy_graphs.export.numpy_to_graph.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

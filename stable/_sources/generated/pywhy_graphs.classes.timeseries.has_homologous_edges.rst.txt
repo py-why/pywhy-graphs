@@ -1,0 +1,12 @@
+﻿pywhy_graphs.classes.timeseries.has_homologous_edges
+====================================================
+
+.. currentmodule:: pywhy_graphs.classes.timeseries
+
+.. autofunction:: has_homologous_edges
+
+.. include:: pywhy_graphs.classes.timeseries.has_homologous_edges.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

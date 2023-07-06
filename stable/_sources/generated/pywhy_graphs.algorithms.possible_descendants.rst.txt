@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.possible_descendants
+============================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: possible_descendants
+
+.. include:: pywhy_graphs.algorithms.possible_descendants.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

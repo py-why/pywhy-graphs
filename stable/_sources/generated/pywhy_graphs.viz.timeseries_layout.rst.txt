@@ -1,0 +1,12 @@
+﻿pywhy_graphs.viz.timeseries_layout
+==================================
+
+.. currentmodule:: pywhy_graphs.viz
+
+.. autofunction:: timeseries_layout
+
+.. include:: pywhy_graphs.viz.timeseries_layout.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

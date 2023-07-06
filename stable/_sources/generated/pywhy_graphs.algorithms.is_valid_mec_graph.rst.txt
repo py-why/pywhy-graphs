@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.is_valid_mec_graph
+==========================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: is_valid_mec_graph
+
+.. include:: pywhy_graphs.algorithms.is_valid_mec_graph.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

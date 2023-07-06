@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywhy_graphs.algorithms.generic &#8212; pywhy-graphs v0.1.0.dev0</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../../_static/scrollfix.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.1.0.dev0</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../api.html">
+  Reference API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../use.html">
+  Usage (Simple Examples)
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../user_guide.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../whats_new.html">
+  Release History
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <h1>Source code for pywhy_graphs.algorithms.generic</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
+
+<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">EdgeType</span>
+<span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;single_source_shortest_mixed_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_node_common_cause&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_nodes_as_latent_confounders&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_valid_mec_graph&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inducing_path&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">is_node_common_cause</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a node is a common cause within the graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A networkx DiGraph.</span>
+<span class="sd">    node : node</span>
+<span class="sd">        A node in the graph.</span>
+<span class="sd">    exclude_nodes : list, optional</span>
+<span class="sd">        Set of nodes to exclude from consideration, by default None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_common_cause : bool</span>
+<span class="sd">        Whether or not the node is a common cause or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">exclude_nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exclude_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">successors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">succ</span> <span class="ow">in</span> <span class="n">successors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">succ</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_nodes</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">set_nodes_as_latent_confounders</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">ADMG</span><span class="p">],</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ADMG</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set nodes as latent unobserved confounders.</span>
+
+<span class="sd">    Note that this only works if the original node is a common cause</span>
+<span class="sd">    of some variables in the graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A networkx DiGraph.</span>
+<span class="sd">    nodes : list</span>
+<span class="sd">        A list of nodes to set. They must all be common causes of</span>
+<span class="sd">        variables within the graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    graph : ADMG</span>
+<span class="sd">        The mixed-edge causal graph that results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bidirected_edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">new_parent_ch_edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="c1"># check if the node is a common cause</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_node_common_cause</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> is not a common cause within the graph &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;given excluding variables. This function will only convert common &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;causes to latent confounders.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># keep track of which nodes to form c-components over</span>
+        <span class="n">successor_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">succ</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">successor_nodes</span><span class="p">):</span>
+            <span class="c1"># TODO: do we want this?; add parent -&gt; successor edges</span>
+            <span class="c1"># if there are parents to this node, they must now point to all the successors</span>
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">new_parent_ch_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">parent</span><span class="p">,</span> <span class="n">succ</span><span class="p">))</span>
+
+            <span class="c1"># form a c-component among the successors</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">prev_succ</span> <span class="o">=</span> <span class="n">succ</span>
+                <span class="k">continue</span>
+            <span class="n">bidirected_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prev_succ</span><span class="p">,</span> <span class="n">succ</span><span class="p">))</span>
+            <span class="n">prev_succ</span> <span class="o">=</span> <span class="n">succ</span>
+
+    <span class="c1"># create the graph with nodes excluding those that are converted to latent confounders</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">ADMG</span><span class="p">):</span>
+        <span class="n">new_graph</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+        <span class="n">new_graph</span> <span class="o">=</span> <span class="n">ADMG</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+    <span class="n">new_graph</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="c1"># create the c-component structures</span>
+    <span class="n">new_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">bidirected_edges</span><span class="p">,</span> <span class="n">new_graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+
+    <span class="c1"># add additional edges that need to be accounted for</span>
+    <span class="n">new_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">new_parent_ch_edges</span><span class="p">,</span> <span class="n">new_graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_graph</span>
+
+
+<div class="viewcode-block" id="is_valid_mec_graph"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph">[docs]</a><span class="k">def</span> <span class="nf">is_valid_mec_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check G is a valid PAG.</span>
+
+<span class="sd">    A valid CPDAG/PAG is one where each pair of nodes have</span>
+<span class="sd">    at most one edge between them and the internal graph of directed edges</span>
+<span class="sd">    do not form cycles.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : PAG | CPDAG</span>
+<span class="sd">        The PAG or CPDAG.</span>
+<span class="sd">    on_error : str</span>
+<span class="sd">        Whether to raise an error if the graph is non-compliant. Default is &#39;raise&#39;.</span>
+<span class="sd">        Other options are &#39;ignore&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether G is a valid PAG or CPDAG.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function does not check whether or not the PAG, or CPDAG are valid in the sense</span>
+<span class="sd">    that the construction of the PAG/CPDAG was constrained to not contain any</span>
+<span class="sd">    directed edge cycles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">):</span>
+        <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_cpdag_edge</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">PAG</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">):</span>
+        <span class="n">check_func</span> <span class="o">=</span> <span class="n">_check_adding_pag_edge</span>
+
+    <span class="k">for</span> <span class="n">edge_type</span><span class="p">,</span> <span class="n">edgeview</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edgeview</span><span class="p">:</span>
+            <span class="n">check_func</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_adding_cpdag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    graph : CPDAG</span>
+<span class="sd">        The CPDAG we are adding edges to.</span>
+<span class="sd">    u_of_edge : node</span>
+<span class="sd">        The start node.</span>
+<span class="sd">    v_of_edge : node</span>
+<span class="sd">        The end node.</span>
+<span class="sd">    edge_type : EdgeType</span>
+<span class="sd">        The edge type that is being added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be a undirected edge, or a bidirected edge</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;There is an existing </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2">. You are &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;trying to add a directed edge from </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">UNDIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be any type of edge between the two</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span>
+        <span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">raise_error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;There is already an existing edge between </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2"> edge is not possible. Please remove the existing &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;edge first.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_check_adding_pag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u_of_edge : node</span>
+<span class="sd">        The start node.</span>
+<span class="sd">    v_of_edge : node</span>
+<span class="sd">        The end node.</span>
+<span class="sd">    edge_type : EdgeType</span>
+<span class="sd">        The edge type that is being added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">ALL</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">CIRCLE</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be an existing arrow</span>
+        <span class="c1"># nor a bidirected arrow</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+        <span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">DIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be a circle edge in the same direction, or a bidirected edge</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+            <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">bidirected_edge_name</span>
+        <span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;There is an existing </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2">. You are &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;trying to add a directed edge from </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;If your intention is to create a bidirected edge, first remove the &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;edge and then explicitly add the bidirected edge.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">edge_type</span> <span class="o">==</span> <span class="n">EdgeType</span><span class="o">.</span><span class="n">BIDIRECTED</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="c1"># there should not be any type of edge between the two</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">raise_error</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">raise_error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;There is already an existing edge between </span><span class="si">{</span><span class="n">u_of_edge</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">v_of_edge</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a </span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2"> edge is not possible. Please remove the existing &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;edge first. </span><span class="si">{</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">single_source_shortest_mixed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute shortest mixed-edge path between source and all other nodes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : NetworkX graph</span>
+
+<span class="sd">    source : node label</span>
+<span class="sd">       Starting node for path</span>
+
+<span class="sd">    cutoff : integer, optional</span>
+<span class="sd">        Depth to stop the search. Only paths of length &lt;= cutoff are returned.</span>
+
+<span class="sd">    valid_path : function</span>
+<span class="sd">        Function to determine i</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lengths : dictionary</span>
+<span class="sd">        Dictionary, keyed by target, of shortest paths.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; G = nx.path_graph(5)</span>
+<span class="sd">    &gt;&gt;&gt; path = nx.single_source_shortest_path(G, 0)</span>
+<span class="sd">    &gt;&gt;&gt; path[4]</span>
+<span class="sd">    [0, 1, 2, 3, 4]</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The shortest path is not necessarily unique. So there can be multiple</span>
+<span class="sd">    paths between the source and each target node, all of which have the</span>
+<span class="sd">    same &#39;shortest&#39; length. For each target node, this function returns</span>
+<span class="sd">    only one of those paths.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    shortest_path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NodeNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> not in G&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span>
+
+    <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">valid_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">valid_path</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="kc">True</span>
+
+    <span class="n">nextlevel</span> <span class="o">=</span> <span class="p">{</span><span class="n">source</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1"># list of nodes to check at next level</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">{</span><span class="n">source</span><span class="p">:</span> <span class="p">[</span><span class="n">source</span><span class="p">]}</span>  <span class="c1"># paths dictionary  (paths to key from source)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nextlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">firstlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return shortest paths.</span>
+
+<span class="sd">    Shortest Path helper function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        Graph</span>
+<span class="sd">    firstlevel : dict</span>
+<span class="sd">        starting nodes, e.g. {source: 1} or {target: 1}</span>
+<span class="sd">    paths : dict</span>
+<span class="sd">        paths for starting nodes, e.g. {source: [source]}</span>
+<span class="sd">    cutoff : int or float</span>
+<span class="sd">        level at which we stop the process</span>
+<span class="sd">    join : function</span>
+<span class="sd">        function to construct a path from two partial paths. Requires two</span>
+<span class="sd">        list inputs `p1` and `p2`, and returns a list. Usually returns</span>
+<span class="sd">        `p1 + p2` (forward from source) or `p2 + p1` (backward from target)</span>
+<span class="sd">    valid_path : function</span>
+<span class="sd">        function to determine if the current path is a valid path.</span>
+<span class="sd">        Input of graph, current node, and the next node. Returns true</span>
+<span class="sd">        if continuing along the path of &#39;current node&#39; *-* &#39;next node&#39;</span>
+<span class="sd">        is valid. Returns false otherwise and the path will be cut short.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    paths : dict</span>
+<span class="sd">        The updated paths for starting nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the current level</span>
+    <span class="n">nextlevel</span> <span class="o">=</span> <span class="n">firstlevel</span>
+    <span class="k">while</span> <span class="n">nextlevel</span> <span class="ow">and</span> <span class="n">cutoff</span> <span class="o">&gt;</span> <span class="n">level</span><span class="p">:</span>
+        <span class="n">thislevel</span> <span class="o">=</span> <span class="n">nextlevel</span>
+        <span class="n">nextlevel</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">thislevel</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">paths</span> <span class="ow">and</span> <span class="n">valid_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+                    <span class="n">paths</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="p">[</span><span class="n">w</span><span class="p">])</span>
+                    <span class="n">nextlevel</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">level</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">paths</span>
+
+
+<span class="k">def</span> <span class="nf">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the ancestors of a node in the directed subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the ancestors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">ancestors</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">(),</span> <span class="n">node</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the parents of a node in the directed subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the parents.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the neighbors of a node in the bidirected subgraph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which we have to find the neighbors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        The parents of the provided node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bidirected_parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">):</span>
+        <span class="n">bidirected_parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_bidirected_graph</span><span class="p">()</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">bidirected_parents</span>
+
+
+<span class="k">def</span> <span class="nf">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the given node is a collider or not.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    prev_node : node</span>
+<span class="sd">        The previous node in the path.</span>
+<span class="sd">    cur_node : node</span>
+<span class="sd">        The node to be checked.</span>
+<span class="sd">    next_node: Node</span>
+<span class="sd">        The next node in the path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    iscollider : bool</span>
+<span class="sd">        Bool is set true if the node is a collider, false otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="n">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">)</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="n">parents</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">prev_node</span> <span class="ow">in</span> <span class="n">parents</span> <span class="ow">and</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_shortest_valid_path</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">,</span>
+    <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">L</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">S</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">visited</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">all_ancestors</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+    <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+    <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively explores a graph to find a path.</span>
+
+<span class="sd">       Finds path that are compliant with the inducing path requirements.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The source node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The destination node</span>
+<span class="sd">    L : Set</span>
+<span class="sd">        Set containing all the non-colliders.</span>
+<span class="sd">    S : Set</span>
+<span class="sd">        Set containing all the colliders.</span>
+<span class="sd">    visited : Set</span>
+<span class="sd">        Set containing all the nodes already visited.</span>
+<span class="sd">    all_ancestors : Set</span>
+<span class="sd">        Set containing all the ancestors a collider needs to be checked against.</span>
+<span class="sd">    cur_node : node</span>
+<span class="sd">        The current node.</span>
+<span class="sd">    prev_node : node</span>
+<span class="sd">        The previous node in the path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : Tuple[bool, path]</span>
+<span class="sd">        A tuple containing a bool and a path which is empty if the bool is false.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path_exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cur_node</span> <span class="ow">is</span> <span class="n">node_y</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">[</span><span class="n">node_y</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the current node is a collider, check that it is either an</span>
+            <span class="c1"># ancestor of X, Y or any element of S or that it is</span>
+            <span class="c1"># the destination node itself.</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_ancestors</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">S</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">node_y</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># If the current node is not a collider, check that it is</span>
+            <span class="c1"># either in L or the destination node itself.</span>
+
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">cur_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">node_y</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># if it is a valid node and not the destination node,</span>
+            <span class="c1"># check if it has a path to the destination node</span>
+
+            <span class="n">path_exists</span><span class="p">,</span> <span class="n">temp_path</span> <span class="o">=</span> <span class="n">_shortest_valid_path</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">all_ancestors</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">cur_node</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">path_exists</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_node</span><span class="p">)</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">path_exists</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="inducing_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path">[docs]</a><span class="k">def</span> <span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if an inducing path exists between two nodes.</span>
+
+<span class="sd">    An inducing path is defined in :footcite:`Zhang2008`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    node_x : node</span>
+<span class="sd">        The source node.</span>
+<span class="sd">    node_y : node</span>
+<span class="sd">        The destination node.</span>
+<span class="sd">    L : Set</span>
+<span class="sd">        Nodes that are ignored on the path. Defaults to an empty set. See Notes for details.</span>
+<span class="sd">    S:  Set</span>
+<span class="sd">        Nodes that are always conditioned on. Defaults to an empty set. See Notes for details.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : Tuple[bool, path]</span>
+<span class="sd">        A tuple containing a bool and a path if the bool is true, an empty list otherwise.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    An inducing path intuitively is a path between two non-adjacent nodes that</span>
+<span class="sd">    cannot be d-separated. Therefore, the path is always &quot;active&quot; regardless of</span>
+<span class="sd">    what variables we condition on. L contains all the non-colliders, these nodes</span>
+<span class="sd">    are ignored along the path. S contains nodes that are always conditioned on</span>
+<span class="sd">    (hence if the ancestors of colliders are in S, then those collider</span>
+<span class="sd">    paths are always &quot;active&quot;).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. footbibliography::</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">node_x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="ow">or</span> <span class="n">node_y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The provided nodes are not in the graph.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">node_x</span> <span class="o">==</span> <span class="n">node_y</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The source and destination nodes are the same.&quot;</span><span class="p">)</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+
+    <span class="c1"># XXX: fix this when graphs are refactored to only check for directed/bidirected edge types</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="s2">&quot;bidirected&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="n">elem</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inducing Path is not defined for this graph.&quot;</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># this will contain the path.</span>
+
+    <span class="n">x_ancestors</span> <span class="o">=</span> <span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">)</span>
+    <span class="n">y_ancestors</span> <span class="o">=</span> <span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_y</span><span class="p">)</span>
+
+    <span class="n">xy_ancestors</span> <span class="o">=</span> <span class="n">x_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">y_ancestors</span><span class="p">)</span>
+
+    <span class="n">s_ancestors</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">S</span><span class="p">:</span>
+        <span class="n">s_ancestors</span> <span class="o">=</span> <span class="n">s_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">elem</span><span class="p">))</span>
+
+    <span class="c1"># ancestors of X, Y and all the elements of S</span>
+
+    <span class="n">all_ancestors</span> <span class="o">=</span> <span class="n">xy_ancestors</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">s_ancestors</span><span class="p">)</span>
+    <span class="n">x_neighbors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+
+    <span class="n">path_exists</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">x_neighbors</span><span class="p">:</span>
+
+        <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="n">node_x</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="n">path_exists</span><span class="p">,</span> <span class="n">temp_path</span> <span class="o">=</span> <span class="n">_shortest_valid_path</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span> <span class="n">all_ancestors</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">node_x</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">path_exists</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_x</span><span class="p">)</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">path_exists</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
+</pre></div>
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2023, Adam Li.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

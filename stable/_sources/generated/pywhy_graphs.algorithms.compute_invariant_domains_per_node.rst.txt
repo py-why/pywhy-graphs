@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.compute_invariant_domains_per_node
+==========================================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: compute_invariant_domains_per_node
+
+.. include:: pywhy_graphs.algorithms.compute_invariant_domains_per_node.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>
