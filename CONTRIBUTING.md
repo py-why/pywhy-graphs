@@ -183,3 +183,35 @@ If you need to add new, or remove old dependencies, then you need to modify the 
     poetry update
 
 To update the lock file.
+
+# Making a Release
+
+0. Create a separate PR branch to make sure the whole process goes smoothly
+
+        git checkout main
+        git pull --prune
+
+        # replace with your own version
+        git checkout -b v0.1
+
+1. Build package locally
+
+        poetry build
+
+This will create a tar and wheel file in 'dist/'.
+
+2. Upload package to test PyPi
+
+    twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+Verify that installations work as expected on your machine.
+
+3. Upload wheels
+
+    twine upload dist/*
+
+4. Update `gh-pages` branch to account for the new version.
+
+5. Create a tag on GH to make sure there is a commit associated with the new version.
+
+6. Update version number on ``pyproject.toml`` file.
