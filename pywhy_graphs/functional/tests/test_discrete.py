@@ -5,7 +5,7 @@ import pytest
 from pgmpy.factors.discrete import TabularCPD
 from scipy.stats import chi2_contingency
 
-from pywhy_graphs.functional import sample_from_graph
+from pywhy_graphs.functional.base import sample_from_graph
 from pywhy_graphs.functional.discrete import add_cpd_for_node, make_random_discrete_graph
 
 
