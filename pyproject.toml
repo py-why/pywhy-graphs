@@ -4,7 +4,7 @@ name = "pywhy-graphs"
 # 0.0.0 is standard placeholder for poetry-dynamic-versioning
 # any changes to this should not be checked in
 #
-version = "0.1.0dev0"
+version = "0.2.0dev0"
 description = "Causal Graphs for Python"
 authors = ["PyWhy Community <adam.li@columbia.edu>"]
 license = "MIT"
