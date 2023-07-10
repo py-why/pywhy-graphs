@@ -434,7 +434,7 @@ Fitting causal mechanism of node y:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node z:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node w:   0%|          | 0/5 [00:00&lt;?, ?it/s]
 Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00&lt;?, ?it/s]
-Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00&lt;00:00, 1287.78it/s]
+Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00&lt;00:00, 1267.62it/s]
    z  ...  y
 0  1  ...  1
 1  1  ...  3
@@ -450,7 +450,7 @@ x        [1, 2, 0]
 y     [1, 3, 2, 0]
 dtype: object
 
-&lt;graphviz.graphs.Digraph object at 0x7f6b860b7fa0&gt;
+&lt;graphviz.graphs.Digraph object at 0x7f558771ee80&gt;
 </pre></div>
 </div>
 </section>
@@ -533,8 +533,8 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
 <span class="c1"># details on causal discovery (i.e. structure learning algorithms), please see that repo.</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_intro_causal_graphs_002.png" srcset="../../_images/sphx_glr_intro_causal_graphs_002.png" alt="intro causal graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;x&#39;, &#39;z&#39;]
-The ADMG has confounded-components: [{&#39;y&#39;, &#39;x&#39;}, {&#39;z&#39;}, {&#39;w&#39;}]
+<img src="../../_images/sphx_glr_intro_causal_graphs_002.png" srcset="../../_images/sphx_glr_intro_causal_graphs_002.png" alt="intro causal graphs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;z&#39;, &#39;x&#39;]
+The ADMG has confounded-components: [{&#39;x&#39;, &#39;y&#39;}, {&#39;z&#39;}, {&#39;w&#39;}]
 &#39;z&#39; is d-separated from &#39;x&#39;: True
 &#39;z&#39; is d-separated from &#39;x&#39; given &#39;y&#39;: False
 &#39;z&#39; is d-separated from &#39;x&#39; after adding a bidirected edge z&lt;-&gt;x: False
@@ -614,7 +614,7 @@ latent confounder).</p>
 </aside>
 </aside>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.963 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.463 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  58 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-intro-causal-graphs-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
