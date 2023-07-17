@@ -908,3 +908,19 @@ def _check_ts_node(node):
         )
     if node[1] > 0:
         raise ValueError(f"All lag points should be 0, or less. You passed in {node}.")
+
+
+def mag_to_pag(graph):
+    """Convert an MAG to a PAG.
+
+    Parameters
+    ----------
+    G : Graph
+        The MAG.
+
+    Returns
+    -------
+    mag : Graph
+        The PAG constructed from the MAG.
+    """
+    pass
