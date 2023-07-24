@@ -45,18 +45,28 @@ def generate_edge_functions_for_node(
     rng = np.random.default_rng(random_state)
 
     # get all parents
-    parents = directed_G.predecessors(node)
+    parents = sorted(directed_G.predecessors(node))
+
+    if not parents:
+        return G
 
     # sample weight and edge function for each parent
-    node_function = dict()
+    node_function = []
     for parent in parents:
         if parent == node:
             continue
 
         weight = rng.uniform(low=edge_weight_lims[0], high=edge_weight_lims[1])
         func = rng.choice(edge_functions)
-        node_function.update({parent: {"weight": weight, "func": func}})
+        node_function.append({"weight": weight, "func": func})
+
+    def parent_func(*args):
+        # first sort the parents that are fed in
+        result = 0.0
+        for idx, parent_val in enumerate(sorted(args)):
+            result += node_function[idx]["weight"] * node_function[idx]["func"](parent_val)
+        return result
 
     # set the node attribute "functions" to hold the weight and function wrt each parent
-    G.nodes[node]["parent_functions"] = node_function
+    G.nodes[node]["parent_function"] = parent_func
     return G

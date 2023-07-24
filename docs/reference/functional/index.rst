@@ -17,6 +17,13 @@ and then drop the confounder varialble in the final dataset. In the roadmap of t
 the plan is to represent any bidirected edge as a uniformly randomly distributed variable
 that has an additive noise effect on both variables simulatanously.
 
+Each functional graph has a string assigned to the ``G.graph['functional']`` networkX attribute,
+which informs the user of which type of functional graph is being used. Currently, we support
+the following types of functional graphs:
+
+- ``'linear_gaussian'``: The graph is a linear-Gaussin functional graph.
+- ``'discrete'``: The graph is a discrete functional graph.
+
 Representing a node's functional relationships
 ==============================================
 
@@ -39,6 +46,7 @@ In order to represent this function, we imbue each node with a set of node attri
 
 - ``parent_function``: This computes :math:`f(observed\_parents)` for any node.
 - ``exogenous_function``: This computes :math:`g(exogenous\_parent)` for any node.
+- ``exogenous_distribution``: This is the distribution of the exogenous variable for any node.
 
 Then the node value is a deterministically computed. If there are no parents, then
 the node attribute will contain `None`. This enables stochasticity in the data-generating

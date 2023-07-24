@@ -1,7 +1,8 @@
 from typing import List, Optional, Tuple
 
+import networkx as nx
 
-def _draw_pag_edges(
+def _draw_circle_edges(
     dot,
     directed_edges: List[Tuple] = None,
     circle_edges: List[Tuple] = None,
@@ -45,18 +46,32 @@ def _draw_pag_edges(
                 color="green",
                 **attrs,
             )
+    return dot, found_circle_sibs
 
+
+def _draw_un_edges(
+    dot,
+    undirected_edges: List[Tuple] = None,
+    **attrs,
+):
+    """Draw undirected edges."""
     if undirected_edges is not None:
         for neb1, neb2 in undirected_edges:
             neb1, neb2 = str(neb1), str(neb2)
             dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
+    return dot
 
+def _draw_bi_edges(
+    dot,
+    bidirected_edges: List[Tuple] = None,
+    **attrs,
+):
+    """Draw bidirected edges."""
     if bidirected_edges is not None:
         for sib1, sib2 in bidirected_edges:
             sib1, sib2 = str(sib1), str(sib2)
             dot.edge(sib1, sib2, dir="both", color="red", **attrs)
-    return dot, found_circle_sibs
-
+    return dot
 
 def draw(
     G,
@@ -113,43 +128,52 @@ def draw(
         circle_edges = G.circle_edges
     if hasattr(G, "directed_edges"):
         directed_edges = G.directed_edges
+
+    # an edge case of drawing graphs is the undirected Markov network
     if hasattr(G, "undirected_edges"):
         undirected_edges = G.undirected_edges
+    elif isinstance(G, nx.Graph):
+        undirected_edges = G.edges()
     if hasattr(G, "bidirected_edges"):
         bidirected_edges = G.bidirected_edges
 
     # draw PAG edges and keep track of the circular endpoints found
-    dot, found_circle_sibs = _draw_pag_edges(
+    dot, found_circle_sibs = _draw_circle_edges(
         dot,
         directed_edges,
         circle_edges=circle_edges,
-        undirected_edges=undirected_edges,
-        bidirected_edges=bidirected_edges,
     )
+
+    dot = _draw_un_edges(dot, 
+        undirected_edges=undirected_edges)
+    dot = _draw_bi_edges(dot,
+        bidirected_edges=bidirected_edges)
 
     if hasattr(G, "get_graphs"):
         directed_G = G.get_graphs("directed")
     else:
         directed_G = G
 
-    for v in G.nodes:
-        child = str(v)
-        if pos and pos.get(v) is not None:
-            dot.node(child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!")
-        else:
-            dot.node(child, shape=shape, height=".5", width=".5")
-
-        for parent in directed_G.predecessors(v):
-            if parent == v or not directed_G.has_edge(parent, v):
-                continue
-
-            # memoize if we have seen the bidirected circular edge before
-            if f"{child}-{parent}" in found_circle_sibs or f"{parent}-{child}" in found_circle_sibs:
-                continue
-            parent = str(parent)
-            if parent == v:
-                dot.edge(parent, child, style="invis", **attrs)
+    # only need to draw directed edges now, but directed_G can be a nx.Graph
+    if hasattr(directed_G, 'predecessors'):
+        for v in G.nodes:
+            child = str(v)
+            if pos and pos.get(v) is not None:
+                dot.node(child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!")
             else:
-                dot.edge(parent, child, color="blue", **attrs)
+                dot.node(child, shape=shape, height=".5", width=".5")
+
+            for parent in directed_G.predecessors(v):
+                if parent == v or not directed_G.has_edge(parent, v):
+                    continue
+
+                # memoize if we have seen the bidirected circular edge before
+                if f"{child}-{parent}" in found_circle_sibs or f"{parent}-{child}" in found_circle_sibs:
+                    continue
+                parent = str(parent)
+                if parent == v:
+                    dot.edge(parent, child, style="invis", **attrs)
+                else:
+                    dot.edge(parent, child, color="blue", **attrs)
 
     return dot

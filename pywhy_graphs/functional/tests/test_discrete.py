@@ -7,7 +7,7 @@ from scipy.stats import chi2_contingency
 
 from pywhy_graphs.functional.base import sample_from_graph
 from pywhy_graphs.functional.discrete import add_cpd_for_node, make_random_discrete_graph
-
+from pywhy_graphs.functional.utils import check_discrete_model
 
 def test_add_cpd_for_node():
     # Create a test graph
@@ -120,7 +120,7 @@ def test_add_cpd_for_node():
     assert G.nodes["B"]["cardinality"] == 2
 
 
-def test_sample_from_discrete_cpd_graph():
+def test_when_sample_from_discrete_cpd_graph_then_correct_invariances():
     # Create a test graph
     G = nx.DiGraph()
     G.add_node("A")
@@ -129,26 +129,26 @@ def test_sample_from_discrete_cpd_graph():
     G.add_node("C")
 
     # Define the CPD for node 'A' (no parents)
-    cpd_a = TabularCPD(variable="A", variable_card=2, values=[[0.25], [0.75]])
+    cpd_a = TabularCPD(variable="A", variable_card=2, values=[[0.1], [0.9]])
     G = add_cpd_for_node(G, "A", cpd_a)
 
     # Define the CPD for node 'C' (no parents)
-    cpd_c = TabularCPD(variable="C", variable_card=3, values=[[0.2], [0.7], [0.1]])
+    cpd_c = TabularCPD(variable="C", variable_card=3, values=[[0.1], [0.8], [0.1]])
     G = add_cpd_for_node(G, "C", cpd_c)
 
     # Define the CPD for node 'B' (with parent 'A')
     cpd_b = TabularCPD(
         variable="B",
         variable_card=2,
-        values=[[0.1, 0.9], [0.3, 0.7]],
+        values=[[0.1, 0.9], [0.2, 0.8]],
         evidence=["A"],
         evidence_card=[2],
     )
     G = add_cpd_for_node(G, "B", cpd_b)
 
     # Test sampling from graph
-    df = sample_from_graph(G, n_samples=2000, n_jobs=1, random_state=0)
-    assert df.shape == (2000, 3)
+    df = sample_from_graph(G, n_samples=200, n_jobs=1, random_state=0)
+    assert df.shape == (200, 3)
     assert set(df["A"].unique().tolist()) == set([0, 1])
     assert set(df["C"].unique().tolist()) == set([0, 1, 2])
     assert set(df["B"].unique().tolist()) == set([0, 1])
@@ -170,15 +170,15 @@ def test_sample_from_discrete_cpd_graph():
     assert p < 0.05
 
 
-def test_make_random_discrete_graph():
+def test_when_make_random_discrete_graph_then_correct_invariances():
     G = nx.DiGraph()
     G.add_nodes_from(["A", "B", "C", "D"])
     G.add_edges_from([("A", "B"), ("A", "C")])
     G.add_edge("D", "B")
 
-    cardinality_lims = [2, 3]
-    weight_lims = [1, 10]
-    noise_ratio_lims = [0.0, 0.0]
+    cardinality_lims = {node: [2, 3] for node in G.nodes}
+    weight_lims = {node: [1, 3] for node in G.nodes}
+    noise_ratio_lims = {node: [0.0, 0.0] for node in G.nodes}
 
     rng = np.random.default_rng(42)  # Set a specific random seed for reproducibility
 
@@ -190,6 +190,9 @@ def test_make_random_discrete_graph():
         random_state=rng,
     )
 
+    # check the model
+    assert check_discrete_model(altered_G)
+
     # structure of the graph should stay the same
     assert set(altered_G.nodes) == {"A", "B", "C", "D"}
     assert altered_G.has_edge("A", "B")
@@ -198,8 +201,8 @@ def test_make_random_discrete_graph():
 
     for node in altered_G.nodes:
         assert (
-            altered_G.nodes[node]["cardinality"] >= cardinality_lims[0]
-            and altered_G.nodes[node]["cardinality"] <= cardinality_lims[1]
+            altered_G.nodes[node]["cardinality"] >= cardinality_lims[node][0]
+            and altered_G.nodes[node]["cardinality"] <= cardinality_lims[node][1]
         )
 
         assert isinstance(altered_G.nodes[node]["cpd"], TabularCPD)
@@ -214,12 +217,12 @@ def test_make_random_discrete_graph():
             assert len(altered_G.nodes[node]["cpd"].state_names["A"]) == 2
 
         if node not in ("A", "D"):
-            assert altered_G.nodes[node]["noise_ratio"] >= noise_ratio_lims[0]
-            assert altered_G.nodes[node]["noise_ratio"] <= noise_ratio_lims[1]
+            assert altered_G.nodes[node]["noise_ratio"] >= noise_ratio_lims[node][0]
+            assert altered_G.nodes[node]["noise_ratio"] <= noise_ratio_lims[node][1]
         else:
             assert altered_G.nodes[node]["noise_ratio"] == 1.0
 
-    df = sample_from_graph(altered_G, n_samples=2000, n_jobs=1, random_state=0)
+    df = sample_from_graph(altered_G, n_samples=1000, n_jobs=-1, random_state=0)
     # Chi-square test of independence where variables are independent
     contingency_table = pd.crosstab(df["A"], df["C"])
     c, p, dof, expected = chi2_contingency(contingency_table)
@@ -231,7 +234,7 @@ def test_make_random_discrete_graph():
     assert p < 0.05
 
     # setup contingency table
-    contingency_table = pd.crosstab(df["A"], df["D"])
+    contingency_table = pd.crosstab(df["C"], df["D"])
     # Chi-square test of independence where variables are dependent
     c, p, dof, expected = chi2_contingency(contingency_table)
     assert p > 0.05

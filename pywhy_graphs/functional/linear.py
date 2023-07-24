@@ -62,7 +62,7 @@ def make_graph_linear_gaussian(
     -------
     G : NetworkX DiGraph
         NetworkX graph with the edge weights and functions set with node attributes
-        set with ``'parent_functions'``, and ``'gaussian_noise_function'``. Moreover
+        set with ``'parent_function'``, and ``'gaussian_noise_function'``. Moreover
         the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
     G = G.copy()
@@ -103,7 +103,7 @@ def make_graph_linear_gaussian(
             edge_functions=edge_functions_,
             random_state=random_state,
         )
-    G.graph["linear_gaussian"] = True
+    G.graph["functional"] = 'linear_gaussian'
     return G
 
 
@@ -113,7 +113,10 @@ def generate_noise_for_node(G, node, node_mean_lims, node_std_lims, random_state
     # sample noise
     mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
     std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
-    G.nodes[node]["gaussian_noise_function"] = {"mean": mean, "std": std}
+    G.nodes[node]["exogenous_distribution"] = lambda: rng.normal(**{"loc": mean, "scale": std})
+
+    # default is the uniform choice function
+    G.nodes[node]["exogenous_function"] = lambda x: x
     return G
 
 

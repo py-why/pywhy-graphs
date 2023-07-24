@@ -1,5 +1,194 @@
+import itertools 
 import networkx as nx
 import numpy as np
+
+
+def to_pgmpy_bayesian_network(G):
+    """Convert a discrete graph to a pgmpy Bayesian network.
+    
+    Parameters
+    ----------
+    G : nx.DiGraph
+        The discrete graph.
+
+    Returns
+    -------
+    model : pgmpy.models.BayesianModel
+        The Bayesian network.
+
+    Notes
+    -----
+    This function allows us to use the pgmpy library for inference and sampling.
+    For example, one can forward sample from the Bayesian network as follows:
+
+    >>> from pgmpy.sampling import BayesianModelSampling
+    >>> inference = BayesianModelSampling(model)
+    >>> df = inference.forward_sample(size=5000)
+    """
+    if G.graph.get('functional') != 'discrete':
+        raise ValueError("Model is not a functional model.")
+
+    from pgmpy.models import BayesianModel
+
+    model = BayesianModel(G.edges)
+    model.add_cpds(*[G.nodes[node]['cpd'] for node in G.nodes])
+    return model
+
+
+def pre_compute_reduce_maps(G, variable):
+    """
+    Get probability array-maps for a node as function of conditional dependencies
+
+    Parameters
+    ----------
+    G : nx.DiGraph
+        The discrete graph.
+    variable: Bayesian Model Node
+        node of the Bayesian network
+
+    Returns
+    -------
+    state_index : dictionary
+        With probability array-index for node as function of conditional dependency values.
+    index_to_weight : dictionary
+        With mapping of probability array-index to probability array.
+    """
+    variable_cpd = get_cpd(G, variable)
+    variable_evid = variable_cpd.variables[:0:-1]
+
+    # compute all possible state combinations for the parent variables
+    state_combinations = [
+        tuple(sc)
+        for sc in itertools.product(
+            *[range(get_cardinality(G, var)) for var in variable_evid]
+        )
+    ]
+
+    # compute weights for all possible state combinations
+    weights_list = np.array(
+        [
+            variable_cpd.reduce(
+                list(zip(variable_evid, sc)), inplace=False, show_warnings=False
+            ).values
+            for sc in state_combinations
+        ]
+    )
+
+    unique_weights, weights_indices = np.unique(
+        weights_list, axis=0, return_inverse=True
+    )
+
+    # convert weights to index; make mapping of state to index
+    state_to_index = dict(zip(state_combinations, weights_indices))
+
+    # make mapping of index to weights
+    index_to_weight = dict(enumerate(unique_weights))
+
+    # return mappings of state to index, and index to weight
+    return state_to_index, index_to_weight
+
+
+def get_cpd(G, node):
+    """Get the CPD associated with a node.
+
+    Parameters
+    ----------
+    node : Node
+        The node for which the CPD is to be returned.
+
+    Returns
+    -------
+    cpd : TabularCPD
+        The CPD associated with the node.
+    """
+    # Check if the node is present in the graph
+    if node not in G:
+        raise ValueError(f"Node {node} not present in the graph.")
+    
+    # Check if the graph is functional
+    if not G.graph.get("functional", False) == 'discrete':
+        raise ValueError("Model is not a functional model.")
+
+    cpd = G.nodes[node].get("cpd", None)
+    if cpd is None:
+        raise RuntimeError(f"No CPD associated with {node}.")
+    return cpd
+
+
+def get_cardinality(G, node):
+    from pgmpy.factors.discrete import TabularCPD
+
+    cpd: TabularCPD = get_cpd(G, node)
+    return cpd.cardinality[0]
+
+
+def check_discrete_model(G):
+    """
+    Check the model for various errors. This method checks for the following
+    errors.
+
+    * Checks if the sum of the probabilities for each state is equal to 1 (tol=0.01).
+    * Checks if the CPDs associated with nodes are consistent with their parents.
+
+    Parameters
+    ----------
+    G : DiGraph
+        The graph to be checked.
+
+    Returns
+    -------
+    check : boolean
+        True if all the checks pass otherwise should throw an error.
+    """
+    from pgmpy.factors.discrete import TabularCPD
+    from pgmpy.factors.continuous import ContinuousFactor
+
+    if not G.graph.get("functional", False) == 'discrete':
+        raise ValueError("Model is not a functional model.")
+    
+    for node in G.nodes:
+        cpd = get_cpd(G,node=node)
+
+        # Check if a CPD is associated with every node.
+        if cpd is None:
+            raise ValueError(f"No CPD associated with {node}")
+
+        # Check if the CPD is an instance of either TabularCPD or ContinuousFactor.
+        elif isinstance(cpd, (TabularCPD, ContinuousFactor)):
+            evidence = cpd.get_evidence()
+            parents = G.predecessors(node)
+
+            # Check if the evidence set of the CPD is same as its parents.
+            if set(evidence) != set(parents):
+                raise ValueError(
+                    f"CPD associated with {node} doesn't have proper parents associated with it."
+                )
+
+            # Check if the values of the CPD sum to 1.
+            if not cpd.is_valid_cpd():
+                raise ValueError(
+                    f"Sum or integral of conditional probabilities for node {node} is not equal to 1."
+                )
+
+            if len(set(cpd.variables) - set(cpd.state_names.keys())) > 0:
+                raise ValueError(
+                    f"CPD for {node} doesn't have state names defined for all the variables."
+                )
+            
+        for index, node in enumerate(cpd.variables[1:]):
+            parent_cpd = get_cpd(G, node)
+            # Check if the evidence cardinality specified is same as parent's cardinality
+            if parent_cpd.cardinality[0] != cpd.cardinality[1 + index]:
+                raise ValueError(
+                    f"The cardinality of {node} doesn't match in it's child nodes."
+                )
+            # Check if the state_names are the same in parent and child CPDs.
+            if parent_cpd.state_names[node] != cpd.state_names[node]:
+                raise ValueError(
+                    f"The state names of {node} doesn't match in it's child nodes."
+                )
+
+    return True
 
 
 def set_node_attributes_with_G(G1, G2, node):

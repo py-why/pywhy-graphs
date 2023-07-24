@@ -5,3 +5,4 @@ from .multidomain import (
     sample_multidomain_lin_functions,
 )
 from .utils import set_node_attributes_with_G
+from .base import sample_from_graph

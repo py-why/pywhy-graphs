@@ -52,7 +52,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_issues",
     "sphinx.ext.viewcode",
-    # "nbsphinx",  # enables building Jupyter notebooks and rendering
+    "nbsphinx",  # enables building Jupyter notebooks and rendering
     "sphinx.ext.mathjax",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",

@@ -6,7 +6,7 @@ import numpy as np
 import pywhy_graphs as pgraphs
 from pywhy_graphs import AugmentedGraph
 from pywhy_graphs.typing import Node
-
+from .utils import to_pgmpy_bayesian_network
 
 def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph:
     """Add parent function for a node into the graph.
@@ -233,6 +233,7 @@ def sample_from_graph(
 
     # first off, always convert said graph into an AugmentedGraph
     if isinstance(G, nx.DiGraph):
+        nx_G = G.copy()
         G = pgraphs.AugmentedGraph(**G.graph)
         for node in directed_G.nodes:
             G.add_node(node, **directed_G.nodes[node])
@@ -248,23 +249,35 @@ def sample_from_graph(
     else:
         ignored_nodes = None
 
-    # Sample from graph
-    if n_jobs == 1:
-        data = []
-        for _ in range(n_samples):
-            node_samples = _sample_from_graph(
-                G, top_sort_idx, rng=rng, ignored_nodes=ignored_nodes, **sample_kwargs
-            )
-            data.append(node_samples)
-        data = pd.DataFrame.from_records(data)
+    # Sample from graph either using pgmpy for discrete, or pywhy-graphs API for everything else
+    if G.graph.get('functional', False) == 'discrete':
+        if ignored_nodes:
+            raise RuntimeError(f"Cannot sample from a graph with S-nodes. {ignored_nodes}")
+        
+        from pgmpy.sampling import BayesianModelSampling
+
+        # convert to pgmpy BayesianModel and perform sampling
+        model = to_pgmpy_bayesian_network(nx_G)
+        inference = BayesianModelSampling(model)
+        data = inference.forward_sample(size=n_samples, seed=random_state, n_jobs=n_jobs)
     else:
-        out = Parallel(n_jobs=n_jobs, verbose=0)(
-            delayed(_sample_from_graph)(
-                G, top_sort_idx, rng=rng, ignored_nodes=ignored_nodes, **sample_kwargs
+        if n_jobs == 1:
+            data = []
+            for _ in range(n_samples):
+                node_samples = _sample_from_graph(
+                    G, top_sort_idx, rng=rng, ignored_nodes=ignored_nodes, **sample_kwargs
+                )
+                data.append(node_samples)
+            data = pd.DataFrame.from_records(data)
+        else:
+            rngs = rng.spawn(n_samples)
+            out = Parallel(n_jobs=n_jobs, verbose=0)(
+                delayed(_sample_from_graph)(
+                    G, top_sort_idx, rng=rngs[idx], ignored_nodes=ignored_nodes, **sample_kwargs
+                )
+                for idx in range(n_samples)
             )
-            for _ in range(n_samples)
-        )
-        data = pd.DataFrame.from_records(out)
+            data = pd.DataFrame.from_records(out)
 
     return data
 
@@ -291,6 +304,8 @@ def _sample_from_graph(
     nodes_sample : dict
         The sample per node.
     """
+    rng = np.random.default_rng(rng)
+
     if ignored_nodes is None:
         ignored_nodes = set()
 
@@ -298,8 +313,7 @@ def _sample_from_graph(
 
     for node in top_sort_idx:
         # get all parents
-        parents = list(set(G.predecessors(node)).difference(ignored_nodes))
-
+        parents = list(set(G.parents(node)).difference(ignored_nodes))
         if G.graph["functional"] == "discrete":
             # for discrete graphs, use noise ratio to determine whether we sample
             # from noise, or from the CPT
@@ -308,7 +322,7 @@ def _sample_from_graph(
             if rng.choice(["exogenous", "cpt"], p=p) == "exogenous":
                 exo_val = G.nodes[node]["exogenous_distribution"]()
             else:
-                exo_val = 0.0
+                exo_val = 0
 
             exo_contrib_node = G.nodes[node]["exogenous_function"](exo_val)
         else:
@@ -318,17 +332,17 @@ def _sample_from_graph(
             exo_contrib_node = G.nodes[node]["exogenous_function"](exo_val)
 
         # sample parents if they exist
-        parents_contrib_node = 0.0
+        parents_contrib_node = 0
         if parents:
             sorted_idx = np.argsort(parents)
             parent_vals = [nodes_sample[parents[idx]] for idx in sorted_idx]
-
             parents_contrib_node = G.nodes[node]["parent_function"](*parent_vals)
 
         # set the node attribute "functions" to hold the weight and function wrt each parent
         node_sample = parents_contrib_node + exo_contrib_node
         nodes_sample[node] = node_sample
     return nodes_sample
+
 
 
 def _check_input_func(func: Callable, parents=None):
@@ -371,4 +385,4 @@ def _check_input_graph(G: nx.DiGraph):
             G.nodes[node].get("parent_function", None) is not None
             and len(list(G.predecessors(node))) == 0
         ):
-            raise ValueError(f"Node {node} has a parent function, but it has no parents.")
+            raise ValueError(f"Node {node} has a parent function, {G.nodes(data=True)[node]}, but it has no parents: {list(G.predecessors(node))}.")

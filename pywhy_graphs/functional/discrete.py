@@ -1,8 +1,57 @@
-from typing import List
+from typing import List, Dict, Any, Set, Optional
 
 import networkx as nx
 import numpy as np
 from pgmpy.factors.discrete import TabularCPD
+
+from pywhy_graphs.typing import Node
+
+
+def apply_discrete_soft_intervention(G, targets: Set[Node], weight_ranges: Optional[List]=None, random_state=None):
+    """Apply a soft intervention that changes the underlying CPD distribution of the target nodes.
+
+    Parameters
+    ----------
+    G : Graph
+        Linear functional causal graph.
+    targets : Set[Node]
+        The set of nodes to intervene on simultanenously.
+    random_state : RandomState, optional
+        Random seed, by default None.
+
+    Returns
+    -------
+    G : Graph
+        The functional linear causal graph with the intervention applied on the
+        target nodes. The perturbation occurs by altering the conditional probability distribution
+        table of the targets. We resample an entirely new CPD for each target node.
+    """
+    if not G.graph.get("functional") == 'discrete':
+        raise ValueError("The input graph must be a discrete graph.")
+    if not all(target in G.nodes for target in targets):
+        raise ValueError(f"All targets {targets} must be in the graph: {G.nodes}.")
+    if weight_ranges is not None and len(weight_ranges) != len(targets):
+        raise ValueError(f"weight_ranges must be None or have the same length as targets: {targets}.")
+    
+    rng = np.random.default_rng(random_state)
+
+    for idx, target in enumerate(targets):
+        cpd: TabularCPD = G.nodes[target]["cpd"]
+        
+        # maintain the same cardinality for the node as previously
+        cardinality = cpd.cardinality[0]
+
+        # resample the weight range
+        if weight_ranges is None:
+            weight_range = [1, 5]
+        else:
+            weight_range = weight_ranges[idx]
+
+        # resample the CPD
+        cpd = _sample_random_cpd(G, target, cardinality=cardinality, weight_range=weight_range, rng=rng)
+
+        add_cpd_for_node(G, target, cpd, overwrite=True)
+    return G
 
 
 def add_cpd_for_node(
@@ -66,7 +115,7 @@ def add_cpd_for_node(
             raise RuntimeError(f"CPD for parent {parent} of node {node} must be defined first.")
 
     # check that the CPD has cardinality of the evidence that matches the cardinality set
-    for cardinality, parent in zip(cpd.cardinality[1:], cpd.get_evidence()):
+    for cardinality, parent in zip(cpd.cardinality[1:], cpd.variables[1:]):
         if G.nodes[parent].get("cardinality", 0) != cardinality:
             raise RuntimeError(
                 f"The cardinality of parent variable {parent} -"
@@ -97,13 +146,13 @@ def add_cpd_for_node(
         )
 
     # define the parent function
-    sorted_parents = np.array(sorted(G.predecessors(node)))
+    parents = np.array(sorted(G.predecessors(node)))
 
-    def parent_func(*parents):
+    def parent_func(*args):
         # list of tuples indicating the (variable, variable_state)
         reducing_vals = []
-        for idx, parent_val in enumerate(parents):
-            reducing_vals.append((sorted_parents[idx], parent_val))
+        for idx, parent_val in enumerate(sorted(args)):
+            reducing_vals.append((parents[idx], parent_val))
 
         # now reduce the cpd
         cpd_reduced = cpd.reduce(reducing_vals, inplace=False)
@@ -117,7 +166,7 @@ def add_cpd_for_node(
 
     # set the parent function CPT, or if the node has no parents, set the exogenous distribution
     # as the input CPT
-    if len(sorted_parents) > 0:
+    if len(parents) > 0:
         G.nodes[node]["parent_function"] = parent_func
         G.nodes[node]["noise_ratio"] = noise_ratio
     else:
@@ -129,9 +178,10 @@ def add_cpd_for_node(
 
 def make_random_discrete_graph(
     G: nx.DiGraph,
-    cardinality_lims: List[int] = None,
-    weight_lims: List[int] = None,
+    cardinality_lims: Dict[Any, List[int]] = None,
+    weight_lims: Dict[Any, List[int]] = None,
     noise_ratio_lims: List[float] = None,
+    overwrite: bool = False,
     random_state=None,
 ) -> nx.DiGraph:
     """Sample a random discrete graph given a graph structure.
@@ -162,13 +212,15 @@ def make_random_discrete_graph(
         which defaults to binary.
     weight_lims : List[int], optional
         The possible weights to sample each discrete category for each variable,
-        by default None, which defaults to a range between [1, 2]. The weights
-        are sampled and used as the ``p`` input to `numpy.random.choice`, which
+        by default None, which defaults to a uniform weight. The weights
+        are sampled and used as the ``high`` input to `numpy.random.integers`, which
         normalizes the weights so that the probabilities they induce are valid and
-        sum to 1.0.
+        sum to 1.0. The ``low`` is always equal to 0.
     noise_ratio_lims : List[float], optional
         The possible range for the noise ratio, by default None, which will
         default to all variables having noise ratio of 0.0.
+    overwrite : bool, optional
+        Whether to overwrite the existing attributes of the graph, by default False.
     random_state : RandomGenerator, optional
         The random number generator, by default None.
 
@@ -177,52 +229,89 @@ def make_random_discrete_graph(
     G : nx.DiGraph
         The altered functional DAG.
     """
-    # if cardinalities is not None and not all(node in cardinalities for node in G.nodes):
-    #     raise RuntimeError(f"Cardinalities must be specified for all nodes.")
-    # else:
-    #     # default is a binary bayesian network
-    #     cardinalities = {node: 2 for node in G.nodes}
     if cardinality_lims is None:
-        cardinality_lims = [2, 2]  # Default to binary variables
-
+        cardinality_lims = [1, 2]  # Default to binary variables
+        cardinality_lims = {node: cardinality_lims for node in G.nodes}
     if weight_lims is None:
         weight_lims = [1, 2]  # Default weight range [1, 2]
+        weight_lims = {node: weight_lims for node in G.nodes}
 
+    rng = np.random.default_rng(random_state)
     if noise_ratio_lims is None:
         noise_ratio_lims = [0.0, 0.0]  # Default noise ratio of 0.0
+        noise_ratio_lims = {node: rng.uniform(*noise_ratio_lims) for node in G.nodes}
+    else:
+        noise_ratio_lims = {node: rng.uniform(*noise_ratio_lims[node]) for node in G.nodes}
 
+    if not all([node in cardinality_lims.keys() for node in G.nodes]):
+        raise ValueError("The cardinality limits must be defined for all nodes in the graph")
+    if not all([node in weight_lims.keys() for node in G.nodes]):
+        raise ValueError("The weight limits must be defined for all nodes in the graph")
+    if not all([node in noise_ratio_lims.keys() for node in G.nodes]):
+        raise ValueError("The noise ratio limits must be defined for all nodes in the graph")
+
+    G = _sample_generative_graph_model(
+        G,
+        cardinality_lims,
+        weight_lims,
+        noise_ratio_lims,
+        overwrite=overwrite,
+        random_state=random_state,
+    )
+
+    return G
+
+
+def _sample_generative_graph_model(
+    G, cardinality_lims, weight_lims, noise_ratios, overwrite=False, random_state=None
+):
     rng = np.random.default_rng(random_state)
 
     # sample random CPD for each node in topological order
     for node in nx.topological_sort(G):
-        parents = list(G.predecessors(node))
-
         # sample random CPD defined by the cardinality of the node and the cardinality of
         # the parents
-        cardinality = rng.integers(*cardinality_lims)
+        cardinality = rng.integers(low=cardinality_lims[node][0], high=cardinality_lims[node][1])
+        cpd = _sample_random_cpd(G, node, cardinality, weight_lims[node], rng)
 
-        # now sample a weight per discrete category for each variable given a combination of
-        # all parent values
-        n_cols = np.prod([G.nodes[parent]["cardinality"] for parent in parents]).astype(int)
-        cpd_values = np.zeros((cardinality, n_cols))
-        for col_idx in range(n_cols):
-            weights = []
-            for _ in range(cardinality):
-                weights.append(rng.uniform(*weight_lims))
-            p = np.array(weights) / np.sum(weights)
-            cpd_values[:, col_idx] = p
-
-        evidence_card = [G.nodes[parent]["cardinality"] for parent in parents]
-        cpd = TabularCPD(
-            variable=node,
-            variable_card=cardinality,
-            values=cpd_values,
-            evidence=parents,
-            evidence_card=evidence_card,
-        )
-
+        # add the CPD to the node attributes
         G = add_cpd_for_node(
-            G, node, cpd, noise_ratio=rng.uniform(*noise_ratio_lims), random_state=random_state
+            G,
+            node,
+            cpd,
+            noise_ratio=noise_ratios[node],
+            random_state=random_state,
+            overwrite=overwrite,
         )
-
     return G
+
+
+def _sample_random_cpd(G, node, cardinality, weight_range, rng):
+    parents = list(G.predecessors(node))
+
+    # now sample a weight per discrete category for each variable given a combination of
+    # all parent values
+    n_cols = np.prod([G.nodes[parent]["cardinality"] for parent in parents]).astype(int)
+    cpd_values = np.zeros((cardinality, n_cols))
+    for col_idx in range(n_cols):
+        # sample each category with a different upper-bound weight
+        weights = []
+        prev_weight = weight_range[0]
+        for idx in range(cardinality):
+            prev_weight = rng.uniform(low=prev_weight, high=weight_range[1])
+            # prev_weight = rng.uniform(low=prev_weight, high=weight_lims[node][1] // (cardinality - idx))
+            weights.append(prev_weight)
+
+        # 1D array of shape (cardinality,)
+        p = np.array(weights) / np.sum(weights)
+        cpd_values[:, col_idx] = p
+
+    evidence_card = [G.nodes[parent]["cardinality"] for parent in parents]
+    cpd = TabularCPD(
+        variable=node,
+        variable_card=cardinality,
+        values=cpd_values,
+        evidence=parents,
+        evidence_card=evidence_card,
+    )
+    return cpd

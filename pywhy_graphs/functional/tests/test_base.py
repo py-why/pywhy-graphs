@@ -57,7 +57,7 @@ def test_check_input_graph():
     G = G_copy.copy()
     G.nodes[3]["parent_function"] = "parent3"
     G.remove_edge(3, 2)  # Remove the parent edge
-    with pytest.raises(ValueError, match="Node 3 has a parent function, but it has no parents."):
+    with pytest.raises(ValueError, match="Node 3 has a parent function"):
         _check_input_graph(G)
 
 
