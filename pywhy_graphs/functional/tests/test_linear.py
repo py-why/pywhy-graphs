@@ -10,7 +10,11 @@ def test_make_linear_gaussian_graph():
 
     G = make_graph_linear_gaussian(G, random_state=12345)
 
-    assert all(key in nx.get_node_attributes(G, "parent_function") for key in G.nodes if len(list(G.predecessors(key))) > 0)
+    assert all(
+        key in nx.get_node_attributes(G, "parent_function")
+        for key in G.nodes
+        if len(list(G.predecessors(key))) > 0
+    )
     assert all(key in nx.get_node_attributes(G, "exogenous_function") for key in G.nodes)
 
     # sample from the graph should work

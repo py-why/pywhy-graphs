@@ -1,7 +1,8 @@
-import numpy as np
-import networkx as nx
-import pandas as pd
 from collections import defaultdict
+
+import networkx as nx
+import numpy as np
+import pandas as pd
 
 from .utils import check_discrete_model
 
@@ -27,6 +28,7 @@ class BayesianSampling:
             return self._topological_order
 
         self._topological_order = list(nx.topological_sort(self.graph))
+        return self._topological_order
 
     def forward_sample(self, partial_samples=None, n_samples: int = 1):
         rng = np.random.default_rng(self.random_state)
@@ -48,7 +50,7 @@ class BayesianSampling:
         sampled_data = defaultdict(list)
 
         # XXX: this entire for loop can be parallelized over n_samples // n_jobs
-        for node in self._topological_order:
+        for node in self.topological_order:
             # If values specified in partial_samples, use them. Else generate the values.
             if (partial_samples is not None) and (node in partial_samples.columns):
                 sampled_data[node] = partial_samples.loc[:, node].values
@@ -67,7 +69,6 @@ class BayesianSampling:
                     # get a map from state values to indices in the sample array
                     # and mapping each index to a weight
 
-
                     # now for each sample, we get the corresponding evidence
                     # and use it to get the weights for the sample
                     # we memoize the evidence values to avoid recomputing
@@ -81,7 +82,8 @@ class BayesianSampling:
                     #     )
 
                     for idx in range(n_samples):
-                        # extract weights based on the conditional probability given the evidence values
+                        # extract weights based on the conditional probability given the
+                        # evidence values
                         weights = cpd.values[tuple(evidence_values[:, idx])]
                         sampled_data[node].append(rng.choice(states, p=weights))
                 else:
@@ -89,7 +91,7 @@ class BayesianSampling:
                     weights = cpd.values
 
                     if weights.ndim != 1:
-                        raise RuntimeError('wtf')
+                        raise RuntimeError("wtf")
 
                     sampled_data[node] = rng.choice(states, size=n_samples, p=weights)
 

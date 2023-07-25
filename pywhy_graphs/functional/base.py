@@ -6,7 +6,9 @@ import numpy as np
 import pywhy_graphs as pgraphs
 from pywhy_graphs import AugmentedGraph
 from pywhy_graphs.typing import Node
+
 from .utils import to_pgmpy_bayesian_network
+
 
 def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph:
     """Add parent function for a node into the graph.
@@ -222,7 +224,7 @@ def sample_from_graph(
     import pandas as pd
     from joblib import Parallel, delayed
 
-    rng = np.random.default_rng(random_state)
+    rng: np.random.Generator = np.random.default_rng(random_state)
     if hasattr(G, "get_graphs"):
         directed_G = G.get_graphs("directed")
     else:
@@ -250,10 +252,10 @@ def sample_from_graph(
         ignored_nodes = None
 
     # Sample from graph either using pgmpy for discrete, or pywhy-graphs API for everything else
-    if G.graph.get('functional', False) == 'discrete':
+    if G.graph.get("functional", False) == "discrete":
         if ignored_nodes:
             raise RuntimeError(f"Cannot sample from a graph with S-nodes. {ignored_nodes}")
-        
+
         from pgmpy.sampling import BayesianModelSampling
 
         # convert to pgmpy BayesianModel and perform sampling
@@ -270,7 +272,8 @@ def sample_from_graph(
                 data.append(node_samples)
             data = pd.DataFrame.from_records(data)
         else:
-            rngs = rng.spawn(n_samples)
+            seed_seq = np.random.SeedSequence(random_state)
+            rngs = seed_seq.spawn(n_samples)
             out = Parallel(n_jobs=n_jobs, verbose=0)(
                 delayed(_sample_from_graph)(
                     G, top_sort_idx, rng=rngs[idx], ignored_nodes=ignored_nodes, **sample_kwargs
@@ -344,7 +347,6 @@ def _sample_from_graph(
     return nodes_sample
 
 
-
 def _check_input_func(func: Callable, parents=None):
     # check exogenous function
     if parents is None:
@@ -385,4 +387,7 @@ def _check_input_graph(G: nx.DiGraph):
             G.nodes[node].get("parent_function", None) is not None
             and len(list(G.predecessors(node))) == 0
         ):
-            raise ValueError(f"Node {node} has a parent function, {G.nodes(data=True)[node]}, but it has no parents: {list(G.predecessors(node))}.")
+            raise ValueError(
+                f"Node {node} has a parent function, {G.nodes(data=True)[node]}, but it has no "
+                f"parents: {list(G.predecessors(node))}."
+            )

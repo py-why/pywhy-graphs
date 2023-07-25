@@ -9,6 +9,7 @@ from pywhy_graphs.functional.base import sample_from_graph
 from pywhy_graphs.functional.discrete import add_cpd_for_node, make_random_discrete_graph
 from pywhy_graphs.functional.utils import check_discrete_model
 
+
 def test_add_cpd_for_node():
     # Create a test graph
     G = nx.DiGraph()
@@ -140,15 +141,16 @@ def test_when_sample_from_discrete_cpd_graph_then_correct_invariances():
     cpd_b = TabularCPD(
         variable="B",
         variable_card=2,
-        values=[[0.1, 0.9], [0.2, 0.8]],
+        values=np.array([[0.1, 0.9], [0.4, 0.6]]).T,
         evidence=["A"],
         evidence_card=[2],
     )
     G = add_cpd_for_node(G, "B", cpd_b)
 
     # Test sampling from graph
-    df = sample_from_graph(G, n_samples=200, n_jobs=1, random_state=0)
-    assert df.shape == (200, 3)
+    n_samples = 500
+    df = sample_from_graph(G, n_samples=n_samples, n_jobs=1, random_state=0)
+    assert df.shape == (n_samples, 3)
     assert set(df["A"].unique().tolist()) == set([0, 1])
     assert set(df["C"].unique().tolist()) == set([0, 1, 2])
     assert set(df["B"].unique().tolist()) == set([0, 1])
@@ -177,7 +179,7 @@ def test_when_make_random_discrete_graph_then_correct_invariances():
     G.add_edge("D", "B")
 
     cardinality_lims = {node: [2, 3] for node in G.nodes}
-    weight_lims = {node: [1, 3] for node in G.nodes}
+    weight_lims = {node: [1, 100] for node in G.nodes}
     noise_ratio_lims = {node: [0.0, 0.0] for node in G.nodes}
 
     rng = np.random.default_rng(42)  # Set a specific random seed for reproducibility
@@ -222,19 +224,20 @@ def test_when_make_random_discrete_graph_then_correct_invariances():
         else:
             assert altered_G.nodes[node]["noise_ratio"] == 1.0
 
-    df = sample_from_graph(altered_G, n_samples=1000, n_jobs=-1, random_state=0)
-    # Chi-square test of independence where variables are independent
+    n_samples = 5000
+    df = sample_from_graph(altered_G, n_samples=n_samples, n_jobs=-1, random_state=0)
+    # Chi-square test of independence where variables are dependent
     contingency_table = pd.crosstab(df["A"], df["C"])
     c, p, dof, expected = chi2_contingency(contingency_table)
     assert p < 0.05
 
-    # Chi-square test of independence where variables are independent
+    # Chi-square test of independence where variables are dependent
     contingency_table = pd.crosstab(df["A"], df["B"])
     c, p, dof, expected = chi2_contingency(contingency_table)
     assert p < 0.05
 
     # setup contingency table
     contingency_table = pd.crosstab(df["C"], df["D"])
-    # Chi-square test of independence where variables are dependent
+    # Chi-square test of independence where variables are independent
     c, p, dof, expected = chi2_contingency(contingency_table)
     assert p > 0.05

@@ -2,6 +2,7 @@ from typing import List, Optional, Tuple
 
 import networkx as nx
 
+
 def _draw_circle_edges(
     dot,
     directed_edges: List[Tuple] = None,
@@ -61,6 +62,7 @@ def _draw_un_edges(
             dot.edge(neb1, neb2, dir="none", color="brown", **attrs)
     return dot
 
+
 def _draw_bi_edges(
     dot,
     bidirected_edges: List[Tuple] = None,
@@ -72,6 +74,7 @@ def _draw_bi_edges(
             sib1, sib2 = str(sib1), str(sib2)
             dot.edge(sib1, sib2, dir="both", color="red", **attrs)
     return dot
+
 
 def draw(
     G,
@@ -144,10 +147,8 @@ def draw(
         circle_edges=circle_edges,
     )
 
-    dot = _draw_un_edges(dot, 
-        undirected_edges=undirected_edges)
-    dot = _draw_bi_edges(dot,
-        bidirected_edges=bidirected_edges)
+    dot = _draw_un_edges(dot, undirected_edges=undirected_edges)
+    dot = _draw_bi_edges(dot, bidirected_edges=bidirected_edges)
 
     if hasattr(G, "get_graphs"):
         directed_G = G.get_graphs("directed")
@@ -155,11 +156,13 @@ def draw(
         directed_G = G
 
     # only need to draw directed edges now, but directed_G can be a nx.Graph
-    if hasattr(directed_G, 'predecessors'):
+    if hasattr(directed_G, "predecessors"):
         for v in G.nodes:
             child = str(v)
             if pos and pos.get(v) is not None:
-                dot.node(child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!")
+                dot.node(
+                    child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!"
+                )
             else:
                 dot.node(child, shape=shape, height=".5", width=".5")
 
@@ -168,7 +171,10 @@ def draw(
                     continue
 
                 # memoize if we have seen the bidirected circular edge before
-                if f"{child}-{parent}" in found_circle_sibs or f"{parent}-{child}" in found_circle_sibs:
+                if (
+                    f"{child}-{parent}" in found_circle_sibs
+                    or f"{parent}-{child}" in found_circle_sibs
+                ):
                     continue
                 parent = str(parent)
                 if parent == v:

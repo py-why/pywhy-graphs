@@ -103,7 +103,7 @@ def make_graph_linear_gaussian(
             edge_functions=edge_functions_,
             random_state=random_state,
         )
-    G.graph["functional"] = 'linear_gaussian'
+    G.graph["functional"] = "linear_gaussian"
     return G
 
 
