@@ -87,28 +87,28 @@ jobs:
       - run:
           name: Build documentation
           command: |
-            cd docs
+            cd doc
             poetry run poe build_docs
       # Save the example test results
       - store_test_results:
-          path: docs/_build/test-results
+          path: doc/_build/test-results
       - store_artifacts:
-          path: docs/_build/test-results
+          path: doc/_build/test-results
           destination: test-results
       # Save the SG RST
       - store_artifacts:
-          path: docs/auto_examples.zip
+          path: doc/auto_examples.zip
       - store_artifacts:
-          path: docs/generated.zip
+          path: doc/generated.zip
       # Save the outputs
       - store_artifacts:
-          path: docs/_build/html/
+          path: doc/_build/html/
           destination: dev
       - store_artifacts:
-          path: docs/_build/html_stable/
+          path: doc/_build/html_stable/
           destination: stable
       - persist_to_workspace:
-          root: docs/_build
+          root: doc/_build
           paths:
             - html
             - html_stable
@@ -152,14 +152,14 @@ jobs:
       - run:
           name: make linkcheck
           command: |
-            poetry run make -C docs linkcheck
+            poetry run make -C doc linkcheck
       - run:
           name: make linkcheck-grep
           when: always
           command: |
-            poetry run make -C docs linkcheck-grep
+            poetry run make -C doc linkcheck-grep
       - store_artifacts:
-          path: docs/_build/linkcheck
+          path: doc/_build/linkcheck
           destination: linkcheck
 
   deploy:
@@ -169,7 +169,7 @@ jobs:
       - checkout
 
       - attach_workspace:
-          at: docs/_build
+          at: doc/_build
       - run:
           name: Set BASH_ENV
           command: |
@@ -179,7 +179,7 @@ jobs:
       - run:
           name: Check docs
           command: |
-            if [ ! -f docs/_build/html/index.html ] && [ ! -f docs/_build/html_stable/index.html ]; then
+            if [ ! -f doc/_build/html/index.html ] && [ ! -f doc/_build/html_stable/index.html ]; then
               echo "No files found to upload (build: ${CIRCLE_BRANCH}).";
               circleci-agent step halt;
             fi;
@@ -200,10 +200,10 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               echo "Deploying dev doc for ${CIRCLE_BRANCH}.";
-              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist docs/_build/html --dest ./dev
+              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist doc/_build/html --dest ./dev
             else
               echo "Deploying stable doc for ${CIRCLE_BRANCH}.";
-              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist docs/_build/html_stable --dest ./stable
+              node_modules/gh-pages/bin/gh-pages.js --dotfiles --message "doc updates [skip ci]" --dist doc/_build/html_stable --dest ./stable
             fi;
 
 workflows:
