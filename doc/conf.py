@@ -213,10 +213,9 @@ exclude_patterns = [
     "_build",
     "Thumbs.db",
     "**.ipynb_checkpoints",
-    # "auto_examples/*.rst",
-    # "auto_examples/index.rst",
-    # "auto_examples/mixededge/index.rst",
-    # "auto_examples/mixededge/*.rst",
+    '**/*.py',
+    "auto_examples/**/*.py",
+    "auto_examples/**/*.ipynb",
 ]
 
 source_suffix = [".rst", ".md"]
@@ -302,6 +301,7 @@ sphinx_gallery_conf = {
             "../examples/mixededge",
             "../examples/intro",
             "../examples/visualization",
+            "../examples/simulations",
         ]
     ),
     # "filename_pattern": "^((?!sgskip).)*$",
@@ -357,6 +357,9 @@ nitpick_ignore_regex = [
     ('py:obj', r"networkx*"),
 ]
 
+# -- Options for NBSphinx output ---------------------------------------------
+# Set nbsphinx_allow_errors to only allow Jupyter notebooks
+# nbsphinx_allow_errors = True
 
 doctest_global_setup = "import networkx as nx"
 
@@ -370,3 +373,4 @@ linkcheck_timeout = 15  # some can be quite slow
 linkcheck_ignore = [
     "https://github.com/{group}/{project}/pull/",  # sphinx-issues will render this properly
 ]
+

@@ -155,7 +155,7 @@ intricacies given the assumptions of the API discussed above.
 
 Discrete functional graphs
 --------------------------
-.. currentmodule:: pywhy_graphs.functional
+.. currentmodule:: pywhy_graphs.functional.discrete
     
 .. autosummary::
    :toctree: ../../generated/
