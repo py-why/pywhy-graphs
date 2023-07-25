@@ -303,6 +303,10 @@ def _sample_random_cpd(G, node, cardinality, weight_range, rng):
     # all parent values
     n_cols = np.prod([G.nodes[parent]["cardinality"] for parent in parents]).astype(int)
     cpd_values = np.zeros((cardinality, n_cols))
+
+    # XXX: We can improve the discriminability of the CPD by sampling the weights
+    # unevenly for each category. This will make the CPD more discriminable if the
+    # conditional distributions for each category are more different from each other.
     for col_idx in range(n_cols):
         # sample each category with a different upper-bound weight
         weights = []

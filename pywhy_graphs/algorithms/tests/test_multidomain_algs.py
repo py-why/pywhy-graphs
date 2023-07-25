@@ -29,45 +29,6 @@ def test_find_connected_domain_pairs():
     assert connected_pairs == {(1, 2), (2, 3), (1, 3), (1, 4), (2, 4), (3, 4)}
 
 
-@pytest.mark.skip()
-def test_compute_invariant_domains_per_node():
-    # Create a test graph
-    G = AugmentedGraph()
-    G.add_nodes_from([1, 2, 3, 4])
-    G.add_edges_from([(1, 2), (1, 3), (2, 3), (2, 4)], edge_type="directed")
-
-    # Call the function to compute invariant domains for node 1
-    G = compute_invariant_domains_per_node(G, node=1)
-
-    # Assert that the computed invariant domains for node 1 are correct
-    assert G.nodes[1]["invariant_domains"] == {1, 2, 3}
-
-    # Call the function again to compute invariant domains for node 2
-    G = compute_invariant_domains_per_node(G, node=2)
-
-    # Assert that the computed invariant domains for node 2 are correct
-    assert G.nodes[2]["invariant_domains"] == {1, 2, 3}
-
-    # Call the function to compute invariant domains for node 3
-    G = compute_invariant_domains_per_node(G, node=3)
-
-    # Assert that the computed invariant domains for node 3 are correct
-    assert G.nodes[3]["invariant_domains"] == {1, 2, 3}
-
-    # Call the function to compute invariant domains for node 4 (no S-nodes, no change)
-    G = compute_invariant_domains_per_node(G, node=4)
-
-    # Assert that the invariant domains for node 4 remain empty (no S-nodes added)
-    assert G.nodes[4]["invariant_domains"] == set()
-
-    # Test the inconsistency handling
-    with pytest.warns(UserWarning):
-        G = compute_invariant_domains_per_node(G, node=1, inconsistency="warn")
-
-    with pytest.raises(RuntimeError):
-        G = compute_invariant_domains_per_node(G, node=2, inconsistency="raise")
-
-
 def test_add_all_snode_combinations():
     # Create a test graph
     G = AugmentedGraph()
