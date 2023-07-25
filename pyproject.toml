@@ -133,6 +133,10 @@ ignore_fail = 'return_non_zero'
 sequence = ['_black_check', '_isort_check']
 ignore_fail = 'return_non_zero'
 
+[[tool.poe.tasks.check]]
+sequence = ['format', 'lint', 'type_check']
+ignore_fail = 'return_non_zero'
+
 #
 # a standard verification sequence for use in pull requests
 #
