@@ -10,13 +10,11 @@
 
 pywhy-graphs is a Python graph library that extends [networkx](https://github.com/networkx/networkx) with the notion of a `MixedEdgeGraph` to implement a light-weight API for causal graphical structures that contain mixed-edges and contain causal graph traversal algorithms.
 
-Note: The API is subject to change without deprecation cycles due to the current work-in-progress `MixedEdgeGraph` class in networkx. For more information, follow the PR at https://github.com/networkx/networkx/pull/5947
-
 ## Why?
 
 Representation of causal graphical models in Python are severely lacking.
 
-PyWhy-Graphs implements a graphical API layer for ADMG, CPDAG and PAG. For causal DAGs, we recommend using the `networkx.DiGraph` class and
+PyWhy-Graphs implements a graphical API layer for representing commmon graphs in causal inference: ADMG, CPDAG and PAG. For causal DAGs, we recommend using the `networkx.DiGraph` class and
 ensuring acylicity via `networkx.is_directed_acyclic_graph` function.
 
 Existing packages that aim to represent causal graphs either break from the networkX API, or only implement a subset of the relevant causal graphs. By keeping in-line with the robust NetworkX API, we aim to ensure a consistent user experience and a gentle introduction to causal graphical models. A `MixedEdgeGraph` instance is a composition of networkx graphs and has a similar API, with the additional notion of an "edge type", which specifies what edge type subgraph any function should operate over. For example:
@@ -79,3 +77,7 @@ To install the package from github, clone the repository and then `cd` into the 
 Pywhy-Graphs is always looking for new contributors to help make the package better, whether it is algorithms, documentation, examples of graph usage, and more! Contributing to Pywhy-Graphs will be rewarding because you will contribute to a much needed package for causal inference.
 
 See our [contributing guide](https://github.com/py-why/pywhy-graphs/CONTRIBUTING.md) for more details.
+
+# Citing
+
+Please refer to the Github Citation to cite the repository.
