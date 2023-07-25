@@ -24,6 +24,7 @@ from sphinx_gallery.sorting import ExampleTitleSortKey, ExplicitOrder
 sys.path.insert(0, os.path.abspath("../"))
 
 import pywhy_graphs  # noqa: E402
+import pywhy_graphs.functional.discrete
 
 curdir = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(curdir, "..")))

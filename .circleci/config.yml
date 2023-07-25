@@ -66,6 +66,11 @@ jobs:
           command: |
             sudo apt install libspatialindex-dev xdg-utils shared-mime-info desktop-file-utils
       - run:
+          name: Setup torch for pgmpy
+          command: |
+            sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
+
+      - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
 
