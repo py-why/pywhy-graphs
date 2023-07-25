@@ -15,7 +15,7 @@ and we also do not support latent confounders yet.
 To add a latent confounder, one can add a confounder explicitly, generate the data
 and then drop the confounder varialble in the final dataset. In the roadmap of this submodule,
 the plan is to represent any bidirected edge as a uniformly randomly distributed variable
-that has an additive noise effect on both variables simulatanously.
+that has an additive noise effect on both variables simultaneously.
 
 Each functional graph has a string assigned to the ``G.graph['functional']`` networkX attribute,
 which informs the user of which type of functional graph is being used. Currently, we support
@@ -72,7 +72,7 @@ the augmented causal diagram :footcite:`dawid2002influencediagrams` and the sele
 The augmented causal diagram is a graph that augments the original causal diagram with a set of
 F-nodes that represent interventions. The selection
 diagram is a graph that augments the original causal diagram with a set of S-nodes that represent
-domain shifts. In both cases, the augmented graph is acyclic. They can also be combined to simulataneously
+domain shifts. In both cases, the augmented graph is acyclic. They can also be combined to simultaneously
 represent interventions and domain shifts.
 
 To represent both types of distribution changes in the same graph, we note that S-nodes explicitly
