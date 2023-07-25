@@ -1,11 +1,5 @@
-import pytest
-
 from pywhy_graphs import AugmentedGraph
-from pywhy_graphs.algorithms import (
-    add_all_snode_combinations,
-    compute_invariant_domains_per_node,
-    find_connected_pairs,
-)
+from pywhy_graphs.algorithms import add_all_snode_combinations, find_connected_pairs
 
 
 def test_find_connected_domain_pairs():
