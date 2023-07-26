@@ -56,7 +56,7 @@ Finally, we also support time-series and create graphs that represent
 stationary time-series causal processes.
 
 +------------------------------------+----------------------------------+---------------------------------+
-| Pywhy_graph Class                  | Edge Types                       | Analagous non time-series graph |
+| Pywhy_graph Class                  | Edge Types                       | Analogous non time-series graph |
 +====================================+==================================+=================================+
 | StationaryTimeSeriesGraph          | undirected                       | nx.Graph                        |
 +------------------------------------+----------------------------------+---------------------------------+

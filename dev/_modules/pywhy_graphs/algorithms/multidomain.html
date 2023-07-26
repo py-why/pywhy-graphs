@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -200,7 +201,7 @@
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
 
 
-<div class="viewcode-block" id="add_all_snode_combinations"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.add_all_snode_combinations.html#pywhy_graphs.algorithms.add_all_snode_combinations">[docs]</a><span class="k">def</span> <span class="nf">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="add_all_snode_combinations"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.add_all_snode_combinations.html#pywhy_graphs.algorithms.add_all_snode_combinations">[docs]</a><span class="k">def</span> <span class="nf">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add all possible S-nodes to the graph given number of domains.</span>
 
 <span class="sd">    Parameters</span>
@@ -209,6 +210,11 @@
 <span class="sd">        The augmented graph.</span>
 <span class="sd">    n_domains : int</span>
 <span class="sd">        The number of domains.</span>
+<span class="sd">    on_error : str, optional</span>
+<span class="sd">        How to handle errors, by default &#39;raise&#39;. Can be one of:</span>
+<span class="sd">        - &#39;raise&#39;: raise an exception</span>
+<span class="sd">        - &#39;ignore&#39;: ignore the error.</span>
+<span class="sd">        - &#39;warn&#39;: raise a warning</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -227,14 +233,24 @@
 
         <span class="c1"># now modify the function of the edge, S-nodes are pointing to</span>
         <span class="n">s_node</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">sdx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">s_node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">on_error</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There is already an S-node </span><span class="si">{</span><span class="n">s_node</span><span class="si">}</span><span class="s2"> in G!&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">on_error</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+                <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There is already an S-node </span><span class="si">{</span><span class="n">s_node</span><span class="si">}</span><span class="s2"> in G!&quot;</span><span class="p">)</span>
+
         <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">s_node</span><span class="p">,</span> <span class="n">domain_ids</span><span class="o">=</span><span class="p">(</span><span class="n">source_domain</span><span class="p">,</span> <span class="n">target_domain</span><span class="p">))</span>
         <span class="n">s_node_domains</span><span class="p">[(</span><span class="n">source_domain</span><span class="p">,</span> <span class="n">target_domain</span><span class="p">)]</span> <span class="o">=</span> <span class="n">s_node</span>
+
+        <span class="c1"># add S-nodes</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">][</span><span class="n">s_node</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">source_domain</span><span class="p">,</span> <span class="n">target_domain</span><span class="p">)</span>
 
         <span class="c1"># increment the S-node counter</span>
         <span class="n">sdx</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">G</span><span class="p">,</span> <span class="n">s_node_domains</span></div>
 
 
+<span class="c1"># XXX: does not work?</span>
 <div class="viewcode-block" id="compute_invariant_domains_per_node"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.compute_invariant_domains_per_node.html#pywhy_graphs.algorithms.compute_invariant_domains_per_node">[docs]</a><span class="k">def</span> <span class="nf">compute_invariant_domains_per_node</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">AugmentedGraph</span><span class="p">,</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -285,8 +301,8 @@
 
     <span class="c1"># add now all relevant S-nodes considering the domains</span>
     <span class="k">if</span> <span class="n">all_poss_snodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">G</span><span class="p">,</span> <span class="n">s_node_domains</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
-        <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+        <span class="n">G_copy</span><span class="p">,</span> <span class="n">s_node_domains</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">n_domains</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G_copy</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
 
     <span class="n">remove_s_node</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">s_node</span> <span class="ow">in</span> <span class="n">all_poss_snodes</span><span class="p">:</span>

@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -194,8 +195,10 @@
   <h1>Source code for pywhy_graphs.viz.draw</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
-<span class="k">def</span> <span class="nf">_draw_pag_edges</span><span class="p">(</span>
+
+<span class="k">def</span> <span class="nf">_draw_circle_edges</span><span class="p">(</span>
     <span class="n">dot</span><span class="p">,</span>
     <span class="n">directed_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">circle_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -239,17 +242,33 @@
                 <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
             <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span>
 
+
+<span class="k">def</span> <span class="nf">_draw_un_edges</span><span class="p">(</span>
+    <span class="n">dot</span><span class="p">,</span>
+    <span class="n">undirected_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw undirected edges.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">undirected_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span> <span class="ow">in</span> <span class="n">undirected_edges</span><span class="p">:</span>
             <span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">neb1</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">neb2</span><span class="p">)</span>
             <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">neb1</span><span class="p">,</span> <span class="n">neb2</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dot</span>
 
+
+<span class="k">def</span> <span class="nf">_draw_bi_edges</span><span class="p">(</span>
+    <span class="n">dot</span><span class="p">,</span>
+    <span class="n">bidirected_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw bidirected edges.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">bidirected_edges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="ow">in</span> <span class="n">bidirected_edges</span><span class="p">:</span>
             <span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib1</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">sib2</span><span class="p">)</span>
             <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">sib1</span><span class="p">,</span> <span class="n">sib2</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span>
+    <span class="k">return</span> <span class="n">dot</span>
 
 
 <div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
@@ -307,44 +326,56 @@
         <span class="n">circle_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">circle_edges</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;directed_edges&quot;</span><span class="p">):</span>
         <span class="n">directed_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edges</span>
+
+    <span class="c1"># an edge case of drawing graphs is the undirected Markov network</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;undirected_edges&quot;</span><span class="p">):</span>
         <span class="n">undirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">undirected_edges</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+        <span class="n">undirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;bidirected_edges&quot;</span><span class="p">):</span>
         <span class="n">bidirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edges</span>
 
     <span class="c1"># draw PAG edges and keep track of the circular endpoints found</span>
-    <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span> <span class="o">=</span> <span class="n">_draw_pag_edges</span><span class="p">(</span>
+    <span class="n">dot</span><span class="p">,</span> <span class="n">found_circle_sibs</span> <span class="o">=</span> <span class="n">_draw_circle_edges</span><span class="p">(</span>
         <span class="n">dot</span><span class="p">,</span>
         <span class="n">directed_edges</span><span class="p">,</span>
         <span class="n">circle_edges</span><span class="o">=</span><span class="n">circle_edges</span><span class="p">,</span>
-        <span class="n">undirected_edges</span><span class="o">=</span><span class="n">undirected_edges</span><span class="p">,</span>
-        <span class="n">bidirected_edges</span><span class="o">=</span><span class="n">bidirected_edges</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">_draw_un_edges</span><span class="p">(</span><span class="n">dot</span><span class="p">,</span> <span class="n">undirected_edges</span><span class="o">=</span><span class="n">undirected_edges</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">_draw_bi_edges</span><span class="p">(</span><span class="n">dot</span><span class="p">,</span> <span class="n">bidirected_edges</span><span class="o">=</span><span class="n">bidirected_edges</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;get_graphs&quot;</span><span class="p">):</span>
         <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="s2">&quot;directed&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">directed_G</span> <span class="o">=</span> <span class="n">G</span>
 
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
-        <span class="n">child</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-                <span class="k">continue</span>
-
-            <span class="c1"># memoize if we have seen the bidirected circular edge before</span>
-            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">parent</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
-                <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;invis&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+    <span class="c1"># only need to draw directed edges now, but directed_G can be a nx.Graph</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">directed_G</span><span class="p">,</span> <span class="s2">&quot;predecessors&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span>
+                    <span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">pos</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;.5&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">directed_G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># memoize if we have seen the bidirected circular edge before</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span>
+                    <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">found_circle_sibs</span>
+                <span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;invis&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dot</span></div>
 </pre></div>

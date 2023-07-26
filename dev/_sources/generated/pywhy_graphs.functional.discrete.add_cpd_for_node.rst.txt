@@ -1,0 +1,12 @@
+﻿pywhy_graphs.functional.discrete.add_cpd_for_node
+=================================================
+
+.. currentmodule:: pywhy_graphs.functional.discrete
+
+.. autofunction:: add_cpd_for_node
+
+.. include:: pywhy_graphs.functional.discrete.add_cpd_for_node.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

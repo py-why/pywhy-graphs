@@ -43,11 +43,13 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="3. Causal Graph Algorithms in PyWhy" href="../algorithms/index.html" />
+    <link rel="next" title="2.2.1.1. pywhy_graphs.functional.discrete.make_random_discrete_graph" href="../../generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html" />
     <link rel="prev" title="1. Causal Graphs in PyWhy" href="../classes/index.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../../_static/copybutton.js"></script>
@@ -189,18 +191,28 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html">
+     2.2.1.1. pywhy_graphs.functional.discrete.make_random_discrete_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../generated/pywhy_graphs.functional.discrete.add_cpd_for_node.html">
+     2.2.1.2. pywhy_graphs.functional.discrete.add_cpd_for_node
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_linear_gaussian.html">
-     2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian
+     2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../generated/pywhy_graphs.functional.apply_linear_soft_intervention.html">
-     2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention
+     2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_multidomain.html">
-     2.4.1. pywhy_graphs.functional.make_graph_multidomain
+     2.7.1. pywhy_graphs.functional.make_graph_multidomain
     </a>
    </li>
   </ul>
@@ -401,23 +413,62 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representing-a-node-s-functional-relationships">
+   2.1. Representing a node’s functional relationships
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multiple-distributions-interventions-and-domain-shifts">
+     2.1.1. Multiple Distributions: Interventions and Domain Shifts
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling-from-the-graph">
+     2.1.2. Sampling from the graph
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitations">
+     2.1.3. Limitations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#specific-functional-graphs">
+   2.2. Specific Functional Graphs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discrete-functional-graphs">
+     2.2.1. Discrete functional graphs
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear">
-   2.1. Linear
+   2.3. Linear
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id4">
+   2.4. Linear
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-functional-graphs">
-   2.2. Linear functional graphs
+   2.5. Linear functional graphs
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#multidomain">
-   2.3. Multidomain
+   2.6. Multidomain
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-functional-selection-diagrams">
-   2.4. Linear functional selection diagrams
+   2.7. Linear functional selection diagrams
   </a>
  </li>
 </ul>
@@ -447,9 +498,204 @@ and we also do not support latent confounders yet.</p>
 <p>To add a latent confounder, one can add a confounder explicitly, generate the data
 and then drop the confounder varialble in the final dataset. In the roadmap of this submodule,
 the plan is to represent any bidirected edge as a uniformly randomly distributed variable
-that has an additive noise effect on both variables simulatanously.</p>
+that has an additive noise effect on both variables simultaneously.</p>
+<p>Each functional graph has a string assigned to the <code class="docutils literal notranslate"><span class="pre">G.graph['functional']</span></code> networkX attribute,
+which informs the user of which type of functional graph is being used. Currently, we support
+the following types of functional graphs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'linear_gaussian'</span></code>: The graph is a linear-Gaussin functional graph.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'discrete'</span></code>: The graph is a discrete functional graph.</p></li>
+</ul>
+<section id="representing-a-node-s-functional-relationships">
+<h2><span class="section-number">2.1. </span>Representing a node’s functional relationships<a class="headerlink" href="#representing-a-node-s-functional-relationships" title="Permalink to this heading">#</a></h2>
+<p>Within an acyclic causal diagram, each node has a set of observed parents and an exogenous parent variable.
+The exogenous parent variable is the variable that is not a child of any other node in the graph and
+implicitly represents all exogenous noise in the causal system that affects said node. The set of
+observed parents can be the empty set. When there are observed parents, the node’s value is the following
+function:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[node = f(observed\_parents, exogenous\_parent)\]</div>
+</div></blockquote>
+<p>The causal diagram locally around <code class="docutils literal notranslate"><span class="pre">node</span></code> looks like <span class="math notranslate nohighlight">\(observed\_parents \rightarrow node \leftarrow exogenous\_parent\)</span>,
+where <code class="docutils literal notranslate"><span class="pre">observed_parents</span></code> can be multiple sets of direct parents. In general, this can be arbitrarily complex,
+since the function <code class="docutils literal notranslate"><span class="pre">f</span></code> can mean anything. In our simulations, we assume additive noise,
+so the node is a linear combination of possibly nonlinear functions.</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[node = f(observed\_parents) + g(exogenous\_parent)\]</div>
+</div></blockquote>
+<p>In order to represent this function, we imbue each node with a set of node attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">parent_function</span></code>: This computes <span class="math notranslate nohighlight">\(f(observed\_parents)\)</span> for any node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code>: This computes <span class="math notranslate nohighlight">\(g(exogenous\_parent)\)</span> for any node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exogenous_distribution</span></code>: This is the distribution of the exogenous variable for any node.</p></li>
+</ul>
+<p>Then the node value is a deterministically computed. If there are no parents, then
+the node attribute will contain <code class="docutils literal notranslate"><span class="pre">None</span></code>. This enables stochasticity in the data-generating
+process due to the inherent randomness that we can attach to the distribution of <code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code>.
+Due to the multivariate input nature of <code class="docutils literal notranslate"><span class="pre">parent_function</span></code>, it must be a Callable that takes
+(keyword) arguments of the observed parents and returns a single value. Due to the univariate input
+nature of <code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code>, it must be a Callable that takes a single value and
+returns a single value.</p>
+<p><strong>Ordering of parent function arguments</strong></p>
+<p>It is presumed that the <code class="docutils literal notranslate"><span class="pre">parent_function</span></code> is a function of the observed parents in the sorted order
+that they are specified in the <code class="docutils literal notranslate"><span class="pre">G.predecessors(node)</span></code> list. For example, if the node <code class="docutils literal notranslate"><span class="pre">node</span></code> has
+observed parents <code class="docutils literal notranslate"><span class="pre">[parent_1,</span> <span class="pre">parent_2]</span></code>, then the <code class="docutils literal notranslate"><span class="pre">parent_function</span></code> must be a function of
+<code class="docutils literal notranslate"><span class="pre">parent_1</span></code> and <code class="docutils literal notranslate"><span class="pre">parent_2</span></code> in that order.</p>
+<section id="multiple-distributions-interventions-and-domain-shifts">
+<h3><span class="section-number">2.1.1. </span>Multiple Distributions: Interventions and Domain Shifts<a class="headerlink" href="#multiple-distributions-interventions-and-domain-shifts" title="Permalink to this heading">#</a></h3>
+<p>Next, we discuss how to represent multiple distributions in a single graph. In the context of causal inference,
+there are two graphical representations that allow for a general treatment of multiple distributions:
+the augmented causal diagram <a class="footnote-reference brackets" href="#footcite-dawid2002influencediagrams" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and the selection diagram <a class="footnote-reference brackets" href="#footcite-bareinboim-causal-2016" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+The augmented causal diagram is a graph that augments the original causal diagram with a set of
+F-nodes that represent interventions. The selection
+diagram is a graph that augments the original causal diagram with a set of S-nodes that represent
+domain shifts. In both cases, the augmented graph is acyclic. They can also be combined to simultaneously
+represent interventions and domain shifts.</p>
+<p>To represent both types of distribution changes in the same graph, we note that S-nodes explicitly
+either change the type of function that is used to compute the node value, or changes the distribution
+of the exogenous parent variable. In the case of interventions, the function <span class="math notranslate nohighlight">\(f\)</span> is changed
+only.</p>
+<p><strong>Interventional distribution change:</strong></p>
+<p>In the interventional case, each F-node then points to any number of observed nodes in the graph.</p>
+<p>Each observed variable node that a F-node points to has a node attribute <code class="docutils literal notranslate"><span class="pre">intervention_functions</span></code>
+that maps each of its parent F-nodes to a possibly new function that is used to compute
+<span class="math notranslate nohighlight">\(f'(observed\_parents)\)</span>.</p>
+<p><strong>Domain change distribution change:</strong></p>
+<p>In the domain shift case, each S-node has a node attribute <code class="docutils literal notranslate"><span class="pre">domains</span></code> that is a
+unique tuple of domain integers, indicating the pair of domains that are being shifted between.
+Then each node that the S-node points to has a node attribute <code class="docutils literal notranslate"><span class="pre">domain_parent_functions</span></code> that
+maps each domain ID to a possibly new function that is used to compute <span class="math notranslate nohighlight">\(f'(observed\_parents)\)</span>.
+In addition, each node that the S-node points to has a node attribute <code class="docutils literal notranslate"><span class="pre">domain_exogenous_distribution</span></code>
+that maps each domain to a possibly new function that is used to compute <span class="math notranslate nohighlight">\(g'(exogenous\_parent)\)</span>.</p>
+<p>Note to sample from multiple domain changes, we always set the smallest domain ID to be the reference
+distribution. For example, if domain IDs are <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">5)</span></code>, then the reference domain is domain <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</section>
+<section id="sampling-from-the-graph">
+<h3><span class="section-number">2.1.2. </span>Sampling from the graph<a class="headerlink" href="#sampling-from-the-graph" title="Permalink to this heading">#</a></h3>
+<p>Now, we have discussed how we generally represent the functional relationships of each node in the graph.
+We now discuss how to sample from the graph. We first sample from the exogenous parent variable of
+every observed node in the graph, which may be a function of the domain ID if the domain ID is defined.
+Then, we sample the observed variables in topological order as a function of their exogenous variables
+and their causal parents. The distribution sampled here is always the observational distribution of the
+first domain (e.g. domain 1 out of N domains).</p>
+<p>Given, a functional graph with multiple distributions (e.g. through interventions, or S-nodes), we
+can sample the additional distributions by sampling the observed nodes in topological order again.
+Consider sampling from a different domain. Each node that is a child of a S-node for the domain
+that we are considering is sampled from the following distribution:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[node = f'(observed\_parents) + g'(exogenous\_parent)\]</div>
+</div></blockquote>
+<p>where f’ and g’ are new functions that are encoded in the node’s <code class="docutils literal notranslate"><span class="pre">domain_parent_functions</span></code>
+and <code class="docutils literal notranslate"><span class="pre">domain_exogenous_distribution</span></code> dictionaries. These uniquely define the new distribution
+as a result of the domain shift.</p>
+<p>Similarly, sampling from interventional distributions will consider each child of an F-node
+for the intervention and domain that we are considering (i.e. the input should specify the
+domain ID and the intervention setting we want to sample). Then we similarly sample the relevant
+<code class="docutils literal notranslate"><span class="pre">domain_exogenous_distribution</span></code> and <code class="docutils literal notranslate"><span class="pre">intervention_functions</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">domain_parent_functions</span></code>
+are not used in the interventional case, since the interventions take precedence over the domain
+shift in terms of altering the functional relationship with respect to observed variables. However,
+we implicitly assume the exogenous distribution is unalterable by the intervention.</p>
+</section>
+<section id="limitations">
+<h3><span class="section-number">2.1.3. </span>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading">#</a></h3>
+<p>It is important to explicitly note some limitations of generating data with this API.</p>
+<ol class="arabic simple">
+<li><p>The graph must be well-defined: The graph must be acyclic and already be defined
+with a structure, before adding functional relationships.</p></li>
+<li><p>The graph currently may not contain latent confounders: We plan to add this functionality
+in the future. But as of now, there is no way to represent the functional relationship
+of <span class="math notranslate nohighlight">\(X \leftrightarrow Y\)</span>.</p></li>
+<li><p>Additive noise: Currently, we only support additive noise. We plan to add multiplicative
+noise in the future.</p></li>
+<li><p>Univariate input/output: We do not explore the possibility of a multivariate input/output
+distribution. For example, if <span class="math notranslate nohighlight">\(X \in \mathbb{R}^d\)</span> and a parent of X is <span class="math notranslate nohighlight">\(Y \in \mathbb{R}^m\)</span>,
+where Y is m-dimensional and X is d-dimensional and <code class="docutils literal notranslate"><span class="pre">f</span></code> is a function mapping Y to X, then
+this is not supported.</p></li>
+<li><p>Randomness: Users cannot pass in a random state, or RNG directly to the <code class="docutils literal notranslate"><span class="pre">sample_from_graph</span></code> function,
+but rather must instantiate any random functions with the RNG during construction of the functional graph.</p></li>
+</ol>
+</section>
+</section>
+<section id="specific-functional-graphs">
+<h2><span class="section-number">2.2. </span>Specific Functional Graphs<a class="headerlink" href="#specific-functional-graphs" title="Permalink to this heading">#</a></h2>
+<p>In this section, we discuss how to represent specific functional graphs with the API and some of their
+intricacies given the assumptions of the API discussed above.</p>
+<section id="discrete-functional-graphs">
+<h3><span class="section-number">2.2.1. </span>Discrete functional graphs<a class="headerlink" href="#discrete-functional-graphs" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html#pywhy_graphs.functional.discrete.make_random_discrete_graph" title="pywhy_graphs.functional.discrete.make_random_discrete_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_random_discrete_graph</span></code></a>(G[, ...])</p></td>
+<td><p>Sample a random discrete graph given a graph structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.functional.discrete.add_cpd_for_node.html#pywhy_graphs.functional.discrete.add_cpd_for_node" title="pywhy_graphs.functional.discrete.add_cpd_for_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cpd_for_node</span></code></a>(G, node, cpd[, ...])</p></td>
+<td><p>Add CPD (Conditional Probability Distribution) to graph.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Discrete graphs can be fully represented by conditional probability tables (CPTs). Here, it is assumed
+each observed variable is discrete and the full set of possible values are known apriori. Hence,
+for each observed node, one can construct a table of their possible output values against the
+combination of different parent discrete values. Within each entry of the table, there is a probability
+value associated. This then gives us a model for <span class="math notranslate nohighlight">\(P(X = x| Pa_X)\)</span> for each value of <code class="docutils literal notranslate"><span class="pre">X=x</span></code> and
+possible value of <code class="docutils literal notranslate"><span class="pre">Pa_X</span></code>.</p>
+<p>Therefore, each node in the graph has a node attribute <code class="docutils literal notranslate"><span class="pre">cpt</span></code>, which is associated with a
+<a class="reference external" href="https://pgmpy.org/factors/discrete.html#pgmpy.factors.discrete.CPD.TabularCPD" title="(in pgmpy vdev branch)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pgmpy.factors.discrete.CPD.TabularCPD</span></code></a>. We leverage <code class="docutils literal notranslate"><span class="pre">pgmpy</span></code> to represent CPTs and wrap an API around that.
+Given each CPT, the <code class="docutils literal notranslate"><span class="pre">parent_function</span></code> is fully defined as just a discrete distribution sampling
+with possibly non-uniform probabilities.</p>
+<p>In order to represent a noisy discrete function, we define <code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code> as the uniform
+discrete distribution over all possible values of the node. Then, we add a hyperparameter <code class="docutils literal notranslate"><span class="pre">noise_ratio</span></code>
+which is a value between 0.0 and 1.0, which defines the probability one uses the <code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code>
+to sample the values of node. If one does not use the <code class="docutils literal notranslate"><span class="pre">exogenous_function</span></code> to sample the node,
+then the <code class="docutils literal notranslate"><span class="pre">parent_function</span></code> is used. The default value of <code class="docutils literal notranslate"><span class="pre">noise_ratio</span></code> is 0.</p>
+<p>Adding interventions and multiple-domains is simple as the <code class="docutils literal notranslate"><span class="pre">parent_function</span></code> is overridden by their respective
+functions. We can view these different distributions as simply having a different CPT.</p>
+</section>
+</section>
 <section id="linear">
-<h2><span class="section-number">2.1. </span>Linear<a class="headerlink" href="#linear" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>Linear<a class="headerlink" href="#linear" title="Permalink to this heading">#</a></h2>
+<p>In order to represent linear functions, we imbue nodes with a set of node attributes:</p>
+<ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">parent_functions</span></code>: a mapping of functions that map each node to a nested dictionary</dt><dd><p>of parents and their corresponding weight and function that map parent values to
+values that are input to the node value with the weight.</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">gaussian_noise_function</span></code>: a dictionary with keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code> that</dt><dd><p>encodes the data-generating function for the Gaussian noise.</p>
+<p>For example, if the node
+is <span class="math notranslate nohighlight">\(X\)</span> and its parents are <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(Z\)</span>, then <code class="docutils literal notranslate"><span class="pre">parent_functions</span></code>
+and <code class="docutils literal notranslate"><span class="pre">gaussian_noise_function</span></code> for node <span class="math notranslate nohighlight">\(X\)</span> is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;parent_functions&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">weight</span> <span class="n">of</span> <span class="n">Y</span> <span class="n">added</span> <span class="n">to</span> <span class="n">X</span><span class="o">&gt;</span><span class="p">,</span>
+                <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">that</span> <span class="n">takes</span> <span class="nb">input</span> <span class="n">Y</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">weight</span> <span class="n">of</span> <span class="n">Z</span> <span class="n">added</span> <span class="n">to</span> <span class="n">X</span><span class="o">&gt;</span><span class="p">,</span>
+                <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">that</span> <span class="n">takes</span> <span class="nb">input</span> <span class="n">Z</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;gaussian_noise_function&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">mean</span> <span class="n">of</span> <span class="n">gaussian</span> <span class="n">noise</span> <span class="n">added</span> <span class="n">to</span> <span class="n">X</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">std</span> <span class="n">of</span> <span class="n">gaussian</span> <span class="n">noise</span> <span class="n">added</span> <span class="n">to</span> <span class="n">X</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h2><span class="section-number">2.4. </span>Linear<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
 <p>In order to represent linear functions, we imbue nodes with a set of node attributes:</p>
 <ul>
 <li><dl class="simple">
@@ -489,7 +735,7 @@ and <code class="docutils literal notranslate"><span class="pre">gaussian_noise_
 </ul>
 </section>
 <section id="linear-functional-graphs">
-<h2><span class="section-number">2.2. </span>Linear functional graphs<a class="headerlink" href="#linear-functional-graphs" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.5. </span>Linear functional graphs<a class="headerlink" href="#linear-functional-graphs" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_linear_gaussian.html#pywhy_graphs.functional.make_graph_linear_gaussian" title="pywhy_graphs.functional.make_graph_linear_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_graph_linear_gaussian</span></code></a>(G[, ...])</p></td>
@@ -502,9 +748,9 @@ and <code class="docutils literal notranslate"><span class="pre">gaussian_noise_
 </table>
 </section>
 <section id="multidomain">
-<h2><span class="section-number">2.3. </span>Multidomain<a class="headerlink" href="#multidomain" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.6. </span>Multidomain<a class="headerlink" href="#multidomain" title="Permalink to this heading">#</a></h2>
 <p>Currently, this submodule only supports linear functions.</p>
-<p>Multiple-domain causal graphs are represented by selection diagrams <a class="footnote-reference brackets" href="#footcite-bareinboim-causal-2016" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>,
+<p>Multiple-domain causal graphs are represented by selection diagrams <a class="footnote-reference brackets" href="#footcite-bareinboim-causal-2016" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>,
 or augmented selection diagrams (TODO: CITATION FOR LEARNING SEL DIAGRAMS).</p>
 <p>In order to represent multidomain functions, we imbue nodes with a set of node attributes
 in addition to the ones for linear functions. The nodes that are imbued with extra attributes
@@ -532,7 +778,7 @@ are the direct children of an S-node.</p>
 </ul>
 </section>
 <section id="linear-functional-selection-diagrams">
-<h2><span class="section-number">2.4. </span>Linear functional selection diagrams<a class="headerlink" href="#linear-functional-selection-diagrams" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.7. </span>Linear functional selection diagrams<a class="headerlink" href="#linear-functional-selection-diagrams" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../../generated/pywhy_graphs.functional.make_graph_multidomain.html#pywhy_graphs.functional.make_graph_multidomain" title="pywhy_graphs.functional.make_graph_multidomain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_graph_multidomain</span></code></a>(G[, n_domains, ...])</p></td>
@@ -558,10 +804,10 @@ are the direct children of an S-node.</p>
           <p class="prev-next-title"><span class="section-number">1. </span>Causal Graphs in PyWhy</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../algorithms/index.html" title="next page">
+  <a class='right-next' id="next-link" href="../../generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">3. </span>Causal Graph Algorithms in PyWhy</p>
+      <p class="prev-next-title"><span class="section-number">2.2.1.1. </span>pywhy_graphs.functional.discrete.make_random_discrete_graph</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

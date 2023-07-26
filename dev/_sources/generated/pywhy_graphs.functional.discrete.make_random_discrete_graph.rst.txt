@@ -1,0 +1,12 @@
+﻿pywhy_graphs.functional.discrete.make_random_discrete_graph
+===========================================================
+
+.. currentmodule:: pywhy_graphs.functional.discrete
+
+.. autofunction:: make_random_discrete_graph
+
+.. include:: pywhy_graphs.functional.discrete.make_random_discrete_graph.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

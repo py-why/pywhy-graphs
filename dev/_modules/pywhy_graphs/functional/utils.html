@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -192,7 +193,192 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.functional.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">to_pgmpy_bayesian_network</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a discrete graph to a pgmpy Bayesian network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : nx.DiGraph</span>
+<span class="sd">        The discrete graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    model : pgmpy.models.BayesianModel</span>
+<span class="sd">        The Bayesian network.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function allows us to use the pgmpy library for inference and sampling.</span>
+<span class="sd">    For example, one can forward sample from the Bayesian network as follows:</span>
+
+<span class="sd">    &gt;&gt;&gt; from pgmpy.sampling import BayesianModelSampling</span>
+<span class="sd">    &gt;&gt;&gt; inference = BayesianModelSampling(model)</span>
+<span class="sd">    &gt;&gt;&gt; df = inference.forward_sample(size=5000)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;discrete&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model is not a functional model.&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">pgmpy.models</span> <span class="kn">import</span> <span class="n">BayesianNetwork</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">BayesianNetwork</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add_cpds</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;cpd&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+
+<span class="k">def</span> <span class="nf">pre_compute_reduce_maps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get probability array-maps for a node as function of conditional dependencies</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : nx.DiGraph</span>
+<span class="sd">        The discrete graph.</span>
+<span class="sd">    variable: Bayesian Model Node</span>
+<span class="sd">        node of the Bayesian network</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    state_index : dictionary</span>
+<span class="sd">        With probability array-index for node as function of conditional dependency values.</span>
+<span class="sd">    index_to_weight : dictionary</span>
+<span class="sd">        With mapping of probability array-index to probability array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">variable_cpd</span> <span class="o">=</span> <span class="n">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span>
+    <span class="n">variable_evid</span> <span class="o">=</span> <span class="n">variable_cpd</span><span class="o">.</span><span class="n">variables</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># compute all possible state combinations for the parent variables</span>
+    <span class="n">state_combinations</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">get_cardinality</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">var</span><span class="p">))</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variable_evid</span><span class="p">])</span>
+    <span class="p">]</span>
+
+    <span class="c1"># compute weights for all possible state combinations</span>
+    <span class="n">weights_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">variable_cpd</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">variable_evid</span><span class="p">,</span> <span class="n">sc</span><span class="p">)),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_warnings</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">state_combinations</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">unique_weights</span><span class="p">,</span> <span class="n">weights_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">weights_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># convert weights to index; make mapping of state to index</span>
+    <span class="n">state_to_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">state_combinations</span><span class="p">,</span> <span class="n">weights_indices</span><span class="p">))</span>
+
+    <span class="c1"># make mapping of index to weights</span>
+    <span class="n">index_to_weight</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_weights</span><span class="p">))</span>
+
+    <span class="c1"># return mappings of state to index, and index to weight</span>
+    <span class="k">return</span> <span class="n">state_to_index</span><span class="p">,</span> <span class="n">index_to_weight</span>
+
+
+<span class="k">def</span> <span class="nf">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the CPD associated with a node.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    node : Node</span>
+<span class="sd">        The node for which the CPD is to be returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cpd : TabularCPD</span>
+<span class="sd">        The CPD associated with the node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if the node is present in the graph</span>
+    <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> not present in the graph.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check if the graph is functional</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;discrete&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model is not a functional model.&quot;</span><span class="p">)</span>
+
+    <span class="n">cpd</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cpd&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cpd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No CPD associated with </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cpd</span>
+
+
+<span class="k">def</span> <span class="nf">get_cardinality</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">pgmpy.factors.discrete</span> <span class="kn">import</span> <span class="n">TabularCPD</span>
+
+    <span class="n">cpd</span><span class="p">:</span> <span class="n">TabularCPD</span> <span class="o">=</span> <span class="n">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cpd</span><span class="o">.</span><span class="n">cardinality</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">check_discrete_model</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the model for various errors. This method checks for the following</span>
+<span class="sd">    errors.</span>
+
+<span class="sd">    * Checks if the sum of the probabilities for each state is equal to 1 (tol=0.01).</span>
+<span class="sd">    * Checks if the CPDs associated with nodes are consistent with their parents.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        The graph to be checked.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    check : boolean</span>
+<span class="sd">        True if all the checks pass otherwise should throw an error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">pgmpy.factors.continuous</span> <span class="kn">import</span> <span class="n">ContinuousFactor</span>
+    <span class="kn">from</span> <span class="nn">pgmpy.factors.discrete</span> <span class="kn">import</span> <span class="n">TabularCPD</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;discrete&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model is not a functional model.&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">cpd</span> <span class="o">=</span> <span class="n">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># Check if a CPD is associated with every node.</span>
+        <span class="k">if</span> <span class="n">cpd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No CPD associated with </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if the CPD is an instance of either TabularCPD or ContinuousFactor.</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpd</span><span class="p">,</span> <span class="p">(</span><span class="n">TabularCPD</span><span class="p">,</span> <span class="n">ContinuousFactor</span><span class="p">)):</span>
+            <span class="n">evidence</span> <span class="o">=</span> <span class="n">cpd</span><span class="o">.</span><span class="n">get_evidence</span><span class="p">()</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+            <span class="c1"># Check if the evidence set of the CPD is same as its parents.</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">evidence</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">parents</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;CPD associated with </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> doesn&#39;t have proper parents associated with it.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Check if the values of the CPD sum to 1.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cpd</span><span class="o">.</span><span class="n">is_valid_cpd</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Sum or integral of conditional probabilities for node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;is not equal to 1.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cpd</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">cpd</span><span class="o">.</span><span class="n">state_names</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;CPD for </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> doesn&#39;t have state names defined for all the variables.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cpd</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">parent_cpd</span> <span class="o">=</span> <span class="n">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="c1"># Check if the evidence cardinality specified is same as parent&#39;s cardinality</span>
+            <span class="k">if</span> <span class="n">parent_cpd</span><span class="o">.</span><span class="n">cardinality</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">cpd</span><span class="o">.</span><span class="n">cardinality</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="n">index</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The cardinality of </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> doesn&#39;t match in it&#39;s child nodes.&quot;</span><span class="p">)</span>
+            <span class="c1"># Check if the state_names are the same in parent and child CPDs.</span>
+            <span class="k">if</span> <span class="n">parent_cpd</span><span class="o">.</span><span class="n">state_names</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">!=</span> <span class="n">cpd</span><span class="o">.</span><span class="n">state_names</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The state names of </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> doesn&#39;t match in it&#39;s child nodes.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
 
 
 <div class="viewcode-block" id="set_node_attributes_with_G"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.set_node_attributes_with_G.html#pywhy_graphs.functional.set_node_attributes_with_G">[docs]</a><span class="k">def</span> <span class="nf">set_node_attributes_with_G</span><span class="p">(</span><span class="n">G1</span><span class="p">,</span> <span class="n">G2</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
@@ -220,7 +406,14 @@
     <span class="k">return</span> <span class="n">G1</span></div>
 
 
-<span class="k">def</span> <span class="nf">_preprocess_parameter_inputs</span><span class="p">(</span><span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_preprocess_parameter_inputs</span><span class="p">(</span>
+    <span class="n">node_mean_lims</span><span class="p">,</span>
+    <span class="n">node_std_lims</span><span class="p">,</span>
+    <span class="n">edge_functions</span><span class="p">,</span>
+    <span class="n">edge_weight_lims</span><span class="p">,</span>
+    <span class="n">multi_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to preprocess common parameter inputs for sampling functional graphs.</span>
 
 <span class="sd">    Nodes&#39; exogenous variables are sampled from a Gaussian distribution.</span>
@@ -230,19 +423,83 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">node_mean_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">node_mean_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_mean_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;node_mean_lims must be a list of length 2.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_std_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">node_std_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_std_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;node_std_lims must be a list of length 2.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">edge_functions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">edge_functions</span> <span class="o">=</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">edge_weight_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_weight_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;edge_weight_lims must be a list of length 2.&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">multi_domain</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2"> must be a list of length 2.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">multi_domain</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_domains</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2"> must be a list of length 2 or </span><span class="si">{</span><span class="n">n_domains</span><span class="si">}</span><span class="s2"> domains.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if the parameters are not a list of length n_domains, then they must be a</span>
+        <span class="c1"># list of length n_domains</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_mean_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_domains</span><span class="p">:</span>
+            <span class="n">node_mean_lims</span> <span class="o">=</span> <span class="p">[</span><span class="n">node_mean_lims</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_domains</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_std_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_domains</span><span class="p">:</span>
+            <span class="n">node_std_lims</span> <span class="o">=</span> <span class="p">[</span><span class="n">node_std_lims</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_domains</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_weight_lims</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_domains</span><span class="p">:</span>
+            <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="p">[</span><span class="n">edge_weight_lims</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_domains</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
+
+
+<span class="k">def</span> <span class="nf">_preprocess_md_parameter_inputs</span><span class="p">(</span>
+    <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to preprocess common parameter inputs for sampling functional graphs.</span>
+
+<span class="sd">    Nodes&#39; exogenous variables are sampled from a Gaussian distribution.</span>
+<span class="sd">    Edges are sampled, such that an additive linear model is assumed. Note</span>
+<span class="sd">    the edge functions may be nonlinear, but how they are combined for each</span>
+<span class="sd">    node as a function of its parents is linear.</span>
+
+<span class="sd">    Parameters are encoded as a 2D array with rows as the domains and columns as the lower and</span>
+<span class="sd">    upper bound.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    node_mean_lims : ArrayLike of shape (n_domains, 2)</span>
+<span class="sd">        A 2D array with rows as the domains and columns as the lower and upper bound</span>
+<span class="sd">        of the node&#39;s exogenous variable mean. If None, then initialized to [0, 1]</span>
+<span class="sd">        for every domain.</span>
+<span class="sd">    node_std_lims : ArrayLike of shape (n_domains, 2)</span>
+<span class="sd">        A 2D array with rows as the domains and columns as the lower and upper initialized</span>
+<span class="sd">        of the node&#39;s exogenous variable standard deviation. If None, then initialized</span>
+<span class="sd">        to [0.1, 1.0] for every domain.</span>
+<span class="sd">    edge_functions : ArrayLike of shape (n_functions,)</span>
+<span class="sd">        A set of different lambda functions.</span>
+<span class="sd">    edge_weight_lims : ArrayLike of shape (n_domains, 2)</span>
+<span class="sd">        A 2D array with rows as the domains and columns as the lower and upper bound</span>
+<span class="sd">        of the edge weights that are used to combine the parents&#39; values linearly. If None,</span>
+<span class="sd">        then initialized to [-1, 1] for every domain.</span>
+<span class="sd">    n_domains : int</span>
+<span class="sd">        Number of domains.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># initialize to default values</span>
+    <span class="k">if</span> <span class="n">node_mean_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">node_mean_lims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_domains</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">node_mean_lims</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">node_std_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">node_std_lims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_domains</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">node_std_lims</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">node_std_lims</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="k">if</span> <span class="n">edge_functions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">edge_functions</span> <span class="o">=</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">edge_weight_lims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_domains</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">edge_weight_lims</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">edge_weight_lims</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_domains</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2"> must be a list of length 2 or </span><span class="si">{</span><span class="n">n_domains</span><span class="si">}</span><span class="s2"> domains.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
 </pre></div>
 

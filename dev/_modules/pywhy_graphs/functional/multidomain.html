@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -207,6 +208,7 @@
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
 
 <span class="kn">from</span> <span class="nn">.additive</span> <span class="kn">import</span> <span class="n">generate_edge_functions_for_node</span>
+<span class="kn">from</span> <span class="nn">.linear</span> <span class="kn">import</span> <span class="n">generate_noise_for_node</span>
 
 
 <div class="viewcode-block" id="make_graph_multidomain"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.make_graph_multidomain.html#pywhy_graphs.functional.make_graph_multidomain">[docs]</a><span class="k">def</span> <span class="nf">make_graph_multidomain</span><span class="p">(</span>
@@ -434,14 +436,17 @@
 
     <span class="c1"># now set a random function for each domain that is not invariant</span>
     <span class="n">domain_noise_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">domain_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_domains</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">domain_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_domains</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">domain_id</span> <span class="ow">in</span> <span class="n">invariant_domains</span><span class="p">:</span>
             <span class="k">continue</span>
 
+        <span class="n">domain_mean_lims</span> <span class="o">=</span> <span class="n">node_mean_lims</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">domain_std_lims</span> <span class="o">=</span> <span class="n">node_std_lims</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
         <span class="c1"># for domains that are not invariant, we need to set the noise function to a</span>
         <span class="c1"># new random function</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">domain_mean_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">domain_mean_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">domain_std_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">domain_std_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># set the node attribute &quot;functions&quot; to hold the weight and function wrt each parent</span>
         <span class="n">domain_noise_params</span><span class="p">[</span><span class="n">domain_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}</span>
@@ -450,8 +455,7 @@
 
 
 <span class="k">def</span> <span class="nf">sample_multidomain_lin_functions</span><span class="p">(</span>
-    <span class="n">G</span><span class="p">,</span>
-    <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">G</span><span class="p">:</span> <span class="n">AugmentedGraph</span><span class="p">,</span>
     <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -463,15 +467,16 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    G : AugmentedGraph</span>
-<span class="sd">        The selection diagram to sample from.</span>
-<span class="sd">    n_domains : int</span>
-<span class="sd">        The number of domains to sample from.</span>
+<span class="sd">        The selection diagram to sample from. Should have S-nodes to indicate</span>
+<span class="sd">        different domains.</span>
 <span class="sd">    node_mean_lims : Optional[List[float]], optional</span>
 <span class="sd">        The lower and upper bounds of the mean of the Gaussian random variable, by default None,</span>
-<span class="sd">        which defaults to a mean of 0.</span>
+<span class="sd">        which defaults to a mean of 0. If there is a list, then it should be a list of</span>
+<span class="sd">        length ``n_domains`` meaning that each domain has a different mean range.</span>
 <span class="sd">    node_std_lims : Optional[List[float]], optional</span>
 <span class="sd">        The lower and upper bounds of the std of the Gaussian random variable, by default None,</span>
-<span class="sd">        which defaults to a std of 1.</span>
+<span class="sd">        which defaults to a std of 1. If there is a list, then it should be a list of</span>
+<span class="sd">        length ``n_domains`` meaning that each domain has a different std range.</span>
 <span class="sd">    edge_functions : List[Callable[float]], optional</span>
 <span class="sd">        The set of edge functions that take in an iid sample from the parent and computes</span>
 <span class="sd">        a transformation (possibly nonlinear), such as ``(lambda x: x**2, lambda x: x)``,</span>
@@ -487,15 +492,25 @@
 <span class="sd">    G : AugmentedGraph</span>
 <span class="sd">        The selection diagram with the sampled functions and weights.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span> <span class="o">=</span> <span class="n">_preprocess_parameter_inputs</span><span class="p">(</span>
-        <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
-    <span class="p">)</span>
-
     <span class="n">s_node_domains</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-
+    <span class="n">n_domains</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">domains</span><span class="p">)</span>
     <span class="n">s_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">G</span>
+
+    <span class="p">(</span>
+        <span class="n">node_mean_lims_</span><span class="p">,</span>
+        <span class="n">node_std_lims_</span><span class="p">,</span>
+        <span class="n">edge_functions_</span><span class="p">,</span>
+        <span class="n">edge_weight_lims_</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_preprocess_parameter_inputs</span><span class="p">(</span>
+        <span class="n">node_mean_lims</span><span class="p">,</span>
+        <span class="n">node_std_lims</span><span class="p">,</span>
+        <span class="n">edge_functions</span><span class="p">,</span>
+        <span class="n">edge_weight_lims</span><span class="p">,</span>
+        <span class="n">multi_domain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># compute all nodes that have S-node connections</span>
     <span class="n">nodes_with_s_nodes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -512,28 +527,33 @@
     <span class="c1"># compute all possible S-nodes given the number of domains</span>
     <span class="n">G</span><span class="p">,</span> <span class="n">s_node_domains</span> <span class="o">=</span> <span class="n">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">)</span>
     <span class="n">all_poss_snodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_with_s_nodes</span><span class="p">:</span>
+            <span class="c1"># for each node with S-nodes and compute the invariant domains</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">compute_invariant_domains_per_node</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">all_poss_snodes</span><span class="p">,</span> <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_with_s_nodes</span><span class="p">:</span>
-        <span class="c1"># for each node with S-nodes and compute the invariant domains</span>
-        <span class="n">G</span> <span class="o">=</span> <span class="n">compute_invariant_domains_per_node</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">all_poss_snodes</span><span class="p">,</span> <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">)</span>
-
-        <span class="c1"># now set a random function for each domain that is not invariant</span>
-        <span class="n">generate_multidomain_noise_for_node</span><span class="p">(</span>
-            <span class="n">G</span><span class="p">,</span>
-            <span class="n">node</span><span class="p">,</span>
-            <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">,</span>
-            <span class="n">node_mean_lims</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">,</span>
-            <span class="n">node_std_lims</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">,</span>
-            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-            <span class="n">check_s_node_consistency</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
+            <span class="c1"># now set a random function for each domain that is not invariant</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">generate_multidomain_noise_for_node</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span>
+                <span class="n">node</span><span class="p">,</span>
+                <span class="n">n_domains</span><span class="o">=</span><span class="n">n_domains</span><span class="p">,</span>
+                <span class="n">node_mean_lims</span><span class="o">=</span><span class="n">node_mean_lims_</span><span class="p">,</span>
+                <span class="n">node_std_lims</span><span class="o">=</span><span class="n">node_std_lims_</span><span class="p">,</span>
+                <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                <span class="n">check_s_node_consistency</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># sample single-domain noise</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">generate_noise_for_node</span><span class="p">(</span>
+                <span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_mean_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node_std_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+            <span class="p">)</span>
 
         <span class="c1"># sample edge functions and weights as a function of the parents</span>
         <span class="n">generate_edge_functions_for_node</span><span class="p">(</span>
             <span class="n">G</span><span class="p">,</span>
             <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span>
-            <span class="n">edge_weight_lims</span><span class="o">=</span><span class="n">edge_weight_lims</span><span class="p">,</span>
-            <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions</span><span class="p">,</span>
+            <span class="n">edge_weight_lims</span><span class="o">=</span><span class="n">edge_weight_lims_</span><span class="p">,</span>
+            <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions_</span><span class="p">,</span>
             <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
         <span class="p">)</span>
 

@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -256,7 +257,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    G : NetworkX DiGraph</span>
 <span class="sd">        NetworkX graph with the edge weights and functions set with node attributes</span>
-<span class="sd">        set with ``&#39;parent_functions&#39;``, and ``&#39;gaussian_noise_function&#39;``. Moreover</span>
+<span class="sd">        set with ``&#39;parent_function&#39;``, and ``&#39;gaussian_noise_function&#39;``. Moreover</span>
 <span class="sd">        the graph attribute ``&#39;linear_gaussian&#39;`` is set to ``True``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -268,7 +269,6 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="n">directed_G</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a DAG.&quot;</span><span class="p">)</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
     <span class="c1"># preprocess hyperparameters and check for validity</span>
     <span class="p">(</span>
@@ -286,9 +286,9 @@
     <span class="c1"># sample noise and edge functions for each node and its parents</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">top_sort_idx</span><span class="p">:</span>
         <span class="c1"># sample noise</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;gaussian_noise_function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">generate_noise_for_node</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_mean_lims_</span><span class="p">,</span> <span class="n">node_std_lims_</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="p">)</span>
 
         <span class="c1"># sample edge functions and weights</span>
         <span class="n">generate_edge_functions_for_node</span><span class="p">(</span>
@@ -298,8 +298,21 @@
             <span class="n">edge_functions</span><span class="o">=</span><span class="n">edge_functions_</span><span class="p">,</span>
             <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;functional&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;linear_gaussian&quot;</span>
     <span class="k">return</span> <span class="n">G</span></div>
+
+
+<span class="k">def</span> <span class="nf">generate_noise_for_node</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="c1"># sample noise</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_mean_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">node_std_lims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;exogenous_distribution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">})</span>
+
+    <span class="c1"># default is the uniform choice function</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;exogenous_function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">G</span>
 
 
 <div class="viewcode-block" id="apply_linear_soft_intervention"><a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.apply_linear_soft_intervention.html#pywhy_graphs.functional.apply_linear_soft_intervention">[docs]</a><span class="k">def</span> <span class="nf">apply_linear_soft_intervention</span><span class="p">(</span>
@@ -329,7 +342,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linear_gaussian&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input graph must be a linear Gaussian graph.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">target</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All targets must be in the graph.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All targets </span><span class="si">{</span><span class="n">targets</span><span class="si">}</span><span class="s2"> must be in the graph: </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 

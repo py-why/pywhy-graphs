@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention &#8212; pywhy-graphs v0.2.0.dev0</title>
+    <title>2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention &#8212; pywhy-graphs v0.2.0.dev0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -43,11 +43,12 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pywhy_graphs.functional.set_node_attributes_with_G" href="pywhy_graphs.functional.set_node_attributes_with_G.html" />
-    <link rel="prev" title="2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian" href="pywhy_graphs.functional.make_graph_linear_gaussian.html" />
+    <link rel="prev" title="2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian" href="pywhy_graphs.functional.make_graph_linear_gaussian.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -188,18 +189,28 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.functional.discrete.make_random_discrete_graph.html">
+     2.2.1.1. pywhy_graphs.functional.discrete.make_random_discrete_graph
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pywhy_graphs.functional.discrete.add_cpd_for_node.html">
+     2.2.1.2. pywhy_graphs.functional.discrete.add_cpd_for_node
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.functional.make_graph_linear_gaussian.html">
-     2.2.1. pywhy_graphs.functional.make_graph_linear_gaussian
+     2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     2.2.2. pywhy_graphs.functional.apply_linear_soft_intervention
+     2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pywhy_graphs.functional.make_graph_multidomain.html">
-     2.4.1. pywhy_graphs.functional.make_graph_multidomain
+     2.7.1. pywhy_graphs.functional.make_graph_multidomain
     </a>
    </li>
   </ul>
@@ -428,7 +439,7 @@
               <article class="bd-article" role="main">
                 
   <section id="pywhy-graphs-functional-apply-linear-soft-intervention">
-<h1><span class="section-number">2.2.2. </span>pywhy_graphs.functional.apply_linear_soft_intervention<a class="headerlink" href="#pywhy-graphs-functional-apply-linear-soft-intervention" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">2.5.2. </span>pywhy_graphs.functional.apply_linear_soft_intervention<a class="headerlink" href="#pywhy-graphs-functional-apply-linear-soft-intervention" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pywhy_graphs.functional.apply_linear_soft_intervention">
 <span class="sig-prename descclassname"><span class="pre">pywhy_graphs.functional.</span></span><span class="sig-name descname"><span class="pre">apply_linear_soft_intervention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'additive'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/functional/linear.html#apply_linear_soft_intervention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.functional.apply_linear_soft_intervention" title="Permalink to this definition">#</a></dt>
@@ -478,7 +489,7 @@ exogenous noise of the target nodes.</p>
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">2.2.1. </span>pywhy_graphs.functional.make_graph_linear_gaussian</p>
+          <p class="prev-next-title"><span class="section-number">2.5.1. </span>pywhy_graphs.functional.make_graph_linear_gaussian</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="pywhy_graphs.functional.set_node_attributes_with_G.html" title="next page">

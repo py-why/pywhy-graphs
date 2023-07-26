@@ -42,6 +42,7 @@
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -207,6 +208,7 @@
 <span class="k">class</span> <span class="nc">AugmentedNodeMixin</span><span class="p">:</span>
     <span class="n">graph</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="n">nodes</span><span class="p">:</span> <span class="n">NodeView</span>
+    <span class="n">domains</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
@@ -333,7 +335,7 @@
         <span class="k">return</span> <span class="n">nodes</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">domain_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">domain_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of domain ids.&quot;&quot;&quot;</span>
         <span class="n">domain_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;S-nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -363,6 +365,9 @@
                 <span class="sa">f</span><span class="s2">&quot;You cannot add an augmneted-node for </span><span class="si">{</span><span class="n">node_changes</span><span class="si">}</span><span class="s2"> because &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;there is already an augmented-node.&quot;</span>
             <span class="p">)</span>
+
+        <span class="c1"># add domains</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domains</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">domain_ids</span><span class="p">)</span>
 
         <span class="c1"># add a new S-node into the graph</span>
         <span class="n">s_node_name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s_nodes</span><span class="p">))</span>
