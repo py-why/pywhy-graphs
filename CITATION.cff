@@ -1,0 +1,28 @@
+# YAML 1.2
+---
+# Metadata for citation of this software according to the CFF format (https://citation-file-format.github.io/)
+cff-version: 1.2.0
+title: 'Pywhy-Graphs:  Causal graphs that are networkx-compliant for the py-why ecosystem.'
+abstract: 'Pywhy-Graphs is a Python library to represent causal graphs and its related algorithms using a networkx-like API in Python.'
+authors:
+    - given-names: Adam
+      family-names: Li
+      affiliation: 'Department of Computer Science, Columbia University, New York, NY, USA'
+      orcid: 'https://orcid.org/0000-0001-8421-365X'
+    - given-names: Jaron
+      family-names: Lee
+      affiliation: 'Johns Hopkins University'
+      email: 'jaron2005@gmail.com'
+    - given-names: Aryan
+      family-names: Roy
+      affiliation: 'Manipal Institute of Technology'
+      email: 'aryanroy5678@gmail.com'
+type: software
+repository-code: 'https://github.com/py-why/pywhy-graphs'
+license: MIT
+keywords:
+  - causality
+  - pywhy
+  - graphs
+  - networkx
+...

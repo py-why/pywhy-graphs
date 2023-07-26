@@ -13,6 +13,7 @@ from pywhy_graphs.functional.utils import _preprocess_parameter_inputs
 from pywhy_graphs.typing import Node
 
 from .additive import generate_edge_functions_for_node
+from .linear import generate_noise_for_node
 
 
 def make_graph_multidomain(
@@ -240,14 +241,17 @@ def generate_multidomain_noise_for_node(
 
     # now set a random function for each domain that is not invariant
     domain_noise_params = dict()
-    for domain_id in range(1, n_domains + 1):
+    for idx, domain_id in enumerate(range(1, n_domains + 1)):
         if domain_id in invariant_domains:
             continue
 
+        domain_mean_lims = node_mean_lims[idx]
+        domain_std_lims = node_std_lims[idx]
+
         # for domains that are not invariant, we need to set the noise function to a
         # new random function
-        mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
-        std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+        mean = rng.uniform(low=domain_mean_lims[0], high=domain_mean_lims[1])
+        std = rng.uniform(low=domain_std_lims[0], high=domain_std_lims[1])
 
         # set the node attribute "functions" to hold the weight and function wrt each parent
         domain_noise_params[domain_id] = {"mean": mean, "std": std}
@@ -256,8 +260,7 @@ def generate_multidomain_noise_for_node(
 
 
 def sample_multidomain_lin_functions(
-    G,
-    n_domains: int,
+    G: AugmentedGraph,
     node_mean_lims: Optional[List[float]] = None,
     node_std_lims: Optional[List[float]] = None,
     edge_functions: List[Callable[[float], float]] = None,
@@ -269,15 +272,16 @@ def sample_multidomain_lin_functions(
     Parameters
     ----------
     G : AugmentedGraph
-        The selection diagram to sample from.
-    n_domains : int
-        The number of domains to sample from.
+        The selection diagram to sample from. Should have S-nodes to indicate
+        different domains.
     node_mean_lims : Optional[List[float]], optional
         The lower and upper bounds of the mean of the Gaussian random variable, by default None,
-        which defaults to a mean of 0.
+        which defaults to a mean of 0. If there is a list, then it should be a list of
+        length ``n_domains`` meaning that each domain has a different mean range.
     node_std_lims : Optional[List[float]], optional
         The lower and upper bounds of the std of the Gaussian random variable, by default None,
-        which defaults to a std of 1.
+        which defaults to a std of 1. If there is a list, then it should be a list of
+        length ``n_domains`` meaning that each domain has a different std range.
     edge_functions : List[Callable[float]], optional
         The set of edge functions that take in an iid sample from the parent and computes
         a transformation (possibly nonlinear), such as ``(lambda x: x**2, lambda x: x)``,
@@ -293,15 +297,25 @@ def sample_multidomain_lin_functions(
     G : AugmentedGraph
         The selection diagram with the sampled functions and weights.
     """
-    node_mean_lims, node_std_lims, edge_functions, edge_weight_lims = _preprocess_parameter_inputs(
-        node_mean_lims, node_std_lims, edge_functions, edge_weight_lims
-    )
-
     s_node_domains = dict()
-
+    n_domains = len(G.domains)
     s_nodes = set(G.s_nodes)
     if len(s_nodes) == 0:
         return G
+
+    (
+        node_mean_lims_,
+        node_std_lims_,
+        edge_functions_,
+        edge_weight_lims_,
+    ) = _preprocess_parameter_inputs(
+        node_mean_lims,
+        node_std_lims,
+        edge_functions,
+        edge_weight_lims,
+        multi_domain=True,
+        n_domains=n_domains,
+    )
 
     # compute all nodes that have S-node connections
     nodes_with_s_nodes = []
@@ -318,28 +332,33 @@ def sample_multidomain_lin_functions(
     # compute all possible S-nodes given the number of domains
     G, s_node_domains = add_all_snode_combinations(G, n_domains)
     all_poss_snodes = set(G.s_nodes)
+    for node in G.nodes:
+        if node in nodes_with_s_nodes:
+            # for each node with S-nodes and compute the invariant domains
+            G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
 
-    for node in nodes_with_s_nodes:
-        # for each node with S-nodes and compute the invariant domains
-        G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
-
-        # now set a random function for each domain that is not invariant
-        generate_multidomain_noise_for_node(
-            G,
-            node,
-            n_domains=n_domains,
-            node_mean_lims=node_mean_lims,
-            node_std_lims=node_std_lims,
-            random_state=random_state,
-            check_s_node_consistency=False,
-        )
+            # now set a random function for each domain that is not invariant
+            G = generate_multidomain_noise_for_node(
+                G,
+                node,
+                n_domains=n_domains,
+                node_mean_lims=node_mean_lims_,
+                node_std_lims=node_std_lims_,
+                random_state=random_state,
+                check_s_node_consistency=False,
+            )
+        else:
+            # sample single-domain noise
+            G = generate_noise_for_node(
+                G, node, node_mean_lims_[0], node_std_lims_[0], random_state=random_state
+            )
 
         # sample edge functions and weights as a function of the parents
         generate_edge_functions_for_node(
             G,
             node=node,
-            edge_weight_lims=edge_weight_lims,
-            edge_functions=edge_functions,
+            edge_weight_lims=edge_weight_lims_,
+            edge_functions=edge_functions_,
             random_state=random_state,
         )
 

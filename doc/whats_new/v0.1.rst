@@ -43,6 +43,7 @@ Changelog
 - |Feature| Implement a new submodule for converting graphs to a functional model, with :func:`pywhy_graphs.functional.make_graph_linear_gaussian`, by `Adam Li`_ (:pr:`75`)
 - |Feature| Implement a multidomain linear functional graph, with :func:`pywhy_graphs.functional.make_graph_multidomain`, by `Adam Li`_ (:pr:`77`)
 - |Feature| Implement and test functions to find inducing paths between two nodes, `Aryan Roy`_ (:pr:`78`)
+- |Feature| Implement general functional API for sampling and generating a functional causal graph,  by `Adam Li`_ (:pr:`82`)
 
 
 Code and Documentation Contributors

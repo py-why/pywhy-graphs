@@ -6,7 +6,7 @@ from pywhy_graphs.classes import AugmentedGraph
 from pywhy_graphs.typing import Node
 
 
-def add_all_snode_combinations(G, n_domains: int):
+def add_all_snode_combinations(G, n_domains: int, on_error="raise"):
     """Add all possible S-nodes to the graph given number of domains.
 
     Parameters
@@ -15,6 +15,11 @@ def add_all_snode_combinations(G, n_domains: int):
         The augmented graph.
     n_domains : int
         The number of domains.
+    on_error : str, optional
+        How to handle errors, by default 'raise'. Can be one of:
+        - 'raise': raise an exception
+        - 'ignore': ignore the error.
+        - 'warn': raise a warning
 
     Returns
     -------
@@ -33,14 +38,24 @@ def add_all_snode_combinations(G, n_domains: int):
 
         # now modify the function of the edge, S-nodes are pointing to
         s_node = ("S", sdx)
+        if s_node in G.s_nodes:
+            if on_error == "raise":
+                raise RuntimeError(f"There is already an S-node {s_node} in G!")
+            elif on_error == "warn":
+                warn(f"There is already an S-node {s_node} in G!")
+
         G.add_node(s_node, domain_ids=(source_domain, target_domain))
         s_node_domains[(source_domain, target_domain)] = s_node
+
+        # add S-nodes
+        G.graph["S-nodes"][s_node] = (source_domain, target_domain)
 
         # increment the S-node counter
         sdx += 1
     return G, s_node_domains
 
 
+# XXX: does not work?
 def compute_invariant_domains_per_node(
     G: AugmentedGraph,
     node: Node,
@@ -91,8 +106,8 @@ def compute_invariant_domains_per_node(
 
     # add now all relevant S-nodes considering the domains
     if all_poss_snodes is None:
-        G, s_node_domains = add_all_snode_combinations(G, n_domains)
-        all_poss_snodes = set(G.s_nodes)
+        G_copy, s_node_domains = add_all_snode_combinations(G.copy(), n_domains, on_error="ignore")
+        all_poss_snodes = set(G_copy.s_nodes)
 
     remove_s_node = []
     for s_node in all_poss_snodes:

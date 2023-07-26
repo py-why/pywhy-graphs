@@ -24,6 +24,7 @@ from sphinx_gallery.sorting import ExampleTitleSortKey, ExplicitOrder
 sys.path.insert(0, os.path.abspath("../"))
 
 import pywhy_graphs  # noqa: E402
+import pywhy_graphs.functional.discrete
 
 curdir = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(curdir, "..")))
@@ -52,7 +53,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_issues",
     "sphinx.ext.viewcode",
-    # "nbsphinx",  # enables building Jupyter notebooks and rendering
+    "nbsphinx",  # enables building Jupyter notebooks and rendering
     "sphinx.ext.mathjax",
     "sphinx_gallery.gen_gallery",
     "sphinxcontrib.bibtex",
@@ -213,10 +214,9 @@ exclude_patterns = [
     "_build",
     "Thumbs.db",
     "**.ipynb_checkpoints",
-    # "auto_examples/*.rst",
-    # "auto_examples/index.rst",
-    # "auto_examples/mixededge/index.rst",
-    # "auto_examples/mixededge/*.rst",
+    '**/*.py',
+    "auto_examples/**/*.py",
+    "auto_examples/**/*.ipynb",
 ]
 
 source_suffix = [".rst", ".md"]
@@ -235,6 +235,7 @@ intersphinx_mapping = {
     "pygraphviz": ("https://pygraphviz.github.io/documentation/stable/", None),
     "graphviz": ("https://graphviz.readthedocs.io/en/stable/", None),
     "sphinx-gallery": ("https://sphinx-gallery.github.io/stable/", None),
+    "pgmpy": ("https://pgmpy.org/", None),
 }
 intersphinx_timeout = 5
 
@@ -301,6 +302,7 @@ sphinx_gallery_conf = {
             "../examples/mixededge",
             "../examples/intro",
             "../examples/visualization",
+            "../examples/simulations",
         ]
     ),
     # "filename_pattern": "^((?!sgskip).)*$",
@@ -356,6 +358,9 @@ nitpick_ignore_regex = [
     ('py:obj', r"networkx*"),
 ]
 
+# -- Options for NBSphinx output ---------------------------------------------
+# Set nbsphinx_allow_errors to only allow Jupyter notebooks
+# nbsphinx_allow_errors = True
 
 doctest_global_setup = "import networkx as nx"
 
@@ -369,3 +374,4 @@ linkcheck_timeout = 15  # some can be quite slow
 linkcheck_ignore = [
     "https://github.com/{group}/{project}/pull/",  # sphinx-issues will render this properly
 ]
+

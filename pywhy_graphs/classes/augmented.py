@@ -13,6 +13,7 @@ from .pag import PAG
 class AugmentedNodeMixin:
     graph: dict
     nodes: NodeView
+    domains: Set[int] = set()
 
     @abstractmethod
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
@@ -139,7 +140,7 @@ class AugmentedNodeMixin:
         return nodes
 
     @property
-    def domain_ids(self):
+    def domain_ids(self) -> List[int]:
         """Return set of domain ids."""
         domain_ids = set()
         for src, target in self.graph["S-nodes"].values():
@@ -169,6 +170,9 @@ class AugmentedNodeMixin:
                 f"You cannot add an augmneted-node for {node_changes} because "
                 f"there is already an augmented-node."
             )
+
+        # add domains
+        self.domains.update(domain_ids)
 
         # add a new S-node into the graph
         s_node_name = ("S", len(self.s_nodes))
