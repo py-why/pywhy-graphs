@@ -10,10 +10,107 @@ from .admg import ADMG
 from .pag import PAG
 
 
+def create_augmented_diagram(
+    G,
+    intervention_targets: List[Set[Node]],
+    domain_ids: List[int] = None,
+):
+    """Create an augmented causal diagram.
+
+    Each additional F-node created is mapped back to a symmetric difference
+    set of intervention targets and a pair of domain ids.
+
+    It is assumed that the intervention targets and domain IDs are in the same order
+    as the distributions of data available.
+
+    Parameters
+    ----------
+    G : Causal Graph
+        The causal graph before augmenting.
+    intervention_targets : List[Set[Node]]
+        Sets of intervention targets. All intervention targets must be nodes in the graph G.
+    domain_ids : List[int], optional
+        The corresponding domain indices of each intervention target, by default None,
+        which will assign them all to domain 1.
+
+    Returns
+    -------
+    G : Causal Graph
+        The augmented causal graph with additional nodes.
+
+    Examples
+    --------
+    >>> import pywhy_graphs as pg
+    >>> # add observational data in three different domains
+    >>> G = create_augmented_diagram(G, [{}, {}, {}], domain_ids=[1, 2, 3])
+    >>>
+    >>> # add interventional data in the same domain
+    >>> G = create_augmented_diagram(G, [{'x'}, {'x', 'y'}, {}])
+    >>>
+    >>> # add observational and interventional data in two different domains
+    >>> G = create_augmented_diagram(G, [{'x'}, {'x', 'y'}, {}], domain_ids=[1, 2, 1])
+    """
+    if domain_ids is None:
+        domain_ids = [1] * len(intervention_targets)
+
+    # map augmented nodes to domains
+    node_domain_map = dict()
+    reverse_sigma_map = dict()
+    symmetric_diff_map = dict()
+    sigma_map = dict()
+    f_nodes = []
+
+    # create F-nodes, which is now all combinations of distributions choose 2
+    k = 0
+    seen_domain_pairs = dict()
+    seen_distr_pairs = dict()
+
+    # compare every pair of distributions to now add interventions if necessary
+    for dataset_idx, source in enumerate(domain_ids):
+        for dataset_jdx, target in enumerate(domain_ids):
+            # perform memoization to avoid duplicate augmented nodes
+            domain_memo_key = frozenset([source, target])
+            distr_memo_key = frozenset([dataset_idx, dataset_jdx])
+            if dataset_jdx <= dataset_idx:
+                continue
+            if domain_memo_key in seen_domain_pairs and distr_memo_key in seen_distr_pairs:
+                continue
+            seen_domain_pairs[domain_memo_key] = None
+            seen_distr_pairs[distr_memo_key] = None
+
+            # map each augmented-node to a tuple of distribution indices, or to a set of nodes
+            # representing the intervention targets
+            symm_diff = set(intervention_targets[dataset_idx]).symmetric_difference(
+                set(intervention_targets[dataset_jdx])
+            )
+            targets = frozenset(symm_diff)
+
+            # if targets is the empty set
+
+            # if targets == frozenset() and source == target:
+            #     # the two interventional distributions are exactly the same
+            #     logger.warn(
+            #         f"Interventional distributions {dataset_idx} and {dataset_jdx} have "
+            #         f"the same interventions within the same domain {source}."
+            #     )
+            #     continue
+
+            # create the F-node
+            f_node = ("F", k)
+            f_nodes.append(f_node)
+
+            # map each F-node to a set of domain(s)
+            node_domain_map[f_node] = [source, target]
+            sigma_map[f_node] = [dataset_idx, dataset_jdx]
+            reverse_sigma_map[frozenset([dataset_idx, dataset_jdx])] = f_node
+            symmetric_diff_map[f_node] = targets
+
+            k += 1
+
+
 class AugmentedNodeMixin:
     graph: dict
     nodes: NodeView
-    domains: Set[int] = set()
 
     @abstractmethod
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
@@ -154,6 +251,16 @@ class AugmentedNodeMixin:
         """Return set of S-nodes."""
         return list(self.graph["S-nodes"].keys())
 
+    @property
+    def s_node_domain_ids(self) -> List[int]:
+        """Return a mapping of S-nodes to their domain ids."""
+        return self.graph["S-nodes"]
+
+    @property
+    def domain_ids_to_snodes(self) -> List[int]:
+        """Return a mapping of domain ids to their ocrresponding S-nodes."""
+        return {v: k for k, v in self.graph["S-nodes"].items()}
+
     def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
         if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
@@ -170,9 +277,6 @@ class AugmentedNodeMixin:
                 f"You cannot add an augmneted-node for {node_changes} because "
                 f"there is already an augmented-node."
             )
-
-        # add domains
-        self.domains.update(domain_ids)
 
         # add a new S-node into the graph
         s_node_name = ("S", len(self.s_nodes))
