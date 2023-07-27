@@ -303,6 +303,7 @@ sphinx_gallery_conf = {
             "../examples/intro",
             "../examples/visualization",
             "../examples/simulations",
+            "../examples/multiple-domains",
         ]
     ),
     # "filename_pattern": "^((?!sgskip).)*$",

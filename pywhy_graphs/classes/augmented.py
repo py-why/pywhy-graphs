@@ -1,6 +1,6 @@
 import collections
 from abc import abstractmethod
-from typing import Iterable, List, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 from networkx.classes.reportviews import NodeView
 
@@ -62,8 +62,8 @@ def create_augmented_diagram(
 
     # create F-nodes, which is now all combinations of distributions choose 2
     k = 0
-    seen_domain_pairs = dict()
-    seen_distr_pairs = dict()
+    seen_domain_pairs: Dict = dict()
+    seen_distr_pairs: Dict = dict()
 
     # compare every pair of distributions to now add interventions if necessary
     for dataset_idx, source in enumerate(domain_ids):
@@ -237,14 +237,14 @@ class AugmentedNodeMixin:
         return nodes
 
     @property
-    def domain_ids(self) -> List[int]:
+    def domain_ids(self) -> Set[int]:
         """Return set of domain ids."""
         domain_ids = set()
         for src, target in self.graph["S-nodes"].values():
             domain_ids.add(src)
             domain_ids.add(target)
 
-        return list(domain_ids)
+        return domain_ids
 
     @property
     def s_nodes(self) -> List[Node]:
@@ -257,7 +257,7 @@ class AugmentedNodeMixin:
         return self.graph["S-nodes"]
 
     @property
-    def domain_ids_to_snodes(self) -> List[int]:
+    def domain_ids_to_snodes(self) -> Dict:
         """Return a mapping of domain ids to their ocrresponding S-nodes."""
         return {v: k for k, v in self.graph["S-nodes"].items()}
 
@@ -288,7 +288,7 @@ class AugmentedNodeMixin:
 
         # adding nodes to F-node container occurs last, because of the error checks
         # that occur in adding edges
-        self.graph["S-nodes"][s_node_name] = domain_ids
+        self.graph["S-nodes"][s_node_name] = frozenset(domain_ids)
 
 
 class AugmentedGraph(ADMG, AugmentedNodeMixin):

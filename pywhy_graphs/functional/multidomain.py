@@ -228,10 +228,9 @@ def generate_multidomain_noise_for_node(
     if check_s_node_consistency:
         # compute all possible S-nodes given the number of domains
         G, _ = add_all_snode_combinations(G, n_domains)
-        all_poss_snodes = set(G.s_nodes)
 
         # for each node with S-nodes and compute the invariant domains
-        G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
+        G = compute_invariant_domains_per_node(G, node, n_domains=n_domains)
     else:
         if "invariant_domains" not in G.nodes()[node]:
             raise ValueError("Must specify invariant domains for node {}.".format(node))
@@ -331,11 +330,10 @@ def sample_multidomain_lin_functions(
 
     # compute all possible S-nodes given the number of domains
     G, s_node_domains = add_all_snode_combinations(G, n_domains)
-    all_poss_snodes = set(G.s_nodes)
     for node in G.nodes:
         if node in nodes_with_s_nodes:
             # for each node with S-nodes and compute the invariant domains
-            G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
+            G = compute_invariant_domains_per_node(G, node, n_domains=n_domains)
 
             # now set a random function for each domain that is not invariant
             G = generate_multidomain_noise_for_node(
