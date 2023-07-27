@@ -8,6 +8,8 @@ An introduction to selection diagrams and how to use them
 Selection diagrams are causal graphical objects that allow the user and scientist
 to represent causal models with multiple domains. This is useful for representing
 domain-shifts, generalizability and invariances across different environments.
+For a detailed theoretical introduction to selection diagrams, see
+:footcite:`bareinboim_causal_2016,pearl2022external`.
 
 This is a common problem in machine learning, where the goal is to learn a model
 that generalizes to unseen data. In this case, the unseen data can be a different
