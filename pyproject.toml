@@ -42,6 +42,7 @@ scipy = "^1.8.0"
 networkx = "^3.1"
 importlib-resources = { version = "*", python = "<3.10" }
 pygraphviz = { version = "*", optional = true }
+pgmpy = { version = "*", optional = true }
 
 [tool.poetry.group.test]
 optional = true
@@ -54,6 +55,7 @@ memory_profiler = { version = "^0.60.0" }
 causal-learn = { version = "^0.1.2.8" }
 ananke-causal = { version = "^0.3.3" }
 pre-commit = "^3.0.4"
+pandas = { version = "^1.1" }                # needed for simulation
 
 [tool.poetry.group.style]
 optional = true
@@ -98,6 +100,7 @@ kiwisolver = "^1.4.4"
 
 [tool.poetry.extras]
 viz = ['pygraphviz']
+sims = ['pgmpy']
 
 [build-system]
 requires = ["poetry-core>=1.0.8"]
@@ -111,12 +114,12 @@ _isort = 'isort .'
 _black_check = 'black --check pywhy_graphs examples'
 _isort_check = 'isort --check .'
 _pydocstyle = 'pydocstyle .'
-_codespell = 'codespell pywhy_graphs/ doc/ examples/ --ignore-words=.codespellignore --skip "**/_build/*"'
+_codespell = 'codespell pywhy_graphs/ doc/ examples/ --ignore-words=.codespellignore --skip "**/_build/*,**/auto_examples/*,**/generated/*,references.bib"'
 
 type_check = 'mypy -p pywhy_graphs --config-file pyproject.toml'
 unit_test = 'pytest ./pywhy_graphs --cov=pywhy_graphs --cov-report=xml --cov-config=pyproject.toml'
-build_docs = 'make -C docs clean html'
-build_docs_noplot = 'make -C docs clean html-noplot'
+build_docs = 'make -C doc clean html'
+build_docs_noplot = 'make -C doc clean html-noplot'
 
 [[tool.poe.tasks.lint]]
 sequence = ['_flake8', '_bandit', '_codespell', '_pydocstyle']
@@ -128,6 +131,10 @@ ignore_fail = 'return_non_zero'
 
 [[tool.poe.tasks.format_check]]
 sequence = ['_black_check', '_isort_check']
+ignore_fail = 'return_non_zero'
+
+[[tool.poe.tasks.check]]
+sequence = ['format', 'lint', 'type_check']
 ignore_fail = 'return_non_zero'
 
 #
@@ -146,7 +153,7 @@ extend-exclude = '''
       __pycache__
     | \.github
     | setup.py
-    | docs/
+    | doc/
 )
 '''
 
@@ -159,7 +166,7 @@ profile = 'black'
 multi_line_output = 3
 line_length = 100
 py_version = 38
-extend_skip_glob = ['setup.py', 'docs/*', 'pywhy_graphs/__init__.py']
+extend_skip_glob = ['setup.py', 'doc/*', 'pywhy_graphs/__init__.py']
 
 [tool.pydocstyle]
 convention = 'numpy'
@@ -175,7 +182,7 @@ no_site_packages = true
 [tool.pytest.ini_options]
 minversion = '6.0'
 addopts = '--durations 20 --junit-xml=junit-results.xml --verbose'
-filterwarnings = []
+filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
 branch = true
