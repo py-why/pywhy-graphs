@@ -40,7 +40,7 @@ from pywhy_graphs.viz import draw
 # distribution over the exogenous variables.
 #
 # :math:`M1 = \langle \mathcal{F}, V, U, P(u) \rangle`
-# .. math::
+#   .. math::
 #     V = \{W, X, Y, Z\}
 #     P(U) = P(U_W, U_X, U_Y, U_Z)
 #     \mathcal{F} = \begin{cases}
@@ -51,7 +51,7 @@ from pywhy_graphs.viz import draw
 #       \end{cases}
 #
 # :math:`M2 = \langle \mathcal{F'}, V, U', P'(u) \rangle`
-# .. math::
+#   .. math::
 #     P(U') = P(U_W', U_X', U_Y', U_Z')
 #     \mathcal{F'} = \begin{cases}
 #           W = f'_W(U_W) \\

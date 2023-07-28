@@ -58,6 +58,7 @@ causal graph operations.
    find_connected_pairs
    add_all_snode_combinations
    compute_invariant_domains_per_node
+   remove_snode_edge
 
 Conversions between other package's causal graphs
 =================================================
