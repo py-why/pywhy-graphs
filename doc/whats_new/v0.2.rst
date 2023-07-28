@@ -25,7 +25,7 @@ Version 0.2
 
 Changelog
 ---------
-- 
+- |Feature| Add algorithms for interfacing with a selection diagram in ``pywhy_graphs.algorithms.multidomain``, by `Adam Li`_ (:pr:`88`)
 
 Code and Documentation Contributors
 -----------------------------------
