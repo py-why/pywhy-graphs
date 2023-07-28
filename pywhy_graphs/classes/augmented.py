@@ -80,20 +80,17 @@ def create_augmented_diagram(
 
             # map each augmented-node to a tuple of distribution indices, or to a set of nodes
             # representing the intervention targets
-            symm_diff = set(intervention_targets[dataset_idx]).symmetric_difference(
-                set(intervention_targets[dataset_jdx])
-            )
-            targets = frozenset(symm_diff)
-
-            # if targets is the empty set
-
-            # if targets == frozenset() and source == target:
-            #     # the two interventional distributions are exactly the same
-            #     logger.warn(
-            #         f"Interventional distributions {dataset_idx} and {dataset_jdx} have "
-            #         f"the same interventions within the same domain {source}."
-            #     )
-            #     continue
+            if (
+                intervention_targets[dataset_idx] is not None
+                and intervention_targets[dataset_jdx] is not None
+                and source == target
+            ):
+                symm_diff = set(intervention_targets[dataset_idx]).symmetric_difference(
+                    set(intervention_targets[dataset_jdx])
+                )
+                targets = frozenset(symm_diff)
+            else:
+                targets = None
 
             # create the F-node
             f_node = ("F", k)
@@ -106,6 +103,16 @@ def create_augmented_diagram(
             symmetric_diff_map[f_node] = targets
 
             k += 1
+
+    # get non-augmented nodes
+    non_aug_nodes = set(G.non_augmented_nodes)
+    for aug_node in f_nodes:
+        G.add_f_node(
+            aug_node, targets=symmetric_diff_map[aug_node], domain=node_domain_map[aug_node]
+        )
+        for node in non_aug_nodes:
+            G.add_edge(aug_node, node, G.directed_edge_name)
+    return G, sigma_map
 
 
 class AugmentedNodeMixin:
@@ -141,7 +148,7 @@ class AugmentedNodeMixin:
                 "There is a graph property named S-nodes already that is not of type dict."
             )
 
-    def add_f_node(self, intervention_set: Set[Node], require_unique=True, domain=None):
+    def add_f_node(self, targets: Set[Node], require_unique=True, domain=None):
         """Add an F-node to the graph.
 
         Parameters
@@ -153,26 +160,25 @@ class AugmentedNodeMixin:
             then the intervention set is added to the graph, even if it is already
             an F-node. The default is True.
         domain : Optional[Set[int]], optional
-            The domain of the F-node. If None, then the domain is just set to 1.
+            The domains of the F-node. If None, then the domain is just set to {1}.
         """
-        if isinstance(intervention_set, str) or not isinstance(intervention_set, Iterable):
+        if isinstance(targets, str) or not isinstance(targets, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
         if domain is None:
             domain = set([1])
 
         # check that there are no duplicates and perform set conversion
-        orig_len = len(intervention_set)
-        intervention_set = frozenset(intervention_set)  # type: ignore
-        if len(intervention_set) != orig_len:
+        orig_len = len(targets)
+        targets = frozenset(targets)  # type: ignore
+        if len(targets) != orig_len:
             raise RuntimeError("The intervention set must be a set of unique nodes.")
 
         # check that the F-node intervention set has variables within the graph
-        if require_unique and intervention_set in self.intervention_sets:
+        if require_unique and targets in self.intervention_sets:
             raise RuntimeError(
-                f"You cannot add an F-node for {intervention_set} because "
-                f"there is already an F-node."
+                f"You cannot add an F-node for {targets} because " f"there is already an F-node."
             )
-        for node in intervention_set:
+        for node in targets:
             if node not in self.nodes:
                 raise RuntimeError(
                     f"All intervention sets must be nodes already in the graph. {node} is not."
@@ -183,12 +189,12 @@ class AugmentedNodeMixin:
         self.add_node(f_node_name)
 
         # add edge between the F-node and its intervention set
-        for intervened_node in intervention_set:
+        for intervened_node in targets:
             self.add_edge(f_node_name, intervened_node, self.directed_edge_name)
 
         # adding nodes to F-node container occurs last, because of the error checks
         # that occur in adding edges
-        self.graph["F-nodes"][f_node_name]["targets"] = intervention_set
+        self.graph["F-nodes"][f_node_name]["targets"] = targets
         self.graph["F-nodes"][f_node_name]["domain"] = domain
 
     def add_f_nodes_from(self, intervention_sets: List[Set[Node]]):

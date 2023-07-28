@@ -109,8 +109,8 @@ draw(G)
 domain_id_to_s_node = G.domain_ids_to_snodes
 
 # remove the edge S^{1, 2} -> W
-G = remove_snode_edge(G, domain_id_to_s_node[frozenset(1, 2)], "W")
-G = remove_snode_edge(G, domain_id_to_s_node[frozenset(1, 2)], "X")
+G = remove_snode_edge(G, domain_id_to_s_node[frozenset([1, 2])], "W")
+G = remove_snode_edge(G, domain_id_to_s_node[frozenset([1, 2])], "X")
 
 draw(G)
 
@@ -128,7 +128,7 @@ pprint(G.nodes(data=True))
 # we have a function that automatically checks for these inconsistencies and removes them.
 # The :func:`pywhy_graphs.algorithms.remove_snode_edge` function automatically does this.
 
-G = remove_snode_edge(G, domain_id_to_s_node[frozenset(2, 3)], "W")
+G = remove_snode_edge(G, domain_id_to_s_node[frozenset([2, 3])], "W")
 
 # now the S-node edge corresponding to S^{1, 3} -> W should be removed as well
 draw(G)
