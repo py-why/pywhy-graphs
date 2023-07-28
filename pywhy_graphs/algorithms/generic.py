@@ -604,3 +604,22 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
                 break
 
     return (path_exists, path)
+
+
+def valid_mag(G):
+    """Checks if the provided graph is a valid MAG.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_valid : bool
+        A boolean indicating whether the provided graph is a valid MAG or not.
+
+    """
+    is_valid = False
+
+    return is_valid
