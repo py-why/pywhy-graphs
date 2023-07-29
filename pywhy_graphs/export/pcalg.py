@@ -166,7 +166,7 @@ def graph_to_pcalg(causal_graph):
 
     # now map all values to their respective pcalg values
     seen_idx = dict()
-    for (idx, jdx) in np.argwhere(clearn_arr != 0):
+    for idx, jdx in np.argwhere(clearn_arr != 0):
         if (idx, jdx) in seen_idx or (jdx, idx) in seen_idx:
             continue
 

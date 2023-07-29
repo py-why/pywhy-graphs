@@ -1,5 +1,5 @@
 from .base import sample_from_graph
-from .linear import apply_linear_soft_intervention, make_graph_linear_gaussian
+from .linear import apply_linear_soft_intervention, make_random_linear_gaussian_graph
 from .multidomain import (
     generate_multidomain_noise_for_node,
     make_graph_multidomain,

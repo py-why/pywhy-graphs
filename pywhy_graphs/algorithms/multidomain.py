@@ -69,7 +69,6 @@ def add_all_snode_combinations(G, n_domains: int, on_error="raise"):
     # add all the S-nodes representing differences across pairs of domains
     # to every single node with S-nodes
     for (source_domain, target_domain), s_node in s_node_domains.items():
-
         # now modify the function of the edge, S-nodes are pointing to
         s_node_domains[(source_domain, target_domain)] = s_node
         if s_node in G.s_nodes:

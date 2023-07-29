@@ -1,4 +1,4 @@
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 import networkx as nx
 
@@ -16,7 +16,9 @@ __all__ = [
 ]
 
 
-def is_node_common_cause(G: nx.DiGraph, node: Node, exclude_nodes: List[Node] = None) -> bool:
+def is_node_common_cause(
+    G: nx.DiGraph, node: Node, exclude_nodes: Optional[List[Node]] = None
+) -> bool:
     """Check if a node is a common cause within the graph.
 
     Parameters
@@ -515,7 +517,7 @@ def _shortest_valid_path(
     return (path_exists, path)
 
 
-def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
+def inducing_path(G, node_x: Node, node_y: Node, L: Optional[Set] = None, S: Optional[Set] = None):
     """Checks if an inducing path exists between two nodes.
 
     An inducing path is defined in :footcite:`Zhang2008`.
@@ -592,7 +594,6 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     path_exists = False
     for elem in x_neighbors:
-
         visited = {node_x}
         if elem not in visited:
             path_exists, temp_path = _shortest_valid_path(

@@ -1,4 +1,4 @@
-from typing import Callable, List, Set
+from typing import Callable, List, Optional, Set
 
 import networkx as nx
 import numpy as np
@@ -9,12 +9,12 @@ from .additive import generate_edge_functions_for_node
 from .utils import _preprocess_parameter_inputs
 
 
-def make_graph_linear_gaussian(
+def make_random_linear_gaussian_graph(
     G: nx.DiGraph,
-    node_mean_lims: List[float] = None,
-    node_std_lims: List[float] = None,
-    edge_functions: List[Callable[[float], float]] = None,
-    edge_weight_lims: List[float] = None,
+    node_mean_lims: Optional[List[float]] = None,
+    node_std_lims: Optional[List[float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
+    edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ) -> nx.DiGraph:
     r"""Convert an existing DAG to a linear Gaussian graphical model.
@@ -62,7 +62,7 @@ def make_graph_linear_gaussian(
     -------
     G : NetworkX DiGraph
         NetworkX graph with the edge weights and functions set with node attributes
-        set with ``'parent_function'``, and ``'gaussian_noise_function'``. Moreover
+        set with ``'parent_function'``, and ``'exogenous_distribution'``. Moreover
         the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
     G = G.copy()
@@ -121,7 +121,7 @@ def generate_noise_for_node(G, node, node_mean_lims, node_std_lims, random_state
 
 
 def apply_linear_soft_intervention(
-    G, targets: Set[Node], type: str = "additive", random_state=None
+    G, targets: Set[Node], type: str = "additive", intervention_value=None, random_state=None
 ):
     """Applies a soft intervention to a linear Gaussian graph.
 
@@ -133,6 +133,10 @@ def apply_linear_soft_intervention(
         The set of nodes to intervene on simultanenously.
     type : str, optional
         Type of intervention, by default "additive".
+    intervention_value : float, optional
+        The value of the intervention, by default None, which will add
+        a random value sampled from the standard normal distribution
+        to the exogenous noise of the target nodes.
     random_state : RandomState, optional
         Random seed, by default None.
 
@@ -140,7 +144,7 @@ def apply_linear_soft_intervention(
     -------
     G : Graph
         The functional linear causal graph with the intervention applied on the
-        target nodes. The perturbation occurs on the ``gaussian_noise_function``
+        target nodes. The perturbation occurs on the ``exogenous_distribution``
         of the target nodes. That is, the soft intervention, perturbs the
         exogenous noise of the target nodes.
     """
@@ -153,6 +157,12 @@ def apply_linear_soft_intervention(
 
     for target in targets:
         if type == "additive":
-            G.nodes[target]["gaussian_noise_function"]["mean"] += rng.uniform(low=-1, high=1)
+            orig_func = G.nodes[target]["exogenous_distribution"]
+            if intervention_value is None:
+                G.nodes[target]["exogenous_distribution"] = (
+                    lambda: orig_func() + rng.standard_normal()
+                )
+            else:
+                G.nodes[target]["exogenous_distribution"] = lambda: orig_func() + intervention_value
 
     return G

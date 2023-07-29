@@ -40,7 +40,7 @@ def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph
 
 
 def add_noise_function(
-    G: nx.DiGraph, node: Node, distr_func: Callable, func: Callable = None
+    G: nx.DiGraph, node: Node, distr_func: Callable, func: Optional[Callable] = None
 ) -> nx.DiGraph:
     """Add function and distribution for a node's exogenous variable into the graph.
 
@@ -120,7 +120,11 @@ def add_soft_intervention_function(
 
 
 def add_domain_shift_function(
-    G: AugmentedGraph, node: Node, s_node: Node, func: Callable = None, distr_func: Callable = None
+    G: AugmentedGraph,
+    node: Node,
+    s_node: Node,
+    func: Optional[Callable] = None,
+    distr_func: Optional[Callable] = None,
 ):
     """Add domain shift function for a node into the graph assuming invariant graph structure.
 
@@ -368,7 +372,7 @@ def _check_input_func(func: Callable, parents=None):
 def _check_input_graph(G: nx.DiGraph):
     if not nx.is_directed_acyclic_graph(G):
         raise ValueError("The input graph must be a DAG.")
-    if not G.graph.get("functional", True):
+    if not G.graph.get("functional"):
         raise ValueError(
             "The input graph must be a functional graph. Please initialize "
             "the graph with functions."

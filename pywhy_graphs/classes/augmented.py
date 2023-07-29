@@ -10,12 +10,11 @@ from .admg import ADMG
 from .pag import PAG
 
 
-def create_augmented_diagram(
-    G,
+def compute_augmented_nodes(
     intervention_targets: List[Set[Node]],
-    domain_ids: List[int] = None,
+    domain_ids: Optional[List[int]] = None,
 ):
-    """Create an augmented causal diagram.
+    """Compute augmented nodes that would be added to a graph G.
 
     Each additional F-node created is mapped back to a symmetric difference
     set of intervention targets and a pair of domain ids.
@@ -25,8 +24,6 @@ def create_augmented_diagram(
 
     Parameters
     ----------
-    G : Causal Graph
-        The causal graph before augmenting.
     intervention_targets : List[Set[Node]]
         Sets of intervention targets. All intervention targets must be nodes in the graph G.
     domain_ids : List[int], optional
@@ -35,8 +32,15 @@ def create_augmented_diagram(
 
     Returns
     -------
-    G : Causal Graph
-        The augmented causal graph with additional nodes.
+    augmented_nodes : Set
+        Set of augmented nodes (i.e. F and S nodes).
+    symmetric_diff_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to intervention targets, or distribution indices represented
+        by the node.
+    sigma_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to distribution indices represented by the node.
+    node_domain_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to domains.
 
     Examples
     --------
@@ -58,7 +62,7 @@ def create_augmented_diagram(
     reverse_sigma_map = dict()
     symmetric_diff_map = dict()
     sigma_map = dict()
-    f_nodes = []
+    f_nodes = set()
 
     # create F-nodes, which is now all combinations of distributions choose 2
     k = 0
@@ -83,7 +87,6 @@ def create_augmented_diagram(
             if (
                 intervention_targets[dataset_idx] is not None
                 and intervention_targets[dataset_jdx] is not None
-                and source == target
             ):
                 symm_diff = set(intervention_targets[dataset_idx]).symmetric_difference(
                     set(intervention_targets[dataset_jdx])
@@ -94,7 +97,7 @@ def create_augmented_diagram(
 
             # create the F-node
             f_node = ("F", k)
-            f_nodes.append(f_node)
+            f_nodes.add(f_node)
 
             # map each F-node to a set of domain(s)
             node_domain_map[f_node] = [source, target]
@@ -104,15 +107,15 @@ def create_augmented_diagram(
 
             k += 1
 
-    # get non-augmented nodes
-    non_aug_nodes = set(G.non_augmented_nodes)
-    for aug_node in f_nodes:
-        G.add_f_node(
-            aug_node, targets=symmetric_diff_map[aug_node], domain=node_domain_map[aug_node]
-        )
-        for node in non_aug_nodes:
-            G.add_edge(aug_node, node, G.directed_edge_name)
-    return G, sigma_map
+    # # get non-augmented nodes
+    # non_aug_nodes = set(G.non_augmented_nodes)
+    # for aug_node in f_nodes:
+    #     G.add_f_node(
+    #         aug_node, targets=symmetric_diff_map[aug_node], domain=node_domain_map[aug_node]
+    #     )
+    #     for node in non_aug_nodes:
+    #         G.add_edge(aug_node, node, G.directed_edge_name)
+    return f_nodes, symmetric_diff_map, sigma_map, node_domain_map
 
 
 class AugmentedNodeMixin:
@@ -185,7 +188,7 @@ class AugmentedNodeMixin:
                 )
 
         # add a new F-node into the graph
-        f_node_name = ("F", len(self.f_nodes))
+        f_node_name = ("F", len(self.augmented_nodes))
         self.add_node(f_node_name)
 
         # add edge between the F-node and its intervention set
@@ -267,7 +270,7 @@ class AugmentedNodeMixin:
         """Return a mapping of domain ids to their ocrresponding S-nodes."""
         return {v: k for k, v in self.graph["S-nodes"].items()}
 
-    def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
+    def add_s_node(self, domain_ids: Tuple, node_changes: Optional[Set[Node]] = None):
         if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
 
@@ -285,7 +288,8 @@ class AugmentedNodeMixin:
             )
 
         # add a new S-node into the graph
-        s_node_name = ("S", len(self.s_nodes))
+        # Note: that we represent S-nodes as F-nodes
+        s_node_name = ("F", len(self.augmented_nodes))
         self.add_node(s_node_name, domain_ids=domain_ids)
 
         # add edge between the F-node and its intervention set
