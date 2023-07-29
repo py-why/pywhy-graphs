@@ -266,7 +266,7 @@ Linear functional graphs
 .. autosummary::
    :toctree: ../../generated/
 
-   make_graph_linear_gaussian
+   make_random_linear_gaussian_graph
    apply_linear_soft_intervention
 
 Multidomain
@@ -306,4 +306,4 @@ Linear functional selection diagrams
 .. autosummary::
    :toctree: ../../generated/
 
-   make_graph_multidomain
+   make_random_multidomain_graph

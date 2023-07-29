@@ -161,10 +161,10 @@ linear structural equation Gaussian models (SEMs).
 .. autosummary::
    :toctree: generated/
 
-   make_graph_linear_gaussian
+   make_random_linear_gaussian_graph
    apply_linear_soft_intervention
    set_node_attributes_with_G
-   make_graph_multidomain
+   make_random_multidomain_graph
 
 Visualization of causal graphs
 ==============================

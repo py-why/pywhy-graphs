@@ -16,7 +16,7 @@ from .additive import generate_edge_functions_for_node
 from .linear import generate_noise_for_node
 
 
-def make_graph_multidomain(
+def make_random_multidomain_graph(
     G: nx.DiGraph,
     n_domains: int = 2,
     n_nodes_with_s_nodes: Union[int, Tuple[int]] = 1,
@@ -181,7 +181,7 @@ def make_graph_multidomain(
             random_state=random_state,
         )
 
-    G.graph["linear_gaussian"] = True
+    G.graph["functional"] = "linear_gaussian"
     G.graph["S-nodes"] = s_nodes
     G.graph["n_domains"] = n_domains
     return G
