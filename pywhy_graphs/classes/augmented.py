@@ -289,7 +289,8 @@ class AugmentedNodeMixin:
 
         # add a new S-node into the graph
         # Note: that we represent S-nodes as F-nodes
-        s_node_name = ("F", len(self.augmented_nodes))
+        # s_node_name = ("F", len(self.augmented_nodes))
+        s_node_name = ("S", len(self.s_nodes))
         self.add_node(s_node_name, domain_ids=domain_ids)
 
         # add edge between the F-node and its intervention set

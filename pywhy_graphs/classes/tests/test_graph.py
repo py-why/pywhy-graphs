@@ -461,4 +461,4 @@ class TestAugmentedGraph(TestADMG, InterventionTester):
         G.add_s_node(domain_ids=(0, 1), node_changes={0, 1})
 
         # S-nodes are encoded with a similar pattern as F-nodes
-        assert G.s_nodes == [("F", 0)]
+        assert G.s_nodes == [("S", 0)]
