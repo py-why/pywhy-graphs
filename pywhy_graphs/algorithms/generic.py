@@ -604,3 +604,68 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
                 break
 
     return (path_exists, path)
+
+def _find_adc(G):
+
+    """Finds an Almost Directed Cycles in a mixed edge graph.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    adc_present : bool
+        A boolean indicating whether an almost directed cycle is present or not.
+    """
+
+    adc_present = False
+
+    undedges = G.undirected_edges
+
+    for elem in G.nodes:
+        ancestors = nx.ancestors(G.sub_directed_graph(), elem)
+        descendants = nx.descendants(G.sub_directed_graph(), elem)
+        for elem in undedges:
+            if (elem[0] in ancestors and elem[1] in descendants) or (
+                elem[1] in ancestors and elem[0] in descendants
+            ):  # there is an undirected edge from one of the ancestors to a descendant
+                return not adc_present
+
+    return adc_present
+
+
+def valid_mag(G: CPDAG):
+    """Checks if the provided graph is a valid MAG.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_valid : bool
+        A boolean indicating whether the provided graph is a valid MAG or not.
+
+    """
+    is_valid = False
+
+    directed_sub_graph = G.sub_directed_graph()
+
+    # check if there are any directed cyclces
+    try:
+        nx.find_cycle(directed_sub_graph)  # raises a NetworkXNoCycle error
+        return is_valid
+    except nx.NetworkXNoCycle:
+        pass
+
+    # check if there are any almost directed cycles
+
+    if _find_adc(G):  # if there is an ADC, it's not a valid MAG
+        return is_valid
+
+    # check if there are any inducing paths between non-adjacent nodes
+
+    return is_valid
