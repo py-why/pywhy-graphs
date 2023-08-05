@@ -638,7 +638,7 @@ def _find_adc(G):
     return adc_present
 
 
-def valid_mag(G: ADMG):
+def valid_mag(G: ADMG, L: set, S: set):
     """Checks if the provided graph is a valid MAG.
 
     Parameters
@@ -676,8 +676,6 @@ def valid_mag(G: ADMG):
         cur_set = all_nodes - nb
         cur_set.remove(source)
         for dest in cur_set:
-            L = {}
-            S = {}
             out = inducing_path(G, source, dest, L, S)
             if out[0] is True:
                 return False
