@@ -638,7 +638,7 @@ def _find_adc(G):
     return adc_present
 
 
-def valid_mag(G: ADMG, L: set, S: set):
+def valid_mag(G: ADMG, L: set = None, S: set = None):
     """Checks if the provided graph is a valid MAG.
 
     Parameters
@@ -652,6 +652,12 @@ def valid_mag(G: ADMG, L: set, S: set):
         A boolean indicating whether the provided graph is a valid MAG or not.
 
     """
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
     is_valid = True
 
     directed_sub_graph = G.sub_directed_graph()
