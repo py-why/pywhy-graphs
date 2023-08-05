@@ -13,6 +13,7 @@ __all__ = [
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
     "inducing_path",
+    "valid_mag",
 ]
 
 
@@ -605,6 +606,7 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     return (path_exists, path)
 
+
 def _find_adc(G):
 
     """Finds an Almost Directed Cycles in a mixed edge graph.
@@ -622,12 +624,12 @@ def _find_adc(G):
 
     adc_present = False
 
-    undedges = G.undirected_edges
+    biedges = G.bidirected_edges
 
     for elem in G.nodes:
         ancestors = nx.ancestors(G.sub_directed_graph(), elem)
         descendants = nx.descendants(G.sub_directed_graph(), elem)
-        for elem in undedges:
+        for elem in biedges:
             if (elem[0] in ancestors and elem[1] in descendants) or (
                 elem[1] in ancestors and elem[0] in descendants
             ):  # there is an undirected edge from one of the ancestors to a descendant
@@ -636,7 +638,7 @@ def _find_adc(G):
     return adc_present
 
 
-def valid_mag(G: CPDAG):
+def valid_mag(G: ADMG):
     """Checks if the provided graph is a valid MAG.
 
     Parameters
@@ -650,22 +652,34 @@ def valid_mag(G: CPDAG):
         A boolean indicating whether the provided graph is a valid MAG or not.
 
     """
-    is_valid = False
+    is_valid = True
 
     directed_sub_graph = G.sub_directed_graph()
 
     # check if there are any directed cyclces
     try:
         nx.find_cycle(directed_sub_graph)  # raises a NetworkXNoCycle error
-        return is_valid
+        return False
     except nx.NetworkXNoCycle:
         pass
 
     # check if there are any almost directed cycles
-
     if _find_adc(G):  # if there is an ADC, it's not a valid MAG
-        return is_valid
+        return False
 
     # check if there are any inducing paths between non-adjacent nodes
+
+    all_nodes = set(G.nodes)
+
+    for source in all_nodes:
+        nb = set(G.neighbors(source))
+        cur_set = all_nodes - nb
+        cur_set.remove(source)
+        for dest in cur_set:
+            L = {}
+            S = {}
+            out = inducing_path(G, source, dest, L, S)
+            if out[0] is True:
+                return False
 
     return is_valid
