@@ -13,7 +13,7 @@ __all__ = [
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
     "inducing_path",
-    "valid_mag",
+    "find_adc" "valid_mag",
 ]
 
 
@@ -607,7 +607,7 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     return (path_exists, path)
 
 
-def _find_adc(G):
+def find_adc(G):
 
     """Finds an Almost Directed Cycles in a mixed edge graph.
 
@@ -652,6 +652,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
         A boolean indicating whether the provided graph is a valid MAG or not.
 
     """
+
     if L is None:
         L = set()
 
@@ -670,7 +671,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
         pass
 
     # check if there are any almost directed cycles
-    if _find_adc(G):  # if there is an ADC, it's not a valid MAG
+    if find_adc(G):  # if there is an ADC, it's not a valid MAG
         return False
 
     # check if there are any inducing paths between non-adjacent nodes

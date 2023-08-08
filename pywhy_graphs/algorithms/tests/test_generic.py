@@ -228,3 +228,30 @@ def test_is_collider():
     S = {"A"}
 
     assert pywhy_graphs.inducing_path(admg, "Z", "Y", L, S)[0]
+
+
+def test_find_adc():
+    # K -> H -> Z -> X -> Y -> J <- K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+
+    assert not pywhy_graphs.find_adc(
+        admg
+    )  # there is neither a directed nor an almost directed cycle
+
+    # K -> H -> Z -> X -> Y -> J <-> K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert pywhy_graphs.find_adc(admg)
