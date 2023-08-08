@@ -251,6 +251,30 @@ def test_find_adc():
     admg.add_edge("Y", "J", admg.directed_edge_name)
     admg.add_edge("H", "Z", admg.directed_edge_name)
     admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert pywhy_graphs.find_adc(admg)
+
+    # K -> H -> Z -> X -> Y <- J <-> K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("J", "Y", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert not pywhy_graphs.find_adc(admg)  # one of the directed edges is not correctly oriented
+
+    # I -> H -> Z -> X -> Y -> J <-> K
+    # J -> I
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
     admg.add_edge("Y", "H", admg.directed_edge_name)
     admg.add_edge("K", "J", admg.bidirected_edge_name)
 
