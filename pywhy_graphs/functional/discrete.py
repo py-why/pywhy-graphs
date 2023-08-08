@@ -18,6 +18,9 @@ def apply_discrete_soft_intervention(
         Linear functional causal graph.
     targets : Set[Node]
         The set of nodes to intervene on simultanenously.
+    weight_ranges : Optional[List], optional
+        The range of weights to sample from for each target node. If None, then
+        the range is [1, 5], by default None.
     random_state : RandomState, optional
         Random seed, by default None.
 

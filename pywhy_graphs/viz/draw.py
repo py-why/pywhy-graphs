@@ -135,8 +135,8 @@ def draw(
     # an edge case of drawing graphs is the undirected Markov network
     if hasattr(G, "undirected_edges"):
         undirected_edges = G.undirected_edges
-    elif isinstance(G, nx.Graph):
-        undirected_edges = G.edges()
+    elif isinstance(G, nx.Graph) and not G.is_directed():
+         undirected_edges = G.edges()
     if hasattr(G, "bidirected_edges"):
         bidirected_edges = G.bidirected_edges
 

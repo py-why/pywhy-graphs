@@ -16,6 +16,40 @@ from .additive import generate_edge_functions_for_node
 from .linear import generate_noise_for_node
 
 
+def apply_domain_shift(G, node, domain_ids, exogenous_distribution=None, random_state=None):
+    """Applies a domain shift to a node in a multi-domain selection diagram.
+
+    Parameters
+    ----------
+    G : AugmentedGraph
+        The graph to apply the domain shift to.
+    node : Node
+        The node to apply the domain shift to.
+    domain_ids : tuple of int
+        The domain pair to apply the domain shift to. The first element is the base domain
+        and must already exist. The second element is the new domain to add with respect
+        to the differences.
+    exogenous_distribution : Optional[Callable], optional
+        The new exogenous distribution to apply to the node. If None, then will use the
+        existing exogenous distribution. By default None.
+    """
+    if exogenous_distribution is None:
+        rng = np.random.default_rng(random_state)
+        exogenous_distribution = lambda: rng.standard_normal()
+
+    # determine which S-node the domain IDs corresond to
+    snode = G.domain_ids_to_snode[domain_ids]
+
+    if not G.has_edge(snode, node):
+        raise RuntimeError(f'Node {node} does not have an S-node {snode} pointing to it for domain'
+                           f'pairs {domain_ids}.')
+    
+    # now add a new exogenous distribution for the node
+    domain_id = domain_ids[1]
+    G.nodes[node]['domain'][domain_id]["exogenous_distribution"] = lambda: exogenous_distribution()
+    return G
+
+
 def make_random_multidomain_graph(
     G: nx.DiGraph,
     n_domains: int = 2,

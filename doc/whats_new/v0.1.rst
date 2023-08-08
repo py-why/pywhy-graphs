@@ -40,8 +40,8 @@ Changelog
 - |Feature| Implement export/import functions to go to/from pywhy-graphs to pcalg and tetrad, by `Adam Li`_ (:pr:`60`)
 - |Feature| Implement export/import functions to go to/from pywhy-graphs to ananke-causal, by `Jaron Lee`_ (:pr:`63`)
 - |Feature| Implement pre-commit hooks for development, by `Jaron Lee`_ (:pr:`68`)
-- |Feature| Implement a new submodule for converting graphs to a functional model, with :func:`pywhy_graphs.functional.make_graph_linear_gaussian`, by `Adam Li`_ (:pr:`75`)
-- |Feature| Implement a multidomain linear functional graph, with :func:`pywhy_graphs.functional.make_graph_multidomain`, by `Adam Li`_ (:pr:`77`)
+- |Feature| Implement a new submodule for converting graphs to a functional model, with :func:`pywhy_graphs.functional.make_random_linear_gaussian_graph`, by `Adam Li`_ (:pr:`75`)
+- |Feature| Implement a multidomain linear functional graph, with :func:`pywhy_graphs.functional.make_random_multidomain_graph`, by `Adam Li`_ (:pr:`77`)
 - |Feature| Implement and test functions to find inducing paths between two nodes, `Aryan Roy`_ (:pr:`78`)
 - |Feature| Implement general functional API for sampling and generating a functional causal graph,  by `Adam Li`_ (:pr:`82`)
 

@@ -148,7 +148,7 @@ def apply_linear_soft_intervention(
         of the target nodes. That is, the soft intervention, perturbs the
         exogenous noise of the target nodes.
     """
-    if not G.graph.get("linear_gaussian", True):
+    if not G.graph.get("functional", 'linear_gaussian'):
         raise ValueError("The input graph must be a linear Gaussian graph.")
     if not all(target in G.nodes for target in targets):
         raise ValueError(f"All targets {targets} must be in the graph: {G.nodes}.")
