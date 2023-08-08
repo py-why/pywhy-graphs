@@ -19,4 +19,3 @@ For information on generating discrete data from a causal graph, one can see
 :ref:`ex-discrete-cbn`. Consider reading the user-guide, :ref:`functional-causal-graphical-models`
 to understand how an arbitrary functional relationships are encoded in a causal graph.
 """
-

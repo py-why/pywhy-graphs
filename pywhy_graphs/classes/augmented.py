@@ -139,12 +139,11 @@ class AugmentedNodeMixin:
     def n_domains(self):
         domains = set()
         for node_dict in self.nodes(data=True):
-            domain_ids = node_dict.get('domain_ids', None)
+            domain_ids = node_dict.get("domain_ids", None)
             if domain_ids is not None:
                 domains.add(domain for domain in domain_ids)
 
         return len(domains)
-                
 
     def _verify_augmentednode_dict(self):
         # verify validity of F nodes

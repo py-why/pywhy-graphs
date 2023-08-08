@@ -239,7 +239,7 @@ def sample_from_graph(
     else:
         directed_G = G
 
-    print('inside: ', directed_G.nodes(data=True))
+    print("inside: ", directed_G.nodes(data=True))
     # check input
     _check_input_graph(directed_G)
 

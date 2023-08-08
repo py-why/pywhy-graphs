@@ -37,16 +37,18 @@ def apply_domain_shift(G, node, domain_ids, exogenous_distribution=None, random_
         rng = np.random.default_rng(random_state)
         exogenous_distribution = lambda: rng.standard_normal()
 
-    # determine which S-node the domain IDs corresond to
+    # determine which S-node the domain IDs correspond to
     snode = G.domain_ids_to_snode[domain_ids]
 
     if not G.has_edge(snode, node):
-        raise RuntimeError(f'Node {node} does not have an S-node {snode} pointing to it for domain'
-                           f'pairs {domain_ids}.')
-    
+        raise RuntimeError(
+            f"Node {node} does not have an S-node {snode} pointing to it for domain"
+            f"pairs {domain_ids}."
+        )
+
     # now add a new exogenous distribution for the node
     domain_id = domain_ids[1]
-    G.nodes[node]['domain'][domain_id]["exogenous_distribution"] = lambda: exogenous_distribution()
+    G.nodes[node]["domain"][domain_id]["exogenous_distribution"] = lambda: exogenous_distribution()
     return G
 
 

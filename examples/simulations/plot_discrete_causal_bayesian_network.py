@@ -25,10 +25,12 @@ For information on generating continuous data from a causal graph, one can see
 # Import the required libraries
 # -----------------------------
 import networkx as nx
-from pywhy_graphs.functional.discrete import make_random_discrete_graph
-from pywhy_graphs.functional import sample_from_graph
-from pywhy_graphs.viz import draw
 from pgmpy.factors.discrete.CPD import TabularCPD
+
+from pywhy_graphs.functional import sample_from_graph
+from pywhy_graphs.functional.discrete import make_random_discrete_graph
+from pywhy_graphs.viz import draw
+
 
 # define a helper function to print the full CPD
 def print_full(cpd):
@@ -36,6 +38,7 @@ def print_full(cpd):
     TabularCPD._truncate_strtable = lambda self, x: x
     print(cpd)
     TabularCPD._truncate_strtable = backup
+
 
 # %%
 # Construct the causal graph
@@ -86,9 +89,10 @@ print(G)
 node_dict = G.nodes["C"]
 
 # We see that each node is fully defined given a conditional probability table, stored as a node
-# attribute under the keyword 'cpd'. For more information on the CPD object, see pgmpy's documentation
-# on :class:`pgmpy.factors.discrete.CPD.TabularCPD`. Note this is in contrast with what node attributes
-# are required in general for simulating data from a causal graph in pywhy-graphs.
+# attribute under the keyword 'cpd'. For more information on the CPD object, see
+# pgmpy's documentation on :class:`pgmpy.factors.discrete.CPD.TabularCPD`. Note this
+# is in contrast with what node attributes are required in general for simulating data
+# from a causal graph in pywhy-graphs.
 print_full(node_dict["cpd"])
 
 # %%

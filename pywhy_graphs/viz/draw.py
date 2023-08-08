@@ -81,6 +81,7 @@ def draw(
     direction: Optional[str] = None,
     pos: Optional[dict] = None,
     name: Optional[str] = None,
+    node_order: Optional[List] = None,
     shape: str = "square",
     **attrs,
 ):
@@ -123,6 +124,9 @@ def draw(
     if direction == "LR":
         dot.graph_attr["rankdir"] = direction
 
+    if node_order is None:
+        node_order = G.nodes
+
     circle_edges = None
     directed_edges = None
     undirected_edges = None
@@ -136,9 +140,16 @@ def draw(
     if hasattr(G, "undirected_edges"):
         undirected_edges = G.undirected_edges
     elif isinstance(G, nx.Graph) and not G.is_directed():
-         undirected_edges = G.edges()
+        undirected_edges = G.edges()
     if hasattr(G, "bidirected_edges"):
         bidirected_edges = G.bidirected_edges
+
+    for v in node_order:
+        child = str(v)
+        if pos and pos.get(v) is not None:
+            dot.node(child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!")
+        else:
+            dot.node(child, shape=shape, height=".5", width=".5")
 
     # draw PAG edges and keep track of the circular endpoints found
     dot, found_circle_sibs = _draw_circle_edges(
@@ -157,14 +168,8 @@ def draw(
 
     # only need to draw directed edges now, but directed_G can be a nx.Graph
     if hasattr(directed_G, "predecessors"):
-        for v in G.nodes:
+        for v in node_order:
             child = str(v)
-            if pos and pos.get(v) is not None:
-                dot.node(
-                    child, shape=shape, height=".5", width=".5", pos=f"{pos[v][0]},{pos[v][1]}!"
-                )
-            else:
-                dot.node(child, shape=shape, height=".5", width=".5")
 
             for parent in directed_G.predecessors(v):
                 if parent == v or not directed_G.has_edge(parent, v):
