@@ -13,7 +13,8 @@ __all__ = [
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
     "inducing_path",
-    "find_adc" "valid_mag",
+    "find_adc",
+    "valid_mag",
 ]
 
 
