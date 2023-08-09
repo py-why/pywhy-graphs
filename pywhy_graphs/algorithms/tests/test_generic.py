@@ -240,9 +240,7 @@ def test_find_adc():
     admg.add_edge("K", "H", admg.directed_edge_name)
     admg.add_edge("K", "J", admg.directed_edge_name)
 
-    assert not pywhy_graphs.find_adc(
-        admg
-    )  # there is neither a directed nor an almost directed cycle
+    assert not pywhy_graphs.find_adc(admg)  # there is no cycle completed by a bidirected edge
 
     # K -> H -> Z -> X -> Y -> J <-> K
     admg = ADMG()
@@ -254,7 +252,7 @@ def test_find_adc():
     admg.add_edge("Y", "J", admg.directed_edge_name)
     admg.add_edge("K", "J", admg.bidirected_edge_name)
 
-    assert pywhy_graphs.find_adc(admg)
+    assert pywhy_graphs.find_adc(admg)  # there is a bidirected edge from J to K, completing a cycle
 
     # K -> H -> Z -> X -> Y <- J <-> K
     admg = ADMG()
@@ -265,7 +263,7 @@ def test_find_adc():
     admg.add_edge("K", "H", admg.directed_edge_name)
     admg.add_edge("K", "J", admg.bidirected_edge_name)
 
-    assert not pywhy_graphs.find_adc(admg)  # one of the directed edges is not correctly oriented
+    assert not pywhy_graphs.find_adc(admg)  # Y <- J is not correctly oriented
 
     # I -> H -> Z -> X -> Y -> J <-> K
     # J -> I
@@ -278,7 +276,7 @@ def test_find_adc():
     admg.add_edge("Y", "H", admg.directed_edge_name)
     admg.add_edge("K", "J", admg.bidirected_edge_name)
 
-    assert pywhy_graphs.find_adc(admg)
+    assert pywhy_graphs.find_adc(admg)  # J <-> K completes an otherwise directed cycle
 
 
 def test_valid_mag():
@@ -295,12 +293,12 @@ def test_valid_mag():
     L = {}
 
     assert not pywhy_graphs.valid_mag(
-        admg, L, S  # the collider on the path is in s, hence there is an inducing path
+        admg, L, S  # J is in S and is a collider on the path Y -> J <- K
     )
 
     S = {}
 
-    assert pywhy_graphs.valid_mag(admg, L, S)  # the collider is not in s
+    assert pywhy_graphs.valid_mag(admg, L, S)  # there are no valid inducing paths
 
     # K -> H -> Z -> X -> Y -> J -> K
     admg = ADMG()
