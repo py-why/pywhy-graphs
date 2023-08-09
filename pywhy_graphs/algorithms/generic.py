@@ -678,7 +678,6 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
     # check if there are any inducing paths between non-adjacent nodes
 
     all_nodes = set(G.nodes)
-
     for source in all_nodes:
         nb = set(G.neighbors(source))
         cur_set = all_nodes - nb
