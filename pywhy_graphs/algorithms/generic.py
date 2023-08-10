@@ -13,7 +13,7 @@ __all__ = [
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
     "inducing_path",
-    "find_adc",
+    "has_adc",
     "valid_mag",
 ]
 
@@ -608,9 +608,8 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     return (path_exists, path)
 
 
-def find_adc(G):
-
-    """Finds an Almost Directed Cycles in a mixed edge graph.
+def has_adc(G):
+    """Finds if a graph has an Almost Directed Cycle.
 
     Parameters
     ----------
@@ -633,7 +632,7 @@ def find_adc(G):
         for elem in biedges:
             if (elem[0] in ancestors and elem[1] in descendants) or (
                 elem[1] in ancestors and elem[0] in descendants
-            ):  # there is an undirected edge from one of the ancestors to a descendant
+            ):  # there is a bidirected edge from one of the ancestors to a descendant
                 return not adc_present
 
     return adc_present
@@ -660,9 +659,19 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
     if S is None:
         S = set()
 
-    is_valid = True
-
     directed_sub_graph = G.sub_directed_graph()
+
+    all_nodes = set(G.nodes)
+
+    # check if there are any undirected edges or more than one edges b/w two nodes
+    for node in all_nodes:
+        nb = set(G.neighbors(node))
+        for elem in nb:
+            edge_data = G.get_edge_data(node, elem)
+            if edge_data["undirected"] is not None:
+                return False
+            elif (edge_data["bidirected"] is not None) and (edge_data["directed"] is not None):
+                return False
 
     # check if there are any directed cyclces
     try:
@@ -672,12 +681,11 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
         pass
 
     # check if there are any almost directed cycles
-    if find_adc(G):  # if there is an ADC, it's not a valid MAG
+    if has_adc(G):  # if there is an ADC, it's not a valid MAG
         return False
 
     # check if there are any inducing paths between non-adjacent nodes
 
-    all_nodes = set(G.nodes)
     for source in all_nodes:
         nb = set(G.neighbors(source))
         cur_set = all_nodes - nb
@@ -687,4 +695,4 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
             if out[0] is True:
                 return False
 
-    return is_valid
+    return True
