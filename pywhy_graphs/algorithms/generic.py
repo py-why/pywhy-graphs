@@ -611,6 +611,9 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 def has_adc(G):
     """Check if a graph has an almost directed cycle.
 
+    An almost directed cycle is a is a directed cycle containing
+    one bidirected edge.
+
     Parameters
     ----------
     G : Graph
@@ -640,6 +643,10 @@ def has_adc(G):
 
 def valid_mag(G: ADMG, L: set = None, S: set = None):
     """Checks if the provided graph is a valid MAG.
+
+    A valid MAG is a mixed edge graph that only has directed and bi-directed
+    edges, no directed or almost directed cycles and no inducing paths between
+    any two non-adjacent pair of nodes.
 
     Parameters
     ----------
