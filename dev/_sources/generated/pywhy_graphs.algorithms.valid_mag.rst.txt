@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.valid_mag
+=================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: valid_mag
+
+.. include:: pywhy_graphs.algorithms.valid_mag.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

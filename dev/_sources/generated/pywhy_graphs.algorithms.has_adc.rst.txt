@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.has_adc
+===============================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: has_adc
+
+.. include:: pywhy_graphs.algorithms.has_adc.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

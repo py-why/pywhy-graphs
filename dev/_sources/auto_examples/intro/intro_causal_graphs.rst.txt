@@ -168,7 +168,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
 
  .. code-block:: none
 
-    Fitting causal models:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node x:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node y:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node z:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node w:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00<00:00, 893.66it/s]
+    Fitting causal models:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node x:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node y:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node z:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node w:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00<00:00, 1225.19it/s]
        z  ...  y
     0  1  ...  1
     1  1  ...  3
@@ -184,7 +184,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
     y     [1, 3, 2, 0]
     dtype: object
 
-    <graphviz.graphs.Digraph object at 0x7ff45ee8d730>
+    <graphviz.graphs.Digraph object at 0x7f2119d9afa0>
 
 
 
@@ -424,7 +424,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.561 seconds)
+   **Total running time of the script:** ( 0 minutes  4.733 seconds)
 
 **Estimated memory usage:**  59 MB
 
