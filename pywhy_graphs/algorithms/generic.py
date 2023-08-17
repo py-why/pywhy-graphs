@@ -609,7 +609,7 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
 
 def has_adc(G):
-    """Check if a graph has an almost directed cycle.
+    """Check if a graph has an almost directed cycle (adc).
 
     An almost directed cycle is a is a directed cycle containing
     one bidirected edge.
