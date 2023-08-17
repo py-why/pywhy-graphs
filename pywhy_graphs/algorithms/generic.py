@@ -612,7 +612,7 @@ def has_adc(G):
     """Check if a graph has an almost directed cycle (adc).
 
     An almost directed cycle is a is a directed cycle containing
-    one bidirected edge.
+    one bidirected edge. For example, ``A -> B -> C <-> A`` is an adc.
 
     Parameters
     ----------
