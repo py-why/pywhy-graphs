@@ -25,7 +25,7 @@ Version 0.2
 
 Changelog
 ---------
-- 
+- |Feature| Implement and test functions to validate an MAG and check the presence of almost directed cycles, by `Aryan Roy`_ (:pr:`91`)
 
 Code and Documentation Contributors
 -----------------------------------
@@ -34,4 +34,5 @@ Thanks to everyone who has contributed to the maintenance and improvement of
 the project since version inception, including:
 
 * `Adam Li`_
+* `Aryan Roy`_
 
