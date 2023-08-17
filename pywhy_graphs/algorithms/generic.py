@@ -644,9 +644,9 @@ def has_adc(G):
 def valid_mag(G: ADMG, L: set = None, S: set = None):
     """Checks if the provided graph is a valid maximal ancestral graph (MAG).
 
-    A valid MAG is a mixed edge graph that only has directed and bi-directed
-    edges, no directed or almost directed cycles and no inducing paths between
-    any two non-adjacent pair of nodes.
+    A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
+    only has directed and bi-directed edges, no directed or almost directed
+    cycles and no inducing paths between any two non-adjacent pair of nodes.
 
     Parameters
     ----------
