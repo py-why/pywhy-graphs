@@ -62,7 +62,7 @@ def make_graph_linear_gaussian(
     -------
     G : NetworkX DiGraph
         NetworkX graph with the edge weights and functions set with node attributes
-        set with ``'parent_functions'``, and ``'gaussian_noise_function'``. Moreover
+        set with ``'parent_function'``, and ``'gaussian_noise_function'``. Moreover
         the graph attribute ``'linear_gaussian'`` is set to ``True``.
     """
     G = G.copy()
@@ -74,7 +74,6 @@ def make_graph_linear_gaussian(
 
     if not nx.is_directed_acyclic_graph(directed_G):
         raise ValueError("The input graph must be a DAG.")
-    rng = np.random.default_rng(random_state)
 
     # preprocess hyperparameters and check for validity
     (
@@ -92,9 +91,9 @@ def make_graph_linear_gaussian(
     # sample noise and edge functions for each node and its parents
     for node in top_sort_idx:
         # sample noise
-        mean = rng.uniform(low=node_mean_lims_[0], high=node_mean_lims_[1])
-        std = rng.uniform(low=node_std_lims_[0], high=node_std_lims_[1])
-        G.nodes[node]["gaussian_noise_function"] = {"mean": mean, "std": std}
+        G = generate_noise_for_node(
+            G, node, node_mean_lims_, node_std_lims_, random_state=random_state
+        )
 
         # sample edge functions and weights
         generate_edge_functions_for_node(
@@ -104,7 +103,20 @@ def make_graph_linear_gaussian(
             edge_functions=edge_functions_,
             random_state=random_state,
         )
-    G.graph["linear_gaussian"] = True
+    G.graph["functional"] = "linear_gaussian"
+    return G
+
+
+def generate_noise_for_node(G, node, node_mean_lims, node_std_lims, random_state=None):
+    rng = np.random.default_rng(random_state)
+
+    # sample noise
+    mean = rng.uniform(low=node_mean_lims[0], high=node_mean_lims[1])
+    std = rng.uniform(low=node_std_lims[0], high=node_std_lims[1])
+    G.nodes[node]["exogenous_distribution"] = lambda: rng.normal(**{"loc": mean, "scale": std})
+
+    # default is the uniform choice function
+    G.nodes[node]["exogenous_function"] = lambda x: x
     return G
 
 
@@ -135,7 +147,7 @@ def apply_linear_soft_intervention(
     if not G.graph.get("linear_gaussian", True):
         raise ValueError("The input graph must be a linear Gaussian graph.")
     if not all(target in G.nodes for target in targets):
-        raise ValueError("All targets must be in the graph.")
+        raise ValueError(f"All targets {targets} must be in the graph: {G.nodes}.")
 
     rng = np.random.default_rng(random_state)
 

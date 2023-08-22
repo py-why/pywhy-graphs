@@ -1,6 +1,3 @@
-# import math
-
-# import networkx as nx
 import pytest
 
 from pywhy_graphs.functional import make_graph_linear_gaussian

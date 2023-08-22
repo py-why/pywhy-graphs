@@ -43,6 +43,8 @@ causal graph operations.
 .. autosummary::
    :toctree: generated/
 
+   valid_mag
+   has_adc
    inducing_path
    is_valid_mec_graph
    possible_ancestors

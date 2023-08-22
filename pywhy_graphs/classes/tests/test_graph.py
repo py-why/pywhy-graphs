@@ -453,3 +453,10 @@ class TestAugmentedGraph(TestADMG, InterventionTester):
 
         assert not pywhy_nx.m_separated(graph, {"x"}, {"z"}, set())
         assert pywhy_nx.m_separated(graph, {"x"}, {"z"}, set(["y", ("F", 0)]))
+
+    def test_add_s_nodes(self):
+        G = self.G.copy()
+
+        assert G.s_nodes == []
+        G.add_s_node(domain_ids=(0, 1), node_changes={0, 1})
+        assert G.s_nodes == [("S", 0)]
