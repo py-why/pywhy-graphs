@@ -647,3 +647,19 @@ def test_pdst(pdst_graph):
     ex_pdsep_t = pds_t(G, ("E", 0), ("x", -1))
     assert ("y", -2) not in xe_pdsep_t
     assert ("y", -2) not in ex_pdsep_t
+
+
+def test_pag_to_mag():
+    G = PAG()
+
+    # x o-o y o-o z, y o-o v
+    G.add_edge("y", "x", G.circle_edge_name)
+    G.add_edge("x", "y", G.circle_edge_name)
+    G.add_edge("z", "y", G.circle_edge_name)
+    G.add_edge("y", "z", G.circle_edge_name)
+    G.add_edge("v", "y", G.circle_edge_name)
+    G.add_edge("y", "v", G.circle_edge_name)
+
+    new_g = pywhy_graphs.pag_to_mag(G)
+    print(new_g)
+    assert pywhy_graphs.valid_mag(new_g)

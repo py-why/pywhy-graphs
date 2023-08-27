@@ -22,6 +22,7 @@ __all__ = [
     "pds_t",
     "pds_t_path",
     "is_definite_noncollider",
+    "pag_to_mag",
 ]
 
 
@@ -933,24 +934,32 @@ def pag_to_mag(graph):
     to_remove = []
     to_reorient = []
     to_add = []
-
     for u, v in cedges:
         if (v, u) in dedges:  # remove the circle end from a 'o-->' edge to make a '-->' edge
-            to_remove.append((u, v))
+            copy_graph.remove_edges(u,v)
+            #to_remove.append((u, v))
         elif (v, u) not in cedges:  # reorient a '--o' edge to '-->'
-            to_reorient.append((u, v))
+            copy_graph.orient_uncertain_edge(u, v)
         elif (v, u) in cedges and (
             v,
             u,
         ) not in to_add:  # add all 'o--o' edges to the cpdag
-            to_add.append((u, v))
-    for u, v in to_remove:
-        copy_graph.remove_edge(u, v, graph.circle_edge_name)
-    for u, v in to_reorient:
-        copy_graph.orient_uncertain_edge(u, v)
-    for u, v in to_add:
-        temp_cpdag.add_edge(v, u, temp_cpdag.undirected_edge_name)
+            CPDAG.add_edge(v, u, temp_cpdag.undirected_edge_name)
 
-    # flag = True
+    flag = True
 
-    return copy_graph
+    # convert the graph into a DAG with no unshielded colliders
+
+    while flag:
+        undedges = temp_cpdag.undirected_edges
+        if len(undedges) != 0:
+            for (u, v) in undedges:
+                temp_cpdag.remove_edge(u, v, temp_cpdag.undirected_edge_name)
+                temp_cpdag.add_edge(u, v, temp_cpdag.directed_edge_name)
+                #apply meek rules
+                break
+        else:
+            flag = False
+
+
+    return None
