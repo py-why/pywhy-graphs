@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Tuple
 import networkx as nx
 import numpy as np
 
-from pywhy_graphs import CPDAG, PAG, StationaryTimeSeriesPAG
+from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
 from pywhy_graphs.typing import Node, TsNode
 
@@ -1128,17 +1128,23 @@ def pag_to_mag(graph):
     to_remove = []
     to_reorient = []
     to_add = []
+
     for u, v in cedges:
         if (v, u) in dedges:  # remove the circle end from a 'o-->' edge to make a '-->' edge
-            copy_graph.remove_edges(u, v)
-            # to_remove.append((u, v))
+            to_remove.append((u, v))
         elif (v, u) not in cedges:  # reorient a '--o' edge to '-->'
-            copy_graph.orient_uncertain_edge(u, v)
+            to_reorient.append((u, v))
         elif (v, u) in cedges and (
             v,
             u,
         ) not in to_add:  # add all 'o--o' edges to the cpdag
-            CPDAG.add_edge(v, u, temp_cpdag.undirected_edge_name)
+            to_add.append((u, v))
+    for u, v in to_remove:
+        copy_graph.remove_edge(u, v, graph.circle_edge_name)
+    for u, v in to_reorient:
+        copy_graph.orient_uncertain_edge(u, v)
+    for u, v in to_add:
+        temp_cpdag.add_edge(v, u, temp_cpdag.undirected_edge_name)
 
     flag = True
 
@@ -1155,4 +1161,20 @@ def pag_to_mag(graph):
         else:
             flag = False
 
-    return None
+    mag = ADMG()  # provisional MAG
+
+    # construct the final MAG
+
+    for (u, v) in copy_graph.directed_edges:
+        mag.add_edge(u, v, mag.directed_edge_name)
+
+    for (u, v) in copy_graph.undirected_edges:
+        mag.add_edge(u, v, mag.undirected_edge_name)
+
+    for (u, v) in copy_graph.bidirected_edges:
+        mag.add_edge(u, v, mag.bidirected_edge_name)
+
+    for (u, v) in temp_cpdag.directed_edges:
+        mag.add_edge(u, v, mag.directed_edge_name)
+
+    return mag
