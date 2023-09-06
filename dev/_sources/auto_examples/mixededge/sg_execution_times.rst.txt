@@ -5,8 +5,8 @@
 
 Computation times
 =================
-**00:01.065** total execution time for **auto_examples_mixededge** files:
+**00:01.251** total execution time for **auto_examples_mixededge** files:
 
 +-------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_mixededge_plot_mixed_edge_graph.py` (``plot_mixed_edge_graph.py``) | 00:01.065 | 17.0 MB |
+| :ref:`sphx_glr_auto_examples_mixededge_plot_mixed_edge_graph.py` (``plot_mixed_edge_graph.py``) | 00:01.251 | 16.5 MB |
 +-------------------------------------------------------------------------------------------------+-----------+---------+
