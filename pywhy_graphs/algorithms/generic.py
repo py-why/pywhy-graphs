@@ -604,3 +604,22 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
                 break
 
     return (path_exists, path)
+
+def dag_to_mag(G, L: Set = None, S: Set = None):
+    """Converts a DAG to a valid MAG.
+    The algorithm is defined in :footcite:`Zhang2008`.
+
+    Parameters:
+    -----------
+    G : Graph
+        The graph.
+    L : Set
+        Nodes that are ignored on the path. Defaults to an empty set.
+    S : Set
+        Nodes that are always conditioned on. Defaults to an empty set.
+    """
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
