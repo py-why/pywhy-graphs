@@ -228,3 +228,123 @@ def test_is_collider():
     S = {"A"}
 
     assert pywhy_graphs.inducing_path(admg, "Z", "Y", L, S)[0]
+
+
+def test_has_adc():
+    # K -> H -> Z -> X -> Y -> J <- K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+
+    assert not pywhy_graphs.has_adc(admg)  # there is no cycle completed by a bidirected edge
+
+    # K -> H -> Z -> X -> Y -> J <-> K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert pywhy_graphs.has_adc(admg)  # there is a bidirected edge from J to K, completing a cycle
+
+    # K -> H -> Z -> X -> Y <- J <-> K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("J", "Y", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert not pywhy_graphs.has_adc(admg)  # Y <- J is not correctly oriented
+
+    # I -> H -> Z -> X -> Y -> J <-> K
+    # J -> I
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.bidirected_edge_name)
+
+    assert pywhy_graphs.has_adc(admg)  # J <-> K completes an otherwise directed cycle
+
+
+def test_valid_mag():
+    # K -> H -> Z -> X -> Y -> J <- K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+
+    S = {"J"}
+    L = {}
+
+    assert not pywhy_graphs.valid_mag(
+        admg, L, S  # J is in S and is a collider on the path Y -> J <- K
+    )
+
+    S = {}
+
+    assert pywhy_graphs.valid_mag(admg, L, S)  # there are no valid inducing paths
+
+    # K -> H -> Z -> X -> Y -> J -> K
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("J", "K", admg.directed_edge_name)
+
+    L = {}
+
+    assert not pywhy_graphs.valid_mag(admg, L, S)  # there is a directed cycle
+
+    # K -> H -> Z -> X -> Y -> J <- K
+    # H <-> J
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+    admg.add_edge("H", "J", admg.bidirected_edge_name)
+
+    assert not pywhy_graphs.valid_mag(admg)  # there is an almost directed cycle
+
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+    admg.add_edge("H", "J", admg.bidirected_edge_name)
+    admg.add_edge("H", "J", admg.directed_edge_name)
+
+    assert not pywhy_graphs.valid_mag(admg)  # there are two edges between H and J
+
+    admg = ADMG()
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Y", admg.directed_edge_name)
+    admg.add_edge("Y", "J", admg.directed_edge_name)
+    admg.add_edge("H", "Z", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+    admg.add_edge("K", "J", admg.directed_edge_name)
+    admg.add_edge("H", "J", admg.undirected_edge_name)
+
+    assert not pywhy_graphs.valid_mag(admg)  # there is an undirected edge between H and J
