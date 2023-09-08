@@ -706,7 +706,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
     return True
 
   
-  def dag_to_mag(G, L: Set = None, S: Set = None):
+def dag_to_mag(G, L: Set = None, S: Set = None):
     """Converts a DAG to a valid MAG.
     The algorithm is defined in :footcite:`Zhang2008`.
 
@@ -724,3 +724,5 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
 
     if S is None:
         S = set()
+
+    return None
