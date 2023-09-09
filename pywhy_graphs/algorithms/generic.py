@@ -608,7 +608,6 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     return (path_exists, path)
 
 
-
 def has_adc(G):
     """Check if a graph has an almost directed cycle (adc).
 
@@ -705,6 +704,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
 
     return True
 
+
 def dag_to_mag(G, L: Set = None, S: Set = None):
     """Converts a DAG to a valid MAG.
     The algorithm is defined in :footcite:`Zhang2008`.
@@ -724,5 +724,17 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
 
     if S is None:
         S = set()
+
+    # for each pair of adjacent nodes find if they have an inducing path between them.
+
+    # find the ancesters of B U S (ansB) and A U S (ansA)
+
+    # if A and B are adjacent and A is in ansB and B is not in ansA, A -> B
+
+    # if A and B are adjacent and B is in ansA and A is not in ansB, A <- B
+
+    # if A and B are adjacent and A is not in ansB and B is not in ansA, A <-> B
+
+    # if A and B are adjacent and A is in ansB and B is in ansA, A - B
 
     return None
