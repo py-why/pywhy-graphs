@@ -725,16 +725,34 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     if S is None:
         S = set()
 
-    # for each pair of adjacent nodes find if they have an inducing path between them.
+    # for each pair of nodes find if they have an inducing path between them.
+    # only then will they be adjacent in the MAG.
 
-    # find the ancesters of B U S (ansB) and A U S (ansA)
+    all_nodes = set(G.nodes)
+    adj_nodes = []
 
-    # if A and B are adjacent and A is in ansB and B is not in ansA, A -> B
+    for source in all_nodes:
+        cur_set = all_nodes - source
+        for dest in cur_set:
+            out = inducing_path(G, source, dest, L, S)
+            if out[0] is True:
+                adj_nodes.append((source, dest))
 
-    # if A and B are adjacent and B is in ansA and A is not in ansB, A <- B
+    # find the ancesters of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
 
-    # if A and B are adjacent and A is not in ansB and B is not in ansA, A <-> B
+    for elem in adj_nodes:
 
-    # if A and B are adjacent and A is in ansB and B is in ansA, A - B
+        a = set(elem[0])
+        b = set(elem[1])
+        aus = S.union(a)
+        bus = S.union(b)
+
+    # if A is in ansB and B is not in ansA, A -> B
+
+    # if B is in ansA and A is not in ansB, A <- B
+
+    # if A is not in ansB and B is not in ansA, A <-> B
+
+    # if A is in ansB and B is in ansA, A - B
 
     return None
