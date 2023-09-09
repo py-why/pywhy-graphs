@@ -725,4 +725,4 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     if S is None:
         S = set()
 
-    return None
+    return ""
