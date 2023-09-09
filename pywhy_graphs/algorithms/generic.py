@@ -13,6 +13,8 @@ __all__ = [
     "set_nodes_as_latent_confounders",
     "is_valid_mec_graph",
     "inducing_path",
+    "has_adc",
+    "valid_mag",
 ]
 
 
@@ -605,6 +607,104 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     return (path_exists, path)
 
+
+
+def has_adc(G):
+    """Check if a graph has an almost directed cycle (adc).
+
+    An almost directed cycle is a is a directed cycle containing
+    one bidirected edge. For example, ``A -> B -> C <-> A`` is an adc.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    adc_present : bool
+        A boolean indicating whether an almost directed cycle is present or not.
+    """
+
+    adc_present = False
+
+    biedges = G.bidirected_edges
+
+    for elem in G.nodes:
+        ancestors = nx.ancestors(G.sub_directed_graph(), elem)
+        descendants = nx.descendants(G.sub_directed_graph(), elem)
+        for elem in biedges:
+            if (elem[0] in ancestors and elem[1] in descendants) or (
+                elem[1] in ancestors and elem[0] in descendants
+            ):  # there is a bidirected edge from one of the ancestors to a descendant
+                return not adc_present
+
+    return adc_present
+
+
+def valid_mag(G: ADMG, L: set = None, S: set = None):
+    """Checks if the provided graph is a valid maximal ancestral graph (MAG).
+
+    A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
+    only has directed and bi-directed edges, no directed or almost directed
+    cycles and no inducing paths between any two non-adjacent pair of nodes.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_valid : bool
+        A boolean indicating whether the provided graph is a valid MAG or not.
+
+    """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    directed_sub_graph = G.sub_directed_graph()
+
+    all_nodes = set(G.nodes)
+
+    # check if there are any undirected edges or more than one edges b/w two nodes
+    for node in all_nodes:
+        nb = set(G.neighbors(node))
+        for elem in nb:
+            edge_data = G.get_edge_data(node, elem)
+            if edge_data["undirected"] is not None:
+                return False
+            elif (edge_data["bidirected"] is not None) and (edge_data["directed"] is not None):
+                return False
+
+    # check if there are any directed cyclces
+    try:
+        nx.find_cycle(directed_sub_graph)  # raises a NetworkXNoCycle error
+        return False
+    except nx.NetworkXNoCycle:
+        pass
+
+    # check if there are any almost directed cycles
+    if has_adc(G):  # if there is an ADC, it's not a valid MAG
+        return False
+
+    # check if there are any inducing paths between non-adjacent nodes
+
+    for source in all_nodes:
+        nb = set(G.neighbors(source))
+        cur_set = all_nodes - nb
+        cur_set.remove(source)
+        for dest in cur_set:
+            out = inducing_path(G, source, dest, L, S)
+            if out[0] is True:
+                return False
+
+    return True
+
 def dag_to_mag(G, L: Set = None, S: Set = None):
     """Converts a DAG to a valid MAG.
     The algorithm is defined in :footcite:`Zhang2008`.
@@ -618,8 +718,11 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     S : Set
         Nodes that are always conditioned on. Defaults to an empty set.
     """
+
     if L is None:
         L = set()
 
     if S is None:
         S = set()
+
+    return None
