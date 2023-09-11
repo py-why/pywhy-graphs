@@ -707,7 +707,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
 
 def dag_to_mag(G, L: Set = None, S: Set = None):
     """Converts a DAG to a valid MAG.
-    The algorithm is defined in :footcite:`Zhang2008`.
+    The algorithm is defined in :footcite:`Zhang2008` on page 1877.
 
     Parameters:
     -----------
@@ -747,12 +747,12 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
         aus = S.union(a)
         bus = S.union(b)
 
-    # if A is in ansB and B is not in ansA, A -> B
+        # if A is in ansB and B is not in ansA, A -> B
 
-    # if B is in ansA and A is not in ansB, A <- B
+        # if B is in ansA and A is not in ansB, A <- B
 
-    # if A is not in ansB and B is not in ansA, A <-> B
+        # if A is not in ansB and B is not in ansA, A <-> B
 
-    # if A is in ansB and B is in ansA, A - B
+        # if A is in ansB and B is in ansA, A - B
 
     return None
