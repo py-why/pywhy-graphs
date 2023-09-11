@@ -5,10 +5,10 @@
 
 Computation times
 =================
-**00:04.048** total execution time for **auto_examples_intro** files:
+**00:05.041** total execution time for **auto_examples_intro** files:
 
 +-----------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py` (``intro_causal_graphs.py``) | 00:03.409 | 58.7 MB |
+| :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py` (``intro_causal_graphs.py``) | 00:04.053 | 58.6 MB |
 +-----------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_intro_inducing_path.py` (``inducing_path.py``)             | 00:00.639 | 8.5 MB  |
+| :ref:`sphx_glr_auto_examples_intro_inducing_path.py` (``inducing_path.py``)             | 00:00.988 | 8.4 MB  |
 +-----------------------------------------------------------------------------------------+-----------+---------+
