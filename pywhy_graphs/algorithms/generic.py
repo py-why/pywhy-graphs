@@ -740,6 +740,8 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
 
     # find the ancesters of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
 
+    mag = ADMG()
+
     for elem in adj_nodes:
 
         a = set(elem[0])
@@ -747,12 +749,29 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
         aus = S.union(a)
         bus = S.union(b)
 
-        # if A is in ansB and B is not in ansA, A -> B
+        ansA = set()
+        ansB = set()
 
-        # if B is in ansA and A is not in ansB, A <- B
+        for elem in aus:
+            ansA = ansA.union(_directed_sub_graph_ancestors(G, elem))
 
-        # if A is not in ansB and B is not in ansA, A <-> B
+        for elem in bus:
+            ansB = ansB.union(_directed_sub_graph_ancestors(G, elem))
 
-        # if A is in ansB and B is in ansA, A - B
+        if elem[0] in ansB and elem[1] not in ansA:
+            # if A is in ansB and B is not in ansA, A -> B
+            mag.add_edge(elem[0], elem[1], mag.directed_edge_name)
 
-    return None
+        elif elem[0] not in ansB and elem[1] in ansA:
+            # if B is in ansA and A is not in ansB, A <- B
+            mag.add_edge(elem[1], elem[0], mag.directed_edge_name)
+
+        elif elem[0] not in ansB and elem[1] not in ansA:
+            # if A is not in ansB and B is not in ansA, A <-> B
+            mag.add_edge(elem[1], elem[0], mag.bidirected_edge_name)
+
+        elif elem[0] in ansB and elem[1] in ansA:
+            # if A is in ansB and B is in ansA, A - B
+            mag.add_edge(elem[1], elem[0], mag.undirected_edge_name)
+
+    return mag
