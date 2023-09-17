@@ -5,10 +5,10 @@
 
 Computation times
 =================
-**00:01.071** total execution time for **auto_examples_visualization** files:
+**00:00.929** total execution time for **auto_examples_visualization** files:
 
 +-------------------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_visualization_plot_timeseries_graphs.py` (``plot_timeseries_graphs.py``)                                     | 00:00.679 | 8.5 MB |
+| :ref:`sphx_glr_auto_examples_visualization_plot_timeseries_graphs.py` (``plot_timeseries_graphs.py``)                                     | 00:00.604 | 8.5 MB |
 +-------------------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py` (``draw_and_compare_graphs_with_same_layout.py``) | 00:00.392 | 8.5 MB |
+| :ref:`sphx_glr_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py` (``draw_and_compare_graphs_with_same_layout.py``) | 00:00.325 | 8.5 MB |
 +-------------------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
