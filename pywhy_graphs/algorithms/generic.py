@@ -15,6 +15,7 @@ __all__ = [
     "inducing_path",
     "has_adc",
     "valid_mag",
+    "dag_to_mag",
 ]
 
 
@@ -732,46 +733,51 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     adj_nodes = []
 
     for source in all_nodes:
-        cur_set = all_nodes - source
-        for dest in cur_set:
+        copy_all = all_nodes.copy()
+        copy_all.remove(source)
+        for dest in copy_all:
             out = inducing_path(G, source, dest, L, S)
-            if out[0] is True:
-                adj_nodes.append((source, dest))
+            print(out)
+            if out[0] is True and {source, dest} not in adj_nodes:
+                adj_nodes.append({source, dest})
 
+    print(adj_nodes)
+    print("=================")
     # find the ancesters of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
 
     mag = ADMG()
 
     for elem in adj_nodes:
 
-        a = set(elem[0])
-        b = set(elem[1])
+        temp_list = list(elem)
+        a = set(temp_list[0])
+        b = set(temp_list[1])
         aus = S.union(a)
         bus = S.union(b)
 
         ansA = set()
         ansB = set()
 
-        for elem in aus:
-            ansA = ansA.union(_directed_sub_graph_ancestors(G, elem))
+        for node in aus:
+            ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
 
-        for elem in bus:
-            ansB = ansB.union(_directed_sub_graph_ancestors(G, elem))
+        for node in bus:
+            ansB = ansB.union(_directed_sub_graph_ancestors(G, node))
 
-        if elem[0] in ansB and elem[1] not in ansA:
+        if temp_list[0] in ansB and temp_list[1] not in ansA:
             # if A is in ansB and B is not in ansA, A -> B
-            mag.add_edge(elem[0], elem[1], mag.directed_edge_name)
+            mag.add_edge(temp_list[0], temp_list[1], mag.directed_edge_name)
 
-        elif elem[0] not in ansB and elem[1] in ansA:
+        elif temp_list[0] not in ansB and temp_list[1] in ansA:
             # if B is in ansA and A is not in ansB, A <- B
-            mag.add_edge(elem[1], elem[0], mag.directed_edge_name)
+            mag.add_edge(temp_list[1], temp_list[0], mag.directed_edge_name)
 
-        elif elem[0] not in ansB and elem[1] not in ansA:
+        elif temp_list[0] not in ansB and temp_list[1] not in ansA:
             # if A is not in ansB and B is not in ansA, A <-> B
-            mag.add_edge(elem[1], elem[0], mag.bidirected_edge_name)
+            mag.add_edge(temp_list[1], temp_list[0], mag.bidirected_edge_name)
 
-        elif elem[0] in ansB and elem[1] in ansA:
+        elif temp_list[0] in ansB and temp_list[1] in ansA:
             # if A is in ansB and B is in ansA, A - B
-            mag.add_edge(elem[1], elem[0], mag.undirected_edge_name)
+            mag.add_edge(temp_list[1], temp_list[0], mag.undirected_edge_name)
 
     return mag

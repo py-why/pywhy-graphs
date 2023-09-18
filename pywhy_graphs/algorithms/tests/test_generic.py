@@ -348,3 +348,52 @@ def test_valid_mag():
     admg.add_edge("H", "J", admg.undirected_edge_name)
 
     assert not pywhy_graphs.valid_mag(admg)  # there is an undirected edge between H and J
+
+
+def test_dag_to_mag():
+
+    admg = ADMG()
+    admg.add_edge("A", "E", admg.directed_edge_name)
+    admg.add_edge("E", "S", admg.directed_edge_name)
+    admg.add_edge("H", "E", admg.directed_edge_name)
+    admg.add_edge("H", "R", admg.directed_edge_name)
+
+    S = {"S"}
+    L = {"H"}
+
+    true_mag = ADMG()
+    true_mag.add_edge("A", "E", true_mag.directed_edge_name)
+    true_mag.add_edge("E", "R", true_mag.directed_edge_name)
+    true_mag.add_edge("A", "R", true_mag.directed_edge_name)
+
+    assert pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag.edges()
+
+    admg = ADMG()
+    admg.add_edge("PSH", "S", admg.directed_edge_name)
+    admg.add_edge("S", "LC", admg.directed_edge_name)
+    admg.add_edge("G", "S", admg.directed_edge_name)
+    admg.add_edge("G", "LC", admg.directed_edge_name)
+    admg.add_edge("I", "S", admg.directed_edge_name)
+    admg.add_edge("P", "I", admg.directed_edge_name)
+    admg.add_edge("P", "S", admg.directed_edge_name)
+
+    S = {}
+    L = {"P"}
+
+    true_mag = ADMG()
+    true_mag.add_edge("PSH", "S", true_mag.directed_edge_name)
+    true_mag.add_edge("I", "S", true_mag.directed_edge_name)
+    true_mag.add_edge("G", "S", true_mag.directed_edge_name)
+    true_mag.add_edge("G", "L", true_mag.directed_edge_name)
+    true_mag.add_edge("S", "L", true_mag.directed_edge_name)
+
+    true_mag2 = ADMG()
+    true_mag2.add_edge("PSH", "S", true_mag2.bidirected_edge_name)
+    true_mag2.add_edge("I", "S", true_mag2.bidirected_edge_name)
+    true_mag2.add_edge("G", "S", true_mag2.directed_edge_name)
+    true_mag2.add_edge("G", "L", true_mag2.directed_edge_name)
+    true_mag2.add_edge("S", "L", true_mag2.directed_edge_name)
+
+    assert (pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag.edges()) or (
+        pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag2.edges()
+    )
