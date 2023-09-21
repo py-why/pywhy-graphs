@@ -747,7 +747,7 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
 
     mag = ADMG()
 
-    for A,B in adj_nodes:
+    for A, B in adj_nodes:
 
         AuS = S.union(A)
         BuS = S.union(B)
