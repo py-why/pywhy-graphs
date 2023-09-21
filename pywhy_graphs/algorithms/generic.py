@@ -761,7 +761,6 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
             ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
 
         for node in bus:
-            print(node)
             ansB = ansB.union(_directed_sub_graph_ancestors(G, node))
 
         if temp_list[0] in ansB and temp_list[1] not in ansA:
