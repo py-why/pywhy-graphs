@@ -742,7 +742,8 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
             out = inducing_path(G, source, dest, L, S)
             if out[0] is True and {source, dest} not in adj_nodes:
                 adj_nodes.append({source, dest})
-    # find the ancesters of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
+
+    # find the ancestors of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
 
     mag = ADMG()
 
