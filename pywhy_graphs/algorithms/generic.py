@@ -747,37 +747,34 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
 
     mag = ADMG()
 
-    for elem in adj_nodes:
+    for A,B in adj_nodes:
 
-        temp_list = list(elem)
-        a = set(temp_list[0])
-        b = set(temp_list[1])
-        aus = S.union(a)
-        bus = S.union(b)
+        AuS = S.union(A)
+        BuS = S.union(B)
 
         ansA: Set[str] = set()
         ansB: Set[str] = set()
 
-        for node in aus:
+        for node in AuS:
             ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
 
-        for node in bus:
+        for node in BuS:
             ansB = ansB.union(_directed_sub_graph_ancestors(G, node))
 
-        if temp_list[0] in ansB and temp_list[1] not in ansA:
+        if A in ansB and B not in ansA:
             # if A is in ansB and B is not in ansA, A -> B
-            mag.add_edge(temp_list[0], temp_list[1], mag.directed_edge_name)
+            mag.add_edge(A, B, mag.directed_edge_name)
 
-        elif temp_list[0] not in ansB and temp_list[1] in ansA:
+        elif A not in ansB and B in ansA:
             # if B is in ansA and A is not in ansB, A <- B
-            mag.add_edge(temp_list[1], temp_list[0], mag.directed_edge_name)
+            mag.add_edge(B, A, mag.directed_edge_name)
 
-        elif temp_list[0] not in ansB and temp_list[1] not in ansA:
+        elif A not in ansB and B not in ansA:
             # if A is not in ansB and B is not in ansA, A <-> B
-            mag.add_edge(temp_list[1], temp_list[0], mag.bidirected_edge_name)
+            mag.add_edge(B, A, mag.bidirected_edge_name)
 
-        elif temp_list[0] in ansB and temp_list[1] in ansA:
+        elif A in ansB and B in ansA:
             # if A is in ansB and B is in ansA, A - B
-            mag.add_edge(temp_list[1], temp_list[0], mag.undirected_edge_name)
+            mag.add_edge(B, A, mag.undirected_edge_name)
 
     return mag

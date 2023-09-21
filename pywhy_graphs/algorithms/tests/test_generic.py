@@ -352,6 +352,8 @@ def test_valid_mag():
 
 def test_dag_to_mag():
 
+    # A -> E -> S
+    # H -> E , H -> R
     admg = ADMG()
     admg.add_edge("A", "E", admg.directed_edge_name)
     admg.add_edge("E", "S", admg.directed_edge_name)
@@ -371,6 +373,9 @@ def test_dag_to_mag():
     )
     assert ("A", "E") in out_edges["undirected"]
 
+    # A -> E -> S <- H
+    # H -> E , H -> R,
+
     admg = ADMG()
     admg.add_edge("A", "E", admg.directed_edge_name)
     admg.add_edge("H", "S", admg.directed_edge_name)
@@ -385,6 +390,10 @@ def test_dag_to_mag():
     dir_edges = list(out_edges["directed"])
     assert ("A", "E") in out_edges["directed"] and len(out_edges["directed"]) == 1
     assert ("E", "R") in out_edges["bidirected"]
+
+    # P -> S -> L <- G
+    # G -> S -> I <- J
+    # J -> S
 
     admg = ADMG()
     admg.add_edge("P", "S", admg.directed_edge_name)
