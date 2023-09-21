@@ -361,39 +361,26 @@ def test_dag_to_mag():
     S = {"S"}
     L = {"H"}
 
-    true_mag = ADMG()
-    true_mag.add_edge("A", "E", true_mag.directed_edge_name)
-    true_mag.add_edge("E", "R", true_mag.directed_edge_name)
-    true_mag.add_edge("A", "R", true_mag.directed_edge_name)
+    out_edges = pywhy_graphs.dag_to_mag(admg, L, S).edges()
 
-    assert pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag.edges()
+    dir_edges = list(out_edges["directed"])
+    assert ("A","R") in out_edges["directed"] and ("E","R") in out_edges["directed"] and len(out_edges["directed"]) == 2
+    assert ("A","E") in out_edges["undirected"]
+
 
     admg = ADMG()
-    admg.add_edge("PSH", "S", admg.directed_edge_name)
-    admg.add_edge("S", "LC", admg.directed_edge_name)
-    admg.add_edge("G", "S", admg.directed_edge_name)
-    admg.add_edge("G", "LC", admg.directed_edge_name)
-    admg.add_edge("I", "S", admg.directed_edge_name)
-    admg.add_edge("P", "I", admg.directed_edge_name)
     admg.add_edge("P", "S", admg.directed_edge_name)
+    admg.add_edge("S", "L", admg.directed_edge_name)
+    admg.add_edge("G", "S", admg.directed_edge_name)
+    admg.add_edge("G", "L", admg.directed_edge_name)
+    admg.add_edge("I", "S", admg.directed_edge_name)
+    admg.add_edge("J", "I", admg.directed_edge_name)
+    admg.add_edge("J", "S", admg.directed_edge_name)
 
-    S = {}
-    L = {"P"}
+    S = set()
+    L = {"J"}
 
-    true_mag = ADMG()
-    true_mag.add_edge("PSH", "S", true_mag.directed_edge_name)
-    true_mag.add_edge("I", "S", true_mag.directed_edge_name)
-    true_mag.add_edge("G", "S", true_mag.directed_edge_name)
-    true_mag.add_edge("G", "L", true_mag.directed_edge_name)
-    true_mag.add_edge("S", "L", true_mag.directed_edge_name)
-
-    true_mag2 = ADMG()
-    true_mag2.add_edge("PSH", "S", true_mag2.bidirected_edge_name)
-    true_mag2.add_edge("I", "S", true_mag2.bidirected_edge_name)
-    true_mag2.add_edge("G", "S", true_mag2.directed_edge_name)
-    true_mag2.add_edge("G", "L", true_mag2.directed_edge_name)
-    true_mag2.add_edge("S", "L", true_mag2.directed_edge_name)
-
-    assert (pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag.edges()) or (
-        pywhy_graphs.dag_to_mag(admg, L, S).edges() == true_mag2.edges()
-    )
+    out_edges = pywhy_graphs.dag_to_mag(admg, L, S).edges()
+    dir_edges = list(out_edges["directed"])
+    assert ("G", "S") in dir_edges and ("G", "L") in dir_edges and ("S", "L") in dir_edges and ("I", "S") in dir_edges and ("P", "S") in dir_edges and len(dir_edges) == 5
+   

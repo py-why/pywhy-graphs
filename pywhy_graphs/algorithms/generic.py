@@ -567,6 +567,9 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     if node_x == node_y:
         raise ValueError("The source and destination nodes are the same.")
+    
+    if (node_x in L) or (node_y in L) or (node_x in S) or (node_y in S):
+        return (False, []) 
 
     edges = G.edges()
 
@@ -737,12 +740,8 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
         copy_all.remove(source)
         for dest in copy_all:
             out = inducing_path(G, source, dest, L, S)
-            print(out)
             if out[0] is True and {source, dest} not in adj_nodes:
                 adj_nodes.append({source, dest})
-
-    print(adj_nodes)
-    print("=================")
     # find the ancesters of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
 
     mag = ADMG()
@@ -762,6 +761,7 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
             ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
 
         for node in bus:
+            print(node)
             ansB = ansB.union(_directed_sub_graph_ancestors(G, node))
 
         if temp_list[0] in ansB and temp_list[1] not in ansA:
