@@ -567,9 +567,9 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     if node_x == node_y:
         raise ValueError("The source and destination nodes are the same.")
-    
+
     if (node_x in L) or (node_y in L) or (node_x in S) or (node_y in S):
-        return (False, []) 
+        return (False, [])
 
     edges = G.edges()
 
