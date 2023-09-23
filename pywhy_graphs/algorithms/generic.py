@@ -752,8 +752,8 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
         AuS = S.union(A)
         BuS = S.union(B)
 
-        ansA: Set[str] = set()
-        ansB: Set[str] = set()
+        ansA: Set = set()
+        ansB: Set = set()
 
         for node in AuS:
             ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
