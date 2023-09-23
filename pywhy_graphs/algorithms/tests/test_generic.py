@@ -363,8 +363,9 @@ def test_dag_to_mag():
     S = {"S"}
     L = {"H"}
 
-    out_edges = pywhy_graphs.dag_to_mag(admg, L, S).edges()
-
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
     dir_edges = list(out_edges["directed"])
     assert (
         ("A", "R") in out_edges["directed"]
@@ -385,7 +386,9 @@ def test_dag_to_mag():
     S = {"S"}
     L = {"H"}
 
-    out_edges = pywhy_graphs.dag_to_mag(admg, L, S).edges()
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
 
     dir_edges = list(out_edges["directed"])
     assert ("A", "E") in out_edges["directed"] and len(out_edges["directed"]) == 1
@@ -407,7 +410,9 @@ def test_dag_to_mag():
     S = set()
     L = {"J"}
 
-    out_edges = pywhy_graphs.dag_to_mag(admg, L, S).edges()
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
     dir_edges = list(out_edges["directed"])
     assert (
         ("G", "S") in dir_edges
