@@ -214,6 +214,30 @@ def test_inducing_path_corner_cases():
 
     assert pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
 
+    # X -> Z <- Y, A <- B <- Z
+    admg = ADMG()
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Y", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "B", admg.directed_edge_name)
+    admg.add_edge("B", "A", admg.directed_edge_name)
+
+    L = {"X"}
+    S = {"A"}
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+
+    # X -> Z <- Y, A <- B <- Z
+    admg = ADMG()
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Y", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "B", admg.directed_edge_name)
+    admg.add_edge("B", "A", admg.directed_edge_name)
+
+    L = {}
+    S = {"A", "Y"}
+
+    assert not pywhy_graphs.inducing_path(admg, "X", "Y", L, S)[0]
+
 
 def test_is_collider():
     # Z -> X -> A <- B -> Y; H -> A
@@ -348,3 +372,103 @@ def test_valid_mag():
     admg.add_edge("H", "J", admg.undirected_edge_name)
 
     assert not pywhy_graphs.valid_mag(admg)  # there is an undirected edge between H and J
+
+
+def test_dag_to_mag():
+
+    # A -> E -> S
+    # H -> E , H -> R
+    admg = ADMG()
+    admg.add_edge("A", "E", admg.directed_edge_name)
+    admg.add_edge("E", "S", admg.directed_edge_name)
+    admg.add_edge("H", "E", admg.directed_edge_name)
+    admg.add_edge("H", "R", admg.directed_edge_name)
+
+    S = {"S"}
+    L = {"H"}
+
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
+    dir_edges = list(out_edges["directed"])
+    assert (
+        ("A", "R") in out_edges["directed"]
+        and ("E", "R") in out_edges["directed"]
+        and len(out_edges["directed"]) == 2
+    )
+    assert ("A", "E") in out_edges["undirected"]
+
+    out_mag = pywhy_graphs.dag_to_mag(admg)
+    dir_edges = list(out_mag.edges()["directed"])
+
+    assert (
+        ("A", "E") in dir_edges
+        and ("E", "S") in dir_edges
+        and ("H", "E") in dir_edges
+        and ("H", "R") in dir_edges
+    )
+
+    # A -> E -> S <- H
+    # H -> E , H -> R,
+
+    admg = ADMG()
+    admg.add_edge("A", "E", admg.directed_edge_name)
+    admg.add_edge("H", "S", admg.directed_edge_name)
+    admg.add_edge("H", "E", admg.directed_edge_name)
+    admg.add_edge("H", "R", admg.directed_edge_name)
+
+    S = {"S"}
+    L = {"H"}
+
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
+
+    dir_edges = list(out_edges["directed"])
+    assert ("A", "E") in out_edges["directed"] and len(out_edges["directed"]) == 1
+    assert ("E", "R") in out_edges["bidirected"]
+
+    # P -> S -> L <- G
+    # G -> S -> I <- J
+    # J -> S
+
+    admg = ADMG()
+    admg.add_edge("P", "S", admg.directed_edge_name)
+    admg.add_edge("S", "L", admg.directed_edge_name)
+    admg.add_edge("G", "S", admg.directed_edge_name)
+    admg.add_edge("G", "L", admg.directed_edge_name)
+    admg.add_edge("I", "S", admg.directed_edge_name)
+    admg.add_edge("J", "I", admg.directed_edge_name)
+    admg.add_edge("J", "S", admg.directed_edge_name)
+
+    S = set()
+    L = {"J"}
+
+    out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
+    assert not pywhy_graphs.has_adc(out_mag)
+    out_edges = out_mag.edges()
+    dir_edges = list(out_edges["directed"])
+    assert (
+        ("G", "S") in dir_edges
+        and ("G", "L") in dir_edges
+        and ("S", "L") in dir_edges
+        and ("I", "S") in dir_edges
+        and ("P", "S") in dir_edges
+        and len(dir_edges) == 5
+    )
+
+
+def test_is_maximal():
+    # X <- Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    S = {}
+    L = {"Y"}
+    assert not pywhy_graphs.is_maximal(admg, L, S)
