@@ -16,6 +16,7 @@ __all__ = [
     "has_adc",
     "valid_mag",
     "dag_to_mag",
+    "is_maximal",
 ]
 
 
@@ -722,6 +723,11 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
         Nodes that are ignored on the path. Defaults to an empty set.
     S : Set
         Nodes that are always conditioned on. Defaults to an empty set.
+
+    Returns
+    -------
+    mag : Graph
+        The MAG.
     """
 
     if L is None:
@@ -779,3 +785,41 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
             mag.add_edge(B, A, mag.undirected_edge_name)
 
     return mag
+
+
+def is_maximal(G, L: Set = None, S: Set = None):
+    """Checks to see if the graph is maximal.
+
+    Parameters:
+    -----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_maximal : bool
+        A boolean indicating whether the provided graph is maximal or not.
+    """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    all_nodes = set(G.nodes)
+    checked = []
+    for source in all_nodes:
+        nb = set(G.neighbors(source))
+        cur_set = all_nodes - nb
+        cur_set.remove(source)
+        for dest in cur_set:
+            if {source,dest} not in checked:
+                checked.append({source,dest})
+                out = inducing_path(G, source, dest)
+                if out[0] is True:
+                    return False
+            else:
+                continue
+    return True
+            

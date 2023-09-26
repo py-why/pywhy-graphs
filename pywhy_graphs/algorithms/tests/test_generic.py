@@ -388,6 +388,7 @@ def test_dag_to_mag():
     L = {"H"}
 
     out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
     assert not pywhy_graphs.has_adc(out_mag)
     out_edges = out_mag.edges()
     dir_edges = list(out_edges["directed"])
@@ -411,6 +412,7 @@ def test_dag_to_mag():
     L = {"H"}
 
     out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
     assert not pywhy_graphs.has_adc(out_mag)
     out_edges = out_mag.edges()
 
@@ -435,6 +437,7 @@ def test_dag_to_mag():
     L = {"J"}
 
     out_mag = pywhy_graphs.dag_to_mag(admg, L, S)
+    assert pywhy_graphs.is_maximal(out_mag)
     assert not pywhy_graphs.has_adc(out_mag)
     out_edges = out_mag.edges()
     dir_edges = list(out_edges["directed"])
