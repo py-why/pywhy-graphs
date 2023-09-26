@@ -814,9 +814,9 @@ def is_maximal(G, L: Set = None, S: Set = None):
         cur_set = all_nodes - nb
         cur_set.remove(source)
         for dest in cur_set:
-            current_pair = str(source) + str(dest)
+            current_pair = frozenset({source, dest})
             if current_pair not in checked:
-                checked.add(str(dest) + str(source))
+                checked.add(current_pair)
                 out = inducing_path(G, source, dest)
                 if out[0] is True:
                     return False
