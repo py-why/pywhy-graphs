@@ -43,6 +43,7 @@ causal graph operations.
 .. autosummary::
    :toctree: generated/
 
+   dag_to_mag
    valid_mag
    has_adc
    inducing_path

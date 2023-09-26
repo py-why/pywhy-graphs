@@ -201,6 +201,11 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.dag_to_mag.html">
+   pywhy_graphs.algorithms.dag_to_mag
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.algorithms.valid_mag.html">
    pywhy_graphs.algorithms.valid_mag
   </a>
@@ -666,55 +671,58 @@ edge. These algorithms are common algorithms used in a variety of different
 causal graph operations.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.valid_mag.html#pywhy_graphs.algorithms.valid_mag" title="pywhy_graphs.algorithms.valid_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_mag</span></code></a>(G[, L, S])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.dag_to_mag.html#pywhy_graphs.algorithms.dag_to_mag" title="pywhy_graphs.algorithms.dag_to_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dag_to_mag</span></code></a>(G[, L, S])</p></td>
+<td><p>Converts a DAG to a valid MAG.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.valid_mag.html#pywhy_graphs.algorithms.valid_mag" title="pywhy_graphs.algorithms.valid_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_mag</span></code></a>(G[, L, S])</p></td>
 <td><p>Checks if the provided graph is a valid maximal ancestral graph (MAG).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.has_adc.html#pywhy_graphs.algorithms.has_adc" title="pywhy_graphs.algorithms.has_adc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_adc</span></code></a>(G)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.has_adc.html#pywhy_graphs.algorithms.has_adc" title="pywhy_graphs.algorithms.has_adc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_adc</span></code></a>(G)</p></td>
 <td><p>Check if a graph has an almost directed cycle (adc).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path" title="pywhy_graphs.algorithms.inducing_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inducing_path</span></code></a>(G, node_x, node_y[, L, S])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path" title="pywhy_graphs.algorithms.inducing_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inducing_path</span></code></a>(G, node_x, node_y[, L, S])</p></td>
 <td><p>Checks if an inducing path exists between two nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph" title="pywhy_graphs.algorithms.is_valid_mec_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid_mec_graph</span></code></a>(G[, on_error])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph" title="pywhy_graphs.algorithms.is_valid_mec_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid_mec_graph</span></code></a>(G[, on_error])</p></td>
 <td><p>Check G is a valid PAG.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_ancestors.html#pywhy_graphs.algorithms.possible_ancestors" title="pywhy_graphs.algorithms.possible_ancestors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_ancestors</span></code></a>(G, source)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_ancestors.html#pywhy_graphs.algorithms.possible_ancestors" title="pywhy_graphs.algorithms.possible_ancestors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_ancestors</span></code></a>(G, source)</p></td>
 <td><p>Possible ancestors of a source node.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_descendants.html#pywhy_graphs.algorithms.possible_descendants" title="pywhy_graphs.algorithms.possible_descendants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_descendants</span></code></a>(G, source)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_descendants.html#pywhy_graphs.algorithms.possible_descendants" title="pywhy_graphs.algorithms.possible_descendants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_descendants</span></code></a>(G, source)</p></td>
 <td><p>Possible descendants of a source node.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path" title="pywhy_graphs.algorithms.discriminating_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discriminating_path</span></code></a>(graph, u, a, c[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path" title="pywhy_graphs.algorithms.discriminating_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discriminating_path</span></code></a>(graph, u, a, c[, ...])</p></td>
 <td><p>Find the discriminating path for &lt;..., a, u, c&gt;.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds" title="pywhy_graphs.algorithms.pds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds</span></code></a>(graph, node_x[, node_y, max_path_length])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds" title="pywhy_graphs.algorithms.pds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds</span></code></a>(graph, node_x[, node_y, max_path_length])</p></td>
 <td><p>Find all PDS sets between node_x and node_y.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path" title="pywhy_graphs.algorithms.pds_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path" title="pywhy_graphs.algorithms.pds_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
 <td><p>Compute the possibly-d-separating set path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t" title="pywhy_graphs.algorithms.pds_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t</span></code></a>(graph, node_x, node_y[, max_path_length])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t" title="pywhy_graphs.algorithms.pds_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t</span></code></a>(graph, node_x, node_y[, max_path_length])</p></td>
 <td><p>Compute the possibly-d-separating set over time.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path" title="pywhy_graphs.algorithms.pds_t_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path" title="pywhy_graphs.algorithms.pds_t_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pds_t_path</span></code></a>(graph, node_x, node_y[, ...])</p></td>
 <td><p>Compute the possibly-d-separating path set over time.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path" title="pywhy_graphs.algorithms.uncovered_pd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncovered_pd_path</span></code></a>(graph, u, c[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path" title="pywhy_graphs.algorithms.uncovered_pd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncovered_pd_path</span></code></a>(graph, u, c[, ...])</p></td>
 <td><p>Compute uncovered potentially directed (pd) paths from u to c.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html#pywhy_graphs.algorithms.acyclification" title="pywhy_graphs.algorithms.acyclification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acyclification</span></code></a>(G[, directed_edge_type, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html#pywhy_graphs.algorithms.acyclification" title="pywhy_graphs.algorithms.acyclification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acyclification</span></code></a>(G[, directed_edge_type, ...])</p></td>
 <td><p>Acyclify a cyclic graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider" title="pywhy_graphs.algorithms.is_definite_noncollider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_definite_noncollider</span></code></a>(G, node1, node2, node3)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider" title="pywhy_graphs.algorithms.is_definite_noncollider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_definite_noncollider</span></code></a>(G, node1, node2, node3)</p></td>
 <td><p>Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.find_connected_pairs.html#pywhy_graphs.algorithms.find_connected_pairs" title="pywhy_graphs.algorithms.find_connected_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_connected_pairs</span></code></a>(tuples, max_number)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.find_connected_pairs.html#pywhy_graphs.algorithms.find_connected_pairs" title="pywhy_graphs.algorithms.find_connected_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_connected_pairs</span></code></a>(tuples, max_number)</p></td>
 <td><p>Find connected pairs of domain tuples.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.add_all_snode_combinations.html#pywhy_graphs.algorithms.add_all_snode_combinations" title="pywhy_graphs.algorithms.add_all_snode_combinations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_all_snode_combinations</span></code></a>(G, n_domains[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.add_all_snode_combinations.html#pywhy_graphs.algorithms.add_all_snode_combinations" title="pywhy_graphs.algorithms.add_all_snode_combinations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_all_snode_combinations</span></code></a>(G, n_domains[, ...])</p></td>
 <td><p>Add all possible S-nodes to the graph given number of domains.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.compute_invariant_domains_per_node.html#pywhy_graphs.algorithms.compute_invariant_domains_per_node" title="pywhy_graphs.algorithms.compute_invariant_domains_per_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_invariant_domains_per_node</span></code></a>(G, node)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.compute_invariant_domains_per_node.html#pywhy_graphs.algorithms.compute_invariant_domains_per_node" title="pywhy_graphs.algorithms.compute_invariant_domains_per_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_invariant_domains_per_node</span></code></a>(G, node)</p></td>
 <td><p>Compute the invariant domains for a specific node.</p></td>
 </tr>
 </tbody>

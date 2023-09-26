@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.functional.set_node_attributes_with_G &#8212; pywhy-graphs v0.2.0.dev0</title>
+    <title>pywhy_graphs.algorithms.dag_to_mag &#8212; pywhy-graphs v0.2.0.dev0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2.7.1. pywhy_graphs.functional.make_graph_multidomain" href="pywhy_graphs.functional.make_graph_multidomain.html" />
-    <link rel="prev" title="2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention" href="pywhy_graphs.functional.apply_linear_soft_intervention.html" />
+    <link rel="next" title="pywhy_graphs.algorithms.valid_mag" href="pywhy_graphs.algorithms.valid_mag.html" />
+    <link rel="prev" title="pywhy_graphs.AugmentedPAG" href="pywhy_graphs.AugmentedPAG.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -199,9 +199,9 @@
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.dag_to_mag.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.algorithms.dag_to_mag
   </a>
  </li>
@@ -448,7 +448,7 @@
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.functional.make_graph_linear_gaussian.html">
    2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian
@@ -459,8 +459,8 @@
    2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.functional.set_node_attributes_with_G.html">
    pywhy_graphs.functional.set_node_attributes_with_G
   </a>
  </li>
@@ -542,10 +542,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.functional.set_node_attributes_with_G">
+  <a class="reference internal nav-link" href="#pywhy_graphs.algorithms.dag_to_mag">
    <code class="docutils literal notranslate">
     <span class="pre">
-     set_node_attributes_with_G()
+     dag_to_mag()
     </span>
    </code>
   </a>
@@ -569,25 +569,18 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-functional-set-node-attributes-with-g">
-<h1>pywhy_graphs.functional.set_node_attributes_with_G<a class="headerlink" href="#pywhy-graphs-functional-set-node-attributes-with-g" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-algorithms-dag-to-mag">
+<h1>pywhy_graphs.algorithms.dag_to_mag<a class="headerlink" href="#pywhy-graphs-algorithms-dag-to-mag" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.functional.set_node_attributes_with_G">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.functional.</span></span><span class="sig-name descname"><span class="pre">set_node_attributes_with_G</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/functional/utils.html#set_node_attributes_with_G"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.functional.set_node_attributes_with_G" title="Permalink to this definition">#</a></dt>
-<dd><p>Set node attributes in G1 using G2.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.algorithms.dag_to_mag">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">dag_to_mag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Set" title="(in Python v3.11)"><span class="pre">Set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/generic.html#dag_to_mag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.dag_to_mag" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a DAG to a valid MAG.</p>
+<p>The algorithm is defined in <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> on page 1877.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G1</strong> : Graph</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mag</strong> : Graph</p>
 <blockquote>
-<div><p>The target graph that is modified.</p>
-</div></blockquote>
-<p><strong>G2</strong> : Graph</p>
-<blockquote>
-<div><p>The source graph that is used to set the node attributes.</p>
-</div></blockquote>
-<p><strong>node</strong> : Node</p>
-<blockquote>
-<div><p>The specific node to set.</p>
+<div><p>The MAG.</p>
 </div></blockquote>
 </dd>
 </dl>
@@ -603,17 +596,17 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.functional.apply_linear_soft_intervention.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.AugmentedPAG.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">2.5.2. </span>pywhy_graphs.functional.apply_linear_soft_intervention</p>
+          <p class="prev-next-title">pywhy_graphs.AugmentedPAG</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.functional.make_graph_multidomain.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.valid_mag.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">2.7.1. </span>pywhy_graphs.functional.make_graph_multidomain</p>
+      <p class="prev-next-title">pywhy_graphs.algorithms.valid_mag</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

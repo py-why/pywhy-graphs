@@ -227,7 +227,7 @@ path ``(X1, X2, X3)`` a valid inducing path, since 'X2' is an ancestor of 'X6'.
  .. code-block:: none
 
     (False, [])
-    (True, ['X1', 'L1', 'X2', 'X3'])
+    (False, [])
 
 
 
@@ -241,7 +241,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.966 seconds)
+   **Total running time of the script:** ( 0 minutes  1.016 seconds)
 
 **Estimated memory usage:**  9 MB
 

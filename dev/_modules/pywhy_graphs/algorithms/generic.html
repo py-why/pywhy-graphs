@@ -210,6 +210,8 @@
     <span class="s2">&quot;inducing_path&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_adc&quot;</span><span class="p">,</span>
     <span class="s2">&quot;valid_mag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dag_to_mag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_maximal&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -762,6 +764,9 @@
     <span class="k">if</span> <span class="n">node_x</span> <span class="o">==</span> <span class="n">node_y</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The source and destination nodes are the same.&quot;</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="p">(</span><span class="n">node_x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">node_y</span> <span class="ow">in</span> <span class="n">L</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">node_x</span> <span class="ow">in</span> <span class="n">S</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">node_y</span> <span class="ow">in</span> <span class="n">S</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="p">[])</span>
+
     <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
 
     <span class="c1"># XXX: fix this when graphs are refactored to only check for directed/bidirected edge types</span>
@@ -898,6 +903,121 @@
                 <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="dag_to_mag"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.dag_to_mag.html#pywhy_graphs.algorithms.dag_to_mag">[docs]</a><span class="k">def</span> <span class="nf">dag_to_mag</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a DAG to a valid MAG.</span>
+
+<span class="sd">    The algorithm is defined in :footcite:`Zhang2008` on page 1877.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+<span class="sd">    L : Set</span>
+<span class="sd">        Nodes that are ignored on the path. Defaults to an empty set.</span>
+<span class="sd">    S : Set</span>
+<span class="sd">        Nodes that are always conditioned on. Defaults to an empty set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mag : Graph</span>
+<span class="sd">        The MAG.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># for each pair of nodes find if they have an inducing path between them.</span>
+    <span class="c1"># only then will they be adjacent in the MAG.</span>
+
+    <span class="n">all_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">adj_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">all_nodes</span><span class="p">:</span>
+        <span class="n">copy_all</span> <span class="o">=</span> <span class="n">all_nodes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy_all</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dest</span> <span class="ow">in</span> <span class="n">copy_all</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="p">{</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">}</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adj_nodes</span><span class="p">:</span>
+                <span class="n">adj_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">})</span>
+
+    <span class="c1"># find the ancestors of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes</span>
+
+    <span class="n">mag</span> <span class="o">=</span> <span class="n">ADMG</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">adj_nodes</span><span class="p">:</span>
+
+        <span class="n">AuS</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">BuS</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+        <span class="n">ansA</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">ansB</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">AuS</span><span class="p">:</span>
+            <span class="n">ansA</span> <span class="o">=</span> <span class="n">ansA</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">BuS</span><span class="p">:</span>
+            <span class="n">ansB</span> <span class="o">=</span> <span class="n">ansB</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">ansB</span> <span class="ow">and</span> <span class="n">B</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ansA</span><span class="p">:</span>
+            <span class="c1"># if A is in ansB and B is not in ansA, A -&gt; B</span>
+            <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">A</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ansB</span> <span class="ow">and</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">ansA</span><span class="p">:</span>
+            <span class="c1"># if B is in ansA and A is not in ansB, A &lt;- B</span>
+            <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">A</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ansB</span> <span class="ow">and</span> <span class="n">B</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ansA</span><span class="p">:</span>
+            <span class="c1"># if A is not in ansB and B is not in ansA, A &lt;-&gt; B</span>
+            <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">ansB</span> <span class="ow">and</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">ansA</span><span class="p">:</span>
+            <span class="c1"># if A is in ansB and B is in ansA, A - B</span>
+            <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mag</span></div>
+
+
+<span class="k">def</span> <span class="nf">is_maximal</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks to see if the graph is maximal.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    G : Graph</span>
+<span class="sd">        The graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_maximal : bool</span>
+<span class="sd">        A boolean indicating whether the provided graph is maximal or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">all_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">checked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">all_nodes</span><span class="p">:</span>
+        <span class="n">nb</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+        <span class="n">cur_set</span> <span class="o">=</span> <span class="n">all_nodes</span> <span class="o">-</span> <span class="n">nb</span>
+        <span class="n">cur_set</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dest</span> <span class="ow">in</span> <span class="n">cur_set</span><span class="p">:</span>
+            <span class="n">current_pair</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">current_pair</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checked</span><span class="p">:</span>
+                <span class="n">checked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">current_pair</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span>
+    <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 
               </article>
