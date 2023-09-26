@@ -26,6 +26,7 @@ Version 0.2
 Changelog
 ---------
 - |Feature| Implement and test functions to validate an MAG and check the presence of almost directed cycles, by `Aryan Roy`_ (:pr:`91`)
+- |Feature| Implement and test functions to convert a DAG to MAG, by `Aryan Roy`_ (:pr:`96`)
 
 Code and Documentation Contributors
 -----------------------------------
