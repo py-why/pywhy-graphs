@@ -399,6 +399,16 @@ def test_dag_to_mag():
     )
     assert ("A", "E") in out_edges["undirected"]
 
+    out_mag = pywhy_graphs.dag_to_mag(admg)
+    dir_edges = list(out_mag.edges()["directed"])
+
+    assert (
+        ("A", "E") in dir_edges
+        and ("E", "S") in dir_edges
+        and ("H", "E") in dir_edges
+        and ("H", "R") in dir_edges
+    )
+
     # A -> E -> S <- H
     # H -> E , H -> R,
 
@@ -449,3 +459,16 @@ def test_dag_to_mag():
         and ("P", "S") in dir_edges
         and len(dir_edges) == 5
     )
+
+
+def test_is_maximal():
+    # X <- Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    S = {}
+    L = {"Y"}
+    assert not pywhy_graphs.is_maximal(admg, L, S)

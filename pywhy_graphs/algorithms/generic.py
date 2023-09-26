@@ -817,7 +817,7 @@ def is_maximal(G, L: Set = None, S: Set = None):
             current_pair = frozenset({source, dest})
             if current_pair not in checked:
                 checked.add(current_pair)
-                out = inducing_path(G, source, dest)
+                out = inducing_path(G, source, dest, L, S)
                 if out[0] is True:
                     return False
             else:
