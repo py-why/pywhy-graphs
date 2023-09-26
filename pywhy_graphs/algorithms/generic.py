@@ -808,18 +808,18 @@ def is_maximal(G, L: Set = None, S: Set = None):
         S = set()
 
     all_nodes = set(G.nodes)
-    checked = []
+    checked = set()
     for source in all_nodes:
         nb = set(G.neighbors(source))
         cur_set = all_nodes - nb
         cur_set.remove(source)
         for dest in cur_set:
-            if {source,dest} not in checked:
-                checked.append({source,dest})
+            current_pair = str(source) + str(dest)
+            if current_pair not in checked:
+                checked.add(str(dest) + str(source))
                 out = inducing_path(G, source, dest)
                 if out[0] is True:
                     return False
             else:
                 continue
     return True
-            
