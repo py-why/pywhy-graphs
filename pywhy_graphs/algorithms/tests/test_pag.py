@@ -179,7 +179,7 @@ def test_discriminating_path():
     )
 
     for u in pag.nodes:
-        for (a, c) in permutations(pag.neighbors(u), 2):
+        for a, c in permutations(pag.neighbors(u), 2):
             found_discriminating_path, disc_path, _ = discriminating_path(
                 pag, u, a, c, max_path_length=100
             )
@@ -193,7 +193,7 @@ def test_discriminating_path():
     pag.remove_edge("x2", "x5", pag.directed_edge_name)
     pag.add_edge("x5", "x2", pag.bidirected_edge_name)
     for u in pag.nodes:
-        for (a, c) in permutations(pag.neighbors(u), 2):
+        for a, c in permutations(pag.neighbors(u), 2):
             found_discriminating_path, disc_path, _ = discriminating_path(
                 pag, u, a, c, max_path_length=100
             )

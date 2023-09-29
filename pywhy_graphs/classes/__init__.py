@@ -1,6 +1,6 @@
 from . import timeseries
 from .admg import ADMG
-from .augmented import AugmentedGraph, AugmentedPAG
+from .augmented import AugmentedGraph, AugmentedPAG, compute_augmented_nodes
 from .cpdag import CPDAG
 from .pag import PAG
 from .timeseries import (

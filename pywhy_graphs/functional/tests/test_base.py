@@ -20,6 +20,7 @@ def test_check_input_graph():
     G.add_node(3, exogenous_function="func3", exogenous_distribution="dist3")
     G.add_edge(1, 2)
     G.add_edge(3, 2)
+    G.graph["functional"] = "linear_gaussian"
     G_copy = G.copy()
 
     # Test a valid input graph

@@ -16,14 +16,50 @@ from .additive import generate_edge_functions_for_node
 from .linear import generate_noise_for_node
 
 
-def make_graph_multidomain(
+def apply_domain_shift(G, node, domain_ids, exogenous_distribution=None, random_state=None):
+    """Applies a domain shift to a node in a multi-domain selection diagram.
+
+    Parameters
+    ----------
+    G : AugmentedGraph
+        The graph to apply the domain shift to.
+    node : Node
+        The node to apply the domain shift to.
+    domain_ids : tuple of int
+        The domain pair to apply the domain shift to. The first element is the base domain
+        and must already exist. The second element is the new domain to add with respect
+        to the differences.
+    exogenous_distribution : Optional[Callable], optional
+        The new exogenous distribution to apply to the node. If None, then will use the
+        existing exogenous distribution. By default None.
+    """
+    if exogenous_distribution is None:
+        rng = np.random.default_rng(random_state)
+        exogenous_distribution = lambda: rng.standard_normal()
+
+    # determine which S-node the domain IDs correspond to
+    snode = G.domain_ids_to_snode[domain_ids]
+
+    if not G.has_edge(snode, node):
+        raise RuntimeError(
+            f"Node {node} does not have an S-node {snode} pointing to it for domain"
+            f"pairs {domain_ids}."
+        )
+
+    # now add a new exogenous distribution for the node
+    domain_id = domain_ids[1]
+    G.nodes[node]["domain"][domain_id]["exogenous_distribution"] = lambda: exogenous_distribution()
+    return G
+
+
+def make_random_multidomain_graph(
     G: nx.DiGraph,
     n_domains: int = 2,
     n_nodes_with_s_nodes: Union[int, Tuple[int]] = 1,
     n_invariances_to_try: int = 1,
     node_mean_lims: Optional[List[float]] = None,
     node_std_lims: Optional[List[float]] = None,
-    edge_functions: List[Callable[[float], float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
     edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ) -> nx.DiGraph:
@@ -181,7 +217,7 @@ def make_graph_multidomain(
             random_state=random_state,
         )
 
-    G.graph["linear_gaussian"] = True
+    G.graph["functional"] = "linear_gaussian"
     G.graph["S-nodes"] = s_nodes
     G.graph["n_domains"] = n_domains
     return G
@@ -228,10 +264,9 @@ def generate_multidomain_noise_for_node(
     if check_s_node_consistency:
         # compute all possible S-nodes given the number of domains
         G, _ = add_all_snode_combinations(G, n_domains)
-        all_poss_snodes = set(G.s_nodes)
 
         # for each node with S-nodes and compute the invariant domains
-        G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
+        G = compute_invariant_domains_per_node(G, node, n_domains=n_domains)
     else:
         if "invariant_domains" not in G.nodes()[node]:
             raise ValueError("Must specify invariant domains for node {}.".format(node))
@@ -263,7 +298,7 @@ def sample_multidomain_lin_functions(
     G: AugmentedGraph,
     node_mean_lims: Optional[List[float]] = None,
     node_std_lims: Optional[List[float]] = None,
-    edge_functions: List[Callable[[float], float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
     edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ):
@@ -331,11 +366,10 @@ def sample_multidomain_lin_functions(
 
     # compute all possible S-nodes given the number of domains
     G, s_node_domains = add_all_snode_combinations(G, n_domains)
-    all_poss_snodes = set(G.s_nodes)
     for node in G.nodes:
         if node in nodes_with_s_nodes:
             # for each node with S-nodes and compute the invariant domains
-            G = compute_invariant_domains_per_node(G, node, all_poss_snodes, n_domains=n_domains)
+            G = compute_invariant_domains_per_node(G, node, n_domains=n_domains)
 
             # now set a random function for each domain that is not invariant
             G = generate_multidomain_noise_for_node(

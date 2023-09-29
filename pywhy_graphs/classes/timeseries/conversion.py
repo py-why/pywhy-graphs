@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 
@@ -7,7 +7,7 @@ from pywhy_graphs.typing import Node
 from .graph import StationaryTimeSeriesGraph
 
 
-def tsgraph_to_numpy(G, var_order: List[Node] = None):
+def tsgraph_to_numpy(G, var_order: Optional[List[Node]] = None):
     """Convert stationary timeseries graph to numpy array.
 
     Parameters
@@ -44,7 +44,9 @@ def tsgraph_to_numpy(G, var_order: List[Node] = None):
     return ts_graph_arr
 
 
-def numpy_to_tsgraph(arr, var_order: List[Node] = None, create_using=StationaryTimeSeriesGraph):
+def numpy_to_tsgraph(
+    arr, var_order: Optional[List[Node]] = None, create_using=StationaryTimeSeriesGraph
+):
     """Convert 3D numpy array into a stationary time-series graph.
 
     Parameters

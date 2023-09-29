@@ -510,7 +510,7 @@ def uncovered_pd_path(
 
 
 def pds(
-    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None
+    graph: PAG, node_x: Node, node_y: Optional[Node] = None, max_path_length: Optional[int] = None
 ) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
@@ -711,7 +711,7 @@ def pds_path(
     for comp in biconn_comp:
         if (node_x, node_y) in comp or (node_y, node_x) in comp:
             # add all unique nodes in the biconnected component
-            for (x, y) in comp:
+            for x, y in comp:
                 found_component.add(x)
                 found_component.add(y)
             break

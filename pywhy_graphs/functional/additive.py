@@ -42,6 +42,14 @@ def generate_edge_functions_for_node(
         directed_G = G.get_graphs("directed")
     else:
         directed_G = G
+    if edge_weight_lims is None:
+        edge_weight_lims_ = [1.0, 1.0]
+    else:
+        edge_weight_lims_ = edge_weight_lims
+    if edge_functions is None:
+        edge_functions_ = [lambda x: x]
+    else:
+        edge_functions_ = edge_functions
     rng = np.random.default_rng(random_state)
 
     # get all parents
@@ -56,8 +64,8 @@ def generate_edge_functions_for_node(
         if parent == node:
             continue
 
-        weight = rng.uniform(low=edge_weight_lims[0], high=edge_weight_lims[1])
-        func = rng.choice(edge_functions)
+        weight = rng.uniform(low=edge_weight_lims_[0], high=edge_weight_lims_[1])
+        func = rng.choice(edge_functions_)
         node_function.append({"weight": weight, "func": func})
 
     def parent_func(*args):

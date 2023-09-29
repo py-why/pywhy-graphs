@@ -1,6 +1,6 @@
 import collections
 from abc import abstractmethod
-from typing import Iterable, List, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 from networkx.classes.reportviews import NodeView
 
@@ -10,10 +10,117 @@ from .admg import ADMG
 from .pag import PAG
 
 
+def compute_augmented_nodes(
+    intervention_targets: List[Set[Node]],
+    domain_ids: Optional[List[int]] = None,
+):
+    """Compute augmented nodes that would be added to a graph G.
+
+    Each additional F-node created is mapped back to a symmetric difference
+    set of intervention targets and a pair of domain ids.
+
+    It is assumed that the intervention targets and domain IDs are in the same order
+    as the distributions of data available.
+
+    Parameters
+    ----------
+    intervention_targets : List[Set[Node]]
+        Sets of intervention targets. All intervention targets must be nodes in the graph G.
+    domain_ids : List[int], optional
+        The corresponding domain indices of each intervention target, by default None,
+        which will assign them all to domain 1.
+
+    Returns
+    -------
+    augmented_nodes : Set
+        Set of augmented nodes (i.e. F and S nodes).
+    symmetric_diff_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to intervention targets, or distribution indices represented
+        by the node.
+    sigma_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to distribution indices represented by the node.
+    node_domain_map : Dict[Any, FrozenSet]
+        Mapping of augmented nodes to domains.
+
+    Examples
+    --------
+    >>> import pywhy_graphs as pg
+    >>> # add observational data in three different domains
+    >>> G = create_augmented_diagram(G, [{}, {}, {}], domain_ids=[1, 2, 3])
+    >>>
+    >>> # add interventional data in the same domain
+    >>> G = create_augmented_diagram(G, [{'x'}, {'x', 'y'}, {}])
+    >>>
+    >>> # add observational and interventional data in two different domains
+    >>> G = create_augmented_diagram(G, [{'x'}, {'x', 'y'}, {}], domain_ids=[1, 2, 1])
+    """
+    if domain_ids is None:
+        domain_ids = [1] * len(intervention_targets)
+
+    # map augmented nodes to domains
+    node_domain_map = dict()
+    reverse_sigma_map = dict()
+    symmetric_diff_map = dict()
+    sigma_map = dict()
+    f_nodes = set()
+
+    # create F-nodes, which is now all combinations of distributions choose 2
+    k = 0
+    seen_domain_pairs: Dict = dict()
+    seen_distr_pairs: Dict = dict()
+
+    # compare every pair of distributions to now add interventions if necessary
+    for dataset_idx, source in enumerate(domain_ids):
+        for dataset_jdx, target in enumerate(domain_ids):
+            # perform memoization to avoid duplicate augmented nodes
+            domain_memo_key = frozenset([source, target])
+            distr_memo_key = frozenset([dataset_idx, dataset_jdx])
+            if dataset_jdx <= dataset_idx:
+                continue
+            if domain_memo_key in seen_domain_pairs and distr_memo_key in seen_distr_pairs:
+                continue
+            seen_domain_pairs[domain_memo_key] = None
+            seen_distr_pairs[distr_memo_key] = None
+
+            # map each augmented-node to a tuple of distribution indices, or to a set of nodes
+            # representing the intervention targets
+            if (
+                intervention_targets[dataset_idx] is not None
+                and intervention_targets[dataset_jdx] is not None
+            ):
+                symm_diff = set(intervention_targets[dataset_idx]).symmetric_difference(
+                    set(intervention_targets[dataset_jdx])
+                )
+                targets = frozenset(symm_diff)
+            else:
+                targets = None
+
+            # create the F-node
+            f_node = ("F", k)
+            f_nodes.add(f_node)
+
+            # map each F-node to a set of domain(s)
+            node_domain_map[f_node] = [source, target]
+            sigma_map[f_node] = [dataset_idx, dataset_jdx]
+            reverse_sigma_map[frozenset([dataset_idx, dataset_jdx])] = f_node
+            symmetric_diff_map[f_node] = targets
+
+            k += 1
+
+    # # get non-augmented nodes
+    # non_aug_nodes = set(G.non_augmented_nodes)
+    # for aug_node in f_nodes:
+    #     G.add_f_node(
+    #         aug_node, targets=symmetric_diff_map[aug_node], domain=node_domain_map[aug_node]
+    #     )
+    #     for node in non_aug_nodes:
+    #         G.add_edge(aug_node, node, G.directed_edge_name)
+    return f_nodes, symmetric_diff_map, sigma_map, node_domain_map
+
+
 class AugmentedNodeMixin:
     graph: dict
     nodes: NodeView
-    domains: Set[int] = set()
 
     @abstractmethod
     def add_edge(self, u_of_edge, v_of_edge, edge_type="all", **attr):
@@ -27,6 +134,16 @@ class AugmentedNodeMixin:
     @abstractmethod
     def directed_edge_name(self) -> str:
         pass
+
+    @property
+    def n_domains(self):
+        domains = set()
+        for node_dict in self.nodes(data=True):
+            domain_ids = node_dict.get("domain_ids", None)
+            if domain_ids is not None:
+                domains.add(domain for domain in domain_ids)
+
+        return len(domains)
 
     def _verify_augmentednode_dict(self):
         # verify validity of F nodes
@@ -44,7 +161,7 @@ class AugmentedNodeMixin:
                 "There is a graph property named S-nodes already that is not of type dict."
             )
 
-    def add_f_node(self, intervention_set: Set[Node], require_unique=True, domain=None):
+    def add_f_node(self, targets: Set[Node], require_unique=True, domain=None):
         """Add an F-node to the graph.
 
         Parameters
@@ -56,42 +173,41 @@ class AugmentedNodeMixin:
             then the intervention set is added to the graph, even if it is already
             an F-node. The default is True.
         domain : Optional[Set[int]], optional
-            The domain of the F-node. If None, then the domain is just set to 1.
+            The domains of the F-node. If None, then the domain is just set to {1}.
         """
-        if isinstance(intervention_set, str) or not isinstance(intervention_set, Iterable):
+        if isinstance(targets, str) or not isinstance(targets, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
         if domain is None:
             domain = set([1])
 
         # check that there are no duplicates and perform set conversion
-        orig_len = len(intervention_set)
-        intervention_set = frozenset(intervention_set)  # type: ignore
-        if len(intervention_set) != orig_len:
+        orig_len = len(targets)
+        targets = frozenset(targets)  # type: ignore
+        if len(targets) != orig_len:
             raise RuntimeError("The intervention set must be a set of unique nodes.")
 
         # check that the F-node intervention set has variables within the graph
-        if require_unique and intervention_set in self.intervention_sets:
+        if require_unique and targets in self.intervention_sets:
             raise RuntimeError(
-                f"You cannot add an F-node for {intervention_set} because "
-                f"there is already an F-node."
+                f"You cannot add an F-node for {targets} because " f"there is already an F-node."
             )
-        for node in intervention_set:
+        for node in targets:
             if node not in self.nodes:
                 raise RuntimeError(
                     f"All intervention sets must be nodes already in the graph. {node} is not."
                 )
 
         # add a new F-node into the graph
-        f_node_name = ("F", len(self.f_nodes))
+        f_node_name = ("F", len(self.augmented_nodes))
         self.add_node(f_node_name)
 
         # add edge between the F-node and its intervention set
-        for intervened_node in intervention_set:
+        for intervened_node in targets:
             self.add_edge(f_node_name, intervened_node, self.directed_edge_name)
 
         # adding nodes to F-node container occurs last, because of the error checks
         # that occur in adding edges
-        self.graph["F-nodes"][f_node_name]["targets"] = intervention_set
+        self.graph["F-nodes"][f_node_name]["targets"] = targets
         self.graph["F-nodes"][f_node_name]["domain"] = domain
 
     def add_f_nodes_from(self, intervention_sets: List[Set[Node]]):
@@ -140,21 +256,31 @@ class AugmentedNodeMixin:
         return nodes
 
     @property
-    def domain_ids(self) -> List[int]:
+    def domain_ids(self) -> Set[int]:
         """Return set of domain ids."""
         domain_ids = set()
         for src, target in self.graph["S-nodes"].values():
             domain_ids.add(src)
             domain_ids.add(target)
 
-        return list(domain_ids)
+        return domain_ids
 
     @property
     def s_nodes(self) -> List[Node]:
         """Return set of S-nodes."""
         return list(self.graph["S-nodes"].keys())
 
-    def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
+    @property
+    def s_node_domain_ids(self) -> List[int]:
+        """Return a mapping of S-nodes to their domain ids."""
+        return self.graph["S-nodes"]
+
+    @property
+    def domain_ids_to_snodes(self) -> Dict:
+        """Return a mapping of domain ids to their ocrresponding S-nodes."""
+        return {v: k for k, v in self.graph["S-nodes"].items()}
+
+    def add_s_node(self, domain_ids: Tuple, node_changes: Optional[Set[Node]] = None):
         if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
 
@@ -171,10 +297,9 @@ class AugmentedNodeMixin:
                 f"there is already an augmented-node."
             )
 
-        # add domains
-        self.domains.update(domain_ids)
-
         # add a new S-node into the graph
+        # Note: that we represent S-nodes as F-nodes
+        # s_node_name = ("F", len(self.augmented_nodes))
         s_node_name = ("S", len(self.s_nodes))
         self.add_node(s_node_name, domain_ids=domain_ids)
 
@@ -184,7 +309,7 @@ class AugmentedNodeMixin:
 
         # adding nodes to F-node container occurs last, because of the error checks
         # that occur in adding edges
-        self.graph["S-nodes"][s_node_name] = domain_ids
+        self.graph["S-nodes"][s_node_name] = frozenset(domain_ids)
 
 
 class AugmentedGraph(ADMG, AugmentedNodeMixin):

@@ -40,7 +40,7 @@ def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph
 
 
 def add_noise_function(
-    G: nx.DiGraph, node: Node, distr_func: Callable, func: Callable = None
+    G: nx.DiGraph, node: Node, distr_func: Callable, func: Optional[Callable] = None
 ) -> nx.DiGraph:
     """Add function and distribution for a node's exogenous variable into the graph.
 
@@ -120,7 +120,11 @@ def add_soft_intervention_function(
 
 
 def add_domain_shift_function(
-    G: AugmentedGraph, node: Node, s_node: Node, func: Callable = None, distr_func: Callable = None
+    G: AugmentedGraph,
+    node: Node,
+    s_node: Node,
+    func: Optional[Callable] = None,
+    distr_func: Optional[Callable] = None,
 ):
     """Add domain shift function for a node into the graph assuming invariant graph structure.
 
@@ -226,10 +230,16 @@ def sample_from_graph(
 
     rng: np.random.Generator = np.random.default_rng(random_state)
     if hasattr(G, "get_graphs"):
-        directed_G = G.get_graphs("directed")
+        directed_G = nx.DiGraph()
+        directed_G.add_nodes_from(G.nodes(data=True))
+        for edge in directed_G.edges:
+            G.add_edge(*edge, **directed_G.edges[edge])
+
+        directed_G.graph = G.graph.copy()
     else:
         directed_G = G
 
+    print("inside: ", directed_G.nodes(data=True))
     # check input
     _check_input_graph(directed_G)
 
@@ -368,12 +378,13 @@ def _check_input_func(func: Callable, parents=None):
 def _check_input_graph(G: nx.DiGraph):
     if not nx.is_directed_acyclic_graph(G):
         raise ValueError("The input graph must be a DAG.")
-    if not G.graph.get("functional", True):
+    if not G.graph.get("functional"):
         raise ValueError(
             "The input graph must be a functional graph. Please initialize "
             "the graph with functions."
         )
     for node in G.nodes:
+        print(G.nodes[node])
         if G.nodes[node].get("exogenous_function", None) is None:
             raise ValueError(f"Node {node} does not have an exogenous function.")
         if G.nodes[node].get("exogenous_distribution", None) is None:

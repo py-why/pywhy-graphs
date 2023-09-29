@@ -1,6 +1,6 @@
 import pytest
 
-from pywhy_graphs.functional import make_graph_linear_gaussian
+from pywhy_graphs.functional import make_random_linear_gaussian_graph
 from pywhy_graphs.simulate import simulate_random_er_dag
 
 
@@ -9,7 +9,7 @@ def test_make_linear_gaussian_graph(n_domains, n_invariances_to_try):
     G = simulate_random_er_dag(n_nodes=5, seed=12345, ensure_acyclic=True)
 
     # make linear graph SCM
-    G = make_graph_linear_gaussian(G, random_state=12345)
+    G = make_random_linear_gaussian_graph(G, random_state=12345)
 
     # make multidomain SCM
     # G = make_graph_multidomain(

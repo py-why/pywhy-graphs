@@ -1,7 +1,10 @@
 import itertools
+from typing import Optional
 
 import networkx as nx
 import numpy as np
+
+from pywhy_graphs.typing import Node
 
 
 def to_pgmpy_bayesian_network(G):
@@ -113,7 +116,7 @@ def get_cpd(G, node):
     return cpd
 
 
-def get_cardinality(G, node):
+def get_cardinality(G: nx.DiGraph, node: Node):
     from pgmpy.factors.discrete import TabularCPD
 
     cpd: TabularCPD = get_cpd(G, node)
@@ -217,7 +220,7 @@ def _preprocess_parameter_inputs(
     edge_functions,
     edge_weight_lims,
     multi_domain: bool = False,
-    n_domains: int = None,
+    n_domains: Optional[int] = None,
 ):
     """Helper function to preprocess common parameter inputs for sampling functional graphs.
 

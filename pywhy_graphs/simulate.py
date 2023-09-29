@@ -11,7 +11,7 @@ from pywhy_graphs.typing import Node
 
 
 def simulate_random_er_dag(
-    n_nodes: int, p: float = 0.5, seed: int = None, ensure_acyclic: bool = False
+    n_nodes: int, p: float = 0.5, seed: Optional[int] = None, ensure_acyclic: bool = False
 ):
     """Simulate a random Erdos-Renyi graph.
 
@@ -109,7 +109,7 @@ def simulate_data_from_var(
     n_times: int = 1000,
     n_realizations: int = 1,
     var_names: Optional[List[Node]] = None,
-    random_state: int = None,
+    random_state: Optional[int] = None,
 ):
     """Simulate data from an already set VAR process.
 
@@ -199,7 +199,7 @@ def simulate_linear_var_process(
     n_times: int = 1000,
     n_realizations: int = 1,
     weight_dist: Callable = scipy.stats.norm,
-    random_state: int = None,
+    random_state: Optional[int] = None,
 ):
     """Simulate a linear VAR process of a "stationary" causal graph.
 
@@ -286,7 +286,7 @@ def simulate_linear_var_process(
 
 
 def simulate_var_process_from_summary_graph(
-    G: pywhy_nx.MixedEdgeGraph, max_lag=1, n_times=1000, random_state: int = None
+    G: pywhy_nx.MixedEdgeGraph, max_lag=1, n_times=1000, random_state: Optional[int] = None
 ):
     """Simulate a VAR(max_lag) process starting from a summary graph.
 

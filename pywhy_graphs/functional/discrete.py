@@ -18,6 +18,9 @@ def apply_discrete_soft_intervention(
         Linear functional causal graph.
     targets : Set[Node]
         The set of nodes to intervene on simultanenously.
+    weight_ranges : Optional[List], optional
+        The range of weights to sample from for each target node. If None, then
+        the range is [1, 5], by default None.
     random_state : RandomState, optional
         Random seed, by default None.
 
@@ -184,9 +187,9 @@ def add_cpd_for_node(
 
 def make_random_discrete_graph(
     G: nx.DiGraph,
-    cardinality_lims: Dict[Any, List[int]] = None,
-    weight_lims: Dict[Any, List[int]] = None,
-    noise_ratio_lims: List[float] = None,
+    cardinality_lims: Optional[Dict[Any, List[int]]] = None,
+    weight_lims: Optional[Dict[Any, List[int]]] = None,
+    noise_ratio_lims: Optional[List[float]] = None,
     overwrite: bool = False,
     random_state=None,
 ) -> nx.DiGraph:

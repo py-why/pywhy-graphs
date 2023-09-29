@@ -43,7 +43,6 @@ def test_convert_to_latent_confounder(graph_func):
 
 
 def test_inducing_path():
-
     admg = ADMG()
 
     admg.add_edge("X", "Y", admg.directed_edge_name)
@@ -93,7 +92,6 @@ def test_inducing_path():
 
 
 def test_inducing_path_wihtout_LandS():
-
     admg = ADMG()
 
     admg.add_edge("X", "Y", admg.directed_edge_name)
@@ -113,7 +111,6 @@ def test_inducing_path_wihtout_LandS():
 
 
 def test_inducing_path_one_direction():
-
     admg = ADMG()
 
     admg.add_edge("A", "B", admg.directed_edge_name)
