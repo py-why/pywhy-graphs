@@ -2,7 +2,7 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import ADMG, PAG
+from pywhy_graphs import ADMG
 
 
 def test_convert_to_latent_confounder_errors():
