@@ -3,7 +3,7 @@ from itertools import permutations
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import PAG
+from pywhy_graphs import ADMG, PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
     is_definite_noncollider,
@@ -650,16 +650,32 @@ def test_pdst(pdst_graph):
 
 
 def test_pag_to_mag():
-    G = PAG()
+    pag = PAG()
+    pag.add_edge("A", "D", pag.directed_edge_name)
+    pag.add_edge("A", "C", pag.circle_edge_name)
+    pag.add_edge("D", "A", pag.circle_edge_name)
+    pag.add_edge("B", "D", pag.directed_edge_name)
+    pag.add_edge("C", "D", pag.directed_edge_name)
+    pag.add_edge("D", "B", pag.circle_edge_name)
+    pag.add_edge("D", "C", pag.circle_edge_name)
+    pag.add_edge("C", "A", pag.circle_edge_name)
+    pag.add_edge("B", "A", pag.circle_edge_name)
+    pag.add_edge("A", "B", pag.circle_edge_name)
 
-    # x o-o y o-o z, y o-o v
-    G.add_edge("y", "x", G.circle_edge_name)
-    G.add_edge("x", "y", G.circle_edge_name)
-    G.add_edge("z", "y", G.circle_edge_name)
-    G.add_edge("y", "z", G.circle_edge_name)
-    G.add_edge("v", "y", G.circle_edge_name)
-    G.add_edge("y", "v", G.circle_edge_name)
+    out_mag = pywhy_graphs.pag_to_mag(pag)
 
-    new_g = pywhy_graphs.pag_to_mag(G)
-    print(new_g)
-    assert pywhy_graphs.valid_mag(new_g)
+    mag = ADMG()
+    mag.add_edge("A", "B", mag.directed_edge_name)
+    mag.add_edge("A", "C", mag.directed_edge_name)
+    mag.add_edge("A", "D", mag.directed_edge_name)
+    mag.add_edge("B", "D", mag.directed_edge_name)
+    mag.add_edge("C", "D", mag.directed_edge_name)
+
+    out_edges = list(out_mag.edges()["directed"])
+    assert (
+        (("A", "B") in out_edges)
+        and (("A", "C") in out_edges)
+        and (("A", "D") in out_edges)
+        and (("B", "D") in out_edges)
+        and (("C", "D") in out_edges)
+    )
