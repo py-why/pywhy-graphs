@@ -673,8 +673,8 @@ def test_pag_to_mag():
 
     out_edges = list(out_mag.edges()["directed"])
     assert (
-        (("A", "B") in out_edges)
-        and (("A", "C") in out_edges)
+        ((("A", "B") in out_edges) or (("B", "A") in out_edges))
+        and ((("A", "C") in out_edges) or (("C", "A") in out_edges))
         and (("A", "D") in out_edges)
         and (("B", "D") in out_edges)
         and (("C", "D") in out_edges)

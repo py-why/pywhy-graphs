@@ -1167,6 +1167,7 @@ def pag_to_mag(graph):
     mag = ADMG()  # provisional MAG
 
     # construct the final MAG
+    print(temp_cpdag.edges())
 
     for (u, v) in copy_graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
