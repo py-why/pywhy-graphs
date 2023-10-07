@@ -664,13 +664,6 @@ def test_pag_to_mag():
 
     out_mag = pywhy_graphs.pag_to_mag(pag)
 
-    mag = ADMG()
-    mag.add_edge("A", "B", mag.directed_edge_name)
-    mag.add_edge("A", "C", mag.directed_edge_name)
-    mag.add_edge("A", "D", mag.directed_edge_name)
-    mag.add_edge("B", "D", mag.directed_edge_name)
-    mag.add_edge("C", "D", mag.directed_edge_name)
-
     out_edges = list(out_mag.edges()["directed"])
     assert (
         ((("A", "B") in out_edges) or (("B", "A") in out_edges))
@@ -679,3 +672,21 @@ def test_pag_to_mag():
         and (("B", "D") in out_edges)
         and (("C", "D") in out_edges)
     )
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.circle_edge_name)
+    pag.add_edge("B", "A", pag.directed_edge_name)
+    pag.add_edge("D", "A", pag.directed_edge_name)
+    pag.add_edge("A", "D", pag.circle_edge_name)
+    pag.add_edge("D", "B", pag.circle_edge_name)
+    pag.add_edge("B", "D", pag.circle_edge_name)
+
+    out_mag = pywhy_graphs.pag_to_mag(pag)
+
+    mag = ADMG()
+    mag.add_edge("B", "A", mag.directed_edge_name)
+    mag.add_edge("D", "A", mag.directed_edge_name)
+    mag.add_edge("D", "B", mag.directed_edge_name)
+
+    out_edges = list(out_mag.edges()["directed"])
+    assert (("B", "A") in out_edges) and (("D", "A") in out_edges) and (("D", "B") in out_edges)
