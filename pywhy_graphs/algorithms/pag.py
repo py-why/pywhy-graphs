@@ -1143,7 +1143,7 @@ def pag_to_mag(graph):
         ) not in to_add:  # add all 'o--o' edges to the cpdag
             to_add.append((u, v))
     for u, v in to_remove:
-        copy_graph.remove_edge(u, v, graph.circle_edge_name)
+        copy_graph.remove_edge(u, v, copy_graph.circle_edge_name)
     for u, v in to_reorient:
         copy_graph.orient_uncertain_edge(u, v)
     for u, v in to_add:
@@ -1172,13 +1172,11 @@ def pag_to_mag(graph):
     for (u, v) in copy_graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
-    for (u, v) in copy_graph.undirected_edges:
-        mag.add_edge(u, v, mag.undirected_edge_name)
-
-    for (u, v) in copy_graph.bidirected_edges:
-        mag.add_edge(u, v, mag.bidirected_edge_name)
 
     for (u, v) in temp_cpdag.directed_edges:
+        mag.add_edge(u, v, mag.directed_edge_name)
+    
+    for (u, v) in temp_cpdag.undirected_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
     return mag
