@@ -704,5 +704,5 @@ def test_pag_to_mag():
         and out_mag.has_edge("C", "B")
         and out_mag.has_edge("E", "B")
         and (out_mag.has_edge("E", "D") or out_mag.has_edge("D", "E"))
-        and (out_mag.has_edge("D","C") or  out_mag.has_edge("C","D"))
+        and (out_mag.has_edge("D", "C") or out_mag.has_edge("C", "D"))
     )
