@@ -687,3 +687,22 @@ def test_pag_to_mag():
         and out_mag.has_edge("D", "A")
         and (out_mag.has_edge("D", "B") or out_mag.has_edge("B", "D"))
     )
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.directed_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+    pag.add_edge("E", "B", pag.directed_edge_name)
+    pag.add_edge("E", "D", pag.circle_edge_name)
+    pag.add_edge("C", "D", pag.circle_edge_name)
+    pag.add_edge("D", "E", pag.circle_edge_name)
+    pag.add_edge("D", "C", pag.circle_edge_name)
+
+    out_mag = pywhy_graphs.pag_to_mag(pag)
+
+    assert (
+        out_mag.has_edge("A", "B")
+        and out_mag.has_edge("C", "B")
+        and out_mag.has_edge("E", "B")
+        and (out_mag.has_edge("E", "D") or out_mag.has_edge("D", "E"))
+        and (out_mag.has_edge("D","C") or  out_mag.has_edge("C","D"))
+    )
