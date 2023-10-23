@@ -1174,7 +1174,4 @@ def pag_to_mag(graph):
     for (u, v) in temp_cpdag.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
-    for (u, v) in temp_cpdag.undirected_edges:
-        mag.add_edge(u, v, mag.directed_edge_name)
-
     return mag
