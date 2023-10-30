@@ -6,6 +6,8 @@ on:
   pull_request:
     paths:
       - '**.py'
+      - '**.yml'
+      - '**.toml'
   push:
     branches: [main]
     paths:
