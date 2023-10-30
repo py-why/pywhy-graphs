@@ -136,7 +136,9 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
-        run: pip install poetry-dynamic-versioning
+        run: |
+          pip install --upgrade pip
+          pip install poetry-dynamic-versioning
       - name: Install packages via poetry
         run: |
           poetry install --with test

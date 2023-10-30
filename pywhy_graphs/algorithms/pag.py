@@ -511,7 +511,7 @@ def uncovered_pd_path(
 
 
 def pds(
-    graph: PAG, node_x: Node, node_y: Node = None, max_path_length: Optional[int] = None
+    graph: PAG, node_x: Node, node_y: Optional[Node] = None, max_path_length: Optional[int] = None
 ) -> Set[Node]:
     """Find all PDS sets between node_x and node_y.
 
@@ -712,7 +712,7 @@ def pds_path(
     for comp in biconn_comp:
         if (node_x, node_y) in comp or (node_y, node_x) in comp:
             # add all unique nodes in the biconnected component
-            for (x, y) in comp:
+            for x, y in comp:
                 found_component.add(x)
                 found_component.add(y)
             break
@@ -1030,7 +1030,7 @@ def _meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
     if graph.has_edge(i, j, graph.undirected_edge_name):
         # For all the pairs of nodes adjacent to i,
         # look for (k, l), such that j -> l and k -> l
-        for (k, l) in combinations(graph.neighbors(i), 2):
+        for k, l in combinations(graph.neighbors(i), 2):
             # Skip if k and l are adjacent.
             if l in graph.neighbors(k):
                 continue
@@ -1157,7 +1157,7 @@ def pag_to_mag(graph):
     while flag:
         undedges = temp_cpdag.undirected_edges
         if len(undedges) != 0:
-            for (u, v) in undedges:
+            for u, v in undedges:
                 temp_cpdag.remove_edge(u, v, temp_cpdag.undirected_edge_name)
                 temp_cpdag.add_edge(u, v, temp_cpdag.directed_edge_name)
                 _apply_meek_rules(temp_cpdag)
@@ -1169,10 +1169,10 @@ def pag_to_mag(graph):
 
     # construct the final MAG
 
-    for (u, v) in copy_graph.directed_edges:
+    for u, v in copy_graph.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
-    for (u, v) in temp_cpdag.directed_edges:
+    for u, v in temp_cpdag.directed_edges:
         mag.add_edge(u, v, mag.directed_edge_name)
 
     return mag

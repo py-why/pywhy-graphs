@@ -1,4 +1,4 @@
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 import networkx as nx
 
@@ -20,7 +20,9 @@ __all__ = [
 ]
 
 
-def is_node_common_cause(G: nx.DiGraph, node: Node, exclude_nodes: List[Node] = None) -> bool:
+def is_node_common_cause(
+    G: nx.DiGraph, node: Node, exclude_nodes: Optional[List[Node]] = None
+) -> bool:
     """Check if a node is a common cause within the graph.
 
     Parameters
@@ -519,7 +521,7 @@ def _shortest_valid_path(
     return (path_exists, path)
 
 
-def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
+def inducing_path(G, node_x: Node, node_y: Node, L: Optional[Set] = None, S: Optional[Set] = None):
     """Checks if an inducing path exists between two nodes.
 
     An inducing path is defined in :footcite:`Zhang2008`.
@@ -599,7 +601,6 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     path_exists = False
     for elem in x_neighbors:
-
         visited = {node_x}
         if elem not in visited:
             path_exists, temp_path = _shortest_valid_path(
@@ -646,7 +647,7 @@ def has_adc(G):
     return adc_present
 
 
-def valid_mag(G: ADMG, L: set = None, S: set = None):
+def valid_mag(G: ADMG, L: Optional[set] = None, S: Optional[set] = None):
     """Checks if the provided graph is a valid maximal ancestral graph (MAG).
 
     A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
@@ -710,7 +711,7 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
     return True
 
 
-def dag_to_mag(G, L: Set = None, S: Set = None):
+def dag_to_mag(G, L: Optional[Set] = None, S: Optional[Set] = None):
     """Converts a DAG to a valid MAG.
 
     The algorithm is defined in :footcite:`Zhang2008` on page 1877.
@@ -755,7 +756,6 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     mag = ADMG()
 
     for A, B in adj_nodes:
-
         AuS = S.union(A)
         BuS = S.union(B)
 
@@ -787,7 +787,7 @@ def dag_to_mag(G, L: Set = None, S: Set = None):
     return mag
 
 
-def is_maximal(G, L: Set = None, S: Set = None):
+def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
     """Checks to see if the graph is maximal.
 
     Parameters:

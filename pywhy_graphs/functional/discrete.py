@@ -184,9 +184,9 @@ def add_cpd_for_node(
 
 def make_random_discrete_graph(
     G: nx.DiGraph,
-    cardinality_lims: Dict[Any, List[int]] = None,
-    weight_lims: Dict[Any, List[int]] = None,
-    noise_ratio_lims: List[float] = None,
+    cardinality_lims: Optional[Dict[Any, List[int]]] = None,
+    weight_lims: Optional[Dict[Any, List[int]]] = None,
+    noise_ratio_lims: Optional[List[float]] = None,
     overwrite: bool = False,
     random_state=None,
 ) -> nx.DiGraph:

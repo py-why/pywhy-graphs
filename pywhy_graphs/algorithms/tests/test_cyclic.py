@@ -83,7 +83,7 @@ def test_sigma_separated():
     cyclic_G = pywhy_nx.MixedEdgeGraph(graphs=[cyclic_G], edge_types=["directed"])
     cyclic_G.add_edge_type(nx.Graph(), edge_type="bidirected")
 
-    for (u, v) in combinations(cyclic_G.nodes, 2):
+    for u, v in combinations(cyclic_G.nodes, 2):
         other_nodes = set(cyclic_G.nodes)
         other_nodes.remove(u)
         other_nodes.remove(v)
