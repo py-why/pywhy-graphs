@@ -1106,7 +1106,9 @@ def _meek_rule4(graph: CPDAG, i: str, j: str) -> bool:
 
 
 def pag_to_mag(graph):
-    """Convert a PAG to an MAG using algorithm defined in Theorem 2 of
+    """Sample a MAG from a PAG using Zhang's algorithm.
+    
+         Using algorithm defined in Theorem 2 of
      defined in :footcite:`Zhang2008`.
      The algorithm turns all o-> edges to -> and -o edges to ->. Then converts the
      input graph into a DAG with no unshielded colliders.
