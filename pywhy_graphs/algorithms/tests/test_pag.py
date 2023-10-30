@@ -650,6 +650,10 @@ def test_pdst(pdst_graph):
 
 
 def test_pag_to_mag():
+
+    # C o- A o-> D <-o B
+    # B o-o A o-o C o-> D
+
     pag = PAG()
     pag.add_edge("A", "D", pag.directed_edge_name)
     pag.add_edge("A", "C", pag.circle_edge_name)
@@ -664,6 +668,9 @@ def test_pag_to_mag():
 
     out_mag = pywhy_graphs.pag_to_mag(pag)
 
+    # C <- A -> B -> D or C -> A -> B -> D or C <- A <- B -> D
+    # A -> D <- C
+
     assert (
         ((out_mag.has_edge("A", "B")) or (out_mag.has_edge("B", "A")))
         and ((out_mag.has_edge("A", "C")) or (out_mag.has_edge("C", "A")))
@@ -672,6 +679,8 @@ def test_pag_to_mag():
         and (out_mag.has_edge("C", "D"))
     )
 
+    # D o-> A <-o B
+    # D o-o B
     pag = PAG()
     pag.add_edge("A", "B", pag.circle_edge_name)
     pag.add_edge("B", "A", pag.directed_edge_name)
@@ -682,11 +691,17 @@ def test_pag_to_mag():
 
     out_mag = pywhy_graphs.pag_to_mag(pag)
 
+    # B -> A <- D
+    # D -> B or D <- B
+
     assert (
         out_mag.has_edge("B", "A")
         and out_mag.has_edge("D", "A")
         and (out_mag.has_edge("D", "B") or out_mag.has_edge("B", "D"))
     )
+
+    # A -> B <- C o-o D
+    # D o-o E -> B
 
     pag = PAG()
     pag.add_edge("A", "B", pag.directed_edge_name)
@@ -698,6 +713,9 @@ def test_pag_to_mag():
     pag.add_edge("D", "C", pag.circle_edge_name)
 
     out_mag = pywhy_graphs.pag_to_mag(pag)
+
+    # A -> B <- C <- D or A -> B <- C -> D
+    # D <- E -> B or D <- E -> B
 
     assert (
         out_mag.has_edge("A", "B")
