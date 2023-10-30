@@ -1109,8 +1109,7 @@ def pag_to_mag(graph):
     """Sample a MAG from a PAG using Zhang's algorithm.
     
          Using algorithm defined in Theorem 2 of
-     defined in :footcite:`Zhang2008`.
-     The algorithm turns all o-> edges to -> and -o edges to ->. Then converts the
+     :footcite:`Zhang2008`, turns all o-> edges to -> and -o edges to ->. Then converts the
      input graph into a DAG with no unshielded colliders.
 
     Parameters
