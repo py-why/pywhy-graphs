@@ -81,6 +81,7 @@ jobs:
           command: |
             poetry --version
             poetry show
+
       - run:
           name: Setup torch for pgmpy
           command: |
