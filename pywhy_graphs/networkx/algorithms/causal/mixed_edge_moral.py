@@ -40,7 +40,7 @@ def mixed_edge_moral_graph(
     if has_undirected:
         G_undirected = G.get_graphs(edge_type=undirected_edge_name)
     else:
-        G_undirected = nx.DiGraph()
+        G_undirected = nx.Graph()
         G_undirected.add_nodes_from(G)
     has_directed = directed_edge_name in G.edge_types
     if has_directed:
@@ -57,7 +57,7 @@ def mixed_edge_moral_graph(
 
     G_a = nx.Graph()
     G_a = nx.compose(G_a, G_undirected)
-    G_a = nx.compose(G_a, G_directed)
+    G_a = nx.compose(G_a, G_directed.to_undirected())
     G_a = nx.compose(G_a, G_bidirected)
 
     for component in nx.connected_components(G_bidirected):
