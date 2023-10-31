@@ -193,7 +193,9 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.classes.timeseries.mixededge</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
 <span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">TsNode</span>
@@ -373,7 +375,7 @@
     <span class="c1"># supported graph types</span>
     <span class="n">graph_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">StationaryTimeSeriesGraph</span><span class="p">,</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">edge_types</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_stationarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>

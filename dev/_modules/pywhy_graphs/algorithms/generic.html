@@ -193,7 +193,7 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.algorithms.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
@@ -215,7 +215,9 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">is_node_common_cause</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">is_node_common_cause</span><span class="p">(</span>
+    <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a node is a common cause within the graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -714,7 +716,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">path_exists</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="inducing_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path">[docs]</a><span class="k">def</span> <span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="inducing_path"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path">[docs]</a><span class="k">def</span> <span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if an inducing path exists between two nodes.</span>
 
 <span class="sd">    An inducing path is defined in :footcite:`Zhang2008`.</span>
@@ -794,7 +796,6 @@
 
     <span class="n">path_exists</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">x_neighbors</span><span class="p">:</span>
-
         <span class="n">visited</span> <span class="o">=</span> <span class="p">{</span><span class="n">node_x</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
             <span class="n">path_exists</span><span class="p">,</span> <span class="n">temp_path</span> <span class="o">=</span> <span class="n">_shortest_valid_path</span><span class="p">(</span>
@@ -841,7 +842,7 @@
     <span class="k">return</span> <span class="n">adc_present</span></div>
 
 
-<div class="viewcode-block" id="valid_mag"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.valid_mag.html#pywhy_graphs.algorithms.valid_mag">[docs]</a><span class="k">def</span> <span class="nf">valid_mag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="valid_mag"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.valid_mag.html#pywhy_graphs.algorithms.valid_mag">[docs]</a><span class="k">def</span> <span class="nf">valid_mag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the provided graph is a valid maximal ancestral graph (MAG).</span>
 
 <span class="sd">    A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that</span>
@@ -905,7 +906,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="dag_to_mag"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.dag_to_mag.html#pywhy_graphs.algorithms.dag_to_mag">[docs]</a><span class="k">def</span> <span class="nf">dag_to_mag</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="dag_to_mag"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.dag_to_mag.html#pywhy_graphs.algorithms.dag_to_mag">[docs]</a><span class="k">def</span> <span class="nf">dag_to_mag</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a DAG to a valid MAG.</span>
 
 <span class="sd">    The algorithm is defined in :footcite:`Zhang2008` on page 1877.</span>
@@ -950,7 +951,6 @@
     <span class="n">mag</span> <span class="o">=</span> <span class="n">ADMG</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">adj_nodes</span><span class="p">:</span>
-
         <span class="n">AuS</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
         <span class="n">BuS</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 
@@ -982,7 +982,7 @@
     <span class="k">return</span> <span class="n">mag</span></div>
 
 
-<span class="k">def</span> <span class="nf">is_maximal</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">is_maximal</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks to see if the graph is maximal.</span>
 
 <span class="sd">    Parameters:</span>

@@ -361,7 +361,7 @@
 
     <span class="c1"># now map all values to their respective pcalg values</span>
     <span class="n">seen_idx</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">)</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">clearn_arr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">clearn_arr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">)</span> <span class="ow">in</span> <span class="n">seen_idx</span> <span class="ow">or</span> <span class="p">(</span><span class="n">jdx</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="ow">in</span> <span class="n">seen_idx</span><span class="p">:</span>
             <span class="k">continue</span>
 

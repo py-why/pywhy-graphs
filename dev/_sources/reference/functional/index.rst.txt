@@ -13,7 +13,7 @@ model. Currently, we only support linear models, but we plan to support non-line
 and we also do not support latent confounders yet.
 
 To add a latent confounder, one can add a confounder explicitly, generate the data
-and then drop the confounder varialble in the final dataset. In the roadmap of this submodule,
+and then drop the confounder variable in the final dataset. In the roadmap of this submodule,
 the plan is to represent any bidirected edge as a uniformly randomly distributed variable
 that has an additive noise effect on both variables simultaneously.
 

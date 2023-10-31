@@ -706,7 +706,7 @@
 
 
 <div class="viewcode-block" id="pds"><a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds">[docs]</a><span class="k">def</span> <span class="nf">pds</span><span class="p">(</span>
-    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all PDS sets between node_x and node_y.</span>
 
@@ -907,7 +907,7 @@
     <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">biconn_comp</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">comp</span> <span class="ow">or</span> <span class="p">(</span><span class="n">node_y</span><span class="p">,</span> <span class="n">node_x</span><span class="p">)</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
             <span class="c1"># add all unique nodes in the biconnected component</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
                 <span class="n">found_component</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
                 <span class="n">found_component</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
             <span class="k">break</span>
@@ -1225,9 +1225,9 @@
     <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">):</span>
         <span class="c1"># For all the pairs of nodes adjacent to i,</span>
         <span class="c1"># look for (k, l), such that j -&gt; l and k -&gt; l</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">l_node</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
             <span class="c1"># Skip if k and l are adjacent.</span>
-            <span class="k">if</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l_node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="c1"># Skip if not k-&gt;j.</span>
             <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
@@ -1235,19 +1235,19 @@
             <span class="p">):</span>
                 <span class="k">continue</span>
             <span class="c1"># Skip if not l-&gt;j.</span>
-            <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="ow">not</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">l_node</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">l_node</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
             <span class="p">):</span>
                 <span class="k">continue</span>
 
             <span class="c1"># check if the triple is inside graph&#39;s excluded triples</span>
-            <span class="k">if</span> <span class="nb">frozenset</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">excluded_triples</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">frozenset</span><span class="p">((</span><span class="n">l_node</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">excluded_triples</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="c1"># if i - k and i - l, then  at this point, we have a valid path</span>
             <span class="c1"># to orient</span>
             <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
-                <span class="n">l</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span>
+                <span class="n">l_node</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">undirected_edge_name</span>
             <span class="p">):</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">orient_uncertain_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
                 <span class="n">added_arrows</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1352,7 +1352,7 @@
     <span class="k">while</span> <span class="n">flag</span><span class="p">:</span>
         <span class="n">undedges</span> <span class="o">=</span> <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">undirected_edges</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">undedges</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">undedges</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">undedges</span><span class="p">:</span>
                 <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">undirected_edge_name</span><span class="p">)</span>
                 <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
                 <span class="n">_apply_meek_rules</span><span class="p">(</span><span class="n">temp_cpdag</span><span class="p">)</span>
@@ -1364,10 +1364,10 @@
 
     <span class="c1"># construct the final MAG</span>
 
-    <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">copy_graph</span><span class="o">.</span><span class="n">directed_edges</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">copy_graph</span><span class="o">.</span><span class="n">directed_edges</span><span class="p">:</span>
         <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">directed_edges</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">temp_cpdag</span><span class="o">.</span><span class="n">directed_edges</span><span class="p">:</span>
         <span class="n">mag</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">mag</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mag</span>
