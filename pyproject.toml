@@ -88,7 +88,7 @@ graphviz = { version = "^0.20.1" }
 ipython = { version = "^7.4.0" }
 nbsphinx = { version = "^0.8" }
 dowhy = { version = "^0.8" }
-pygraphviz = { version = "*" }
+pygraphviz = { version = "^1.11" }
 memory_profiler = { version = "*" }
 scikit-learn = { version = "^1.1.0" }         # needed in dowhy's package
 pandas = { version = "^1.1" }                 # needed in dowhy's package
