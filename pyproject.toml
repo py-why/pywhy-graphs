@@ -37,8 +37,8 @@ exclude = ['*tests']
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-numpy = "^1.23.0"
-scipy = "^1.8.0"
+numpy = ">=1.22.0"
+scipy = ">=1.9.0"
 networkx = "^3.1"
 importlib-resources = { version = "*", python = "<3.10" }
 pygraphviz = { version = "*", optional = true }
@@ -55,7 +55,7 @@ memory_profiler = { version = "^0.60.0" }
 causal-learn = { version = "^0.1.2.8" }
 ananke-causal = { version = "^0.3.3" }
 pre-commit = "^3.0.4"
-pandas = { version = ">=1.1" }                # needed for simulation
+pandas = { version = ">=1.4" }                # needed for simulation
 torch = { version = ">=2.0.0,!=2.0.1,!=2.1.0" }
 
 [tool.poetry.group.style]
@@ -76,7 +76,7 @@ optional = true
 [tool.poetry.group.docs.dependencies]
 poethepoet = "^0.20.0"
 portray = "^1.7.0"
-matplotlib = { version = "^3.6.0" }
+matplotlib = { version = ">=3.5.0" }
 numpydoc = { version = "1.4" }
 pydata-sphinx-theme = { version = "^0.9.0" }
 sphinx = { version = "^5.1.1" }
@@ -91,7 +91,7 @@ dowhy = { version = "^0.8" }
 pygraphviz = { version = "^1.11" }
 memory_profiler = { version = "*" }
 scikit-learn = { version = "^1.1.0" }         # needed in dowhy's package
-pandas = { version = ">=1.1" }                 # needed in dowhy's package
+pandas = { version = ">=1.4" }                 # needed in dowhy's package
 joblib = { version = "^1.1.0" }               # needed in dowhy's package
 tqdm = { version = "^4.64.0" }                # needed in dowhy's package
 typing-extensions = { version = "*" }         # needed in dowhy's package 

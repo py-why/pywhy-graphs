@@ -3979,4 +3979,4 @@ viz = ["pygraphviz"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "53c11d3c98e0c3a519cf628308324671f67f0456e5ee7cb5e12e70207eaae080"
+content-hash = "50669d55677e05133c5318eb997ad956ef3ecf1dabeab5175a2fbddfc20e844b"
