@@ -179,7 +179,7 @@ def test_discriminating_path():
     )
 
     for u in pag.nodes:
-        for (a, c) in permutations(pag.neighbors(u), 2):
+        for a, c in permutations(pag.neighbors(u), 2):
             found_discriminating_path, disc_path, _ = discriminating_path(
                 pag, u, a, c, max_path_length=100
             )
@@ -193,7 +193,7 @@ def test_discriminating_path():
     pag.remove_edge("x2", "x5", pag.directed_edge_name)
     pag.add_edge("x5", "x2", pag.bidirected_edge_name)
     for u in pag.nodes:
-        for (a, c) in permutations(pag.neighbors(u), 2):
+        for a, c in permutations(pag.neighbors(u), 2):
             found_discriminating_path, disc_path, _ = discriminating_path(
                 pag, u, a, c, max_path_length=100
             )
@@ -650,7 +650,6 @@ def test_pdst(pdst_graph):
 
 
 def test_pag_to_mag():
-
     # C o- A o-> D <-o B
     # B o-o A o-o C o-> D
 

@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 import pywhy_graphs.networkx as pywhy_nx
@@ -178,7 +180,7 @@ class StationaryTimeSeriesMixedEdgeGraph(TimeSeriesMixedEdgeGraph):
     # supported graph types
     graph_types = (StationaryTimeSeriesGraph, StationaryTimeSeriesDiGraph)
 
-    def __init__(self, graphs=None, edge_types=None, max_lag: int = None, **attr):
+    def __init__(self, graphs=None, edge_types=None, max_lag: Optional[int] = None, **attr):
         super().__init__(graphs, edge_types, max_lag=max_lag, **attr)
 
     def set_stationarity(self, stationary: bool):

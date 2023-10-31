@@ -9,7 +9,6 @@ from pywhy_graphs.testing import assert_mixed_edge_graphs_isomorphic
 
 
 def dag():
-
     vertices = ["A", "B", "C", "D"]
     di_edges = [("A", "B"), ("B", "C"), ("C", "D")]
     graph = DAG(vertices=vertices, di_edges=di_edges)
@@ -19,7 +18,6 @@ def dag():
 
 
 def admg():
-
     vertices = ["A", "B", "C", "D"]
     di_edges = [("A", "B"), ("B", "C"), ("C", "D")]
     bi_edges = [("A", "C"), ("B", "D")]

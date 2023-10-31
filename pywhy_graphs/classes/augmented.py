@@ -154,7 +154,7 @@ class AugmentedNodeMixin:
         """Return set of S-nodes."""
         return list(self.graph["S-nodes"].keys())
 
-    def add_s_node(self, domain_ids: Tuple, node_changes: Set[Node] = None):
+    def add_s_node(self, domain_ids: Tuple, node_changes: Optional[Set[Node]] = None):
         if isinstance(node_changes, str) or not isinstance(node_changes, Iterable):
             raise RuntimeError("The intervention set nodes must be an iterable set of node(s).")
 

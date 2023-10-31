@@ -1,4 +1,5 @@
 import itertools
+from typing import Optional
 
 import networkx as nx
 import numpy as np
@@ -217,7 +218,7 @@ def _preprocess_parameter_inputs(
     edge_functions,
     edge_weight_lims,
     multi_domain: bool = False,
-    n_domains: int = None,
+    n_domains: Optional[int] = None,
 ):
     """Helper function to preprocess common parameter inputs for sampling functional graphs.
 

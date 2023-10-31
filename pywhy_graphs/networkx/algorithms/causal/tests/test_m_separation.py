@@ -9,7 +9,6 @@ import pywhy_graphs.networkx as pywhy_nx
 
 @pytest.fixture
 def fig5_vanderzander():
-
     nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
 
     digraph = nx.DiGraph()
@@ -35,7 +34,6 @@ def fig5_vanderzander():
 
 @pytest.fixture
 def modified_fig5_vanderzander():
-
     nodes = ["V_1", "X", "V_2", "Y", "Z_1", "Z_2"]
 
     digraph = nx.DiGraph()
@@ -239,7 +237,6 @@ def test_anterior():
 
 
 def test_is_minimal_m_separator(fig5_vanderzander):
-
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_1"})
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"})
     assert pywhy_nx.is_minimal_m_separator(fig5_vanderzander, "X", "Y", {"Z_2"}, r={"Z_1", "Z_2"})
