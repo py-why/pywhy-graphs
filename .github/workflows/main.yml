@@ -115,9 +115,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
-        python-version: [3.9, "3.11"]  # oldest and newest supported versions
+        python-version: [3.9, "3.11"] # oldest and newest supported versions
         poetry-version: [1.6.1]
         networkx: [stable, main]
+        exclude:
+          - python-version: 3.9
+            networkx: main
     name: Unit-test ${{ matrix.os }} - py${{ matrix.python-version }} - Networkx ${{ matrix.networkx }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -149,6 +152,7 @@ jobs:
           git clone https://github.com/networkx/networkx.git
           cd networkx
           pip install .[default]
+          # pip install --progress-bar off git+https://github.com/networkx/networkx
 
       - name: Setup torch for pgmpy
         if: "matrix.os == 'ubuntu'"
@@ -156,7 +160,7 @@ jobs:
         run: |
           sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
 
-      - name: Run pytest  # headless via Xvfb on linux
+      - name: Run pytest # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov
         if: ${{ matrix.os == 'ubuntu' && matrix.python-version == '3.11' && matrix.networkx == 'stable' }}
