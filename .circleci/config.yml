@@ -7,7 +7,7 @@ jobs:
   build_doc:
     executor: 
       name: python/default
-      tag: '3.10'
+      tag: "3.10"
     steps:
       - restore_cache:
           name: Restore .git
@@ -49,6 +49,7 @@ jobs:
           name: Install the latest version of Poetry
           command: |
             curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
+            python --version
             poetry --version
       - run:
           name: Set BASH_ENV
