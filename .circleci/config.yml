@@ -5,7 +5,7 @@ orbs:
 
 jobs:
   build_doc:
-    executor: 
+    executor:
       name: python/default
       tag: "3.10"
     steps:
@@ -92,6 +92,13 @@ jobs:
             poetry run python -c "import pywhy_graphs;"
             poetry run python -c "import numpy; numpy.show_config()"
             LIBGL_DEBUG=verbose poetry run python -c "import matplotlib.pyplot as plt; plt.figure()"
+
+      # dowhy currently requires an older version of numpy
+      - run:
+          name: Temporary Hack for numpy
+          command: |
+            pip install numpy==1.22.0
+
       - run:
           name: Build documentation
           command: |
