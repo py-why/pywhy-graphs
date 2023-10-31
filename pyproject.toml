@@ -37,7 +37,7 @@ exclude = ['*tests']
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-numpy = "^1.21.0"
+numpy = "^1.22.0"
 scipy = "^1.8.0"
 networkx = "^3.1"
 importlib-resources = { version = "*", python = "<3.10" }
