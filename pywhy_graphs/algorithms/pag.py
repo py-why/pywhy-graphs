@@ -1030,9 +1030,9 @@ def _meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
     if graph.has_edge(i, j, graph.undirected_edge_name):
         # For all the pairs of nodes adjacent to i,
         # look for (k, l), such that j -> l and k -> l
-        for k, l in combinations(graph.neighbors(i), 2):
+        for k, l_node in combinations(graph.neighbors(i), 2):
             # Skip if k and l are adjacent.
-            if l in graph.neighbors(k):
+            if l_node in graph.neighbors(k):
                 continue
             # Skip if not k->j.
             if graph.has_edge(j, k, graph.directed_edge_name) or (
@@ -1040,19 +1040,19 @@ def _meek_rule3(graph: CPDAG, i: str, j: str) -> bool:
             ):
                 continue
             # Skip if not l->j.
-            if graph.has_edge(j, l, graph.directed_edge_name) or (
-                not graph.has_edge(l, j, graph.directed_edge_name)
+            if graph.has_edge(j, l_node, graph.directed_edge_name) or (
+                not graph.has_edge(l_node, j, graph.directed_edge_name)
             ):
                 continue
 
             # check if the triple is inside graph's excluded triples
-            if frozenset((l, i, k)) in graph.excluded_triples:
+            if frozenset((l_node, i, k)) in graph.excluded_triples:
                 continue
 
             # if i - k and i - l, then  at this point, we have a valid path
             # to orient
             if graph.has_edge(k, i, graph.undirected_edge_name) and graph.has_edge(
-                l, i, graph.undirected_edge_name
+                l_node, i, graph.undirected_edge_name
             ):
                 graph.orient_uncertain_edge(i, j)
                 added_arrows = True

@@ -5,15 +5,15 @@ concurrency:
 on:
   pull_request:
     paths:
-      - '**.py'
-      - '**.yml'
-      - '**.toml'
+      - "**.py"
+      - "**.yml"
+      - "**.toml"
   push:
     branches: [main]
     paths:
-      - '**.py'
+      - "**.py"
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -22,25 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-          poetry-version: [1.6.1]
+        poetry-version: [1.6.1]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-          architecture: 'x64'
+          python-version: "3.9"
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
         run: pip install poetry-dynamic-versioning
-      
+
       - name: Install dependencies
         run: poetry install --only style
-      
+
       # check formatting of the code style
       - name: Check code formatting
         run: poetry run poe format_check
@@ -72,7 +72,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
@@ -130,7 +130,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
@@ -143,19 +143,19 @@ jobs:
         run: |
           poetry install --with test
       - name: Install Networkx (main)
-        if: "matrix.networkx == 'main'" 
+        if: "matrix.networkx == 'main'"
         run: |
           pip uninstall -yq networkx
           git clone https://github.com/networkx/networkx.git
           cd networkx
           pip install .[default]
-      
+
       - name: Setup torch for pgmpy
         if: "matrix.os == 'ubuntu'"
         shell: bash
         run: |
           sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
-  
+
       - name: Run pytest  # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov
@@ -179,7 +179,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install dependencies
         run: |
           python -m pip install --progress-bar off --upgrade pip setuptools wheel
