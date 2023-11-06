@@ -1,4 +1,4 @@
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set
 
 import numpy as np
 from numpy.typing import NDArray
@@ -80,7 +80,7 @@ def get_summary_graph(arr: NDArray, arr_enum: str = "clearn"):
 
 
 def array_to_lagged_links(
-    arr: NDArray, arr_idx: List[Node] = None, include_weights: bool = True
+    arr: NDArray, arr_idx: Optional[List[Node]] = None, include_weights: bool = True
 ) -> Dict[Node, List[Set]]:
     """Convert a time-series 3D array to a dictionary of lagged links.
 

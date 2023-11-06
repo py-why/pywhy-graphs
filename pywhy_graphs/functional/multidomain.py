@@ -23,7 +23,7 @@ def make_graph_multidomain(
     n_invariances_to_try: int = 1,
     node_mean_lims: Optional[List[float]] = None,
     node_std_lims: Optional[List[float]] = None,
-    edge_functions: List[Callable[[float], float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
     edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ) -> nx.DiGraph:
@@ -263,7 +263,7 @@ def sample_multidomain_lin_functions(
     G: AugmentedGraph,
     node_mean_lims: Optional[List[float]] = None,
     node_std_lims: Optional[List[float]] = None,
-    edge_functions: List[Callable[[float], float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
     edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ):

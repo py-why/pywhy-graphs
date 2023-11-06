@@ -1,4 +1,4 @@
-from typing import Callable, List, Set
+from typing import Callable, List, Optional, Set
 
 import networkx as nx
 import numpy as np
@@ -11,10 +11,10 @@ from .utils import _preprocess_parameter_inputs
 
 def make_graph_linear_gaussian(
     G: nx.DiGraph,
-    node_mean_lims: List[float] = None,
-    node_std_lims: List[float] = None,
-    edge_functions: List[Callable[[float], float]] = None,
-    edge_weight_lims: List[float] = None,
+    node_mean_lims: Optional[List[float]] = None,
+    node_std_lims: Optional[List[float]] = None,
+    edge_functions: Optional[List[Callable[[float], float]]] = None,
+    edge_weight_lims: Optional[List[float]] = None,
     random_state=None,
 ) -> nx.DiGraph:
     r"""Convert an existing DAG to a linear Gaussian graphical model.

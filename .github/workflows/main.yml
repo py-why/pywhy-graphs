@@ -5,13 +5,15 @@ concurrency:
 on:
   pull_request:
     paths:
-      - '**.py'
+      - "**.py"
+      - "**.yml"
+      - "**.toml"
   push:
     branches: [main]
     paths:
-      - '**.py'
+      - "**.py"
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -20,25 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-          poetry-version: [1.5.1]
+        poetry-version: [1.6.1]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-          architecture: 'x64'
+          python-version: "3.9"
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
         run: pip install poetry-dynamic-versioning
-      
+
       - name: Install dependencies
         run: poetry install --only style
-      
+
       # check formatting of the code style
       - name: Check code formatting
         run: poetry run poe format_check
@@ -57,7 +59,7 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         python-version: [3.9, "3.10", "3.11"]
-        poetry-version: [1.5.1]
+        poetry-version: [1.6.1]
     name: build ${{ matrix.os }} - py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -65,12 +67,12 @@ jobs:
         shell: bash
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
@@ -113,9 +115,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
-        python-version: [3.9, "3.11"]  # oldest and newest supported versions
-        poetry-version: [1.5.1]
+        python-version: [3.9, "3.11"] # oldest and newest supported versions
+        poetry-version: [1.6.1]
         networkx: [stable, main]
+        exclude:
+          - python-version: 3.9
+            networkx: main
     name: Unit-test ${{ matrix.os }} - py${{ matrix.python-version }} - Networkx ${{ matrix.networkx }}
     runs-on: ${{ matrix.os }}-latest
     defaults:
@@ -123,18 +128,20 @@ jobs:
         shell: bash
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install Poetry ${{ matrix.poetry-version }}
         uses: abatilo/actions-poetry@v2.3.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Install Poetry Dynamic Versioning Plugin
-        run: pip install poetry-dynamic-versioning
+        run: |
+          pip install --upgrade pip
+          pip install poetry-dynamic-versioning
       - name: Install packages via poetry
         run: |
           poetry install --with test
@@ -142,15 +149,18 @@ jobs:
         if: "matrix.networkx == 'main'"
         run: |
           pip uninstall -yq networkx
-          pip install --progress-bar off git+https://github.com/networkx/networkx
-      
+          git clone https://github.com/networkx/networkx.git
+          cd networkx
+          pip install .[default]
+          # pip install --progress-bar off git+https://github.com/networkx/networkx
+
       - name: Setup torch for pgmpy
         if: "matrix.os == 'ubuntu'"
         shell: bash
         run: |
           sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
-  
-      - name: Run pytest  # headless via Xvfb on linux
+
+      - name: Run pytest # headless via Xvfb on linux
         run: poetry run poe unit_test
       - name: Upload coverage stats to codecov
         if: ${{ matrix.os == 'ubuntu' && matrix.python-version == '3.11' && matrix.networkx == 'stable' }}
@@ -168,12 +178,12 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
-          architecture: 'x64'
+          architecture: "x64"
       - name: Install dependencies
         run: |
           python -m pip install --progress-bar off --upgrade pip setuptools wheel

@@ -1,4 +1,4 @@
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 import networkx as nx
 
@@ -15,10 +15,14 @@ __all__ = [
     "inducing_path",
     "has_adc",
     "valid_mag",
+    "dag_to_mag",
+    "is_maximal",
 ]
 
 
-def is_node_common_cause(G: nx.DiGraph, node: Node, exclude_nodes: List[Node] = None) -> bool:
+def is_node_common_cause(
+    G: nx.DiGraph, node: Node, exclude_nodes: Optional[List[Node]] = None
+) -> bool:
     """Check if a node is a common cause within the graph.
 
     Parameters
@@ -517,7 +521,7 @@ def _shortest_valid_path(
     return (path_exists, path)
 
 
-def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
+def inducing_path(G, node_x: Node, node_y: Node, L: Optional[Set] = None, S: Optional[Set] = None):
     """Checks if an inducing path exists between two nodes.
 
     An inducing path is defined in :footcite:`Zhang2008`.
@@ -567,6 +571,9 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
     if node_x == node_y:
         raise ValueError("The source and destination nodes are the same.")
 
+    if (node_x in L) or (node_y in L) or (node_x in S) or (node_y in S):
+        return (False, [])
+
     edges = G.edges()
 
     # XXX: fix this when graphs are refactored to only check for directed/bidirected edge types
@@ -594,7 +601,6 @@ def inducing_path(G, node_x: Node, node_y: Node, L: Set = None, S: Set = None):
 
     path_exists = False
     for elem in x_neighbors:
-
         visited = {node_x}
         if elem not in visited:
             path_exists, temp_path = _shortest_valid_path(
@@ -641,7 +647,7 @@ def has_adc(G):
     return adc_present
 
 
-def valid_mag(G: ADMG, L: set = None, S: set = None):
+def valid_mag(G: ADMG, L: Optional[set] = None, S: Optional[set] = None):
     """Checks if the provided graph is a valid maximal ancestral graph (MAG).
 
     A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
@@ -702,4 +708,118 @@ def valid_mag(G: ADMG, L: set = None, S: set = None):
             if out[0] is True:
                 return False
 
+    return True
+
+
+def dag_to_mag(G, L: Optional[Set] = None, S: Optional[Set] = None):
+    """Converts a DAG to a valid MAG.
+
+    The algorithm is defined in :footcite:`Zhang2008` on page 1877.
+
+    Parameters:
+    -----------
+    G : Graph
+        The graph.
+    L : Set
+        Nodes that are ignored on the path. Defaults to an empty set.
+    S : Set
+        Nodes that are always conditioned on. Defaults to an empty set.
+
+    Returns
+    -------
+    mag : Graph
+        The MAG.
+    """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    # for each pair of nodes find if they have an inducing path between them.
+    # only then will they be adjacent in the MAG.
+
+    all_nodes = set(G.nodes)
+    adj_nodes = []
+
+    for source in all_nodes:
+        copy_all = all_nodes.copy()
+        copy_all.remove(source)
+        for dest in copy_all:
+            out = inducing_path(G, source, dest, L, S)
+            if out[0] is True and {source, dest} not in adj_nodes:
+                adj_nodes.append({source, dest})
+
+    # find the ancestors of B U S (ansB) and A U S (ansA) for each pair of adjacent nodes
+
+    mag = ADMG()
+
+    for A, B in adj_nodes:
+        AuS = S.union(A)
+        BuS = S.union(B)
+
+        ansA: Set = set()
+        ansB: Set = set()
+
+        for node in AuS:
+            ansA = ansA.union(_directed_sub_graph_ancestors(G, node))
+
+        for node in BuS:
+            ansB = ansB.union(_directed_sub_graph_ancestors(G, node))
+
+        if A in ansB and B not in ansA:
+            # if A is in ansB and B is not in ansA, A -> B
+            mag.add_edge(A, B, mag.directed_edge_name)
+
+        elif A not in ansB and B in ansA:
+            # if B is in ansA and A is not in ansB, A <- B
+            mag.add_edge(B, A, mag.directed_edge_name)
+
+        elif A not in ansB and B not in ansA:
+            # if A is not in ansB and B is not in ansA, A <-> B
+            mag.add_edge(B, A, mag.bidirected_edge_name)
+
+        elif A in ansB and B in ansA:
+            # if A is in ansB and B is in ansA, A - B
+            mag.add_edge(B, A, mag.undirected_edge_name)
+
+    return mag
+
+
+def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
+    """Checks to see if the graph is maximal.
+
+    Parameters:
+    -----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_maximal : bool
+        A boolean indicating whether the provided graph is maximal or not.
+    """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    all_nodes = set(G.nodes)
+    checked = set()
+    for source in all_nodes:
+        nb = set(G.neighbors(source))
+        cur_set = all_nodes - nb
+        cur_set.remove(source)
+        for dest in cur_set:
+            current_pair = frozenset({source, dest})
+            if current_pair not in checked:
+                checked.add(current_pair)
+                out = inducing_path(G, source, dest, L, S)
+                if out[0] is True:
+                    return False
+            else:
+                continue
     return True

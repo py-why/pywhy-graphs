@@ -4,7 +4,6 @@ import pywhy_graphs.networkx as pywhy_nx
 
 
 def test_m_separation():
-
     # 0 -> 1 -> 2 -> 3 -> 4; 2 -> 4; 2 <-> 3
     digraph = nx.path_graph(4, create_using=nx.DiGraph)
     digraph.add_edge(2, 4)

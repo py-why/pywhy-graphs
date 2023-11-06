@@ -40,7 +40,7 @@ def add_parent_function(G: nx.DiGraph, node: Node, func: Callable) -> nx.DiGraph
 
 
 def add_noise_function(
-    G: nx.DiGraph, node: Node, distr_func: Callable, func: Callable = None
+    G: nx.DiGraph, node: Node, distr_func: Callable, func: Optional[Callable] = None
 ) -> nx.DiGraph:
     """Add function and distribution for a node's exogenous variable into the graph.
 
@@ -120,7 +120,11 @@ def add_soft_intervention_function(
 
 
 def add_domain_shift_function(
-    G: AugmentedGraph, node: Node, s_node: Node, func: Callable = None, distr_func: Callable = None
+    G: AugmentedGraph,
+    node: Node,
+    s_node: Node,
+    func: Optional[Callable] = None,
+    distr_func: Optional[Callable] = None,
 ):
     """Add domain shift function for a node into the graph assuming invariant graph structure.
 

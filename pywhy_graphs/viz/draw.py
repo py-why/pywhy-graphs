@@ -5,10 +5,10 @@ import networkx as nx
 
 def _draw_circle_edges(
     dot,
-    directed_edges: List[Tuple] = None,
-    circle_edges: List[Tuple] = None,
-    undirected_edges: List[Tuple] = None,
-    bidirected_edges: List[Tuple] = None,
+    directed_edges: Optional[List[Tuple]] = None,
+    circle_edges: Optional[List[Tuple]] = None,
+    undirected_edges: Optional[List[Tuple]] = None,
+    bidirected_edges: Optional[List[Tuple]] = None,
     **attrs,
 ):
     """Draw the PAG edges.
@@ -52,7 +52,7 @@ def _draw_circle_edges(
 
 def _draw_un_edges(
     dot,
-    undirected_edges: List[Tuple] = None,
+    undirected_edges: Optional[List[Tuple]] = None,
     **attrs,
 ):
     """Draw undirected edges."""
@@ -65,7 +65,7 @@ def _draw_un_edges(
 
 def _draw_bi_edges(
     dot,
-    bidirected_edges: List[Tuple] = None,
+    bidirected_edges: Optional[List[Tuple]] = None,
     **attrs,
 ):
     """Draw bidirected edges."""
