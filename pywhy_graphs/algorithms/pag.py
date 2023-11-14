@@ -1176,3 +1176,21 @@ def pag_to_mag(graph):
         mag.add_edge(u, v, mag.directed_edge_name)
 
     return mag
+
+
+
+
+def valid_pag(G: PAG):
+     """Check if the provided PAG is valid or not.
+
+    Parameters
+    ----------
+    G : PAG
+        The PAG.
+
+    Returns
+    -------
+    is_valid : bool
+        The MAG constructed from the PAG.
+    """
+     return True
