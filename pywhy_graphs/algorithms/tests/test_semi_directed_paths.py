@@ -15,6 +15,13 @@ def sample_mixed_edge_graph():
     G = pywhy_nx.MixedEdgeGraph(
         graphs=[directed_G, bidirected_G], edge_types=["directed", "bidirected"], name="IV Graph"
     )
+
+    G.add_edge_type(nx.DiGraph(), "circle")
+    G.add_edge("A", "Z", edge_type="directed")
+    G.add_edge("Z", "A", edge_type="circle")
+    G.add_edge("A", "B", edge_type="circle")
+    G.add_edge("B", "A", edge_type="circle")
+    G.add_edge("B", "Z", edge_type="circle")
     return G
 
 
@@ -30,7 +37,7 @@ def test_single_node_path(sample_mixed_edge_graph):
 
 def test_nonexistent_node_path(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    assert not is_semi_directed_path(G, ["A", "B"])
+    assert not is_semi_directed_path(G, ["1", "2"])
 
 
 def test_repeated_nodes_path(sample_mixed_edge_graph):
@@ -40,9 +47,6 @@ def test_repeated_nodes_path(sample_mixed_edge_graph):
 
 def test_valid_semi_directed_path(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    G.add_edge("A", "Z", edge_type="directed")
-    G.add_edge_type(nx.DiGraph(), "circle")
-    G.add_edge("Z", "A", edge_type="circle")
     assert is_semi_directed_path(G, ["Z", "X"])
     assert is_semi_directed_path(G, ["A", "Z", "X"])
 
@@ -58,9 +62,9 @@ def test_invalid_semi_directed_path(sample_mixed_edge_graph):
 
 def test_empty_paths(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    source = "A"
+    source = "1"
     target = "B"
-    with pytest.raises(nx.NodeNotFound, match="source node A not in graph"):
+    with pytest.raises(nx.NodeNotFound, match=f"source node {source} not in graph"):
         all_semi_directed_paths(G, source, target)
 
     G.add_node(source)
@@ -80,19 +84,29 @@ def test_no_paths(sample_mixed_edge_graph):
 
 def test_multiple_paths(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    G.add_edge_type(nx.DiGraph(), "circle")
-    G.add_edge("A", "Z", edge_type="directed")
-    G.add_edge("A", "B", edge_type="circle")
-    G.add_edge("B", "A", edge_type="circle")
-    G.add_edge("B", "Z", edge_type="circle")
 
     source = "A"
     target = "X"
     cutoff = 3
     paths = all_semi_directed_paths(G, source, target, cutoff)
     paths = list(paths)
+
+    dig = nx.path_graph(5, create_using=nx.DiGraph())
+    G.add_edges_from(dig.edges(), edge_type="directed")
+    G.add_edge("A", 0, edge_type="circle")
+
     assert len(paths) == 2
     assert all(path in paths for path in [["A", "Z", "X"], ["A", "B", "Z", "X"]])
+
+    # for a short cutoff, there is only one path
+    cutoff = 2
+    paths = all_semi_directed_paths(G, source, target, cutoff)
+    assert all(path in paths for path in [["A", "Z", "X"]])
+
+    # for an even shorter cutoff, there are no paths now
+    cutoff = 1
+    paths = all_semi_directed_paths(G, source, target, cutoff)
+    assert list(paths) == []
 
 
 def test_long_cutoff(sample_mixed_edge_graph):
@@ -100,5 +114,6 @@ def test_long_cutoff(sample_mixed_edge_graph):
     source = "Z"
     target = "X"
     cutoff = 10  # Cutoff longer than the actual path length
+    print(G.edges())
     paths = all_semi_directed_paths(G, source, target, cutoff)
     assert list(paths) == [[source, target]]

@@ -148,39 +148,47 @@ def _all_semi_directed_paths_graph(
     # iterate over neighbors of source
     stack = [iter(G.neighbors(source))]
 
-    # XXX: figure out how to update prev_node for efficient DFS
-    prev_node = source
+    prev_nodes = [source]
+    # if source has no neighbors, then prev_nodes should be None
+    if not prev_nodes:
+        prev_nodes = [None]
 
     while stack:
-        # get the iterator through children for the current node
-        children = stack[-1]
-        child = next(children, None)
+        # get the iterator through nbrs for the current node
+        nbrs = stack[-1]
+        prev_node = prev_nodes[-1]
+        nbr = next(nbrs, None)
 
         # The first condition guarantees that there is not a directed endpoint
         # along the path from source to target that points towards source.
-        if child is None or (
-            G.has_edge(child, prev_node, directed_edge_name)
-            or G.has_edge(child, prev_node, bidirected_edge_name)
-        ):
-            # If we've found a directed edge from child to prev_node
+        if (
+            G.has_edge(nbr, prev_node, directed_edge_name)
+            or G.has_edge(nbr, prev_node, bidirected_edge_name)
+        ) and nbr not in visited:
+            # If we've found a directed edge from child to prev_node,
+            # that we haven't visited, then we don't need to continue down this path
+            continue
+        elif nbr is None:
             # once all children are visited, pop the stack
             # and remove the child from the visited set
             stack.pop()
             visited.popitem()
+            prev_nodes.pop()
         elif len(visited) < cutoff:
-            if child in visited:
+            if nbr in visited:
                 continue
-            if child in targets:
+            if nbr in targets:
                 # we've found a path to a target
-                yield list(visited) + [child]
-            visited[child] = True
+                yield list(visited) + [nbr]
+            visited[nbr] = True
             if targets - set(visited.keys()):  # expand stack until find all targets
-
-                stack.append(iter(G.neighbors(child)))
+                stack.append(iter(G.neighbors(nbr)))
+                prev_nodes.append(nbr)
             else:
                 visited.popitem()  # maybe other ways to child
         else:  # len(visited) == cutoff:
-            for target in (targets & (set(children) | {child})) - set(visited.keys()):
+            for target in (targets & (set(nbrs) | {nbr})) - set(visited.keys()):
                 yield list(visited) + [target]
             stack.pop()
             visited.popitem()
+            prev_nodes.pop()
