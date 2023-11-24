@@ -7,6 +7,24 @@ def is_clique(G, nodelist):
     return H.size() == n * (n - 1) / 2
 
 
+def order_edges(G):
+    pass
+
+
+def label_edges(G):
+    pass
+
+
+def cpdag_to_pdag(G):
+    """Convert a CPDAG to 
+
+    Parameters
+    ----------
+    G : _type_
+        _description_
+    """
+
+
 def pdag_to_dag(G):
     """Compute consistent extension of given PDAG resulting in a DAG.
 
@@ -26,6 +44,9 @@ def pdag_to_dag(G):
     ----------
     .. footbibliography::
     """
+    if set(['directed', 'undirected']) != set(G.edge_types):
+        raise ValueError("Only directed and undirected edges are allowed in a CPDAG")
+    
     dir_G: nx.DiGraph = G.get_graphs(edge_type='directed')
     undir_G: nx.Graph = G.get_graphs(edge_type='undirected')
     full_undir_G: nx.Graph = G.to_undirected()
