@@ -40,7 +40,7 @@ def is_semi_directed_path(G, nodes):
     Notes
     -----
     This function is very similar to networkx's
-    :func:`networkx.algorithms.is_simple_path` function.
+    :func:`networkx.algorithms.simple_paths.is_simple_path` function.
     """
     # The empty list is not a valid path. Could also return
     # NetworkXPointlessConcept here.
@@ -93,7 +93,7 @@ def all_semi_directed_paths(G, source: Node, target: Node, cutoff: int = None):
     Notes
     -----
     This algorithm is very similar to networkx's
-    :func:`networkx.algorithms.all_simple_paths` function.
+    :func:`networkx.algorithms.simple_paths.all_simple_paths` function.
 
     This algorithm uses a modified depth-first search to generate the
     paths [1]_.  A single path can be found in $O(V+E)$ time but the
