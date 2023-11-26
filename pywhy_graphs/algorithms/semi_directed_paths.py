@@ -120,17 +120,13 @@ def all_semi_directed_paths(G, source: Node, target: Node, cutoff: int = None):
         except TypeError:
             raise nx.NodeNotFound("target node %s not in graph" % target)
     if source in targets:
-        return []
-    if cutoff is None:
-        cutoff = len(G) - 1
-    if cutoff < 1:
-        return []
-    if source in targets:
         return _empty_generator()
     if cutoff is None:
         cutoff = len(G) - 1
     if cutoff < 1:
         return _empty_generator()
+    if cutoff is None:
+        cutoff = len(G) - 1
 
     return _all_semi_directed_paths_graph(G, source, targets, cutoff)
 
