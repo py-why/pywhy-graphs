@@ -148,10 +148,8 @@ def _all_semi_directed_paths_graph(
     # iterate over neighbors of source
     stack = [iter(G.neighbors(source))]
 
-    prev_nodes = [source]
     # if source has no neighbors, then prev_nodes should be None
-    if not prev_nodes:
-        prev_nodes = [None]
+    prev_nodes = [source]
 
     while stack:
         # get the iterator through nbrs for the current node
