@@ -25,39 +25,77 @@ def sample_mixed_edge_graph():
     return G
 
 
-def test_empty_path_not_semi_directed(sample_mixed_edge_graph):
+class TestIsSemiDirectedPath:
+    def test_empty_path_not_semi_directed(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert not is_semi_directed_path(G, [])
+
+    def test_single_node_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert is_semi_directed_path(G, ["X"])
+
+    def test_nonexistent_node_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert not is_semi_directed_path(G, ["1", "2"])
+
+    def test_repeated_nodes_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert not is_semi_directed_path(G, ["X", "Y", "X"])
+
+    def test_non_connected_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert not is_semi_directed_path(G, ["A", "X"])
+
+    def test_valid_semi_directed_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert is_semi_directed_path(G, ["Z", "X"])
+        assert is_semi_directed_path(G, ["A", "Z", "X"])
+
+    def test_invalid_semi_directed_path(self, sample_mixed_edge_graph):
+        G = sample_mixed_edge_graph
+        assert not is_semi_directed_path(G, ["Y", "X"])
+
+        # there is a bidirected edge between X and Y
+        assert not is_semi_directed_path(G, ["X", "Y"])
+        assert not is_semi_directed_path(G, ["Z", "X", "Y"])
+
+
+def test_node_not_in_graph():
+    G = nx.Graph()
+    G.add_edge("X", "Y")
+    with pytest.raises(nx.NodeNotFound):
+        all_semi_directed_paths(G, "A", "X")
+
+    with pytest.raises(nx.NodeNotFound):
+        all_semi_directed_paths(G, "X", 1)
+
+
+def test_target_is_single_node_in_graph(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    assert not is_semi_directed_path(G, [])
+    source = "X"
+    paths = all_semi_directed_paths(G, source, "Y")
+    assert list(paths) == []
 
 
-def test_single_node_path(sample_mixed_edge_graph):
+def test_source_same_as_target(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    assert is_semi_directed_path(G, ["X"])
+    source = "X"
+    paths = all_semi_directed_paths(G, source, source)
+    assert list(paths) == []
 
 
-def test_nonexistent_node_path(sample_mixed_edge_graph):
+def test_cutoff_none(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    assert not is_semi_directed_path(G, ["1", "2"])
+    source = "Z"
+    paths = all_semi_directed_paths(G, source, "X", cutoff=None)
+    assert list(paths) == [["Z", "X"]]
 
 
-def test_repeated_nodes_path(sample_mixed_edge_graph):
+def test_cutoff_less_than_one(sample_mixed_edge_graph):
     G = sample_mixed_edge_graph
-    assert not is_semi_directed_path(G, ["X", "Y", "X"])
-
-
-def test_valid_semi_directed_path(sample_mixed_edge_graph):
-    G = sample_mixed_edge_graph
-    assert is_semi_directed_path(G, ["Z", "X"])
-    assert is_semi_directed_path(G, ["A", "Z", "X"])
-
-
-def test_invalid_semi_directed_path(sample_mixed_edge_graph):
-    G = sample_mixed_edge_graph
-    assert not is_semi_directed_path(G, ["Y", "X"])
-
-    # there is a bidirected edge between X and Y
-    assert not is_semi_directed_path(G, ["X", "Y"])
-    assert not is_semi_directed_path(G, ["Z", "X", "Y"])
+    source = "X"
+    paths = all_semi_directed_paths(G, source, "Y", cutoff=0)
+    assert list(paths) == []
 
 
 def test_empty_paths(sample_mixed_edge_graph):

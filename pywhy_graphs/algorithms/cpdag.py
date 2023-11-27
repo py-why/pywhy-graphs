@@ -1,5 +1,5 @@
-from copy import copy
 import networkx as nx
+
 
 def is_clique(G, nodelist):
     H = G.subgraph(nodelist)
@@ -16,7 +16,7 @@ def label_edges(G):
 
 
 def cpdag_to_pdag(G):
-    """Convert a CPDAG to 
+    """Convert a CPDAG to
 
     Parameters
     ----------
@@ -44,18 +44,18 @@ def pdag_to_dag(G):
     ----------
     .. footbibliography::
     """
-    if set(['directed', 'undirected']) != set(G.edge_types):
+    if set(["directed", "undirected"]) != set(G.edge_types):
         raise ValueError("Only directed and undirected edges are allowed in a CPDAG")
-    
-    dir_G: nx.DiGraph = G.get_graphs(edge_type='directed')
-    undir_G: nx.Graph = G.get_graphs(edge_type='undirected')
+
+    dir_G: nx.DiGraph = G.get_graphs(edge_type="directed")
+    undir_G: nx.Graph = G.get_graphs(edge_type="undirected")
     full_undir_G: nx.Graph = G.to_undirected()
     nodes = set(dir_G.nodes)
     found = False
 
     while nodes:
         found = False
-        idx = 0 
+        idx = 0
 
         # select a node, x, which:
         # 1. has no outgoing edges
@@ -67,7 +67,7 @@ def pdag_to_dag(G):
             if not node_is_sink:
                 idx += 1
                 continue
-            
+
             # since there are no outgoing edges, all directed adjacencies are parent nodes
             # now check that all undirected neighbors are adjacent to all its adjacent nodes
             undir_nbrs = undir_G.neighbors(nodes[idx])
@@ -79,17 +79,18 @@ def pdag_to_dag(G):
             if nearby_is_clique:
                 found = True
 
-                # now, we orient all undirected edges between x and its neighbors, such that ``nbr -> x``
+                # now, we orient all undirected edges between x and its neighbors
+                # such that ``nbr -> x``
                 for nbr in undir_nbrs:
-                    dir_G.add_edge(nbr, nodes[idx], edge_type='directed')
-                
+                    dir_G.add_edge(nbr, nodes[idx], edge_type="directed")
+
                 # remove x from the "graph"
                 nodes.remove(nodes[idx])
     if not found:
         raise ValueError("No consistent extension found")
     return dir_G
 
-        
+
 def dag_to_cpdag(G):
     """Convert a DAG to a CPDAG.
 

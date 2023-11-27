@@ -35,12 +35,12 @@ def is_semi_directed_path(G, nodes):
     Returns
     -------
     bool
-        Whether the given list of nodes represents a simple path in `G`.
+        Whether the given list of nodes represents a semi-directed path in `G`.
 
     Notes
     -----
     This function is very similar to networkx's
-    :func:`networkx.algorithms.is_simple_path` function.
+    :func:`networkx.algorithms.simple_paths.is_simple_path` function.
     """
     # The empty list is not a valid path. Could also return
     # NetworkXPointlessConcept here.
@@ -53,11 +53,11 @@ def is_semi_directed_path(G, nodes):
         return nodes[0] in G
 
     # check that all nodes in the list are in the graph, if at least one
-    # is not in the graph, then this is not a simple path
+    # is not in the graph, then this is not a semi-directed path
     if not all(n in G for n in nodes):
         return False
 
-    # If the list contains repeated nodes, then it's not a simple path
+    # If the list contains repeated nodes, then it's not a semi-directed path
     if len(set(nodes)) != len(nodes):
         return False
 
@@ -93,11 +93,11 @@ def all_semi_directed_paths(G, source: Node, target: Node, cutoff: int = None):
     Notes
     -----
     This algorithm is very similar to networkx's
-    :func:`networkx.algorithms.all_simple_paths` function.
+    :func:`networkx.algorithms.simple_paths.all_simple_paths` function.
 
     This algorithm uses a modified depth-first search to generate the
     paths [1]_.  A single path can be found in $O(V+E)$ time but the
-    number of simple paths in a graph can be very large, e.g. $O(n!)$ in
+    number of semi-directed paths in a graph can be very large, e.g. $O(n!)$ in
     the complete graph of order $n$.
 
     This function does not check that a path exists between `source` and
@@ -120,17 +120,13 @@ def all_semi_directed_paths(G, source: Node, target: Node, cutoff: int = None):
         except TypeError:
             raise nx.NodeNotFound("target node %s not in graph" % target)
     if source in targets:
-        return []
-    if cutoff is None:
-        cutoff = len(G) - 1
-    if cutoff < 1:
-        return []
-    if source in targets:
         return _empty_generator()
     if cutoff is None:
         cutoff = len(G) - 1
     if cutoff < 1:
         return _empty_generator()
+    if cutoff is None:
+        cutoff = len(G) - 1
 
     return _all_semi_directed_paths_graph(G, source, targets, cutoff)
 
@@ -148,10 +144,8 @@ def _all_semi_directed_paths_graph(
     # iterate over neighbors of source
     stack = [iter(G.neighbors(source))]
 
-    prev_nodes = [source]
     # if source has no neighbors, then prev_nodes should be None
-    if not prev_nodes:
-        prev_nodes = [None]
+    prev_nodes = [source]
 
     while stack:
         # get the iterator through nbrs for the current node

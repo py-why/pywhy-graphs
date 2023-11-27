@@ -1,6 +1,9 @@
-import pytest
 import networkx as nx
-from pywhy_graphs.algorithms.cpdag import pdag_to_dag, cpdag_to_pdag
+import pytest
+
+import pywhy_graphs.networkx as pywhy_nx
+from pywhy_graphs.algorithms.cpdag import cpdag_to_pdag, pdag_to_dag
+
 
 class TestPDAGtoDAG:
     def test_pdag_to_dag_errors(self):
@@ -15,7 +18,9 @@ class TestPDAGtoDAG:
         G.add_edge("B", "A", edge_type="circle")
         G.add_edge("B", "Z", edge_type="circle")
         G = cpdag_to_pdag(G)
-        with pytest.raises(ValueError, match='Only directed and undirected edges are allowed in a CPDAG'):
+        with pytest.raises(
+            ValueError, match="Only directed and undirected edges are allowed in a CPDAG"
+        ):
             pdag_to_dag(G)
 
     def test_pdag_to_dag_1(self):
