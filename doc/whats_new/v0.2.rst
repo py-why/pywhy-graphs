@@ -29,6 +29,7 @@ Changelog
 - |Feature| Implement and test functions to convert a DAG to MAG, by `Aryan Roy`_ (:pr:`96`)
 - |Feature| Implement and test functions to convert a PAG to MAG, by `Aryan Roy`_ (:pr:`93`)
 - |API| Remove support for Python 3.8 by `Adam Li`_ (:pr:`99`)
+- |Feature| Implement a suite of functions for finding and checking semi-directed paths on a mixed-edge graph, by `Adam Li`_ (:pr:`101`)
 
 Code and Documentation Contributors
 -----------------------------------

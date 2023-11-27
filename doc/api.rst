@@ -61,6 +61,8 @@ causal graph operations.
    find_connected_pairs
    add_all_snode_combinations
    compute_invariant_domains_per_node
+   is_semi_directed_path
+   all_semi_directed_paths
 
 Conversions between other package's causal graphs
 =================================================
