@@ -23,6 +23,7 @@ def cpdag_to_pdag(G):
     G : _type_
         _description_
     """
+    pass
 
 
 def pdag_to_dag(G):

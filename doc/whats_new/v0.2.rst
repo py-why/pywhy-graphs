@@ -30,6 +30,7 @@ Changelog
 - |Feature| Implement and test functions to convert a PAG to MAG, by `Aryan Roy`_ (:pr:`93`)
 - |API| Remove support for Python 3.8 by `Adam Li`_ (:pr:`99`)
 - |Feature| Implement a suite of functions for finding and checking semi-directed paths on a mixed-edge graph, by `Adam Li`_ (:pr:`101`)
+- |Feature| Implement :func:`pywhy_graphs.algorithms.cpdag_to_dag`, :func:`pywhy_graphs.algorithms.pdag_to_dag` and :func:`pywhy_graphs.algorithms.dag_to_cpdag`, by `Adam Li`_ (:pr:`102`)
 
 Code and Documentation Contributors
 -----------------------------------
