@@ -35,7 +35,7 @@ def is_semi_directed_path(G, nodes):
     Returns
     -------
     bool
-        Whether the given list of nodes represents a simple path in `G`.
+        Whether the given list of nodes represents a semi-directed path in `G`.
 
     Notes
     -----
@@ -53,11 +53,11 @@ def is_semi_directed_path(G, nodes):
         return nodes[0] in G
 
     # check that all nodes in the list are in the graph, if at least one
-    # is not in the graph, then this is not a simple path
+    # is not in the graph, then this is not a semi-directed path
     if not all(n in G for n in nodes):
         return False
 
-    # If the list contains repeated nodes, then it's not a simple path
+    # If the list contains repeated nodes, then it's not a semi-directed path
     if len(set(nodes)) != len(nodes):
         return False
 
@@ -97,7 +97,7 @@ def all_semi_directed_paths(G, source: Node, target: Node, cutoff: int = None):
 
     This algorithm uses a modified depth-first search to generate the
     paths [1]_.  A single path can be found in $O(V+E)$ time but the
-    number of simple paths in a graph can be very large, e.g. $O(n!)$ in
+    number of semi-directed paths in a graph can be very large, e.g. $O(n!)$ in
     the complete graph of order $n$.
 
     This function does not check that a path exists between `source` and
