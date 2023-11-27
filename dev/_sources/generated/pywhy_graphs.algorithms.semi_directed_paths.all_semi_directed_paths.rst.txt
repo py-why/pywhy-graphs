@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.semi_directed_paths.all_semi_directed_paths
+===================================================================
+
+.. currentmodule:: pywhy_graphs.algorithms.semi_directed_paths
+
+.. autofunction:: all_semi_directed_paths
+
+.. include:: pywhy_graphs.algorithms.semi_directed_paths.all_semi_directed_paths.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

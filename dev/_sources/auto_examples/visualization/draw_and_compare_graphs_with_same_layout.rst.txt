@@ -37,7 +37,7 @@ are the same for the nodes with the same labels.
 Alternatively, one can create their own positions manually, or using software,
 such as `Dagitty <http://dagitty.net>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-65
+.. GENERATED FROM PYTHON SOURCE LINES 21-67
 
 
 
@@ -105,6 +105,8 @@ such as `Dagitty <http://dagitty.net>`_.
     cpdag.orient_uncertain_edge("x", "y")
     cpdag.orient_uncertain_edge("xy", "y")
     cpdag.orient_uncertain_edge("z", "y")
+
+    # create a PAG from the CPDAG, with all undirected edges
     pag = PAG()
     pag.add_edges_from(G.edges, cpdag.undirected_edge_name)
 
@@ -137,9 +139,9 @@ such as `Dagitty <http://dagitty.net>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.369 seconds)
+   **Total running time of the script:** ( 0 minutes  0.345 seconds)
 
-**Estimated memory usage:**  8 MB
+**Estimated memory usage:**  9 MB
 
 
 .. _sphx_glr_download_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py:

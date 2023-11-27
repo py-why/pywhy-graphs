@@ -222,9 +222,9 @@
 
 
 <span class="k">def</span> <span class="nf">_possibly_directed</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that path is possibly directed.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that edge is possibly directed.</span>
 
-<span class="sd">    A possibly directed path is one of the form:</span>
+<span class="sd">    A possibly directed edge is one of the form:</span>
 <span class="sd">    - ``i -&gt; j``</span>
 <span class="sd">    - ``i o-&gt; j``</span>
 <span class="sd">    - ``i o-o j``</span>
@@ -259,7 +259,7 @@
 
     <span class="c1"># the direct check checks for i *-&gt; j or i &lt;-* j</span>
     <span class="c1"># i &lt;-&gt; j is also checked</span>
-    <span class="c1"># everything else is valid</span>
+    <span class="c1"># everything else is valid; i.e. i -- j, or i o-o j</span>
     <span class="k">if</span> <span class="n">direct_check</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span>

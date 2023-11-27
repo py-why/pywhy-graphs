@@ -63,3 +63,15 @@ Algorithms for handling acyclicity
    :toctree: ../../generated/
 
    acyclification
+
+
+***************************************
+Semi-directed (possibly-directed) Paths
+***************************************
+
+.. automodule:: pywhy_graphs.algorithms.semi_directed_paths
+.. autosummary::
+   :toctree: ../../generated/
+
+   all_semi_directed_paths
+   is_semi_directed_path

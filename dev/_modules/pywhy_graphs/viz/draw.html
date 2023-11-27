@@ -330,7 +330,7 @@
     <span class="c1"># an edge case of drawing graphs is the undirected Markov network</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;undirected_edges&quot;</span><span class="p">):</span>
         <span class="n">undirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">undirected_edges</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
         <span class="n">undirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s2">&quot;bidirected_edges&quot;</span><span class="p">):</span>
         <span class="n">bidirected_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edges</span>
