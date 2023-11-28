@@ -853,5 +853,5 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node))
                     vstructs.add((p2, node))
                 else:
-                    vstructs.add((p1, node, p2))
+                    vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
