@@ -1,3 +1,4 @@
+from itertools import combinations
 from typing import List, Optional, Set, Union
 
 import networkx as nx
@@ -17,6 +18,7 @@ __all__ = [
     "valid_mag",
     "dag_to_mag",
     "is_maximal",
+    "all_vstructures",
 ]
 
 
@@ -823,3 +825,33 @@ def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
             else:
                 continue
     return True
+
+
+def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
+    """Generate all v-structures in the graph.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    as_edges : bool
+        Whether to return the v-structures as edges or as a set of tuples.
+
+    Returns
+    -------
+    vstructs : set
+        If ``as_edges`` is True, a set of v-structures in the graph encoded as the
+        (parent_1, child, parent_2) tuple with child being an unshielded collider.
+        Otherwise, a set of tuples of the form (parent, child), which are part of
+        v-structures in the graph.
+    """
+    vstructs = set()
+    for node in G.nodes:
+        for p1, p2 in combinations(G.predecessors(node), 2):
+            if p1 not in G.predecessors(p2) and p2 not in G.predecessors(p1):
+                if as_edges:
+                    vstructs.add((p1, node))
+                    vstructs.add((p2, node))
+                else:
+                    vstructs.add((p1, node, p2))
+    return vstructs

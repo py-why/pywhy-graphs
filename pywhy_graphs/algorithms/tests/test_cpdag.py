@@ -1,8 +1,21 @@
 import networkx as nx
+import numpy as np
 import pytest
 
 import pywhy_graphs.networkx as pywhy_nx
-from pywhy_graphs.algorithms.cpdag import EDGELABELS, label_edges, order_edges, pdag_to_dag
+from pywhy_graphs.algorithms import all_vstructures
+from pywhy_graphs.algorithms.cpdag import (
+    EDGELABELS,
+    dag_to_cpdag,
+    label_edges,
+    order_edges,
+    pdag_to_cpdag,
+    pdag_to_dag,
+)
+from pywhy_graphs.testing import assert_mixed_edge_graphs_isomorphic
+
+seed = 1234
+rng = np.random.default_rng(seed)
 
 
 class TestOrderEdges:
@@ -95,33 +108,6 @@ class TestLabelEdges:
             ValueError, match="G must have all edges ordered via the `order` attribute"
         ):
             label_edges(G)
-
-    @pytest.mark.skip()
-    def test_label_edges_output(self):
-        # Create an example DAG for testing
-        G = nx.DiGraph()
-
-        # 1 -> 2 -> 4 -> 5
-        # 1 -> 3 -> 4
-        G.add_edges_from([(1, 2), (1, 3), (2, 4), (3, 4), (4, 5)])
-        nx.set_edge_attributes(G, None, "order")
-        G[1][2]["order"] = 0
-        G[1][3]["order"] = 1
-        G[2][4]["order"] = 2
-        G[3][4]["order"] = 3
-        G[4][5]["order"] = 4
-
-        # Test the output of label_edges function for a specific example DAG
-        labeled_graph = label_edges(G)
-        expected_labels = {
-            (1, 2): EDGELABELS.REVERSIBLE,
-            (1, 3): EDGELABELS.REVERSIBLE,
-            (2, 4): EDGELABELS.REVERSIBLE,
-            (3, 4): EDGELABELS.REVERSIBLE,
-            (4, 5): EDGELABELS.REVERSIBLE,
-        }
-        for edge, expected_label in expected_labels.items():
-            assert labeled_graph.edges[edge]["label"] == expected_label
 
     def test_label_edges_all_compelled(self):
         # Create an example DAG for testing
@@ -226,3 +212,32 @@ class TestPDAGtoDAG:
         pdag.add_edge(1, 3, edge_type="directed")
 
         assert nx.is_isomorphic(G, pdag.get_graphs("directed"))
+
+    def test_pdag_to_cpdag(self):
+        # construct a random DAG
+        n = 10
+        p = 0.5
+        random_graph = nx.fast_gnp_random_graph(n, p, directed=True)
+        dag = nx.DiGraph([(u, v) for (u, v) in random_graph.edges() if u < v])
+
+        pdag = pywhy_nx.MixedEdgeGraph(
+            graphs=[dag.copy(), nx.Graph()], edge_types=["directed", "undirected"]
+        )
+
+        # now we construct the set of undirected edges that to not belong
+        # to any unshielded collider (i.e. v-structure)
+        vstructs = all_vstructures(dag, as_edges=True)
+
+        # we apply a random orientation for a subset of the undirected edges
+        for edge in dag.edges:
+            if edge not in vstructs:
+                if rng.binomial(1, 1.0 / 3):
+                    pdag.remove_edge(*edge)
+                    pdag.add_edge(*edge, edge_type="undirected")
+
+        # now, we can convert the DAG to CPDAG and also convert the PDAG to a CPDAG
+        # they should be equivalent
+        cpdag = dag_to_cpdag(dag)
+        cpdag_from_pdag = pdag_to_cpdag(pdag)
+
+        assert_mixed_edge_graphs_isomorphic(cpdag, cpdag_from_pdag)
