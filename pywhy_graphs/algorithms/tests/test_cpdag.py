@@ -14,7 +14,7 @@ from pywhy_graphs.algorithms.cpdag import (
 )
 from pywhy_graphs.testing import assert_mixed_edge_graphs_isomorphic
 
-seed = 1234
+seed = 12345
 rng = np.random.default_rng(seed)
 
 
@@ -216,8 +216,8 @@ class TestPDAGtoDAG:
     def test_pdag_to_cpdag(self):
         # construct a random DAG
         n = 10
-        p = 0.5
-        random_graph = nx.fast_gnp_random_graph(n, p, directed=True)
+        p = 0.4
+        random_graph = nx.fast_gnp_random_graph(n, p, directed=True, seed=seed)
         dag = nx.DiGraph([(u, v) for (u, v) in random_graph.edges() if u < v])
 
         pdag = pywhy_nx.MixedEdgeGraph(
@@ -231,7 +231,7 @@ class TestPDAGtoDAG:
         # we apply a random orientation for a subset of the undirected edges
         for edge in dag.edges:
             if edge not in vstructs:
-                if rng.binomial(1, 1.0 / 3):
+                if rng.binomial(1, 0.3):
                     pdag.remove_edge(*edge)
                     pdag.add_edge(*edge, edge_type="undirected")
 

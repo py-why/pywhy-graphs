@@ -224,7 +224,8 @@ def pdag_to_dag(G):
         # if no node satisfies condition 1 and 2, then the PDAG does not
         # admit a consistent extension
         if not found:
-            raise ValueError("No consistent extension found")
+            print(nodes_memo)
+            raise ValueError(f"No consistent extension found for PDAG: {G}, {G.edges()}")
     return dag
 
 
