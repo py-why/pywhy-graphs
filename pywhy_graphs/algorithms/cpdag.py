@@ -26,7 +26,10 @@ def order_edges(G: nx.DiGraph):
 
     A total ordering is a topological sorting of the nodes, and then
     ordering all possible edges according to Algorithm 4 in
-    :footcite:`chickering2002learning`.
+    :footcite:`chickering2002learning`. The edges are sorted such that
+    the edges obey the topological sorting of the nodes, but also
+    is sorted such that the source node of the edge is ordered based
+    on the topological sort as well.
 
     Parameters
     ----------

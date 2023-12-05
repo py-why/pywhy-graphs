@@ -40,7 +40,6 @@ class TestOrderEdges:
         G.add_edges_from([(1, 2), (1, 3), (2, 4), (3, 4), (4, 5)])
         G = order_edges(G)
 
-        print("Edge labels:", G.edges.data())
         expected_order = [
             (1, 2, {"order": 4}),
             (1, 3, {"order": 3}),
@@ -57,7 +56,7 @@ class TestOrderEdges:
         G = nx.DiGraph()
         G.add_edges_from([(5, 3), (3, 1), (1, 2), (2, "a"), (1, "b")])
         G = order_edges(G)
-        print("Edge labels:", G.edges.data())
+
         expected_order = [
             (5, 3, {"order": 4}),
             (3, 1, {"order": 3}),
@@ -138,9 +137,8 @@ class TestLabelEdges:
 class TestPDAGtoDAG:
     def test_pdag_to_dag_errors(self):
         G = nx.DiGraph()
-        G.add_edges_from([("X", "Y"), ("Z", "X")])
         G.add_edge("A", "Z")
-        G.add_edges_from([("A", "B"), ("B", "A"), ("B", "Z")])
+        G.add_edges_from([("A", "B"), ("B", "A"), ("B", "Z"), ("X", "Y"), ("Z", "X")])
 
         # add non-CPDAG supported edges
         G = pywhy_nx.MixedEdgeGraph(graphs=[G], edge_types=["directed"])
