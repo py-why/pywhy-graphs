@@ -189,9 +189,29 @@
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installing-with-pip">
+   Installing with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pip
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installing-from-source">
+   Installing from source
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -211,15 +231,18 @@
                 
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<p><strong>pywhy-graphs</strong> supports Python &gt;= 3.8.</p>
-<p>## Installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
+<p><strong>pywhy-graphs</strong> closely follows the NetworkX dependencies and thus supports Python &gt;= 3.9.</p>
+<section id="installing-with-pip">
+<h2>Installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#installing-with-pip" title="Permalink to this heading">#</a></h2>
 <p><strong>pywhy-graphs</strong> is available [on PyPI](<a class="reference external" href="https://pypi.org/project/pywhy-graphs/">https://pypi.org/project/pywhy-graphs/</a>). Just run</p>
 <blockquote>
 <div><p>pip install pywhy-graphs</p>
 <p># or if you use poetry which is recommended
 poetry add pywhy-graphs</p>
 </div></blockquote>
-<p>## Installing from source</p>
+</section>
+<section id="installing-from-source">
+<h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this heading">#</a></h2>
 <p>To install <strong>pywhy-graphs</strong> from source, first clone [the repository](<a class="reference external" href="https://github.com/py-why/pywhy-graphs">https://github.com/py-why/pywhy-graphs</a>):</p>
 <blockquote>
 <div><p>git clone <a class="reference external" href="https://github.com/py-why/pywhy-graphs.git">https://github.com/py-why/pywhy-graphs.git</a>
@@ -233,6 +256,7 @@ cd pywhy-graphs</p>
 <blockquote>
 <div><p>pip install -e .</p>
 </div></blockquote>
+</section>
 </section>
 
 

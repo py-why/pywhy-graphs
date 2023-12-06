@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pywhy_graphs.algorithms.valid_mag &#8212; pywhy-graphs v0.2.0.dev0</title>
+    <title>pywhy_graphs.algorithms.label_edges &#8212; pywhy-graphs v0.2.0.dev0</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -47,8 +47,8 @@
     <link rel="shortcut icon" href="../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pywhy_graphs.algorithms.has_adc" href="pywhy_graphs.algorithms.has_adc.html" />
-    <link rel="prev" title="pywhy_graphs.algorithms.dag_to_mag" href="pywhy_graphs.algorithms.dag_to_mag.html" />
+    <link rel="next" title="6.1.1. pywhy_graphs.export.graph_to_clearn" href="pywhy_graphs.export.graph_to_clearn.html" />
+    <link rel="prev" title="pywhy_graphs.algorithms.order_edges" href="pywhy_graphs.algorithms.order_edges.html" />
     <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
     <script type="text/javascript" src="../_static/copybutton.js"></script>
     <script type="text/javascript" src="../_static/scrollfix.js"></script>
@@ -199,14 +199,14 @@
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.dag_to_mag.html">
    pywhy_graphs.algorithms.dag_to_mag
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pywhy_graphs.algorithms.valid_mag.html">
    pywhy_graphs.algorithms.valid_mag
   </a>
  </li>
@@ -301,7 +301,7 @@
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pywhy_graphs.algorithms.pdag_to_dag.html">
    pywhy_graphs.algorithms.pdag_to_dag
@@ -322,8 +322,8 @@
    pywhy_graphs.algorithms.order_edges
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pywhy_graphs.algorithms.label_edges.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    pywhy_graphs.algorithms.label_edges
   </a>
  </li>
@@ -579,10 +579,10 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pywhy_graphs.algorithms.valid_mag">
+  <a class="reference internal nav-link" href="#pywhy_graphs.algorithms.label_edges">
    <code class="docutils literal notranslate">
     <span class="pre">
-     valid_mag()
+     label_edges()
     </span>
    </code>
   </a>
@@ -606,29 +606,40 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="pywhy-graphs-algorithms-valid-mag">
-<h1>pywhy_graphs.algorithms.valid_mag<a class="headerlink" href="#pywhy-graphs-algorithms-valid-mag" title="Permalink to this heading">#</a></h1>
+  <section id="pywhy-graphs-algorithms-label-edges">
+<h1>pywhy_graphs.algorithms.label_edges<a class="headerlink" href="#pywhy-graphs-algorithms-label-edges" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pywhy_graphs.algorithms.valid_mag">
-<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">valid_mag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pywhy_graphs.ADMG.html#pywhy_graphs.ADMG" title="pywhy_graphs.classes.admg.ADMG"><span class="pre">ADMG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)"><span class="pre">set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)"><span class="pre">set</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/generic.html#valid_mag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.valid_mag" title="Permalink to this definition">#</a></dt>
-<dd><p>Checks if the provided graph is a valid maximal ancestral graph (MAG).</p>
-<p>A valid MAG as defined in <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is a mixed edge graph that
-only has directed and bi-directed edges, no directed or almost directed
-cycles and no inducing paths between any two non-adjacent pair of nodes.</p>
+<dt class="sig sig-object py" id="pywhy_graphs.algorithms.label_edges">
+<span class="sig-prename descclassname"><span class="pre">pywhy_graphs.algorithms.</span></span><span class="sig-name descname"><span class="pre">label_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://networkx.org/documentation/latest/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.3rc0.dev0)"><span class="pre">DiGraph</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pywhy_graphs/algorithms/cpdag.html#label_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pywhy_graphs.algorithms.label_edges" title="Permalink to this definition">#</a></dt>
+<dd><p>Label compelled and reversible edges of a DAG G.</p>
+<p>Label the edges of a DAG G as either compelled or reversible. Compelled
+edges are edges that are compelled to be directed in a consistent
+extension of G. Reversible edges are edges that are not required
+to be directed in a consistent extension of G. For full details,
+see Algorithm 5 in <a class="footnote-reference brackets" href="#footcite-chickering2002learning" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G</strong> : Graph</p>
+<dd class="field-odd"><p><strong>G</strong> : DAG</p>
 <blockquote>
-<div><p>The graph.</p>
+<div><p>The directed acyclic graph to label.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>is_valid</strong> : bool</p>
+<dd class="field-even"><p>DAG</p>
 <blockquote>
-<div><p>A boolean indicating whether the provided graph is a valid MAG or not.</p>
+<div><p>The labelled DAG with edge attribute <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code> as either
+<code class="docutils literal notranslate"><span class="pre">&quot;compelled&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;reversible&quot;</span></code>.</p>
 </div></blockquote>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<div class="docutils container" id="id2">
+<aside class="footnote brackets" id="footcite-chickering2002learning" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>David Maxwell Chickering. Learning equivalence classes of bayesian-network structures. <em>The Journal of Machine Learning Research</em>, 2:445–498, 2002.</p>
+</aside>
+</aside>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -641,17 +652,17 @@ cycles and no inducing paths between any two non-adjacent pair of nodes.</p>
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.dag_to_mag.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="pywhy_graphs.algorithms.order_edges.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">pywhy_graphs.algorithms.dag_to_mag</p>
+          <p class="prev-next-title">pywhy_graphs.algorithms.order_edges</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="pywhy_graphs.algorithms.has_adc.html" title="next page">
+  <a class='right-next' id="next-link" href="pywhy_graphs.export.graph_to_clearn.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">pywhy_graphs.algorithms.has_adc</p>
+      <p class="prev-next-title"><span class="section-number">6.1.1. </span>pywhy_graphs.export.graph_to_clearn</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

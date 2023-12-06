@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.order_edges
+===================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: order_edges
+
+.. include:: pywhy_graphs.algorithms.order_edges.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

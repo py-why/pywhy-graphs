@@ -193,7 +193,8 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for pywhy_graphs.algorithms.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
@@ -212,6 +213,7 @@
     <span class="s2">&quot;valid_mag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;dag_to_mag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_maximal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;all_vstructures&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -1018,6 +1020,36 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">continue</span>
     <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">all_vstructures</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">as_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate all v-structures in the graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A directed graph.</span>
+<span class="sd">    as_edges : bool</span>
+<span class="sd">        Whether to return the v-structures as edges or as a set of tuples.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vstructs : set</span>
+<span class="sd">        If ``as_edges`` is True, a set of v-structures in the graph encoded as the</span>
+<span class="sd">        (parent_1, child, parent_2) tuple with child being an unshielded collider.</span>
+<span class="sd">        Otherwise, a set of tuples of the form (parent, child), which are part of</span>
+<span class="sd">        v-structures in the graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vstructs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">p1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">as_edges</span><span class="p">:</span>
+                    <span class="n">vstructs</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">p1</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+                    <span class="n">vstructs</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">p2</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">vstructs</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">p1</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">p2</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="n">vstructs</span>
 </pre></div>
 
               </article>

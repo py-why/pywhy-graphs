@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.pdag_to_dag
+===================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: pdag_to_dag
+
+.. include:: pywhy_graphs.algorithms.pdag_to_dag.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

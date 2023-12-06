@@ -303,6 +303,33 @@
 </ul>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.pdag_to_dag.html">
+   pywhy_graphs.algorithms.pdag_to_dag
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.dag_to_cpdag.html">
+   pywhy_graphs.algorithms.dag_to_cpdag
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.pdag_to_cpdag.html">
+   pywhy_graphs.algorithms.pdag_to_cpdag
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.order_edges.html">
+   pywhy_graphs.algorithms.order_edges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generated/pywhy_graphs.algorithms.label_edges.html">
+   pywhy_graphs.algorithms.label_edges
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
   <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html">
    6.1.1. pywhy_graphs.export.graph_to_clearn
   </a>
@@ -572,6 +599,16 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pywhy-graphs-algorithms-algorithms-for-dealing-with-cpdags">
+   <code class="xref py py-mod docutils literal notranslate">
+    <span class="pre">
+     pywhy_graphs.algorithms
+    </span>
+   </code>
+   : Algorithms for dealing with CPDAGs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conversions-between-other-package-s-causal-graphs">
    Conversions between other package’s causal graphs
   </a>
@@ -740,6 +777,33 @@ causal graph operations.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.all_semi_directed_paths.html#pywhy_graphs.algorithms.all_semi_directed_paths" title="pywhy_graphs.algorithms.all_semi_directed_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_semi_directed_paths</span></code></a>(G, source, target[, ...])</p></td>
 <td><p>Generate all semi-directed paths from source to target in G.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pywhy-graphs-algorithms-algorithms-for-dealing-with-cpdags">
+<h2><a class="reference internal" href="reference/algorithms/index.html#module-pywhy_graphs.algorithms" title="pywhy_graphs.algorithms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pywhy_graphs.algorithms</span></code></a>: Algorithms for dealing with CPDAGs<a class="headerlink" href="#pywhy-graphs-algorithms-algorithms-for-dealing-with-cpdags" title="Permalink to this heading">#</a></h2>
+<p>With Markov equivalence classes of DAGs in a Markovian SCM setting, we obtain
+a potentially directed acyclic graph (PDAG), which may be completed (CPDAG).
+We may want to generate a consistent DAG extension (i.e. Markov equivalent) of a CPDAG
+then we may use some of the algorithms described here. Or perhaps one may want to
+convert a DAG to its corresponding CPDAG.</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pdag_to_dag.html#pywhy_graphs.algorithms.pdag_to_dag" title="pywhy_graphs.algorithms.pdag_to_dag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdag_to_dag</span></code></a>(G)</p></td>
+<td><p>Compute consistent extension of given PDAG resulting in a DAG.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.dag_to_cpdag.html#pywhy_graphs.algorithms.dag_to_cpdag" title="pywhy_graphs.algorithms.dag_to_cpdag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dag_to_cpdag</span></code></a>(G)</p></td>
+<td><p>Convert a DAG to a CPDAG.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.pdag_to_cpdag.html#pywhy_graphs.algorithms.pdag_to_cpdag" title="pywhy_graphs.algorithms.pdag_to_cpdag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdag_to_cpdag</span></code></a>(G)</p></td>
+<td><p>Convert a PDAG to a CPDAG.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.order_edges.html#pywhy_graphs.algorithms.order_edges" title="pywhy_graphs.algorithms.order_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order_edges</span></code></a>(G)</p></td>
+<td><p>Find total ordering of the edges of DAG G.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pywhy_graphs.algorithms.label_edges.html#pywhy_graphs.algorithms.label_edges" title="pywhy_graphs.algorithms.label_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_edges</span></code></a>(G)</p></td>
+<td><p>Label compelled and reversible edges of a DAG G.</p></td>
 </tr>
 </tbody>
 </table>

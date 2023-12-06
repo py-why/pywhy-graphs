@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.pdag_to_cpdag
+=====================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: pdag_to_cpdag
+
+.. include:: pywhy_graphs.algorithms.pdag_to_cpdag.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>
