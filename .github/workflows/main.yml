@@ -158,6 +158,7 @@ jobs:
         if: "matrix.os == 'ubuntu'"
         shell: bash
         run: |
+          sudo apt-get update
           sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
 
       - name: Run pytest # headless via Xvfb on linux
