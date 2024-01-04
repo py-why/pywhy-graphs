@@ -1180,11 +1180,17 @@ def pag_to_mag(graph):
 
     return mag
 
-
+def _proper_pag(G: PAG):
+    
+    #check for acyclicity
+    #check for ancestrality
+    #check for maximality
+    
+    return True
 
 
 def valid_pag(G: PAG):
-     """Check if the provided PAG is valid or not.
+    """Check if the provided PAG is valid or not.
 
     Parameters
     ----------
@@ -1197,12 +1203,16 @@ def valid_pag(G: PAG):
         The MAG constructed from the PAG.
     """
      
-     # check if the graph is a vald PAG 
-     converted_mag = pag_to_mag(G)
-     valid_mag = valid_mag(converted_mag)
-     
-     # convert the mag back to a pag
+     # check if the graph is a vald PAG
+    if not _proper_pag(G):
+        return False
 
-     # check if the converted pag is equivalent to the original
 
-     return True
+    converted_mag = pag_to_mag(G)
+    valid_mag = valid_mag(converted_mag)
+    
+    # convert the mag back to a pag
+
+    # check if the converted pag is equivalent to the original
+
+    return True
