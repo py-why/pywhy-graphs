@@ -30,9 +30,9 @@ __all__ = [
 
 
 def _possibly_directed(G: PAG, i: Node, j: Node, reverse: bool = False):
-    """Check that path is possibly directed.
+    """Check that edge is possibly directed.
 
-    A possibly directed path is one of the form:
+    A possibly directed edge is one of the form:
     - ``i -> j``
     - ``i o-> j``
     - ``i o-o j``
@@ -67,7 +67,7 @@ def _possibly_directed(G: PAG, i: Node, j: Node, reverse: bool = False):
 
     # the direct check checks for i *-> j or i <-* j
     # i <-> j is also checked
-    # everything else is valid
+    # everything else is valid; i.e. i -- j, or i o-o j
     if direct_check or G.has_edge(i, j, G.bidirected_edge_name):
         return False
     return True

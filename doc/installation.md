@@ -1,9 +1,10 @@
 Installation
 ============
 
-**pywhy-graphs** supports Python >= 3.8.
+**pywhy-graphs** closely follows the NetworkX dependencies and thus supports Python >= 3.9.
 
-## Installing with ``pip``
+Installing with ``pip``
+-----------------------
 
 **pywhy-graphs** is available [on PyPI](https://pypi.org/project/pywhy-graphs/). Just run
 
@@ -12,7 +13,8 @@ Installation
     # or if you use poetry which is recommended
     poetry add pywhy-graphs
 
-## Installing from source
+Installing from source
+----------------------
 
 To install **pywhy-graphs** from source, first clone [the repository](https://github.com/py-why/pywhy-graphs):
 
