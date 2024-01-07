@@ -1205,7 +1205,7 @@ def _proper_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
 
     all_nodes = set(G.nodes)
 
-    # check if there are any undirected edges or more than one edges b/w two nodes
+    # check if there are more than one edges b/w two nodes
     for node in all_nodes:
         nb = set(G.neighbors(node))
         for elem in nb:
@@ -1224,10 +1224,22 @@ def _proper_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     if has_adc(G):  # if there is an ADC, it's not a valid MAG
         return False
 
-    # check if there are any inducing paths between non-adjacent nodes
+    # check if there are any inducing paths between non-adjacent nodes in the non-circle edge sub-graph
+
+    dedges = list(G.edges()["directed"])
+    undedges = list(G.edges()["undirected"])
+    biedges = list(G.edges()["bidirected"])
+
+    temp_pag = PAG()
+
+    temp_pag.add_edges_from(dedges, temp_pag.directed_edge_name)
+    temp_pag.add_edges_from(undedges, temp_pag.undirected_edge_name)
+    temp_pag.add_edges_from(biedges, temp_pag.bidirected_edge_name)
+
+    all_nodes = set(temp_pag.nodes)
 
     for source in all_nodes:
-        nb = set(G.neighbors(source))
+        nb = set(temp_pag.neighbors(source))
         cur_set = all_nodes - nb
         cur_set.remove(source)
         for dest in cur_set:
