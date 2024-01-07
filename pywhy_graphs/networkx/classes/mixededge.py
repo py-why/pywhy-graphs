@@ -112,6 +112,12 @@ class MixedEdgeGraph:
         # load graph attributes (must be after convert)
         self.graph.update(attr)
 
+        # XXX: experimental. Fix this in doc string once finalized.
+        # make dynamic property names for the edges, (i.e. circle_edges,
+        # directed_edges, undirected_edges)
+        for edge_type_name in self.edge_types:
+            setattr(self, f"{edge_type_name}_edges", self.get_graphs(edge_type_name).edges)
+
     def __str__(self):
         """Returns a short summary of the graph.
 
