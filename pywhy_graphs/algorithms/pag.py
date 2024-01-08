@@ -5,13 +5,16 @@ from typing import List, Optional, Set, Tuple
 
 import networkx as nx
 import numpy as np
+from dodiscover.ci import Oracle
+from dodiscover.constraint.fcialg import FCI
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
-from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path, has_adc, inducing_path
+from pywhy_graphs.algorithms.generic import (
+    has_adc,
+    inducing_path,
+    single_source_shortest_mixed_path,
+)
 from pywhy_graphs.typing import Node, TsNode
-
-from dodiscover.constraint.fcialg import FCI
-from dodiscover.ci import Oracle
 
 logger = logging.getLogger()
 
@@ -26,6 +29,7 @@ __all__ = [
     "pds_t_path",
     "is_definite_noncollider",
     "pag_to_mag",
+    "legal_pag",
 ]
 
 
@@ -1180,7 +1184,8 @@ def pag_to_mag(graph):
 
     return mag
 
-def _proper_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
+
+def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     """Checks if the provided graph is a valid Partial ancestral graph (MAG).
 
     Parameters
@@ -1233,7 +1238,11 @@ def _proper_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     temp_pag = PAG()
 
     temp_pag.add_edges_from(dedges, temp_pag.directed_edge_name)
-    temp_pag.add_edges_from(undedges, temp_pag.undirected_edge_name)
+
+    # can't remember why I only handle directed and bidirected edges
+
+    # temp_pag.add_edges_from(undedges, temp_pag.undirected_edge_name)
+
     temp_pag.add_edges_from(biedges, temp_pag.bidirected_edge_name)
 
     all_nodes = set(temp_pag.nodes)
@@ -1243,7 +1252,7 @@ def _proper_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
         cur_set = all_nodes - nb
         cur_set.remove(source)
         for dest in cur_set:
-            out = inducing_path(G, source, dest, L, S)
+            out = inducing_path(temp_pag, source, dest, L, S)
             if out[0] is True:
                 return False
 
@@ -1263,15 +1272,14 @@ def valid_pag(G: PAG):
     is_valid : bool
         The MAG constructed from the PAG.
     """
-     
-     # check if the graph is a vald PAG
-    if not _proper_pag(G):
-        return False
 
+    # check if the graph is a vald PAG
+    if not legal_pag(G):
+        return False
 
     converted_mag = pag_to_mag(G)
     valid_mag = valid_mag(converted_mag)
-    
+
     # convert the mag back to a pag
 
     # check if the converted pag is equivalent to the original

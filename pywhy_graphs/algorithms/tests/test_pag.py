@@ -723,3 +723,49 @@ def test_pag_to_mag():
         and (out_mag.has_edge("E", "D") or out_mag.has_edge("D", "E"))
         and (out_mag.has_edge("D", "C") or out_mag.has_edge("C", "D"))
     )
+
+
+def test_pag_to_mag():
+    # D o-o A o-> B <-o C
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.directed_edge_name)
+    pag.add_edge("B", "A", pag.circle_edge_name)
+    pag.add_edge("B", "C", pag.circle_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+    pag.add_edge("A", "D", pag.circle_edge_name)
+    pag.add_edge("D", "A", pag.circle_edge_name)
+
+    pag_bool = pywhy_graphs.legal_pag(pag)
+
+    assert pag_bool is True
+
+    # D <-> A o-> B <-o C
+    # B -> D
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.directed_edge_name)
+    pag.add_edge("B", "A", pag.circle_edge_name)
+    pag.add_edge("B", "C", pag.circle_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+    pag.add_edge("A", "D", pag.bidirected_edge_name)
+    pag.add_edge("B", "D", pag.directed_edge_name)
+
+    pag_bool = pywhy_graphs.legal_pag(pag)
+
+    assert pag_bool is False
+
+    # D -> A o-> B <-o C
+    # B -> D
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.directed_edge_name)
+    pag.add_edge("B", "A", pag.circle_edge_name)
+    pag.add_edge("B", "C", pag.circle_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+    pag.add_edge("D", "A", pag.directed_edge_name)
+    pag.add_edge("B", "D", pag.directed_edge_name)
+
+    pag_bool = pywhy_graphs.legal_pag(pag)
+
+    assert pag_bool is False
