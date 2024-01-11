@@ -1259,6 +1259,44 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     return True
 
 
+def mag_to_pag(G: PAG):
+    """Converted the provided mag into a pag using the
+    FCI algorithm.
+
+    Parameters
+    ----------
+    G : MAG
+        The MAG.
+
+    Returns
+    -------
+    pag : PAG
+        The PAG constructed from the MAG.
+    """
+
+    pass
+
+
+def equivalent_graph(G1: PAG, G2: PAG):
+    """Check if the two provided PAGs are equivalent or not.
+
+    Parameters
+    ----------
+    G1 : PAG
+        The first PAG.
+
+    G2 : PAG
+        The second PAG.
+
+    Returns
+    -------
+    is_equivalent : bool
+        A boolean indicating whether the two PAGs are equivalent or not.
+    """
+
+    pass
+
+
 def valid_pag(G: PAG):
     """Check if the provided PAG is valid or not.
 
@@ -1270,18 +1308,28 @@ def valid_pag(G: PAG):
     Returns
     -------
     is_valid : bool
-        The MAG constructed from the PAG.
+        Boolean indicating whether the provided PAG is valid or not.
     """
+
+    interim_bool = False
 
     # check if the graph is a vald PAG
     if not legal_pag(G):
         return False
 
     converted_mag = pag_to_mag(G)
+
     valid_mag = valid_mag(converted_mag)
 
+    if valid_mag:
+        interim_bool = True
+
     # convert the mag back to a pag
+    rec_pag = mag_to_pag(converted_mag)
 
     # check if the converted pag is equivalent to the original
 
-    return True
+    if equivalent_graph(rec_pag, G):
+        return interim_bool
+    else:
+        return False
