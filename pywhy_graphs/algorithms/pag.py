@@ -5,8 +5,10 @@ from typing import List, Optional, Set, Tuple
 
 import networkx as nx
 import numpy as np
-from dodiscover.ci import Oracle
-from dodiscover.constraint.fcialg import FCI
+from dodiscover.ci import GSquareCITest, Oracle
+from dodiscover import FCI, make_context
+from dodiscover.constraint.utils import dummy_sample
+import pandas as pd
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import (
@@ -1274,7 +1276,14 @@ def mag_to_pag(G: PAG):
         The PAG constructed from the MAG.
     """
 
-    pass
+    data = dummy_sample(G)
+    oracle = Oracle(G)
+    ci_estimator = GSquareCITest(data_type="discrete")
+    context = make_context().variables(data=data).build()
+    fci = FCI(ci_estimator=oracle)
+    fci.learn_graph(data,context)
+
+    return fci.graph_
 
 
 def equivalent_graph(G1: PAG, G2: PAG):
@@ -1294,7 +1303,23 @@ def equivalent_graph(G1: PAG, G2: PAG):
         A boolean indicating whether the two PAGs are equivalent or not.
     """
 
-    pass
+    g1_edges = G1.edges()
+    g2_edges = G2.edges()
+
+    if set(g1_edges["directed"]) != set(g2_edges["directed"]):
+        return False
+    
+    elif set(g1_edges["undirected"]) != set(g2_edges["undirected"]):
+        return False
+    
+    elif set(g1_edges["bidirected"]) != set(g2_edges["bidirected"]):
+        return False
+    
+    elif set(g1_edges["cirlce"]) != set(g2_edges["circle"]):
+        return False
+    
+    else:
+        return True
 
 
 def valid_pag(G: PAG):
