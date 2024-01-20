@@ -15,6 +15,7 @@ from pywhy_graphs.algorithms.generic import (
     has_adc,
     inducing_path,
     single_source_shortest_mixed_path,
+    valid_mag
 )
 from pywhy_graphs.typing import Node, TsNode
 
@@ -32,6 +33,7 @@ __all__ = [
     "is_definite_noncollider",
     "pag_to_mag",
     "legal_pag",
+    "valid_pag"
 ]
 
 
@@ -1344,9 +1346,9 @@ def valid_pag(G: PAG):
 
     converted_mag = pag_to_mag(G)
 
-    valid_mag = valid_mag(converted_mag)
+    is_valid = valid_mag(converted_mag)
 
-    if valid_mag:
+    if is_valid:
         interim_bool = True
 
     # convert the mag back to a pag
