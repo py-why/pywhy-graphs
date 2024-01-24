@@ -1317,7 +1317,7 @@ def equivalent_graph(G1: PAG, G2: PAG):
     elif set(g1_edges["bidirected"]) != set(g2_edges["bidirected"]):
         return False
     
-    elif set(g1_edges["cirlce"]) != set(g2_edges["circle"]):
+    elif set(g1_edges["circle"]) != set(g2_edges["circle"]):
         return False
     
     else:
