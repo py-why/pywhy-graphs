@@ -3,7 +3,7 @@ from itertools import permutations
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import PAG,ADMG
+from pywhy_graphs import PAG
 from pywhy_graphs.algorithms import (
     discriminating_path,
     is_definite_noncollider,
@@ -790,7 +790,6 @@ def test_valid_pag():
 
     assert pywhy_graphs.valid_pag(pag) is True
 
-
     pag = PAG()
     pag.add_edge("A", "B", pag.circle_edge_name)
     pag.add_edge("B", "A", pag.directed_edge_name)
@@ -802,7 +801,6 @@ def test_valid_pag():
     # D o-> A <-o B
     # D o-o B
     assert pywhy_graphs.valid_pag(pag) is False
-
 
     pag = PAG()
     pag.add_edge("A", "B", pag.directed_edge_name)
@@ -818,7 +816,6 @@ def test_valid_pag():
 
     assert pywhy_graphs.valid_pag(pag) is False
 
-
     pag = PAG()
     pag.add_edge("A", "B", pag.directed_edge_name)
     pag.add_edge("B", "A", pag.circle_edge_name)
@@ -833,4 +830,3 @@ def test_valid_pag():
     # D o-o E -> B
 
     assert pywhy_graphs.valid_pag(pag) is True
-

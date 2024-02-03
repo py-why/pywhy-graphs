@@ -5,17 +5,16 @@ from typing import List, Optional, Set, Tuple
 
 import networkx as nx
 import numpy as np
-from dodiscover.ci import GSquareCITest, Oracle
 from dodiscover import FCI, make_context
+from dodiscover.ci import Oracle
 from dodiscover.constraint.utils import dummy_sample
-import pandas as pd
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import (
     has_adc,
     inducing_path,
     single_source_shortest_mixed_path,
-    valid_mag
+    valid_mag,
 )
 from pywhy_graphs.typing import Node, TsNode
 
@@ -33,7 +32,8 @@ __all__ = [
     "is_definite_noncollider",
     "pag_to_mag",
     "legal_pag",
-    "valid_pag"
+    "equivalent_pag",
+    "valid_pag",
 ]
 
 
@@ -1192,6 +1192,10 @@ def pag_to_mag(graph):
 def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     """Checks if the provided graph is a valid Partial ancestral graph (MAG).
 
+    A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
+    has no directed or almost directed cycles and no inducing paths between
+    any two non-adjacent pair of nodes.
+
     Parameters
     ----------
     G : Graph
@@ -1236,7 +1240,7 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     # check if there are any inducing paths between non-adjacent nodes in the non-circle edge sub-graph
 
     dedges = list(G.edges()["directed"])
-    undedges = list(G.edges()["undirected"])
+    # undedges = list(G.edges()["undirected"])
     biedges = list(G.edges()["bidirected"])
 
     temp_pag = PAG()
@@ -1264,8 +1268,10 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
 
 
 def mag_to_pag(G: PAG):
-    """Converted the provided mag into a pag using the
-    FCI algorithm.
+    """Converts the provided mag into a pag using the FCI algorithm.
+    The FCI algorithms, as defined in :footcite:`Zhang2008` is a provably
+    complete for learning all the tractable features of an MAG, thus
+    producing a PAG.
 
     Parameters
     ----------
@@ -1280,16 +1286,18 @@ def mag_to_pag(G: PAG):
 
     data = dummy_sample(G)
     oracle = Oracle(G)
-    ci_estimator = GSquareCITest(data_type="discrete")
+    # ci_estimator = GSquareCITest(data_type="discrete")
     context = make_context().variables(data=data).build()
     fci = FCI(ci_estimator=oracle)
-    fci.learn_graph(data,context)
+    fci.learn_graph(data, context)
 
     return fci.graph_
 
 
-def equivalent_graph(G1: PAG, G2: PAG):
+def equivalent_pag(G1: PAG, G2: PAG):
     """Check if the two provided PAGs are equivalent or not.
+    This function compares the edges in both the graphs to determine
+    equivalency.
 
     Parameters
     ----------
@@ -1310,22 +1318,28 @@ def equivalent_graph(G1: PAG, G2: PAG):
 
     if set(g1_edges["directed"]) != set(g2_edges["directed"]):
         return False
-    
+
     elif set(g1_edges["undirected"]) != set(g2_edges["undirected"]):
         return False
-    
+
     elif set(g1_edges["bidirected"]) != set(g2_edges["bidirected"]):
         return False
-    
+
     elif set(g1_edges["circle"]) != set(g2_edges["circle"]):
         return False
-    
+
     else:
         return True
 
 
 def valid_pag(G: PAG):
     """Check if the provided PAG is valid or not.
+
+    The function determines the validity by first converting the PAG
+    into an MAG, then checking the validity of the said MAG. After the
+    validity of the MAG has been established, the MAG is converted back
+    into a PAG. Then the function checks to see if the original and the
+    reconverted PAG are equivalent or not.
 
     Parameters
     ----------
@@ -1356,7 +1370,7 @@ def valid_pag(G: PAG):
 
     # check if the converted pag is equivalent to the original
 
-    if equivalent_graph(rec_pag, G):
+    if equivalent_pag(rec_pag, G):
         return interim_bool
     else:
         return False
