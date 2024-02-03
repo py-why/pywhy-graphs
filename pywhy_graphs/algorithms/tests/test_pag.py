@@ -818,3 +818,19 @@ def test_valid_pag():
 
     assert pywhy_graphs.valid_pag(pag) is False
 
+
+    pag = PAG()
+    pag.add_edge("A", "B", pag.directed_edge_name)
+    pag.add_edge("B", "A", pag.circle_edge_name)
+    pag.add_edge("C", "B", pag.directed_edge_name)
+    pag.add_edge("E", "B", pag.directed_edge_name)
+    pag.add_edge("E", "D", pag.circle_edge_name)
+    pag.add_edge("C", "D", pag.circle_edge_name)
+    pag.add_edge("D", "E", pag.circle_edge_name)
+    pag.add_edge("D", "C", pag.circle_edge_name)
+
+    # A o-> B <- C o-o D
+    # D o-o E -> B
+
+    assert pywhy_graphs.valid_pag(pag) is True
+
