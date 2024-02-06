@@ -1271,6 +1271,7 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
 
 def mag_to_pag(G: PAG):
     """Converts the provided mag into a pag using the FCI algorithm.
+
     The FCI algorithms, as defined in :footcite:`Zhang2008` is a provably
     complete for learning all the tractable features of an MAG, thus
     producing a PAG.
