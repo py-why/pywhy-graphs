@@ -1364,9 +1364,7 @@ def valid_pag(G: PAG):
 
     converted_mag = pag_to_mag(G)
 
-    is_valid = valid_mag(converted_mag)
-
-    if is_valid:
+    if valid_mag(converted_mag):
         interim_bool = True
 
     # convert the mag back to a pag
