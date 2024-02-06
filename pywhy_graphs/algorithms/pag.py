@@ -1190,7 +1190,7 @@ def pag_to_mag(graph):
 
 
 def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
-    """Checks if the provided graph is a valid Partial ancestral graph (MAG).
+    """Checks if the provided graph is a valid Partial Ancestral Graph (PAG).
 
     A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
     has no directed or almost directed cycles and no inducing paths between
