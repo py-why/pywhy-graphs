@@ -1298,6 +1298,7 @@ def mag_to_pag(G: PAG):
 
 def equivalent_pag(G1: PAG, G2: PAG):
     """Check if the two provided PAGs are equivalent or not.
+
     This function compares the edges in both the graphs to determine
     equivalency.
 
