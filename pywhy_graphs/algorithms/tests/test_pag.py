@@ -725,7 +725,7 @@ def test_pag_to_mag():
     )
 
 
-def test_legal_pag():
+def test_check_pag_definition():
     # D o-o A o-> B <-o C
 
     pag = PAG()
@@ -736,7 +736,7 @@ def test_legal_pag():
     pag.add_edge("A", "D", pag.circle_edge_name)
     pag.add_edge("D", "A", pag.circle_edge_name)
 
-    pag_bool = pywhy_graphs.legal_pag(pag)
+    pag_bool = pywhy_graphs.check_pag_definition(pag)
 
     assert pag_bool is True
 
@@ -751,7 +751,7 @@ def test_legal_pag():
     pag.add_edge("A", "D", pag.bidirected_edge_name)
     pag.add_edge("B", "D", pag.directed_edge_name)
 
-    pag_bool = pywhy_graphs.legal_pag(pag)
+    pag_bool = pywhy_graphs.check_pag_definition(pag)
 
     assert pag_bool is False
 
@@ -766,7 +766,7 @@ def test_legal_pag():
     pag.add_edge("D", "A", pag.directed_edge_name)
     pag.add_edge("B", "D", pag.directed_edge_name)
 
-    pag_bool = pywhy_graphs.legal_pag(pag)
+    pag_bool = pywhy_graphs.check_pag_definition(pag)
 
     assert pag_bool is False
 

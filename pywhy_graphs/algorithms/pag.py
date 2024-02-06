@@ -31,8 +31,7 @@ __all__ = [
     "pds_t_path",
     "is_definite_noncollider",
     "pag_to_mag",
-    "legal_pag",
-    "equivalent_pag",
+    "check_pag_definition",
     "valid_pag",
 ]
 
@@ -1189,7 +1188,7 @@ def pag_to_mag(graph):
     return mag
 
 
-def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
+def check_pag_definition(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     """Checks if the provided graph is a valid Partial Ancestral Graph (PAG).
 
     A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
@@ -1197,6 +1196,14 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     any two non-adjacent pair of nodes. It is graph representing
     all conditional independence (CI) statements that are present in a DAG, forming
     an equivalence class of DAGs that encode the same CI statements.
+
+    The steps involved in this check are as follows:
+
+    - Check for any directed cycles in the PAG.
+
+    - Check for any almost directed cycles in the PAG.
+
+    - For every pair of non-adjacent nodes, check for inducing paths.
 
     Parameters
     ----------
@@ -1207,7 +1214,6 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     -------
     is_valid : bool
         A boolean indicating whether the provided graph is a valid PAG or not.
-
     """
 
     if L is None:
@@ -1239,7 +1245,8 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
     if has_adc(G):  # if there is an ADC, it's not a valid MAG
         return False
 
-    # check if there are any inducing paths between non-adjacent nodes in the non-circle edge sub-graph
+    # check if there are any inducing paths between non-adjacent nodes in the
+    # non-circle edge sub-graph
 
     dedges = list(G.edges()["directed"])
     # undedges = list(G.edges()["undirected"])
@@ -1297,7 +1304,7 @@ def mag_to_pag(G: PAG):
     return fci.graph_
 
 
-def equivalent_pag(G1: PAG, G2: PAG):
+def _check_pag_edges_are_equal(G1: PAG, G2: PAG):
     """Check if the two provided PAGs are equivalent or not.
 
     This function compares the edges in both the graphs to determine
@@ -1359,7 +1366,7 @@ def valid_pag(G: PAG):
     interim_bool = False
 
     # check if the graph is a vald PAG
-    if not legal_pag(G):
+    if not check_pag_definition(G):
         return False
 
     converted_mag = pag_to_mag(G)
@@ -1372,7 +1379,7 @@ def valid_pag(G: PAG):
 
     # check if the converted pag is equivalent to the original
 
-    if equivalent_pag(rec_pag, G):
+    if _check_pag_edges_are_equal(rec_pag, G):
         return interim_bool
     else:
         return False
