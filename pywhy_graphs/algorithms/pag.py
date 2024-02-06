@@ -1194,7 +1194,9 @@ def legal_pag(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
 
     A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
     has no directed or almost directed cycles and no inducing paths between
-    any two non-adjacent pair of nodes.
+    any two non-adjacent pair of nodes. It is graph representing
+    all conditional independence (CI) statements that are present in a DAG, forming
+    an equivalence class of DAGs that encode the same CI statements.
 
     Parameters
     ----------
