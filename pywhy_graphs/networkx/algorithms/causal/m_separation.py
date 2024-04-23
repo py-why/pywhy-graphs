@@ -61,7 +61,7 @@ def m_separated(
 
     See Also
     --------
-    networkx.algorithms.d_separation.d_separated
+    networkx.algorithms.d_separation.is_d_separator
 
     Notes
     -----
