@@ -823,3 +823,6 @@ def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
             else:
                 continue
     return True
+
+def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
+    pass
