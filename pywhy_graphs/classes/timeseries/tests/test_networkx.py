@@ -72,5 +72,5 @@ class TestNetworkxIntegration:
         empty_G = empty_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
         complete_G = complete_ts_graph(variables=variables, max_lag=max_lag, create_using=G_func)
         for u, v in combinations(empty_G.nodes, 2):
-            assert nx.d_separated(empty_G, {u}, {v}, {})
-            assert not nx.d_separated(complete_G, {u}, {v}, {})
+            assert nx.is_d_separator(empty_G, {u}, {v}, {})
+            assert not nx.is_d_separator(complete_G, {u}, {v}, {})
