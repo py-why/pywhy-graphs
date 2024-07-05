@@ -1,9 +1,9 @@
 [build-system]
-requires = ["poetry-core>=1.0.8"]
-build-backend = "poetry.core.masonry.api"
+build-backend = 'setuptools.build_meta'
+requires = ['setuptools >= 64.0.0']
 
 [project]
-name = "treeple"
+name = "pywhy-graphs"
 version = "0.2.0dev0"
 description = "Causal Graphs for Python"
 license = "MIT"
@@ -17,7 +17,7 @@ classifiers = [
   'Programming Language :: Python :: 3.12',
 ]
 keywords = ['causality', 'graphs', 'causal-inference', 'graphical-model']
-maintainers = [{ name = "Neurodata", email = "adam.li@columbia.edu" }]
+maintainers = [{ name = "PyWhy", email = "adam.li@columbia.edu" }]
 requires-python = ">=3.9"
 
 dependencies = ['numpy>=1.25.0', 'scipy>=1.9.0', 'networkx>=3.1']
