@@ -68,8 +68,7 @@ jobs:
       - run:
           name: setup Python venv
           command: |
-            pip install --upgrade pip spin
-            spin setup-submodule
+            pip install --upgrade pip
             pip install .[build,doc]
       - run:
           name: Setup torch for pgmpy

@@ -65,7 +65,6 @@ style = [
   'toml-sort',
   'yamllint',
   'mypy',
-  'flake8',
   'toml',
 ]
 test = [
