@@ -219,7 +219,7 @@ class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
 
         if G.is_directed():
             # (x1, -1), (x3, -1) collide at (x2, 0)
-            assert nx.is_d_separator(double_G, {("x1", -1)}, {("x3", -1)}, {})
+            assert nx.is_d_separator(double_G, {("x1", -1)}, {("x3", -1)}, set())
             assert not nx.is_d_separator(double_G, {("x1", -1)}, {("x3", -1)}, {("x2", 0)})
 
             # (x2, -1), (x2, 0) can be d-separated with lagged points of x1 and x3
@@ -231,9 +231,9 @@ class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
                 assert not nx.is_d_separator(double_G, {("x2", -1)}, {("x2", 0)}, {("x1", -1)})
 
                 # note, that d-separation will not work well with max-lag at max-lags
-                assert nx.is_d_separator(G_copy, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {})
+                assert nx.is_d_separator(G_copy, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, set())
                 assert not nx.is_d_separator(
-                    double_G, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {}
+                    double_G, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, set()
                 )
 
     def test_add_edge(self):

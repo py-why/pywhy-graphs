@@ -49,6 +49,7 @@ doc = [
   'pandas',
   'seaborn',
   'joblib',
+  'graphviz',
   'pygraphviz',
   'pgmpy',
 ]
