@@ -65,7 +65,6 @@ style = [
   'yamllint',
   'mypy',
   'flake8',
-  'bandit',
   'toml',
 ]
 test = [
@@ -78,9 +77,6 @@ test = [
   'causal-learn',
   'ananke-causal',
 ]
-
-[tool.bandit]
-exclude_dirs = ["tests"]
 
 [tool.black]
 line-length = 100

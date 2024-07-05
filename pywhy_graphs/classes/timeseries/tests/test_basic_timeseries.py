@@ -232,7 +232,9 @@ class BaseTimeSeriesGraphTester(BaseTimeSeriesNetworkxOperations):
 
                 # note, that d-separation will not work well with max-lag at max-lags
                 assert nx.is_d_separator(G_copy, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {})
-                assert not nx.is_d_separator(double_G, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {})
+                assert not nx.is_d_separator(
+                    double_G, {("x2", -max_lag)}, {("x2", -max_lag + 1)}, {}
+                )
 
     def test_add_edge(self):
         max_lag = self.max_lag
