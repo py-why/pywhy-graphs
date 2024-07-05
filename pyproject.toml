@@ -146,6 +146,9 @@ ignore = ['E731']
 [tool.setuptools]
 include-package-data = false
 
+[tool.setuptools.package-data]
+'pywhy_graphs.export' = ['tests/*.txt']
+
 [tool.setuptools.packages.find]
 exclude = ['pywhy_graphs*tests']
 include = ['pywhy_graphs*']
