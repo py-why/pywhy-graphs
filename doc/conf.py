@@ -9,8 +9,6 @@ import sys
 from datetime import datetime
 import warnings
 
-import numpy as np
-import networkx as nx
 import sphinx_gallery  # noqa: F401
 from sphinx_gallery.sorting import ExampleTitleSortKey, ExplicitOrder
 
@@ -23,12 +21,14 @@ from sphinx_gallery.sorting import ExampleTitleSortKey, ExplicitOrder
 
 sys.path.insert(0, os.path.abspath("../"))
 
-import pywhy_graphs  # noqa: E402
-import pywhy_graphs.functional.discrete
 
 curdir = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(curdir, "..")))
 sys.path.append(os.path.abspath(os.path.join(curdir, "..", "pywhy_graphs")))
+
+import pywhy_graphs  # noqa: E402
+
+# import pywhy_graphs.functional.discrete
 
 # -- Project information -----------------------------------------------------
 
@@ -67,14 +67,14 @@ extensions = [
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
 
+
 # -- Warnings management -----------------------------------------------------
 def setup(app):
     # Ignore .ipynb files
     app.registry.source_suffix.pop(".ipynb", None)
 
-warnings.filterwarnings(
-    "ignore", category=UserWarning
-)
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 # generate autosummary even if no references
 # -- sphinx.ext.autosummary
@@ -156,7 +156,9 @@ numpydoc_xref_ignore = {
     "Graph",
     "sets",
     "value",
-    'edges is None', 'nodes is None', 'G = nx.DiGraph(D)',
+    "edges is None",
+    "nodes is None",
+    "G = nx.DiGraph(D)",
     # shapes
     "n_times",
     "obj",
@@ -214,7 +216,7 @@ exclude_patterns = [
     "_build",
     "Thumbs.db",
     "**.ipynb_checkpoints",
-    '**/*.py',
+    "**/*.py",
     "auto_examples/**/*.py",
     "auto_examples/**/*.ipynb",
 ]
@@ -310,7 +312,7 @@ sphinx_gallery_conf = {
     "matplotlib_animations": True,
     "compress_images": ("images", "thumbnails"),
     "image_scrapers": scrapers,
-    'show_memory': not sys.platform.startswith(('win', 'darwin')),
+    "show_memory": not sys.platform.startswith(("win", "darwin")),
 }
 
 # Add pygraphviz png scraper, if available
@@ -354,8 +356,8 @@ nitpick_ignore = [
     ("py:class", "networkx.classes.mixededge.MixedEdgeGraph"),
 ]
 nitpick_ignore_regex = [
-    ('py:obj', r'pywhy_graphs.*timeseries.*'),
-    ('py:obj', r"networkx*"),
+    ("py:obj", r"pywhy_graphs.*timeseries.*"),
+    ("py:obj", r"networkx*"),
 ]
 
 # -- Options for NBSphinx output ---------------------------------------------
@@ -367,11 +369,10 @@ doctest_global_setup = "import networkx as nx"
 # -- Other extension configuration -------------------------------------------
 
 linkcheck_request_headers = dict(
-    user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+    user_agent="Mozilla/5.0 (X11; Linux x86_64) ƒAppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"  # noqa
 )  # noqa: E501
 linkcheck_anchors = False  # saves a bit of time
 linkcheck_timeout = 15  # some can be quite slow
 linkcheck_ignore = [
     "https://github.com/{group}/{project}/pull/",  # sphinx-issues will render this properly
 ]
-
