@@ -76,7 +76,7 @@ test = [
   'flaky',
   'tqdm',
   'causal-learn',
-  'ananke-causal',
+  'ananke-causal<0.4.0', # XXX: API changed to include "Vertices", which has not refactored here yet
 ]
 
 [tool.black]
