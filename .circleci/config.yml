@@ -1,13 +1,11 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@2.0.3
-
 jobs:
   build_doc:
-    executor:
-      name: python/default
-      tag: "3.10"
+    docker:
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/doc/2.0/circleci-images/
+      - image: cimg/python:3.11
     steps:
       - restore_cache:
           name: Restore .git
