@@ -20,7 +20,7 @@ keywords = ['causality', 'graphs', 'causal-inference', 'graphical-model']
 maintainers = [{ name = "PyWhy", email = "adam.li@columbia.edu" }]
 requires-python = ">=3.9"
 
-dependencies = ['numpy>=1.25.0', 'scipy>=1.9.0', 'networkx>=3.1']
+dependencies = ['numpy>=1.25.0,<2.0', 'scipy>=1.9.0', 'networkx>=3.1']
 
 [project.optional-dependencies]
 all = [
@@ -29,7 +29,7 @@ all = [
   'pywhy-graphs[style]',
   'pywhy-graphs[test]',
 ]
-build = ['build', 'twine', 'numpy>=1.25.0']
+build = ['build', 'twine', 'numpy>=1.25.0,<2.0']
 doc = [
   'memory-profiler',
   'numpydoc',
