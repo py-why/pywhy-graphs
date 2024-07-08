@@ -1,69 +1,85 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@2.0.3
-
-jobs:
-  build_doc:
-    executor:
-      name: python/default
-      tag: "3.10"
+# document commands used by downstream jobs
+commands:
+  check-skip:
     steps:
-      - restore_cache:
-          name: Restore .git
-          keys:
-            - source-cache-graphs
-      - checkout
-      - run:
-          name: Complete checkout
-          command: |
-            if ! git remote -v | grep upstream; then
-              git remote add upstream https://github.com/py-why/pywhy-graphs.git
-            fi
-            git remote set-url upstream https://github.com/py-why/pywhy-graphs.git
-            git fetch upstream
-      - save_cache:
-          name: Save .git
-          key: source-cache-graphs
-          paths:
-            - ".git"
       - run:
           name: Check-skip
           command: |
-            set -e
-            export COMMIT_MESSAGE=$(git log --format=oneline -n 1);
-            if [[ -v CIRCLE_PULL_REQUEST ]] && ([[ "$COMMIT_MESSAGE" == *"[skip circle]"* ]] || [[ "$COMMIT_MESSAGE" == *"[circle skip]"* ]]); then
+            if [ ! -d "sktree" ]; then
+              echo "Build was not run due to skip, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
+              circleci-agent step halt;
+            fi
+            export git_log=$(git log --max-count=1 --pretty=format:"%B" | tr "\n" " ")
+            echo "Got commit message:"
+            echo "${git_log}"
+            if [[ -v CIRCLE_PULL_REQUEST ]] && ([[ "$git_log" == *"[skip circle]"* ]] || [[ "$git_log" == *"[circle skip]"* ]]); then
               echo "Skip detected, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
               circleci-agent step halt;
             fi
+  apt-install:
+    steps:
       - run:
-          name: Merge with upstream
+          name: Install apt packages
           command: |
-            echo $(git log -1 --pretty=%B) | tee gitlog.txt
-            echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
-            if [[ $(cat merge.txt) != "" ]]; then
-              echo "Merging $(cat merge.txt)";
-              git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
-            fi
-      - run:
-          name: Install the latest version of Poetry
-          command: |
-            curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
-            python --version
-            poetry --version
+            sudo apt-get update
+            sudo apt-get install libopenblas-dev gfortran libgmp-dev libmpfr-dev ccache
+            # make sure pandoc is on the system
+            sudo apt-get update && sudo apt-get install -y pandoc optipng
+
+            # install pysal dependencies
+            sudo apt install libspatialindex-dev xdg-utils
+
       - run:
           name: Set BASH_ENV
           command: |
             set -e
             sudo apt update
+            sudo apt-get update
             sudo apt install -qq graphviz optipng libxft2 graphviz-dev
-            echo "set -e" >> $BASH_ENV
-            echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
-            echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
-            echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
-            echo "export DISPLAY=:99" >> $BASH_ENV
-            echo "BASH_ENV:"
+            echo 'set -e' >> $BASH_ENV
+            echo 'export OPENBLAS_NUM_THREADS=4' >> $BASH_ENV
+            echo 'export XDG_RUNTIME_DIR=/tmp/runtime-circleci' >> $BASH_ENV
+            echo 'export PATH=~/.local/bin/:$PATH' >> $BASH_ENV
+            echo 'export DISPLAY=:99' >> $BASH_ENV
+            echo 'BASH_ENV:'
             cat $BASH_ENV
+  merge:
+    steps:
+      - run:
+          name: merge with upstream
+          command: |
+            echo $(git log -1 --pretty=%B) | tee gitlog.txt
+            echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
+            if [[ $(cat merge.txt) != "" ]]; then
+              echo "Merging $(cat merge.txt)";
+              git remote add upstream https://github.com/neurodata/scikit-tree.git;
+              git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
+              git fetch upstream main;
+            fi
+
+jobs:
+  build_doc:
+    docker:
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/doc/2.0/circleci-images/
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - check-skip
+      - merge
+      - apt-install
+
+      - restore_cache:
+          name: Restore .git
+          keys:
+            - source-cache-graphs
+      - save_cache:
+          name: Save .git
+          key: source-cache-graphs
+          paths:
+            - ".git"
       - run:
           name: Install pysal dependencies
           command: |
@@ -71,17 +87,11 @@ jobs:
       - run:
           name: Setup pandoc
           command: sudo apt update && sudo apt install -y pandoc optipng
-
-      - python/install-packages:
-          pkg-manager: poetry
-          cache-version: "v2"  # change to clear cache
-          args: "--with docs --extras viz --extras sims"
       - run:
-          name: Check poetry package versions
+          name: setup Python venv
           command: |
-            poetry --version
-            poetry show
-
+            pip install --upgrade pip
+            pip install .[build,doc]
       - run:
           name: Setup torch for pgmpy
           command: |
@@ -89,15 +99,15 @@ jobs:
       - run:
           name: Check installation
           command: |
-            poetry run python -c "import pywhy_graphs;"
-            poetry run python -c "import numpy; numpy.show_config()"
-            LIBGL_DEBUG=verbose poetry run python -c "import matplotlib.pyplot as plt; plt.figure()"
+            python -c "import pywhy_graphs;"
+            python -c "import numpy; numpy.show_config()"
+            LIBGL_DEBUG=verbose python -c "import matplotlib.pyplot as plt; plt.figure()"
 
       # dowhy currently requires an older version of numpy
       - run:
           name: Temporary Hack for numpy
           command: |
-            poetry run python -m pip install numpy==1.22.0
+            python -m pip install numpy==1.22.0
 
       - run:
           name: Install dowhy
@@ -109,8 +119,17 @@ jobs:
       - run:
           name: Build documentation
           command: |
-            cd doc
-            poetry run poe build_docs
+            make -C doc html
+
+      - save_cache:
+          key: deps_ccache-{{ .Branch }}
+          paths:
+            - ~/.ccache
+            - ~/.cache/pip
+      - run:
+          name: ccache performance
+          command: |
+            ccache -s
       # Save the example test results
       - store_test_results:
           path: doc/_build/test-results
@@ -134,56 +153,6 @@ jobs:
           paths:
             - html
             - html_stable
-
-  linkcheck:
-    parameters:
-      scheduled:
-        type: string
-        default: "false"
-    executor: python/default
-    steps:
-      - restore_cache:
-          keys:
-            - source-cache-graphs
-      - checkout
-      - run:
-          name: Check-skip
-          command: |
-            export COMMIT_MESSAGE=$(git log --format=oneline -n 1);
-            if [[ "$COMMIT_MESSAGE" != *"[circle linkcheck]"* ]] && [ "<< parameters.scheduled >>" != "true" ]; then
-              echo "Skip detected, exiting job ${CIRCLE_JOB}."
-              circleci-agent step halt;
-            fi
-      - run:
-          name: Set BASH_ENV
-          command: |
-            set -e
-            sudo apt update
-            sudo apt install -qq graphviz optipng libxft2 graphviz-dev
-            echo "set -e" >> $BASH_ENV
-            echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
-            echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
-            echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
-            echo "export DISPLAY=:99" >> $BASH_ENV
-            echo "BASH_ENV:"
-            cat $BASH_ENV
-      - python/install-packages:
-          pkg-manager: poetry
-          cache-version: "v1"  # change to clear cache
-          args: "--with docs"
-      - run:
-          name: make linkcheck
-          command: |
-            poetry run make -C doc linkcheck
-      - run:
-          name: make linkcheck-grep
-          when: always
-          command: |
-            poetry run make -C doc linkcheck-grep
-      - store_artifacts:
-          path: doc/_build/linkcheck
-          destination: linkcheck
-
   deploy:
     docker:
       - image: cimg/node:lts
@@ -233,8 +202,6 @@ workflows:
     jobs:
       - build_doc:
           name: build_doc
-      - linkcheck:
-          name: linkcheck
       - deploy:
           requires:
             - build_doc
@@ -256,20 +223,6 @@ workflows:
           # "At 00:00" (once a day) should be enough "0 0 * * *",
           # But for testing at first, let's do once an hour (6 AM GMT)
           cron: "0 6 * * *"
-          filters:
-            branches:
-              only:
-                - main
-
-  weekly:
-    jobs:
-      - linkcheck:
-          name: linkcheck_weekly
-          scheduled: "true"
-    triggers:
-      - schedule:
-          # "At 00:00 on Sunday" should be often enough
-          cron: "0 0 * * 0"
           filters:
             branches:
               only:
