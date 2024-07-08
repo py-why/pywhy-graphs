@@ -13,6 +13,7 @@ In this example, we demonstrate how to visualize timeseries graphs effectively.
 
 For comparing different graphs with the same layout, see :ref:`ex-draw-graphs`
 """
+
 from pywhy_graphs import StationaryTimeSeriesDiGraph
 from pywhy_graphs.viz import draw, timeseries_layout
 

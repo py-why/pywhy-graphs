@@ -9,6 +9,7 @@ Causal graphs are graphical objects that attach causal notions to each edge
 and missing edge. We will review some of the fundamental causal graphs used
 in causal inference, and their differences from traditional graphs.
 """
+
 import networkx as nx
 import numpy as np
 import pandas as pd
