@@ -856,6 +856,6 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
 
-  
+
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
     pass
