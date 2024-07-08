@@ -127,15 +127,15 @@ jobs:
 
       - name: Install packages via pip
         run: |
-          pip install --upgrade pip
-          pip install numpy scipy networkx statsmodels
-          pip install .[test]
+          python -m pip install --upgrade pip
+          python -m pip install numpy scipy networkx statsmodels
+          python -m pip install .[test]
 
       - name: Install DoDiscover (main)
         run: |
           git clone https://github.com/py-why/dodiscover.git
           cd dodiscover
-          pip install .
+          python -m pip install .
 
       - name: Install Networkx (main)
         if: "matrix.networkx == 'main'"
