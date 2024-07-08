@@ -117,11 +117,26 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: "x64"
+
+      - name: Setup torch for pgmpy
+        if: "matrix.os == 'ubuntu'"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
+
       - name: Install packages via pip
         run: |
           pip install --upgrade pip
           pip install numpy scipy networkx statsmodels
           pip install .[test]
+
+      - name: Install DoDiscover (main)
+        run: |
+          git clone https://github.com/py-why/dodiscover.git
+          cd dodiscover
+          pip install .
+
       - name: Install Networkx (main)
         if: "matrix.networkx == 'main'"
         run: |
@@ -131,16 +146,10 @@ jobs:
           pip install .[default]
           # pip install --progress-bar off git+https://github.com/networkx/networkx
 
-      - name: Setup torch for pgmpy
-        if: "matrix.os == 'ubuntu'"
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
-
       - name: Run pytest # headless via Xvfb on linux
         run: |
           pytest --cov pywhy_graphs ./pywhy_graphs
+
       - name: Upload coverage stats to codecov
         if: ${{ matrix.os == 'ubuntu' && matrix.python-version == '3.11' && matrix.networkx == 'stable' }}
         uses: codecov/codecov-action@v4

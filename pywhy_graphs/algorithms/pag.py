@@ -5,9 +5,6 @@ from typing import List, Optional, Set, Tuple
 
 import networkx as nx
 import numpy as np
-from dodiscover import FCI, make_context
-from dodiscover.ci import Oracle
-from dodiscover.constraint.utils import dummy_sample
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
 from pywhy_graphs.algorithms.generic import (
@@ -1293,6 +1290,14 @@ def mag_to_pag(G: PAG):
     pag : PAG
         The PAG constructed from the MAG.
     """
+    try:
+        from dodiscover import FCI, make_context
+        from dodiscover.ci import Oracle
+        from dodiscover.constraint.utils import dummy_sample
+    except ImportError as e:
+        raise ImportError(
+            "The 'dodiscover' package is required to convert a MAG to a PAG."
+        )
 
     data = dummy_sample(G)
     oracle = Oracle(G)
