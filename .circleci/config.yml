@@ -64,7 +64,7 @@ jobs:
     docker:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/doc/2.0/circleci-images/
-      - image: cimg/python:3.9
+      - image: cimg/python:3.11
     steps:
       - checkout
       - check-skip
