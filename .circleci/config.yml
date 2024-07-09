@@ -7,7 +7,7 @@ commands:
       - run:
           name: Check-skip
           command: |
-            if [ ! -d "sktree" ]; then
+            if [ ! -d "pywhy_graphs" ]; then
               echo "Build was not run due to skip, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
               circleci-agent step halt;
             fi
@@ -54,7 +54,7 @@ commands:
             echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
             if [[ $(cat merge.txt) != "" ]]; then
               echo "Merging $(cat merge.txt)";
-              git remote add upstream https://github.com/neurodata/scikit-tree.git;
+              git remote add upstream https://github.com/py-why/pywhy-graphs.git;
               git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
               git fetch upstream main;
             fi
@@ -64,7 +64,7 @@ jobs:
     docker:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/doc/2.0/circleci-images/
-      - image: cimg/python:3.9
+      - image: cimg/python:3.11
     steps:
       - checkout
       - check-skip
@@ -101,7 +101,7 @@ jobs:
           command: |
             git clone https://github.com/py-why/dodiscover.git
             cd dodiscover
-            poetry run python -m pip install .
+            python -m pip install .
       - run:
           name: Check installation
           command: |

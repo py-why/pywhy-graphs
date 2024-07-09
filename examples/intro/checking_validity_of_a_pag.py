@@ -25,9 +25,7 @@ try:
     from dodiscover.ci import Oracle
     from dodiscover.constraint.utils import dummy_sample
 except ImportError as e:
-    raise ImportError(
-        "The 'dodiscover' package is required to convert a MAG to a PAG."
-    )
+    raise ImportError("The 'dodiscover' package is required to convert a MAG to a PAG.")
 
 
 # %%
