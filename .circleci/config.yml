@@ -7,7 +7,7 @@ commands:
       - run:
           name: Check-skip
           command: |
-            if [ ! -d "pywhy-graphs" ]; then
+            if [ ! -d "pywhy_graphs" ]; then
               echo "Build was not run due to skip, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
               circleci-agent step halt;
             fi
