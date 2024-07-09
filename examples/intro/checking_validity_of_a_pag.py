@@ -54,7 +54,7 @@ dot_graph.render(outfile="new_pag.png", view=True)
 # %%
 # Validity of a PAG
 # ---------------------------
-# To check if the constructed PAG is a valid one, we 
+# To check if the constructed PAG is a valid one, we
 # can simply do:
 
 
