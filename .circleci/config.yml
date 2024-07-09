@@ -97,10 +97,17 @@ jobs:
           command: |
             sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
       - run:
+          name: Install dowhy
+          command: |
+            git clone https://github.com/py-why/dodiscover.git
+            cd dodiscover
+            poetry run python -m pip install .
+      - run:
           name: Check installation
           command: |
             python -c "import pywhy_graphs;"
             python -c "import numpy; numpy.show_config()"
+            python -c "import dowhy;"
             LIBGL_DEBUG=verbose python -c "import matplotlib.pyplot as plt; plt.figure()"
 
       # dowhy currently requires an older version of numpy
@@ -108,6 +115,7 @@ jobs:
           name: Temporary Hack for numpy
           command: |
             python -m pip install numpy==1.22.0
+
 
       - run:
           name: Build documentation
