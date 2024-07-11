@@ -116,7 +116,6 @@ jobs:
       #     command: |
       #       python -m pip install numpy==1.22.0
 
-
       - run:
           name: Build documentation
           command: |
