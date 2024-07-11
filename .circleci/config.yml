@@ -111,10 +111,10 @@ jobs:
             LIBGL_DEBUG=verbose python -c "import matplotlib.pyplot as plt; plt.figure()"
 
       # dowhy currently requires an older version of numpy
-      - run:
-          name: Temporary Hack for numpy
-          command: |
-            python -m pip install numpy==1.22.0
+      # - run:
+      #     name: Temporary Hack for numpy
+      #     command: |
+      #       python -m pip install numpy==1.22.0
 
 
       - run:
