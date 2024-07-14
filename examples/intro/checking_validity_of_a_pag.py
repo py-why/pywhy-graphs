@@ -61,9 +61,9 @@ dot_graph.render(outfile="new_pag.png", view=True)
 # %%
 # Validity of a PAG
 # ---------------------------
-# For a PAG to be valid, it must represent a valid 
+# For a PAG to be valid, it must represent a valid
 # equivalent class of MAGs. This can be verified by
-# turning the PAG into an MAG and then checking the 
+# turning the PAG into an MAG and then checking the
 # validity of the MAG
 # To check if the constructed PAG is a valid one in
 # pywhy-graphs, we can simply do:
@@ -80,7 +80,7 @@ print(pywhy_graphs.valid_pag(pag))
 # the representation of multiple marks as encoded
 # by the different MAGs this PAG represents:
 
-pag.remove_edge("S","I",pag.circle_edge_name)
+pag.remove_edge("S", "I", pag.circle_edge_name)
 
 # returns False
 print(pywhy_graphs.valid_pag(pag))
