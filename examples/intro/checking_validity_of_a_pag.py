@@ -7,6 +7,10 @@ A PAG or a Partial Ancestral Graph is a type of mixed edge
 graph that can represent, in a single graph, the causal relationship
 between several nodes as defined by an equivalence class of MAGs.
 
+Another way to understand this is that PAGs encode conditional independence
+constraints stemming from Causal Graphs. Since these constraints do not lead to a
+unique graph, a PAG, in essence, represents a class of graphs that encode
+the same conditional independence constraints.
 
 PAGs model this relationship by displaying all common edge marks shared 
 by all members in the equivalence class and displaying circles for those marks
@@ -71,8 +75,10 @@ print(pywhy_graphs.valid_pag(pag))
 # %%
 # If we want to test whether this algorithm
 # is working correctly or not, we can change
-# a single mark in the graph such that the PAG
-# does not represent the equivalent class of MAGs:
+# a single mark in the graph such that the PAG.
+# By removing a circle edge, we are removing
+# the representation of multiple marks as encoded
+# by the different MAGs this PAG represents:
 
 pag.remove_edge("S","I",pag.circle_edge_name)
 
