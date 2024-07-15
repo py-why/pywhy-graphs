@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.valid_pag
+=================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: valid_pag
+
+.. include:: pywhy_graphs.algorithms.valid_pag.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

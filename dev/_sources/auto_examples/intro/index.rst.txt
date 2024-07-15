@@ -11,6 +11,7 @@ Introduction to causal graphs
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -19,7 +20,7 @@ Introduction to causal graphs
 .. only:: html
 
   .. image:: /auto_examples/intro/images/thumb/sphx_glr_inducing_path_thumb.png
-    :alt: An introduction to Inducing Paths and how to find them
+    :alt:
 
   :ref:`sphx_glr_auto_examples_intro_inducing_path.py`
 
@@ -36,7 +37,7 @@ Introduction to causal graphs
 .. only:: html
 
   .. image:: /auto_examples/intro/images/thumb/sphx_glr_intro_causal_graphs_thumb.png
-    :alt: An introduction to causal graphs and how to use them
+    :alt:
 
   :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py`
 
@@ -48,6 +49,25 @@ Introduction to causal graphs
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A PAG or a Partial Ancestral Graph is a type of mixed edge graph that can represent, in a singl...">
+
+.. only:: html
+
+  .. image:: /auto_examples/intro/images/thumb/sphx_glr_checking_validity_of_a_pag_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_intro_checking_validity_of_a_pag.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">On PAGs and their validity</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
     </div>
 
 
@@ -56,4 +76,5 @@ Introduction to causal graphs
 
    /auto_examples/intro/inducing_path
    /auto_examples/intro/intro_causal_graphs
+   /auto_examples/intro/checking_validity_of_a_pag
 

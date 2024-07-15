@@ -1,0 +1,677 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>On PAGs and their validity &#8212; pywhy-graphs v0.2.0.dev0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/intro/checking_validity_of_a_pag';</script>
+    <link rel="icon" href="../../_static/favicon_url.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Visualization of causal graphs" href="../visualization/index.html" />
+    <link rel="prev" title="An introduction to causal graphs and how to use them" href="intro_causal_graphs.html" />
+    <link rel="canonical" href="https://py-why.github.io/pywhy-graphs/stable/index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/scrollfix.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pywhy-graphs v0.2.0.dev0</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    Reference API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../use.html">
+    Usage (Simple Examples)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../whats_new.html">
+    Release History
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/py-why/pywhy-graphs" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    Reference API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../use.html">
+    Usage (Simple Examples)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../whats_new.html">
+    Release History
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/py-why/pywhy-graphs" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mixededge/index.html">Networkx MixedEdgeGraph Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mixededge/plot_mixed_edge_graph.html">MixedEdgeGraph - Graph with different types of edges</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Introduction to causal graphs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inducing_path.html">An introduction to Inducing Paths and how to find them</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_causal_graphs.html">An introduction to causal graphs and how to use them</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">On PAGs and their validity</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../visualization/index.html">Visualization of causal graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../visualization/draw_and_compare_graphs_with_same_layout.html">Drawing graphs and setting their layout for visual comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../visualization/plot_timeseries_graphs.html">Drawing timeseries graphs and setting their layout</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../use.html" class="nav-link">How to use pywhy-graphs with examples and tutorials</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Introduction to causal graphs</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">On PAGs and...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-intro-checking-validity-of-a-pag-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="on-pags-and-their-validity">
+<span id="sphx-glr-auto-examples-intro-checking-validity-of-a-pag-py"></span><h1>On PAGs and their validity<a class="headerlink" href="#on-pags-and-their-validity" title="Link to this heading">#</a></h1>
+<p>A PAG or a Partial Ancestral Graph is a type of mixed edge
+graph that can represent, in a single graph, the causal relationship
+between several nodes as defined by an equivalence class of MAGs.</p>
+<p>PAGs account for possible unobserved confounding and selection bias
+in the underlying equivalence class of SCMs.</p>
+<p>Another way to understand this is that PAGs encode conditional independence
+constraints stemming from Causal Graphs. Since these constraints do not lead to a
+unique graph, a PAG, in essence, represents a class of graphs that encode
+the same conditional independence constraints.</p>
+<p>PAGs model this relationship by displaying all common edge marks (tail and arrowhead) shared
+by all members in the equivalence class and displaying circle endpoints for those marks
+that are not common. That is, a circular endpoint (<code class="docutils literal notranslate"><span class="pre">*-o</span></code>) can represent both a directed
+(<code class="docutils literal notranslate"><span class="pre">*-&gt;</span></code>) and tail (<code class="docutils literal notranslate"><span class="pre">*—</span></code>) endpoint in causal graphs within the equivalence class.</p>
+<p>More details on PAGs can be found at <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pywhy_graphs</span>
+<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a>
+<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">dodiscover</span> <span class="kn">import</span> <span class="n">FCI</span><span class="p">,</span> <span class="n">make_context</span>
+    <span class="kn">from</span> <span class="nn">dodiscover.ci</span> <span class="kn">import</span> <span class="n">Oracle</span>
+    <span class="kn">from</span> <span class="nn">dodiscover.constraint.utils</span> <span class="kn">import</span> <span class="n">dummy_sample</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;dodiscover&#39; package is required to convert a MAG to a PAG.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="pags-in-pywhy-graphs">
+<h2>PAGs in pywhy-graphs<a class="headerlink" href="#pags-in-pywhy-graphs" title="Link to this heading">#</a></h2>
+<p>Constructing a PAG in pywhy-graphs is an easy task since
+the library provides a separate class for this purpose.
+True to the definition of PAGs, the class can contain
+directed edges, bidirected edges, undirected edges and
+cicle edges. To illustrate this, we construct an example PAG
+as described in <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, figure 4:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a><span class="p">()</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">directed_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">directed_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">directed_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">directed_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;PSH&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.directed_edge_name" title="pywhy_graphs.ADMG.directed_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">directed_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;PSH&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.circle_edge_name" title="pywhy_graphs.PAG.circle_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">circle_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.circle_edge_name" title="pywhy_graphs.PAG.circle_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">circle_edge_name</span></a><span class="p">)</span>
+<a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge" title="pywhy_graphs.PAG.add_edge" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">add_edge</span></a><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.circle_edge_name" title="pywhy_graphs.PAG.circle_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">circle_edge_name</span></a><span class="p">)</span>
+
+
+<span class="c1"># Finally, the graph looks like this:</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph" title="graphviz.Digraph" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dot_graph</span></a> <span class="o">=</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a><span class="p">(</span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">)</span>
+<a href="https://graphviz.readthedocs.io/en/stable/api.html#graphviz.Digraph.render" title="graphviz.Digraph.render" class="sphx-glr-backref-module-graphviz sphx-glr-backref-type-py-method"><span class="n">dot_graph</span><span class="o">.</span><span class="n">render</span></a><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;valid_pag.png&quot;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_checking_validity_of_a_pag_001.png" srcset="../../_images/sphx_glr_checking_validity_of_a_pag_001.png" alt="checking validity of a pag" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;valid_pag.png&#39;
+</pre></div>
+</div>
+</section>
+<section id="validity-of-a-pag">
+<h2>Validity of a PAG<a class="headerlink" href="#validity-of-a-pag" title="Link to this heading">#</a></h2>
+<p>For a PAG to be valid, it must represent a valid
+equivalent class of MAGs. This can be verified by
+turning the PAG into an MAG and then checking the
+validity of the MAG.
+Theorem 2 in <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> provides a method for checking the validity of a PAG.
+To check if the constructed PAG is a valid one in pywhy-graphs, we can simply do:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># returns True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">valid_pag</span><span class="p">(</span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
+Context(observed_variables={&#39;PSH&#39;, &#39;L&#39;, &#39;G&#39;, &#39;S&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7f49717d9910&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7f49717d9ed0&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7f49717da4d0&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+True
+</pre></div>
+</div>
+<p>If we want to test whether this algorithm is working correctly or not, we can change
+a single mark in the graph such that the PAG. By removing a circle edge, we are removing
+the representation of multiple marks as encoded by the different MAGs this PAG represents.
+In this specific case, by removing the circle endpoint <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">*-o</span> <span class="pre">I</span></code>, we are saying that <code class="docutils literal notranslate"><span class="pre">S</span></code>
+directly causes <code class="docutils literal notranslate"><span class="pre">I</span></code>. However, there is no way of determining this using the FCI logical rules.
+One would not be able to determine that the adjacency is due to a direct
+causal relationship (directed edge), confounded relationship (bidirected edge), or an inducing path
+relationship. As such, the resulting graph is no longer a valid PAG.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.remove_edge" title="pywhy_graphs.networkx.MixedEdgeGraph.remove_edge" class="sphx-glr-backref-module-pywhy_graphs-networkx sphx-glr-backref-type-py-method"><span class="n">pag</span><span class="o">.</span><span class="n">remove_edge</span></a><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.circle_edge_name" title="pywhy_graphs.PAG.circle_edge_name" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-property"><span class="n">pag</span><span class="o">.</span><span class="n">circle_edge_name</span></a><span class="p">)</span>
+
+<span class="c1"># returns False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pywhy_graphs</span><span class="o">.</span><span class="n">valid_pag</span><span class="p">(</span><a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pag</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
+Context(observed_variables={&#39;PSH&#39;, &#39;L&#39;, &#39;G&#39;, &#39;S&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7f4971873d90&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7f49717f38d0&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7f49717f3d50&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+False
+</pre></div>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id4">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footcite-zhang2008" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>)</span>
+<p>Jiji Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and selection bias. <em>Artificial Intelligence</em>, 172(16):1873–1896, 2008. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0004370208001008">https://www.sciencedirect.com/science/article/pii/S0004370208001008</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1016/j.artint.2008.08.001">doi:https://doi.org/10.1016/j.artint.2008.08.001</a>.</p>
+</aside>
+</aside>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.954 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  11 MB</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-checking-validity-of-a-pag-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5f927be0252fc0d8c3167ec4c832cbc7/checking_validity_of_a_pag.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">checking_validity_of_a_pag.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/22545605dd386d4d2a0e5ed54bf44895/checking_validity_of_a_pag.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">checking_validity_of_a_pag.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro_causal_graphs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">An introduction to causal graphs and how to use them</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../visualization/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Visualization of causal graphs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pags-in-pywhy-graphs">PAGs in pywhy-graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validity-of-a-pag">Validity of a PAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/auto_examples/intro/checking_validity_of_a_pag.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Adam Li.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

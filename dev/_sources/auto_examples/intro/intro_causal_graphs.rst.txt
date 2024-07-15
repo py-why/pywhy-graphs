@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_intro_intro_causal_graphs.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_intro_intro_causal_graphs.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -30,7 +30,7 @@ in causal inference, and their differences from traditional graphs.
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-24
 
-.. code-block:: default
+.. code-block:: Python
 
     import networkx as nx
     import numpy as np
@@ -79,7 +79,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
 
 .. GENERATED FROM PYTHON SOURCE LINES 48-122
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # set a random seed to make example reproducible
@@ -168,15 +168,13 @@ Here, we will simulate some data to understand causal graphs in the context of S
 
  .. code-block:: none
 
-    Fitting causal models:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node x:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node y:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node z:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node w:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy: 100%|##########| 5/5 [00:00<00:00, 900.53it/s]
-       z  ...  y
-    0  1  ...  1
-    1  1  ...  3
-    2  1  ...  2
-    3  1  ...  1
-    4  1  ...  1
-
-    [5 rows x 5 columns]
+    Fitting causal models:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node x:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node y:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node z:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node w:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy:   0%|          | 0/5 [00:00<?, ?it/s]    Fitting causal mechanism of node xy: 100%|██████████| 5/5 [00:00<00:00, 941.52it/s]
+       z  xy  w  x  y
+    0  1   1  1  1  1
+    1  1   1  2  2  3
+    2  1   1  2  1  2
+    3  1   0  2  0  1
+    4  1   0  2  0  1
     z           [1, 0]
     xy          [1, 0]
     w        [1, 2, 0]
@@ -184,7 +182,7 @@ Here, we will simulate some data to understand causal graphs in the context of S
     y     [1, 3, 2, 0]
     dtype: object
 
-    <graphviz.graphs.Digraph object at 0x7f374763e9e0>
+    <graphviz.graphs.Digraph object at 0x7f49718491d0>
 
 
 
@@ -198,7 +196,7 @@ assumption, where there are no unobserved confounders in the graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 128-144
 
-.. code-block:: default
+.. code-block:: Python
 
     print(G)
 
@@ -227,7 +225,11 @@ assumption, where there are no unobserved confounders in the graph.
     DiGraph with 5 nodes and 5 edges
     ['x', 'z', 'xy']
     ['x', 'y']
+    /home/circleci/project/examples/intro/intro_causal_graphs.py:139: DeprecationWarning: d_separated is deprecated and will be removed in NetworkX v3.5.Please use `is_d_separator(G, x, y, z)`.
+      print(f"'z' is d-separated from 'x': {nx.d_separated(G, {'z'}, {'x'}, set())}")
     'z' is d-separated from 'x': True
+    /home/circleci/project/examples/intro/intro_causal_graphs.py:142: DeprecationWarning: d_separated is deprecated and will be removed in NetworkX v3.5.Please use `is_d_separator(G, x, y, z)`.
+      print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, {'y'})}")
     'z' is d-separated from 'x' given 'y': False
 
 
@@ -243,7 +245,7 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
 
 .. GENERATED FROM PYTHON SOURCE LINES 150-196
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # We can construct an ADMG from the DAG by just setting 'xy' as a latent confounder
@@ -304,8 +306,8 @@ in the graph. These unobserved confounders are graphically depicted with a bidir
 
  .. code-block:: none
 
-    ['z', 'x']
-    The ADMG has confounded-components: [{'y', 'x'}, {'z'}, {'w'}]
+    ['x', 'z']
+    The ADMG has confounded-components: [{'x', 'y'}, {'z'}, {'w'}]
     'z' is d-separated from 'x': True
     'z' is d-separated from 'x' given 'y': False
     'z' is d-separated from 'x' after adding a bidirected edge z<->x: False
@@ -327,7 +329,7 @@ Typically, CPDAGs are learnt using some variant of the PC algorithm :footcite:`S
 
 .. GENERATED FROM PYTHON SOURCE LINES 206-220
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cpdag = CPDAG()
@@ -380,7 +382,7 @@ Typically, PAGs are learnt using some variant of the FCI algorithm :footcite:`Sp
 
 .. GENERATED FROM PYTHON SOURCE LINES 235-250
 
-.. code-block:: default
+.. code-block:: Python
 
     pag = PAG()
 
@@ -424,9 +426,9 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.384 seconds)
+   **Total running time of the script:** (0 minutes 2.054 seconds)
 
-**Estimated memory usage:**  33 MB
+**Estimated memory usage:**  94 MB
 
 
 .. _sphx_glr_download_auto_examples_intro_intro_causal_graphs.py:
@@ -435,14 +437,13 @@ References
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: intro_causal_graphs.ipynb <intro_causal_graphs.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: intro_causal_graphs.py <intro_causal_graphs.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: intro_causal_graphs.ipynb <intro_causal_graphs.ipynb>`
 
 
 .. only:: html

@@ -1,52 +1,56 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-content_root="./" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. Glossary of Common Terms and API Elements &#8212; pywhy-graphs v0.2.0.dev0</title>
-<script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
-</script>
-
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
-
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="shortcut icon" href="_static/favicon_url.ico"/>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'glossary';</script>
+    <link rel="icon" href="_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Release History" href="whats_new.html" />
@@ -55,26 +59,74 @@
     <script type="text/javascript" src="_static/copybutton.js"></script>
     <script type="text/javascript" src="_static/scrollfix.js"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
 
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
-    <div class="bd-header-announcement container-fluid" id="banner">
-      
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    </div>
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
-    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+      <div class="navbar-item">
 
-  <div id="navbar-start">
-    
+  
     
   
-
 
 <a class="navbar-brand logo" href="index.html">
   
@@ -82,62 +134,79 @@
   
   
   
+  
     <p class="title logo__title">pywhy-graphs v0.2.0.dev0</p>
   
-</a>
+</a></div>
     
   </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="fas fa-bars"></span>
-  </button>
-
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="installation.html">
-  Installation
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  Reference API
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="use.html">
-  Usage (Simple Examples)
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="user_guide.html">
-  User Guide
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="whats_new.html">
-  Release History
- </a>
-</li>
-
+  <div class="col-lg-9 navbar-header-items">
     
-</ul>
-      </div>
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    Reference API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="use.html">
+    Usage (Simple Examples)
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="user_guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="whats_new.html">
+    Release History
+  </a>
+</li>
+
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-      <div class="navbar-end-item">
-        <div class="dropdown">
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
     <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
         v
         <span class="caret"></span>
@@ -145,299 +214,262 @@
     <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
         <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
     </div>
-</div>
-      </div>
+</div></div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/py-why/pywhy-graphs" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/py-why/pywhy-graphs" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
-      </ul>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    Reference API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="use.html">
+    Usage (Simple Examples)
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="user_guide.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="whats_new.html">
+    Release History
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="dLabelMore" data-toggle="dropdown">
+        v
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu list-group-flush py-0" aria-labelledby="dLabelMore">
+        <a class="list-group-item list-group-item-action py-1" href="https://py-why.github.io/pywhy-graphs/dev/index.html">v0.1 (devel)</a>
+    </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/py-why/pywhy-graphs" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reference/classes/index.html">1. Causal Graphs in PyWhy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/functional/index.html">2. Functional Causal Graphical Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html">2.2.1.1. pywhy_graphs.functional.discrete.make_random_discrete_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.functional.discrete.add_cpd_for_node.html">2.2.1.2. pywhy_graphs.functional.discrete.add_cpd_for_node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.functional.make_graph_linear_gaussian.html">2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.functional.apply_linear_soft_intervention.html">2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.functional.make_graph_multidomain.html">2.7.1. pywhy_graphs.functional.make_graph_multidomain</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/algorithms/index.html">3. Causal Graph Algorithms in PyWhy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_valid_mec_graph.html">3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_ancestors.html">3.1.2. pywhy_graphs.algorithms.possible_ancestors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_descendants.html">3.1.3. pywhy_graphs.algorithms.possible_descendants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.discriminating_path.html">3.1.4. pywhy_graphs.algorithms.discriminating_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html">3.1.5. pywhy_graphs.algorithms.is_definite_noncollider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.valid_pag.html">3.1.6. pywhy_graphs.algorithms.valid_pag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.mag_to_pag.html">3.1.7. pywhy_graphs.algorithms.mag_to_pag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.pag_to_mag.html">3.1.8. pywhy_graphs.algorithms.pag_to_mag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.check_pag_definition.html">3.1.9. pywhy_graphs.algorithms.check_pag_definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">3.1.10. pywhy_graphs.networkx.bidirected_to_unobserved_confounder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.networkx.m_separated.html">3.1.11. pywhy_graphs.networkx.m_separated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.networkx.is_minimal_m_separator.html">3.1.12. pywhy_graphs.networkx.is_minimal_m_separator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.networkx.minimal_m_separator.html">3.1.13. pywhy_graphs.networkx.minimal_m_separator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds.html">3.2.1. pywhy_graphs.algorithms.pds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_path.html">3.2.2. pywhy_graphs.algorithms.pds_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html">3.2.3. pywhy_graphs.algorithms.uncovered_pd_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html">3.3.1. pywhy_graphs.algorithms.pds_t</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html">3.3.2. pywhy_graphs.algorithms.pds_t_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html">3.4.1. pywhy_graphs.algorithms.acyclification</a></li>
+</ul>
+</details></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/simulation/index.html">5. Simulation module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_linear_var_process.html">5.1.1. pywhy_graphs.simulate.simulate_linear_var_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_data_from_var.html">5.1.2. pywhy_graphs.simulate.simulate_data_from_var</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">5.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/export/index.html">6. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html">6.1.1. pywhy_graphs.export.graph_to_clearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.clearn_to_graph.html">6.1.2. pywhy_graphs.export.clearn_to_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_numpy.html">6.2.1. pywhy_graphs.export.graph_to_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.numpy_to_graph.html">6.2.2. pywhy_graphs.export.numpy_to_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_pcalg.html">6.3.1. pywhy_graphs.export.graph_to_pcalg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.pcalg_to_graph.html">6.3.2. pywhy_graphs.export.pcalg_to_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.graph_to_tetrad.html">6.4.1. pywhy_graphs.export.graph_to_tetrad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pywhy_graphs.export.tetrad_to_graph.html">6.4.2. pywhy_graphs.export.tetrad_to_graph</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Glossary of Common Terms and API Elements</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
       </div>
       
-    </div>
-  </div>
-</div>
-    </nav>
-    
-
-    <div class="bd-container container-xl">
-      <div class="bd-container__inner row">
-          
-
-<!-- Only show if we have sidebars configured, else just a small margin  -->
-<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
-  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="reference/classes/index.html">
-   1. Causal Graphs in PyWhy
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="reference/functional/index.html">
-   2. Functional Causal Graphical Models
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.functional.discrete.make_random_discrete_graph.html">
-     2.2.1.1. pywhy_graphs.functional.discrete.make_random_discrete_graph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.functional.discrete.add_cpd_for_node.html">
-     2.2.1.2. pywhy_graphs.functional.discrete.add_cpd_for_node
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.functional.make_graph_linear_gaussian.html">
-     2.5.1. pywhy_graphs.functional.make_graph_linear_gaussian
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.functional.apply_linear_soft_intervention.html">
-     2.5.2. pywhy_graphs.functional.apply_linear_soft_intervention
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.functional.make_graph_multidomain.html">
-     2.7.1. pywhy_graphs.functional.make_graph_multidomain
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="reference/algorithms/index.html">
-   3. Causal Graph Algorithms in PyWhy
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.is_valid_mec_graph.html">
-     3.1.1. pywhy_graphs.algorithms.is_valid_mec_graph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_ancestors.html">
-     3.1.2. pywhy_graphs.algorithms.possible_ancestors
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.possible_descendants.html">
-     3.1.3. pywhy_graphs.algorithms.possible_descendants
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.discriminating_path.html">
-     3.1.4. pywhy_graphs.algorithms.discriminating_path
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.is_definite_noncollider.html">
-     3.1.5. pywhy_graphs.algorithms.is_definite_noncollider
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html">
-     3.1.6. pywhy_graphs.networkx.bidirected_to_unobserved_confounder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.networkx.m_separated.html">
-     3.1.7. pywhy_graphs.networkx.m_separated
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.networkx.is_minimal_m_separator.html">
-     3.1.8. pywhy_graphs.networkx.is_minimal_m_separator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.networkx.minimal_m_separator.html">
-     3.1.9. pywhy_graphs.networkx.minimal_m_separator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds.html">
-     3.2.1. pywhy_graphs.algorithms.pds
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_path.html">
-     3.2.2. pywhy_graphs.algorithms.pds_path
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.uncovered_pd_path.html">
-     3.2.3. pywhy_graphs.algorithms.uncovered_pd_path
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t.html">
-     3.3.1. pywhy_graphs.algorithms.pds_t
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.pds_t_path.html">
-     3.3.2. pywhy_graphs.algorithms.pds_t_path
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.algorithms.acyclification.html">
-     3.4.1. pywhy_graphs.algorithms.acyclification
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="reference/simulation/index.html">
-   5. Simulation module
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_linear_var_process.html">
-     5.1.1. pywhy_graphs.simulate.simulate_linear_var_process
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_data_from_var.html">
-     5.1.2. pywhy_graphs.simulate.simulate_data_from_var
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html">
-     5.1.3. pywhy_graphs.simulate.simulate_var_process_from_summary_graph
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="reference/export/index.html">
-   6. Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_clearn.html">
-     6.1.1. pywhy_graphs.export.graph_to_clearn
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.clearn_to_graph.html">
-     6.1.2. pywhy_graphs.export.clearn_to_graph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_numpy.html">
-     6.2.1. pywhy_graphs.export.graph_to_numpy
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.numpy_to_graph.html">
-     6.2.2. pywhy_graphs.export.numpy_to_graph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_pcalg.html">
-     6.3.1. pywhy_graphs.export.graph_to_pcalg
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.pcalg_to_graph.html">
-     6.3.2. pywhy_graphs.export.pcalg_to_graph
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.graph_to_tetrad.html">
-     6.4.1. pywhy_graphs.export.graph_to_tetrad
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/pywhy_graphs.export.tetrad_to_graph.html">
-     6.4.2. pywhy_graphs.export.tetrad_to_graph
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   7. Glossary of Common Terms and API Elements
-  </a>
- </li>
-</ul>
-
-  </div>
-</nav>
-  </div>
-  <div class="sidebar-end-items">
-  </div>
-</div>
-
-
-          
-
-
-<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
-  
-    
-    <div class="toc-item">
-      
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#general-concepts">
-   7.1. General Concepts
-  </a>
- </li>
-</ul>
-
-</nav>
-    </div>
-    
-    <div class="toc-item">
-      
-    </div>
-    
-  
-</div>
-
-
-          
-          
-          <div class="bd-content col-12 col-md-9 col-xl-7">
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
               
-              <article class="bd-article" role="main">
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="user_guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
                 
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="glossary-of-common-terms-and-api-elements">
-<span id="glossary"></span><h1><span class="section-number">7. </span>Glossary of Common Terms and API Elements<a class="headerlink" href="#glossary-of-common-terms-and-api-elements" title="Permalink to this heading">#</a></h1>
+<span id="glossary"></span><h1><span class="section-number">7. </span>Glossary of Common Terms and API Elements<a class="headerlink" href="#glossary-of-common-terms-and-api-elements" title="Link to this heading">#</a></h1>
 <p>This glossary hopes to definitively represent the tacit and explicit
 conventions applied in Pywhy-Graphs and its API, while providing a reference
 for users and contributors. It aims to describe the concepts and either detail
@@ -446,17 +478,17 @@ which do so. By linking to glossary entries from the API Reference and User
 Guide, we may minimize redundancy and inconsistency.</p>
 <p>We begin by listing general concepts (and any that didn’t fit elsewhere), but
 more specific sets of related terms are listed below:
-<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#glossary-attributes" title="(in scikit-learn v1.3)"><span>Attributes</span></a>.</p>
+<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#glossary-attributes" title="(in scikit-learn v1.5)"><span>Attributes</span></a>.</p>
 <section id="general-concepts">
-<h2><span class="section-number">7.1. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Link to this heading">#</a></h2>
 <dl class="glossary">
-<dt id="term-1d">1d<a class="headerlink" href="#term-1d" title="Permalink to this term">#</a></dt><dt id="term-1d-array">1d array<a class="headerlink" href="#term-1d-array" title="Permalink to this term">#</a></dt><dd><p>One-dimensional array. A NumPy array whose <code class="docutils literal notranslate"><span class="pre">.shape</span></code> has length 1.
+<dt id="term-1d">1d<a class="headerlink" href="#term-1d" title="Link to this term">#</a></dt><dt id="term-1d-array">1d array<a class="headerlink" href="#term-1d-array" title="Link to this term">#</a></dt><dd><p>One-dimensional array. A NumPy array whose <code class="docutils literal notranslate"><span class="pre">.shape</span></code> has length 1.
 A vector.</p>
 </dd>
-<dt id="term-2d">2d<a class="headerlink" href="#term-2d" title="Permalink to this term">#</a></dt><dt id="term-2d-array">2d array<a class="headerlink" href="#term-2d-array" title="Permalink to this term">#</a></dt><dd><p>Two-dimensional array. A NumPy array whose <code class="docutils literal notranslate"><span class="pre">.shape</span></code> has length 2.
+<dt id="term-2d">2d<a class="headerlink" href="#term-2d" title="Link to this term">#</a></dt><dt id="term-2d-array">2d array<a class="headerlink" href="#term-2d-array" title="Link to this term">#</a></dt><dd><p>Two-dimensional array. A NumPy array whose <code class="docutils literal notranslate"><span class="pre">.shape</span></code> has length 2.
 Often represents a matrix.</p>
 </dd>
-<dt id="term-API">API<a class="headerlink" href="#term-API" title="Permalink to this term">#</a></dt><dd><p>Refers to both the <em>specific</em> interfaces for graphs implemented in
+<dt id="term-API">API<a class="headerlink" href="#term-API" title="Link to this term">#</a></dt><dd><p>Refers to both the <em>specific</em> interfaces for graphs implemented in
 pywhy-graphs and the <em>generalized</em> conventions across types of
 graphs as described in this glossary.</p>
 <p>The specific interfaces that constitute pywhy-graphs’s public API are
@@ -467,19 +499,19 @@ compatibility for all objects in the public API.</p>
 <p>Private API, including functions, modules and methods beginning <code class="docutils literal notranslate"><span class="pre">_</span></code>
 are not assured to be stable.</p>
 </dd>
-<dt id="term-callable">callable<a class="headerlink" href="#term-callable" title="Permalink to this term">#</a></dt><dd><p>A function, class or an object which implements the <code class="docutils literal notranslate"><span class="pre">__call__</span></code>
+<dt id="term-callable">callable<a class="headerlink" href="#term-callable" title="Link to this term">#</a></dt><dd><p>A function, class or an object which implements the <code class="docutils literal notranslate"><span class="pre">__call__</span></code>
 method; anything that returns True when the argument of <a class="reference external" href="https://docs.python.org/3/library/functions.html#callable">callable()</a>.</p>
 </dd>
-<dt id="term-c-components">c-components<a class="headerlink" href="#term-c-components" title="Permalink to this term">#</a></dt><dt id="term-c_components">c_components<a class="headerlink" href="#term-c_components" title="Permalink to this term">#</a></dt><dt id="term-0">c components<a class="headerlink" href="#term-0" title="Permalink to this term">#</a></dt><dd><p>A set of nodes in a graph that contain a bidirected edge path between all
+<dt id="term-c-components">c-components<a class="headerlink" href="#term-c-components" title="Link to this term">#</a></dt><dt id="term-c_components">c_components<a class="headerlink" href="#term-c_components" title="Link to this term">#</a></dt><dt id="term-0">c components<a class="headerlink" href="#term-0" title="Link to this term">#</a></dt><dd><p>A set of nodes in a graph that contain a bidirected edge path between all
 nodes. Stands for “confounded components”.</p>
 </dd>
-<dt id="term-docstring">docstring<a class="headerlink" href="#term-docstring" title="Permalink to this term">#</a></dt><dd><p>The embedded documentation for a module, class, function, etc., usually
+<dt id="term-docstring">docstring<a class="headerlink" href="#term-docstring" title="Link to this term">#</a></dt><dd><p>The embedded documentation for a module, class, function, etc., usually
 in code as a string at the beginning of the object’s definition, and
 accessible as the object’s <code class="docutils literal notranslate"><span class="pre">__doc__</span></code> attribute.</p>
 <p>We try to adhere to <a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">PEP257</a>, and follow <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">NumpyDoc
 conventions</a>.</p>
 </dd>
-<dt id="term-examples">examples<a class="headerlink" href="#term-examples" title="Permalink to this term">#</a></dt><dd><p>We try to give examples of basic usage for most functions and
+<dt id="term-examples">examples<a class="headerlink" href="#term-examples" title="Link to this term">#</a></dt><dd><p>We try to give examples of basic usage for most functions and
 classes in the API:</p>
 <ul class="simple">
 <li><p>as doctests in their docstrings (i.e. within the <code class="docutils literal notranslate"><span class="pre">pywhy_graphs/</span></code> library
@@ -493,65 +525,65 @@ User Guide.</p></li>
 alongside a technical description of the estimator.</p></li>
 </ul>
 </dd>
-<dt id="term-experimental">experimental<a class="headerlink" href="#term-experimental" title="Permalink to this term">#</a></dt><dd><p>An experimental tool is already usable but its public API, such as
+<dt id="term-experimental">experimental<a class="headerlink" href="#term-experimental" title="Link to this term">#</a></dt><dd><p>An experimental tool is already usable but its public API, such as
 default parameter values or fitted attributes, is still subject to
 change in future versions without the usual deprecation
 warning policy.</p>
 </dd>
-<dt id="term-F-node">F-node<a class="headerlink" href="#term-F-node" title="Permalink to this term">#</a></dt><dd><p>A special node that is used in graphs that represents intervention
+<dt id="term-F-node">F-node<a class="headerlink" href="#term-F-node" title="Link to this term">#</a></dt><dd><p>A special node that is used in graphs that represents intervention
 targets. It is represented in pywhy-graphs as a pair of nodes where
 the first element is always the letter <code class="docutils literal notranslate"><span class="pre">'F'</span></code> and the second is
 an integer. For example, <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> is an F-node.</p>
 </dd>
-<dt id="term-gallery">gallery<a class="headerlink" href="#term-gallery" title="Permalink to this term">#</a></dt><dd><p>See <a class="reference internal" href="#term-examples"><span class="xref std std-term">examples</span></a>.</p>
+<dt id="term-gallery">gallery<a class="headerlink" href="#term-gallery" title="Link to this term">#</a></dt><dd><p>See <a class="reference internal" href="#term-examples"><span class="xref std std-term">examples</span></a>.</p>
 </dd>
-<dt id="term-joblib">joblib<a class="headerlink" href="#term-joblib" title="Permalink to this term">#</a></dt><dd><p>A Python library (<a class="reference external" href="https://joblib.readthedocs.io">https://joblib.readthedocs.io</a>) used in pywhy-graphs to
+<dt id="term-joblib">joblib<a class="headerlink" href="#term-joblib" title="Link to this term">#</a></dt><dd><p>A Python library (<a class="reference external" href="https://joblib.readthedocs.io">https://joblib.readthedocs.io</a>) used in pywhy-graphs to
 facilite simple parallelism and caching.  Joblib is oriented towards
 efficiently working with numpy arrays, such as through use of
-<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-memory-mapping" title="(in scikit-learn v1.3)"><span class="xref std std-term">memory mapping</span></a>. See <a class="reference external" href="https://scikit-learn.org/stable/computing/parallelism.html#parallelism" title="(in scikit-learn v1.3)"><span>Parallelism</span></a> for more
+<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-memory-mapping" title="(in scikit-learn v1.5)"><span class="xref std std-term">memory mapping</span></a>. See <a class="reference external" href="https://scikit-learn.org/stable/computing/parallelism.html#parallelism" title="(in scikit-learn v1.5)"><span>Parallelism</span></a> for more
 information.</p>
 </dd>
-<dt id="term-lag">lag<a class="headerlink" href="#term-lag" title="Permalink to this term">#</a></dt><dd><p>The time-delay of a specific time-series graph node.</p>
+<dt id="term-lag">lag<a class="headerlink" href="#term-lag" title="Link to this term">#</a></dt><dd><p>The time-delay of a specific time-series graph node.</p>
 </dd>
-<dt id="term-Markov-equivalence-class">Markov equivalence class<a class="headerlink" href="#term-Markov-equivalence-class" title="Permalink to this term">#</a></dt><dt id="term-equivalence-class">equivalence class<a class="headerlink" href="#term-equivalence-class" title="Permalink to this term">#</a></dt><dd><p>A graph that represents a set of graphs that preserve the same conditional
+<dt id="term-Markov-equivalence-class">Markov equivalence class<a class="headerlink" href="#term-Markov-equivalence-class" title="Link to this term">#</a></dt><dt id="term-equivalence-class">equivalence class<a class="headerlink" href="#term-equivalence-class" title="Link to this term">#</a></dt><dd><p>A graph that represents a set of graphs that preserve the same conditional
 independences.</p>
 </dd>
-<dt id="term-n_features"><code class="docutils literal notranslate"><span class="pre">n_features</span></code><a class="headerlink" href="#term-n_features" title="Permalink to this term">#</a></dt><dd><p>The number of <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-features" title="(in scikit-learn v1.3)"><span class="xref std std-term">features</span></a>.</p>
+<dt id="term-n_features"><code class="docutils literal notranslate"><span class="pre">n_features</span></code><a class="headerlink" href="#term-n_features" title="Link to this term">#</a></dt><dd><p>The number of <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-features" title="(in scikit-learn v1.5)"><span class="xref std std-term">features</span></a>.</p>
 </dd>
-<dt id="term-n_samples"><code class="docutils literal notranslate"><span class="pre">n_samples</span></code><a class="headerlink" href="#term-n_samples" title="Permalink to this term">#</a></dt><dd><p>The number of <a class="reference internal" href="#term-samples"><span class="xref std std-term">samples</span></a>.</p>
+<dt id="term-n_samples"><code class="docutils literal notranslate"><span class="pre">n_samples</span></code><a class="headerlink" href="#term-n_samples" title="Link to this term">#</a></dt><dd><p>The number of <a class="reference internal" href="#term-samples"><span class="xref std std-term">samples</span></a>.</p>
 </dd>
-<dt id="term-np">np<a class="headerlink" href="#term-np" title="Permalink to this term">#</a></dt><dd><p>A shorthand for Numpy due to the conventional import statement:</p>
+<dt id="term-np">np<a class="headerlink" href="#term-np" title="Link to this term">#</a></dt><dd><p>A shorthand for Numpy due to the conventional import statement:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </dd>
-<dt id="term-nx">nx<a class="headerlink" href="#term-nx" title="Permalink to this term">#</a></dt><dd><p>A shorthand for Networkx due to conventional import statement:</p>
+<dt id="term-nx">nx<a class="headerlink" href="#term-nx" title="Link to this term">#</a></dt><dd><p>A shorthand for Networkx due to conventional import statement:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 </pre></div>
 </div>
 </dd>
-<dt id="term-node">node<a class="headerlink" href="#term-node" title="Permalink to this term">#</a></dt><dd><p>An element in a graph, similar to how Networkx defines them. Note
+<dt id="term-node">node<a class="headerlink" href="#term-node" title="Link to this term">#</a></dt><dd><p>An element in a graph, similar to how Networkx defines them. Note
 this is distinctly different from a “variable” in time-series graphs.</p>
 </dd>
-<dt id="term-tsnode">tsnode<a class="headerlink" href="#term-tsnode" title="Permalink to this term">#</a></dt><dd><p>A shorthand for nodes in a time-series graph. A tsnode is defined in
+<dt id="term-tsnode">tsnode<a class="headerlink" href="#term-tsnode" title="Link to this term">#</a></dt><dd><p>A shorthand for nodes in a time-series graph. A tsnode is defined in
 pywhy-graphs by a tuple, where the first element is the variable name
 and the second is the corresponding time-lag. For example <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">0)</span></code>
 and <code class="docutils literal notranslate"><span class="pre">('x',</span> <span class="pre">-1)</span></code> are tsnodes for variable <code class="docutils literal notranslate"><span class="pre">'x'</span></code> and time-lags 0 and -1.</p>
 </dd>
-<dt id="term-pair">pair<a class="headerlink" href="#term-pair" title="Permalink to this term">#</a></dt><dd><p>A tuple of length two.</p>
+<dt id="term-pair">pair<a class="headerlink" href="#term-pair" title="Link to this term">#</a></dt><dd><p>A tuple of length two.</p>
 </dd>
-<dt id="term-pd">pd<a class="headerlink" href="#term-pd" title="Permalink to this term">#</a></dt><dd><p>A shorthand for <a class="reference external" href="https://pandas.pydata.org">Pandas</a> due to the
+<dt id="term-pd">pd<a class="headerlink" href="#term-pd" title="Link to this term">#</a></dt><dd><p>A shorthand for <a class="reference external" href="https://pandas.pydata.org">Pandas</a> due to the
 conventional import statement:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </dd>
-<dt id="term-sample">sample<a class="headerlink" href="#term-sample" title="Permalink to this term">#</a></dt><dt id="term-samples">samples<a class="headerlink" href="#term-samples" title="Permalink to this term">#</a></dt><dd><p>We usually use this term as a noun to indicate a single feature vector.
+<dt id="term-sample">sample<a class="headerlink" href="#term-sample" title="Link to this term">#</a></dt><dt id="term-samples">samples<a class="headerlink" href="#term-samples" title="Link to this term">#</a></dt><dd><p>We usually use this term as a noun to indicate a single feature vector.
 Elsewhere a sample is called an instance, data point, or observation.
 <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> indicates the number of samples in a dataset, being the
-number of rows in a data array <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.3)"><span class="xref std std-term">X</span></a>.</p>
+number of rows in a data array <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.5)"><span class="xref std std-term">X</span></a>.</p>
 </dd>
-<dt id="term-SCM">SCM<a class="headerlink" href="#term-SCM" title="Permalink to this term">#</a></dt><dt id="term-Structural-Causal-Model">Structural Causal Model<a class="headerlink" href="#term-Structural-Causal-Model" title="Permalink to this term">#</a></dt><dd><p>A model that comprises of a 4-tuple <span class="math notranslate nohighlight">\(\langle V, U, P(U), F \rangle\)</span>, where
+<dt id="term-SCM">SCM<a class="headerlink" href="#term-SCM" title="Link to this term">#</a></dt><dt id="term-Structural-Causal-Model">Structural Causal Model<a class="headerlink" href="#term-Structural-Causal-Model" title="Link to this term">#</a></dt><dd><p>A model that comprises of a 4-tuple <span class="math notranslate nohighlight">\(\langle V, U, P(U), F \rangle\)</span>, where
 V is the set of endogenous (observed) variables, U is the set of exogenous (latent)
 variables, P(U) is the probability distributions associated for U and F is
 the set of functions that defines each <span class="math notranslate nohighlight">\(v \in V\)</span>. A SCM induces a causal
@@ -559,14 +591,14 @@ graphical model by simply reading off the parent/children relationships in F and
 then allowing for latent confounders if any <span class="math notranslate nohighlight">\(u \in U`\)</span> is shared among the
 same endogenous variables.</p>
 </dd>
-<dt id="term-sigma_map">sigma_map<a class="headerlink" href="#term-sigma_map" title="Permalink to this term">#</a></dt><dd><p>Only used for intervention graphs. Maps F-nodes to their distributions.</p>
+<dt id="term-sigma_map">sigma_map<a class="headerlink" href="#term-sigma_map" title="Link to this term">#</a></dt><dd><p>Only used for intervention graphs. Maps F-nodes to their distributions.</p>
 </dd>
-<dt id="term-symmetric_difference_map">symmetric_difference_map<a class="headerlink" href="#term-symmetric_difference_map" title="Permalink to this term">#</a></dt><dd><p>Only used for intervention graphs. Maps F-nodes to the symmetric difference
+<dt id="term-symmetric_difference_map">symmetric_difference_map<a class="headerlink" href="#term-symmetric_difference_map" title="Link to this term">#</a></dt><dd><p>Only used for intervention graphs. Maps F-nodes to the symmetric difference
 of a pair of intervention targets. For example, if <code class="docutils literal notranslate"><span class="pre">{'x',</span> <span class="pre">'y'}</span></code> and <code class="docutils literal notranslate"><span class="pre">{'x'}</span></code>
 are the pair of intervention targets associated with a F-node <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code>,
 then the symmetric difference map will map <code class="docutils literal notranslate"><span class="pre">('F',</span> <span class="pre">0)</span></code> to <code class="docutils literal notranslate"><span class="pre">{'y'}</span></code>.</p>
 </dd>
-<dt id="term-variable">variable<a class="headerlink" href="#term-variable" title="Permalink to this term">#</a></dt><dd><p>A set of nodes in a time-series graph corresponding to the same time-series
+<dt id="term-variable">variable<a class="headerlink" href="#term-variable" title="Link to this term">#</a></dt><dd><p>A set of nodes in a time-series graph corresponding to the same time-series
 component. For example <code class="docutils literal notranslate"><span class="pre">[('x',</span> <span class="pre">0),</span> <span class="pre">('x',</span> <span class="pre">-1),</span> <span class="pre">('x',</span> <span class="pre">-2)]</span></code> represent
 nodes in a time-series graph that are all part of the same variable <code class="docutils literal notranslate"><span class="pre">'x'</span></code>.</p>
 </dd>
@@ -575,55 +607,118 @@ nodes in a time-series graph that are all part of the same variable <code class=
 </section>
 
 
-              </article>
+                </article>
               
-
               
-              <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="reference/export/index.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="reference/export/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">6. </span>Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Importing causal graphs to PyWhy-Graphs, or exporting PyWhy-Graphs to another package</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="whats_new.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Release History</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="whats_new.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Release History</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
-              </footer>
+                </footer>
               
-          </div>
-          
-      </div>
-    </div>
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-  
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-concepts">7.1. General Concepts</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/glossary.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-<footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
-    <p class="copyright">
-    &copy; Copyright 2023, Adam Li.<br>
-</p>
-  </div>
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Adam Li.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
   
-  <div class="footer-item">
-    <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
-  </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
   
 </div>
-</footer>
+
+  </footer>
   </body>
 </html>

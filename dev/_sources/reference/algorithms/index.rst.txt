@@ -25,6 +25,10 @@ Core Algorithms
    possible_descendants
    discriminating_path
    is_definite_noncollider
+   valid_pag
+   mag_to_pag
+   pag_to_mag
+   check_pag_definition
 
 .. currentmodule:: pywhy_graphs.networkx
 

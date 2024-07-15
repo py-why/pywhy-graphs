@@ -1,0 +1,12 @@
+﻿pywhy_graphs.algorithms.pag_to_mag
+==================================
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autofunction:: pag_to_mag
+
+.. include:: pywhy_graphs.algorithms.pag_to_mag.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

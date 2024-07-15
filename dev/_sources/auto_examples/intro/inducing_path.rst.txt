@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_intro_inducing_path.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_intro_inducing_path.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -36,7 +36,7 @@ More details on inducing paths can be found at :footcite:`Zhang2008`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 19-24
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import pywhy_graphs
@@ -59,7 +59,7 @@ construct the causal graph from figure 2 of :footcite:`Colombo2012`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-51
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -110,7 +110,7 @@ that path only consists of one edge, which is the edge between those two nodes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 56-64
 
-.. code-block:: default
+.. code-block:: Python
 
 
     L = {}
@@ -151,7 +151,7 @@ there is no primitive inducing path between them.
 
 .. GENERATED FROM PYTHON SOURCE LINES 77-97
 
-.. code-block:: default
+.. code-block:: Python
 
 
     L = {"L1", "L2"}
@@ -198,7 +198,7 @@ path ``(X1, X2, X3)`` a valid inducing path, since 'X2' is an ancestor of 'X6'.
 
 .. GENERATED FROM PYTHON SOURCE LINES 104-122
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Some node pairs still do not have a valid inducing path between them.
@@ -241,9 +241,9 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.276 seconds)
+   **Total running time of the script:** (0 minutes 0.951 seconds)
 
-**Estimated memory usage:**  9 MB
+**Estimated memory usage:**  10 MB
 
 
 .. _sphx_glr_download_auto_examples_intro_inducing_path.py:
@@ -252,14 +252,13 @@ References
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: inducing_path.ipynb <inducing_path.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: inducing_path.py <inducing_path.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: inducing_path.ipynb <inducing_path.ipynb>`
 
 
 .. only:: html

@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_mixededge_plot_mixed_edge_graph.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_mixededge_plot_mixed_edge_graph.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -46,7 +46,7 @@ edges.
 
 .. GENERATED FROM PYTHON SOURCE LINES 28-34
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -70,7 +70,7 @@ by composing networkx graphs.
 
 .. GENERATED FROM PYTHON SOURCE LINES 39-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     directed_G = nx.DiGraph(
@@ -121,7 +121,7 @@ Mixed Edge Graph Properties
 
 .. GENERATED FROM PYTHON SOURCE LINES 72-91
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(G.name)
@@ -154,7 +154,7 @@ Mixed Edge Graph Properties
     MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types is directed: False because there are directed edges.
     False
     ['directed', 'bidirected']
-    {'directed': <networkx.classes.digraph.DiGraph object at 0x7f3745838310>, 'bidirected': <networkx.classes.graph.Graph object at 0x7f374567fdc0>}
+    {'directed': <networkx.classes.digraph.DiGraph object at 0x7f498dae9390>, 'bidirected': <networkx.classes.graph.Graph object at 0x7f4a3d734650>}
 
 
 
@@ -166,7 +166,7 @@ Mixed Edge Graph Operations on Nodes
 
 .. GENERATED FROM PYTHON SOURCE LINES 94-112
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Nodes: Similar to ``nx.Graph`` and ``nx.DiGraph``, the nodes of the graph
@@ -194,7 +194,7 @@ Mixed Edge Graph Operations on Nodes
 
  .. code-block:: none
 
-    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types has nodes: ['Y', 'X', 'Z']
+    MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types has nodes: ['X', 'Z', 'Y']
     Graph has node A: False
     Now graph has node A: True
     Graph has node A: False
@@ -213,7 +213,7 @@ typically must be specified in edge operations for mixed edge graphs.
 
 .. GENERATED FROM PYTHON SOURCE LINES 119-138
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Edges: We can query specific edges by type
@@ -258,7 +258,7 @@ class properties. Moreover, one can specify the edge type.
 
 .. GENERATED FROM PYTHON SOURCE LINES 144-170
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Neighbors: Compared to its uni-edge networkx counterparts, a mixed-edge
@@ -312,9 +312,9 @@ class properties. Moreover, one can specify the edge type.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.372 seconds)
+   **Total running time of the script:** (0 minutes 1.182 seconds)
 
-**Estimated memory usage:**  17 MB
+**Estimated memory usage:**  16 MB
 
 
 .. _sphx_glr_download_auto_examples_mixededge_plot_mixed_edge_graph.py:
@@ -323,14 +323,13 @@ class properties. Moreover, one can specify the edge type.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_mixed_edge_graph.ipynb <plot_mixed_edge_graph.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_mixed_edge_graph.py <plot_mixed_edge_graph.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_mixed_edge_graph.ipynb <plot_mixed_edge_graph.ipynb>`
 
 
 .. only:: html

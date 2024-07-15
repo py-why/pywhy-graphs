@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -87,7 +87,7 @@ such as `Dagitty <http://dagitty.net>`_.
 
 |
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import networkx as nx
@@ -139,9 +139,9 @@ such as `Dagitty <http://dagitty.net>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.404 seconds)
+   **Total running time of the script:** (0 minutes 0.384 seconds)
 
-**Estimated memory usage:**  9 MB
+**Estimated memory usage:**  10 MB
 
 
 .. _sphx_glr_download_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py:
@@ -150,14 +150,13 @@ such as `Dagitty <http://dagitty.net>`_.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: draw_and_compare_graphs_with_same_layout.ipynb <draw_and_compare_graphs_with_same_layout.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: draw_and_compare_graphs_with_same_layout.py <draw_and_compare_graphs_with_same_layout.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: draw_and_compare_graphs_with_same_layout.ipynb <draw_and_compare_graphs_with_same_layout.ipynb>`
 
 
 .. only:: html

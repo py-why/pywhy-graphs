@@ -11,6 +11,9 @@ Simple examples demonstrating how to use causal graphs.
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -27,6 +30,7 @@ Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with 
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -35,7 +39,7 @@ Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with 
 .. only:: html
 
   .. image:: /auto_examples/mixededge/images/thumb/sphx_glr_plot_mixed_edge_graph_thumb.png
-    :alt: MixedEdgeGraph - Graph with different types of edges
+    :alt:
 
   :ref:`sphx_glr_auto_examples_mixededge_plot_mixed_edge_graph.py`
 
@@ -44,6 +48,8 @@ Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with 
       <div class="sphx-glr-thumbnail-title">MixedEdgeGraph - Graph with different types of edges</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -58,6 +64,7 @@ Introduction to causal graphs
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -66,7 +73,7 @@ Introduction to causal graphs
 .. only:: html
 
   .. image:: /auto_examples/intro/images/thumb/sphx_glr_inducing_path_thumb.png
-    :alt: An introduction to Inducing Paths and how to find them
+    :alt:
 
   :ref:`sphx_glr_auto_examples_intro_inducing_path.py`
 
@@ -83,7 +90,7 @@ Introduction to causal graphs
 .. only:: html
 
   .. image:: /auto_examples/intro/images/thumb/sphx_glr_intro_causal_graphs_thumb.png
-    :alt: An introduction to causal graphs and how to use them
+    :alt:
 
   :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py`
 
@@ -92,6 +99,25 @@ Introduction to causal graphs
       <div class="sphx-glr-thumbnail-title">An introduction to causal graphs and how to use them</div>
     </div>
 
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A PAG or a Partial Ancestral Graph is a type of mixed edge graph that can represent, in a singl...">
+
+.. only:: html
+
+  .. image:: /auto_examples/intro/images/thumb/sphx_glr_checking_validity_of_a_pag_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_intro_checking_validity_of_a_pag.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">On PAGs and their validity</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -105,6 +131,7 @@ Visualization of causal graphs
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -113,7 +140,7 @@ Visualization of causal graphs
 .. only:: html
 
   .. image:: /auto_examples/visualization/images/thumb/sphx_glr_draw_and_compare_graphs_with_same_layout_thumb.png
-    :alt: Drawing graphs and setting their layout for visual comparison
+    :alt:
 
   :ref:`sphx_glr_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py`
 
@@ -130,7 +157,7 @@ Visualization of causal graphs
 .. only:: html
 
   .. image:: /auto_examples/visualization/images/thumb/sphx_glr_plot_timeseries_graphs_thumb.png
-    :alt: Drawing timeseries graphs and setting their layout
+    :alt:
 
   :ref:`sphx_glr_auto_examples_visualization_plot_timeseries_graphs.py`
 
@@ -140,6 +167,8 @@ Visualization of causal graphs
     </div>
 
 
+.. thumbnail-parent-div-close
+
 .. raw:: html
 
     </div>
@@ -148,6 +177,7 @@ Visualization of causal graphs
 .. toctree::
    :hidden:
    :includehidden:
+
 
    /auto_examples/mixededge/index.rst
    /auto_examples/intro/index.rst
