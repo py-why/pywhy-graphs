@@ -73,12 +73,14 @@ dot_graph.render(outfile="valid_pag.png", view=True)
 print(pywhy_graphs.valid_pag(pag))
 
 # %%
-# If we want to test whether this algorithm
-# is working correctly or not, we can change
-# a single mark in the graph such that the PAG.
-# By removing a circle edge, we are removing
-# the representation of multiple marks as encoded
-# by the different MAGs this PAG represents:
+# If we want to test whether this algorithm is working correctly or not, we can change
+# a single mark in the graph such that the PAG. By removing a circle edge, we are removing
+# the representation of multiple marks as encoded by the different MAGs this PAG represents.
+# In this specific case, by removing the circle endpoint ``S *-o I``, we are saying that ``S``
+# directly causes ``I``. However, there is no way of determining this using the FCI logical rules.
+# One would not be able to determine that the adjacency is due to a direct
+# causal relationship (directed edge), confounded relationship (bidirected edge), or an inducing path
+# relationship. As such, the resulting graph is no longer a valid PAG.
 
 pag.remove_edge("S", "I", pag.circle_edge_name)
 
