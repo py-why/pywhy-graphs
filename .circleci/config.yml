@@ -7,7 +7,7 @@ commands:
       - run:
           name: Check-skip
           command: |
-            if [ ! -d "sktree" ]; then
+            if [ ! -d "pywhy_graphs" ]; then
               echo "Build was not run due to skip, exiting job ${CIRCLE_JOB} for PR ${CIRCLE_PULL_REQUEST}."
               circleci-agent step halt;
             fi
@@ -54,7 +54,7 @@ commands:
             echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
             if [[ $(cat merge.txt) != "" ]]; then
               echo "Merging $(cat merge.txt)";
-              git remote add upstream https://github.com/neurodata/scikit-tree.git;
+              git remote add upstream https://github.com/py-why/pywhy-graphs.git;
               git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
               git fetch upstream main;
             fi
@@ -64,7 +64,7 @@ jobs:
     docker:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/doc/2.0/circleci-images/
-      - image: cimg/python:3.9
+      - image: cimg/python:3.11
     steps:
       - checkout
       - check-skip
@@ -97,17 +97,24 @@ jobs:
           command: |
             sudo apt-get install nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
       - run:
+          name: Install dodiscover
+          command: |
+            git clone https://github.com/py-why/dodiscover.git
+            cd dodiscover
+            python -m pip install .
+      - run:
           name: Check installation
           command: |
             python -c "import pywhy_graphs;"
             python -c "import numpy; numpy.show_config()"
+            python -c "import dodiscover;"
             LIBGL_DEBUG=verbose python -c "import matplotlib.pyplot as plt; plt.figure()"
 
       # dowhy currently requires an older version of numpy
-      - run:
-          name: Temporary Hack for numpy
-          command: |
-            python -m pip install numpy==1.22.0
+      # - run:
+      #     name: Temporary Hack for numpy
+      #     command: |
+      #       python -m pip install numpy==1.22.0
 
       - run:
           name: Build documentation
