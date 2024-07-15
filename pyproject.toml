@@ -52,6 +52,7 @@ doc = [
   'graphviz',
   'pygraphviz',
   'pgmpy',
+  'dowhy',
 ]
 style = [
   "pre-commit",

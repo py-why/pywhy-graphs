@@ -136,10 +136,10 @@ print(list(G.successors("xy")))
 # Using the graph, we can explore d-separation statements, which by the Markov
 # condition, imply conditional independences.
 # For example, 'z' is d-separated from 'x' because of the collider at 'y'
-print(f"'z' is d-separated from 'x': {nx.is_d_separator(G, {'z'}, {'x'}, set())}")
+print(f"'z' is d-separated from 'x': {nx.d_separated(G, {'z'}, {'x'}, set())}")
 
 # Conditioning on the collider, opens up the path
-print(f"'z' is d-separated from 'x' given 'y': {nx.is_d_separator(G, {'z'}, {'x'}, {'y'})}")
+print(f"'z' is d-separated from 'x' given 'y': {nx.d_separated(G, {'z'}, {'x'}, {'y'})}")
 
 # %%
 # Acyclic Directed Mixed Graphs (ADMG)
