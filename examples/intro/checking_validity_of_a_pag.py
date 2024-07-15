@@ -7,6 +7,9 @@ A PAG or a Partial Ancestral Graph is a type of mixed edge
 graph that can represent, in a single graph, the causal relationship
 between several nodes as defined by an equivalence class of MAGs.
 
+PAGs account for possible unobserved confounding and selection bias
+in the underlying equivalence class of SCMs.
+
 Another way to understand this is that PAGs encode conditional independence
 constraints stemming from Causal Graphs. Since these constraints do not lead to a
 unique graph, a PAG, in essence, represents a class of graphs that encode
