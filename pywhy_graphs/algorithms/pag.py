@@ -11,7 +11,7 @@ from pywhy_graphs.algorithms.generic import (
     has_adc,
     inducing_path,
     single_source_shortest_mixed_path,
-    valid_mag
+    valid_mag,
 )
 from pywhy_graphs.typing import Node, TsNode
 
@@ -30,7 +30,7 @@ __all__ = [
     "pag_to_mag",
     "check_pag_definition",
     "valid_pag",
-    "mag_to_pag"
+    "mag_to_pag",
 ]
 
 
