@@ -64,7 +64,7 @@ dot_graph.render(outfile="valid_pag.png", view=True)
 # For a PAG to be valid, it must represent a valid
 # equivalent class of MAGs. This can be verified by
 # turning the PAG into an MAG and then checking the
-# validity of the MAG
+# validity of the MAG.
 # To check if the constructed PAG is a valid one in
 # pywhy-graphs, we can simply do:
 
