@@ -1,14 +1,29 @@
+name: CircleCI artifacts redirector
 on: [status]
+
+# Restrict the permissions granted to the use of secrets.GITHUB_TOKEN in this
+# github actions workflow:
+# https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+permissions: read-all
+
 jobs:
   circleci_artifacts_redirector_job:
-    if: "${{ startsWith(github.event.context, 'ci/circleci: build_doc') }}"
     runs-on: ubuntu-20.04
+    if: "github.repository == 'py-why/pywhy-graphs' && github.event.context == 'ci/circleci: build_doc'"
+    permissions:
+      statuses: write
     name: Run CircleCI artifacts redirector
     steps:
       - name: GitHub Action step
         uses: larsoner/circleci-artifacts-redirector-action@master
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          api-token: ${{ secrets.CIRCLECI_TOKEN }}
           artifact-path: 0/dev/index.html
           circleci-jobs: build_doc
           job-title: Check the rendered docs here!
+
+      - name: Check the URL
+        if: github.event.status != 'pending'
+        run: |
+          curl --fail ${{ steps.step1.outputs.url }} | grep $GITHUB_SHA
