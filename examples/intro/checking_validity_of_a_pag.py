@@ -12,7 +12,7 @@ constraints stemming from Causal Graphs. Since these constraints do not lead to 
 unique graph, a PAG, in essence, represents a class of graphs that encode
 the same conditional independence constraints.
 
-PAGs model this relationship by displaying all common edge marks shared 
+PAGs model this relationship by displaying all common edge marks (tail and arrowhead) shared 
 by all members in the equivalence class and displaying circles for those marks
 that are not common.
 
