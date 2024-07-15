@@ -1349,6 +1349,9 @@ def _check_pag_edges_are_equal(G1: PAG, G2: PAG):
 def valid_pag(G: PAG):
     """Check if the provided PAG is valid or not.
 
+    The function applies Theorem 2 from :footcite:`Zhang2008`, which constitutes
+    a sufficient check for whether the PAG is valid or not.
+
     The function determines the validity by first converting the PAG
     into an MAG, then checking the validity of the said MAG. After the
     validity of the MAG has been established, the MAG is converted back
