@@ -55,7 +55,7 @@ pag.add_edge("S", "I", pag.circle_edge_name)
 
 # Finally, the graph looks like this:
 dot_graph = draw(pag)
-dot_graph.render(outfile="new_pag.png", view=True)
+dot_graph.render(outfile="valid_pag.png", view=True)
 
 
 # %%
