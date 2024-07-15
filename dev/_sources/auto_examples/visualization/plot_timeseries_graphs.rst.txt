@@ -32,9 +32,10 @@ In this example, we demonstrate how to visualize timeseries graphs effectively.
 
 For comparing different graphs with the same layout, see :ref:`ex-draw-graphs`
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-31
+.. GENERATED FROM PYTHON SOURCE LINES 16-32
 
 .. code-block:: Python
+
 
     from pywhy_graphs import StationaryTimeSeriesDiGraph
     from pywhy_graphs.viz import draw, timeseries_layout
@@ -58,11 +59,11 @@ For comparing different graphs with the same layout, see :ref:`ex-draw-graphs`
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 33-34
 
 First we will draw the graph without setting positions
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-38
+.. GENERATED FROM PYTHON SOURCE LINES 34-39
 
 .. code-block:: Python
 
@@ -89,12 +90,12 @@ First we will draw the graph without setting positions
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
+.. GENERATED FROM PYTHON SOURCE LINES 40-42
 
 Next, we will set positions using the `pywhy_graphs.viz.timeseries_layout` function,
 which creates a nice default layout for time-series graphs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-56
+.. GENERATED FROM PYTHON SOURCE LINES 42-57
 
 .. code-block:: Python
 
@@ -135,7 +136,7 @@ which creates a nice default layout for time-series graphs.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.952 seconds)
+   **Total running time of the script:** (0 minutes 0.959 seconds)
 
 **Estimated memory usage:**  10 MB
 
