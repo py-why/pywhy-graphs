@@ -144,7 +144,7 @@ To check if the constructed PAG is a valid one in pywhy-graphs, we can simply do
  .. code-block:: none
 
     ConditioningSetSelection.PDS
-    Context(observed_variables={'S', 'G', 'L', 'PSH', 'I'}, latent_variables=set(), state_variables={}, init_graph=<networkx.classes.graph.Graph object at 0x7f75f95b8390>, included_edges=<networkx.classes.graph.Graph object at 0x7f75f95b8b90>, excluded_edges=<networkx.classes.graph.Graph object at 0x7f75f95b8d50>, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+    Context(observed_variables={'S', 'G', 'L', 'PSH', 'I'}, latent_variables=set(), state_variables={}, init_graph=<networkx.classes.graph.Graph object at 0x7f37a1820cd0>, included_edges=<networkx.classes.graph.Graph object at 0x7f37a1820d90>, excluded_edges=<networkx.classes.graph.Graph object at 0x7f37a1821090>, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
     True
 
 
@@ -180,7 +180,7 @@ relationship. As such, the resulting graph is no longer a valid PAG.
  .. code-block:: none
 
     ConditioningSetSelection.PDS
-    Context(observed_variables={'S', 'G', 'L', 'PSH', 'I'}, latent_variables=set(), state_variables={}, init_graph=<networkx.classes.graph.Graph object at 0x7f75faf3de90>, included_edges=<networkx.classes.graph.Graph object at 0x7f75f95cde50>, excluded_edges=<networkx.classes.graph.Graph object at 0x7f75f95ce090>, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+    Context(observed_variables={'S', 'G', 'L', 'PSH', 'I'}, latent_variables=set(), state_variables={}, init_graph=<networkx.classes.graph.Graph object at 0x7f37a39c0210>, included_edges=<networkx.classes.graph.Graph object at 0x7f37a1836710>, excluded_edges=<networkx.classes.graph.Graph object at 0x7f37a1836410>, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
     False
 
 
@@ -195,7 +195,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.203 seconds)
+   **Total running time of the script:** (0 minutes 1.254 seconds)
 
 **Estimated memory usage:**  11 MB
 
