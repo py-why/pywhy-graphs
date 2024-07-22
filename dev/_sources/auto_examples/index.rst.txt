@@ -34,7 +34,7 @@ Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A MixedEdgeGraph is a graph comprised of a tuple, G = (V, E). The difference compared to the ot...">
+    <div class="sphx-glr-thumbcontainer" tooltip="A MixedEdgeGraph is a graph comprised of a tuple, G = (V, E). The difference compared to the other networkx graphs are the edges, E. E is comprised of a set of mixed edges defined by the user. This allows arbitrary representation of graphs with different types of edges. The MixedEdgeGraph class represents each type of edge using an internal graph that is one of nx.Graph or nx.DiGraph classes. Each internal graph represents one type of edge.">
 
 .. only:: html
 
@@ -68,7 +68,7 @@ Introduction to causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A path p is called an inducing path relative to &lt;L,S&gt; on an mixed-edge graph with directed and ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="A path p is called an inducing path relative to &lt;L,S&gt; on an mixed-edge graph with directed and bidirected edges, where every non-endpoint vertex on p is either in L or a collider, and every collider on p is an ancestor of either X , Y or a member of S.">
 
 .. only:: html
 
@@ -85,7 +85,7 @@ Introduction to causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. W...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Causal graphs are graphical objects that attach causal notions to each edge and missing edge. We will review some of the fundamental causal graphs used in causal inference, and their differences from traditional graphs.">
 
 .. only:: html
 
@@ -102,7 +102,7 @@ Introduction to causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A PAG or a Partial Ancestral Graph is a type of mixed edge graph that can represent, in a singl...">
+    <div class="sphx-glr-thumbcontainer" tooltip="A PAG or a Partial Ancestral Graph is a type of mixed edge graph that can represent, in a single graph, the causal relationship between several nodes as defined by an equivalence class of MAGs.">
 
 .. only:: html
 
@@ -135,7 +135,7 @@ Visualization of causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to place the nodes.">
 
 .. only:: html
 
@@ -152,7 +152,7 @@ Visualization of causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will cho...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will choose how to place the nodes. This can look rather messy in the final output.">
 
 .. only:: html
 

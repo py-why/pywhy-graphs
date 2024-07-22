@@ -17,7 +17,7 @@ Examples demonstrating how to use a MixedEdgeGraph (Note this is a WIP API with 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A MixedEdgeGraph is a graph comprised of a tuple, G = (V, E). The difference compared to the ot...">
+    <div class="sphx-glr-thumbcontainer" tooltip="A MixedEdgeGraph is a graph comprised of a tuple, G = (V, E). The difference compared to the other networkx graphs are the edges, E. E is comprised of a set of mixed edges defined by the user. This allows arbitrary representation of graphs with different types of edges. The MixedEdgeGraph class represents each type of edge using an internal graph that is one of nx.Graph or nx.DiGraph classes. Each internal graph represents one type of edge.">
 
 .. only:: html
 

@@ -14,7 +14,7 @@ Visualization of causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw a graph without setting the pos argument, in that case graphviz will choose how to place the nodes.">
 
 .. only:: html
 
@@ -31,7 +31,7 @@ Visualization of causal graphs
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will cho...">
+    <div class="sphx-glr-thumbcontainer" tooltip="One can draw timeseries graphs without setting the pos argument, in that case graphviz will choose how to place the nodes. This can look rather messy in the final output.">
 
 .. only:: html
 
