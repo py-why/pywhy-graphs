@@ -471,7 +471,6 @@ def test_is_maximal():
     assert not pywhy_graphs.is_maximal(admg, L, S)
 
 
-
 def test_all_vstructures():
     # Create a directed graph
     G = nx.DiGraph()
@@ -508,5 +507,5 @@ def test_possibly_directed():
     admg.add_edge("Z", "H", admg.bidirected_edge_name)
 
     S = "X"
-    L = {"Y","Z"}
+    L = {"Y", "Z"}
     assert not pywhy_graphs.possibly_directed_path(admg, L, S)
