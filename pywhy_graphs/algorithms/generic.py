@@ -18,11 +18,8 @@ __all__ = [
     "valid_mag",
     "dag_to_mag",
     "is_maximal",
-<<<<<<< HEAD
-    "possibly_directed_path"
-=======
     "all_vstructures",
->>>>>>> 66e89d881425c95666389fc64cb459b7951b0f5f
+    "possibly_directed_path"
 ]
 
 
