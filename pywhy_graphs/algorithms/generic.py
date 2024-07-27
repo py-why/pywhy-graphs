@@ -17,6 +17,7 @@ __all__ = [
     "valid_mag",
     "dag_to_mag",
     "is_maximal",
+    "possibly_directed_path"
 ]
 
 
@@ -824,5 +825,28 @@ def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
                 continue
     return True
 
+def get_X_neighbors(G, X : set):
+
+    final_neighbors = set()
+
+    for elem in X:
+            elem_possible_neighbors = set(G.neighbors(elem))
+            to_remove = X.intersection(elem_possible_neighbors)
+            elem_neighbors = elem_possible_neighbors - to_remove
+            final_neighbors.update(elem_neighbors)
+    
+    return final_neighbors
+
+
+
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
-    pass
+
+    if isinstance(X, set):
+        x_neighbors = get_X_neighbors(G, X)
+    else:
+        x_neighbors = G.neighbors(X)
+
+
+    # path_list = recursively_find_pd_paths(G, x_neigbors, Y)
+
+    return

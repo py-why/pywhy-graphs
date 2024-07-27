@@ -468,3 +468,15 @@ def test_is_maximal():
     S = {}
     L = {"Y"}
     assert not pywhy_graphs.is_maximal(admg, L, S)
+
+def test_possibly_directed():
+    # X <- Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    S = "X"
+    L = {"Y","Z"}
+    assert not pywhy_graphs.possibly_directed_path(admg, L, S)
