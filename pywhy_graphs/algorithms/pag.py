@@ -7,7 +7,12 @@ import networkx as nx
 import numpy as np
 
 from pywhy_graphs import ADMG, CPDAG, PAG, StationaryTimeSeriesPAG
-from pywhy_graphs.algorithms.generic import single_source_shortest_mixed_path
+from pywhy_graphs.algorithms.generic import (
+    has_adc,
+    inducing_path,
+    single_source_shortest_mixed_path,
+    valid_mag,
+)
 from pywhy_graphs.typing import Node, TsNode
 
 logger = logging.getLogger()
@@ -23,13 +28,16 @@ __all__ = [
     "pds_t_path",
     "is_definite_noncollider",
     "pag_to_mag",
+    "check_pag_definition",
+    "valid_pag",
+    "mag_to_pag",
 ]
 
 
 def _possibly_directed(G: PAG, i: Node, j: Node, reverse: bool = False):
-    """Check that path is possibly directed.
+    """Check that edge is possibly directed.
 
-    A possibly directed path is one of the form:
+    A possibly directed edge is one of the form:
     - ``i -> j``
     - ``i o-> j``
     - ``i o-o j``
@@ -64,7 +72,7 @@ def _possibly_directed(G: PAG, i: Node, j: Node, reverse: bool = False):
 
     # the direct check checks for i *-> j or i <-* j
     # i <-> j is also checked
-    # everything else is valid
+    # everything else is valid; i.e. i -- j, or i o-o j
     if direct_check or G.has_edge(i, j, G.bidirected_edge_name):
         return False
     return True
@@ -1176,3 +1184,213 @@ def pag_to_mag(graph):
         mag.add_edge(u, v, mag.directed_edge_name)
 
     return mag
+
+
+def check_pag_definition(G: PAG, L: Optional[set] = None, S: Optional[set] = None):
+    """Checks if the provided graph is a valid Partial Ancestral Graph (PAG).
+
+    A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that
+    has no directed or almost directed cycles and no inducing paths between
+    any two non-adjacent pair of nodes. It is graph representing
+    all conditional independence (CI) statements that are present in a DAG, forming
+    an equivalence class of DAGs that encode the same CI statements.
+
+    The steps involved in this check are as follows:
+
+    - Check for any directed cycles in the PAG.
+
+    - Check for any almost directed cycles in the PAG.
+
+    - For every pair of non-adjacent nodes, check for inducing paths.
+
+    Parameters
+    ----------
+    G : Graph
+        The graph.
+
+    Returns
+    -------
+    is_valid : bool
+        A boolean indicating whether the provided graph is a valid PAG or not.
+    """
+
+    if L is None:
+        L = set()
+
+    if S is None:
+        S = set()
+
+    directed_sub_graph = G.sub_directed_graph()
+
+    all_nodes = set(G.nodes)
+
+    # check if there are more than one edges b/w two nodes
+    for node in all_nodes:
+        nb = set(G.neighbors(node))
+        for elem in nb:
+            edge_data = G.get_edge_data(node, elem)
+            if (edge_data["bidirected"] is not None) and (edge_data["directed"] is not None):
+                return False
+
+    # check if there are any directed cyclces
+    try:
+        nx.find_cycle(directed_sub_graph)  # raises a NetworkXNoCycle error
+        return False
+    except nx.NetworkXNoCycle:
+        pass
+
+    # check if there are any almost directed cycles
+    if has_adc(G):  # if there is an ADC, it's not a valid MAG
+        return False
+
+    # check if there are any inducing paths between non-adjacent nodes in the
+    # non-circle edge sub-graph
+
+    dedges = list(G.edges()["directed"])
+    # undedges = list(G.edges()["undirected"])
+    biedges = list(G.edges()["bidirected"])
+
+    temp_pag = PAG()
+
+    temp_pag.add_edges_from(dedges, temp_pag.directed_edge_name)
+
+    # can't remember why I only handle directed and bidirected edges
+
+    # temp_pag.add_edges_from(undedges, temp_pag.undirected_edge_name)
+
+    temp_pag.add_edges_from(biedges, temp_pag.bidirected_edge_name)
+
+    all_nodes = set(temp_pag.nodes)
+
+    for source in all_nodes:
+        nb = set(temp_pag.neighbors(source))
+        cur_set = all_nodes - nb
+        cur_set.remove(source)
+        for dest in cur_set:
+            out = inducing_path(temp_pag, source, dest, L, S)
+            if out[0] is True:
+                return False
+
+    return True
+
+
+def mag_to_pag(G: PAG):
+    """Converts the provided mag into a pag using the FCI algorithm.
+
+    The FCI algorithms, as defined in :footcite:`Zhang2008` is a provably
+    complete for learning all the tractable features of an MAG, thus
+    producing a PAG.
+
+    Parameters
+    ----------
+    G : MAG
+        The MAG.
+
+    Returns
+    -------
+    pag : PAG
+        The PAG constructed from the MAG.
+    """
+    try:
+        from dodiscover import FCI, make_context
+        from dodiscover.ci import Oracle
+        from dodiscover.constraint.utils import dummy_sample
+    except ImportError as e:
+        raise ImportError("The 'dodiscover' package is required to convert a MAG to a PAG.")
+
+    data = dummy_sample(G)
+    oracle = Oracle(G)
+    # ci_estimator = GSquareCITest(data_type="discrete")
+    context = make_context().variables(data=data).build()
+    fci = FCI(ci_estimator=oracle)
+    fci.learn_graph(data, context)
+
+    return fci.graph_
+
+
+def _check_pag_edges_are_equal(G1: PAG, G2: PAG):
+    """Check if the two provided PAGs are equivalent or not.
+
+    This function compares the edges in both the graphs to determine
+    equivalency.
+
+    Parameters
+    ----------
+    G1 : PAG
+        The first PAG.
+
+    G2 : PAG
+        The second PAG.
+
+    Returns
+    -------
+    is_equivalent : bool
+        A boolean indicating whether the two PAGs are equivalent or not.
+    """
+
+    g1_edges = G1.edges()
+    g2_edges = G2.edges()
+
+    if set(g1_edges["directed"]) != set(g2_edges["directed"]):
+        return False
+
+    elif set(g1_edges["undirected"]) != set(g2_edges["undirected"]):
+        return False
+
+    elif set(g1_edges["bidirected"]) != set(g2_edges["bidirected"]):
+        return False
+
+    elif set(g1_edges["circle"]) != set(g2_edges["circle"]):
+        return False
+
+    else:
+        return True
+
+
+def valid_pag(G: PAG):
+    """Check if the provided PAG is valid or not.
+
+    The function applies Theorem 2 from :footcite:`Zhang2008`, which constitutes
+    a sufficient check for whether the PAG is valid or not.
+
+    The function determines the validity by first converting the PAG
+    into an MAG, then checking the validity of the said MAG. After the
+    validity of the MAG has been established, the MAG is converted back
+    into a PAG. Then the function checks to see if the original and the
+    reconverted PAG are equivalent or not.
+
+    Parameters
+    ----------
+    G : PAG
+        The PAG.
+
+    Returns
+    -------
+    is_valid : bool
+        Boolean indicating whether the provided PAG is valid or not.
+
+    References
+    ----------
+    .. footbibliography::
+    """
+
+    interim_bool = False
+
+    # check if the graph is a vald PAG
+    if not check_pag_definition(G):
+        return False
+
+    converted_mag = pag_to_mag(G)
+
+    if valid_mag(converted_mag):
+        interim_bool = True
+
+    # convert the mag back to a pag
+    rec_pag = mag_to_pag(converted_mag)
+
+    # check if the converted pag is equivalent to the original
+
+    if _check_pag_edges_are_equal(rec_pag, G):
+        return interim_bool
+    else:
+        return False

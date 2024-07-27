@@ -25,6 +25,10 @@ Core Algorithms
    possible_descendants
    discriminating_path
    is_definite_noncollider
+   valid_pag
+   mag_to_pag
+   pag_to_mag
+   check_pag_definition
 
 .. currentmodule:: pywhy_graphs.networkx
 
@@ -63,3 +67,15 @@ Algorithms for handling acyclicity
    :toctree: ../../generated/
 
    acyclification
+
+
+***************************************
+Semi-directed (possibly-directed) Paths
+***************************************
+
+.. automodule:: pywhy_graphs.algorithms.semi_directed_paths
+.. autosummary::
+   :toctree: ../../generated/
+
+   all_semi_directed_paths
+   is_semi_directed_path

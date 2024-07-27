@@ -76,7 +76,7 @@ To install the package from github, clone the repository and then `cd` into the 
 
 Pywhy-Graphs is always looking for new contributors to help make the package better, whether it is algorithms, documentation, examples of graph usage, and more! Contributing to Pywhy-Graphs will be rewarding because you will contribute to a much needed package for causal inference.
 
-See our [contributing guide](https://github.com/py-why/pywhy-graphs/CONTRIBUTING.md) for more details.
+See our [contributing guide](https://github.com/py-why/pywhy-graphs/blob/main/CONTRIBUTING.md) for more details.
 
 # Citing
 

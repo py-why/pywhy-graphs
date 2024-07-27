@@ -3,6 +3,7 @@ import pytest
 
 import pywhy_graphs
 from pywhy_graphs import ADMG
+from pywhy_graphs.algorithms import all_vstructures
 
 
 def test_convert_to_latent_confounder_errors():
@@ -468,6 +469,35 @@ def test_is_maximal():
     S = {}
     L = {"Y"}
     assert not pywhy_graphs.is_maximal(admg, L, S)
+
+
+
+def test_all_vstructures():
+    # Create a directed graph
+    G = nx.DiGraph()
+    G.add_edges_from([(1, 2), (3, 2), (4, 2)])
+
+    # Generate the v-structures
+    v_structs_edges = all_vstructures(G, as_edges=True)
+    v_structs_tuples = all_vstructures(G, as_edges=False)
+
+    # Assert that the returned values are as expected
+    assert len(v_structs_edges) == 3
+    assert len(v_structs_tuples) == 3
+    assert (1, 2) in v_structs_edges or (2, 1) in v_structs_edges
+    assert (3, 2) in v_structs_edges or (2, 3) in v_structs_edges
+    assert (1, 2, 3) in v_structs_tuples or (3, 2, 1) in v_structs_tuples
+    assert (4, 2, 3) in v_structs_tuples or (3, 2, 4) in v_structs_tuples
+
+    G.remove_node(2)
+    # Generate the v-structures
+    v_structs_edges = all_vstructures(G, as_edges=True)
+    v_structs_tuples = all_vstructures(G, as_edges=False)
+
+    # Assert that the returned values are as expected
+    assert len(v_structs_edges) == 0
+    assert len(v_structs_tuples) == 0
+
 
 def test_possibly_directed():
     # X <- Y <-> Z <-> H; Z -> X
