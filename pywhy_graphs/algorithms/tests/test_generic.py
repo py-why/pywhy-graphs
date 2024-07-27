@@ -496,3 +496,16 @@ def test_all_vstructures():
     # Assert that the returned values are as expected
     assert len(v_structs_edges) == 0
     assert len(v_structs_tuples) == 0
+
+
+def test_possibly_directed():
+    # X <- Y <-> Z <-> H; Z -> X
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "X", admg.directed_edge_name)
+    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
+    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+
+    S = "X"
+    L = {"Y", "Z"}
+    assert not pywhy_graphs.possibly_directed_path(admg, L, S)
