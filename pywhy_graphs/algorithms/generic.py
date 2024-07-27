@@ -19,7 +19,7 @@ __all__ = [
     "dag_to_mag",
     "is_maximal",
     "all_vstructures",
-    "possibly_directed_path"
+    "possibly_directed_path",
 ]
 
 
@@ -857,18 +857,18 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
 
-def get_X_neighbors(G, X : set):
+
+def get_X_neighbors(G, X: set):
 
     final_neighbors = set()
 
     for elem in X:
-            elem_possible_neighbors = set(G.neighbors(elem))
-            to_remove = X.intersection(elem_possible_neighbors)
-            elem_neighbors = elem_possible_neighbors - to_remove
-            final_neighbors.update(elem_neighbors)
-    
-    return final_neighbors
+        elem_possible_neighbors = set(G.neighbors(elem))
+        to_remove = X.intersection(elem_possible_neighbors)
+        elem_neighbors = elem_possible_neighbors - to_remove
+        final_neighbors.update(elem_neighbors)
 
+    return final_neighbors
 
 
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
@@ -877,7 +877,6 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
         x_neighbors = get_X_neighbors(G, X)
     else:
         x_neighbors = G.neighbors(X)
-
 
     # path_list = recursively_find_pd_paths(G, x_neigbors, Y)
 
