@@ -136,7 +136,7 @@ which creates a nice default layout for time-series graphs.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.927 seconds)
+   **Total running time of the script:** (0 minutes 1.076 seconds)
 
 **Estimated memory usage:**  165 MB
 
