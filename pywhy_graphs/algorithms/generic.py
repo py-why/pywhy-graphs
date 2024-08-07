@@ -857,27 +857,77 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
 
+def check_back_arrow(G: ADMG, X, Y: set):
+    
+    out = set()
+
+    for elem in Y:
+        if not (G.has_edge(X,elem,G.bidirected_edge_name) or G.has_edge(elem,X,G.directed_edge_name)):
+            out.update(elem)
+
+    return out
 
 def get_X_neighbors(G, X: set):
 
     final_neighbors = set()
 
     for elem in X:
-        elem_possible_neighbors = set(G.neighbors(elem))
+        elem_neighbors = set(G.neighbors(elem))
+        elem_possible_neighbors = check_back_arrow(G, elem, elem_neighbors)
         to_remove = X.intersection(elem_possible_neighbors)
         elem_neighbors = elem_possible_neighbors - to_remove
         final_neighbors.update(elem_neighbors)
 
-    return final_neighbors
+    out = []
 
+    for elem in final_neighbors:
+        temp = dict()
+        temp[0] = elem
+        out.append(temp)
+
+    return out
+
+def recursively_find_pd_paths(G, X, paths, Y):
+
+    counter = 0
+    new_paths = []
+
+    for i in range(len(paths)):
+        cur_elem = paths[i][paths[i].keys()[-1]]
+        if cur_elem in Y:
+            counter += 1
+            continue
+        nbr_temp = G.neighbors(X)
+        nbr_possible = check_back_arrow(nbr_temp)
+
+
+        endpoints = nbr_possible.intersection(Y)
+        if len(endpoints) > 0:
+            paths[i][len(paths[i])] = next(iter(endpoints))
+        else:
+            pass
+        if len(nbr_possible) != 0:
+            new_paths.append(paths[i])
+
+
+
+        
 
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
 
     if isinstance(X, set):
         x_neighbors = get_X_neighbors(G, X)
     else:
-        x_neighbors = G.neighbors(X)
+        nbr_temp = G.neighbors(X)
+        nbr_possible = check_back_arrow(nbr_temp)
+        x_neighbors = []
 
-    # path_list = recursively_find_pd_paths(G, x_neigbors, Y)
+        for elem in nbr_possible:
+            temp = dict()
+            temp[0] = elem
+            x_neighbors.append(temp)
+
+    print(x_neighbors)
+    path_list = recursively_find_pd_paths(G, X, x_neighbors, Y)
 
     return
