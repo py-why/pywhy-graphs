@@ -509,10 +509,9 @@ def test_possibly_directed():
     Y = {"H"}
     X = {"Y"}
 
-
-    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    correct = [{0: "Y", 1: "X", 2: "Z", 3: "H"}]
     out = pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
+    assert correct[0] == out[0]
 
     admg = ADMG()
     admg.add_edge("A", "X", admg.directed_edge_name)
@@ -523,10 +522,10 @@ def test_possibly_directed():
     Y = {"H"}
     X = {"Y", "A"}
 
-    correct = [{0: 'A', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    correct = [{0: "A", 1: "X", 2: "Z", 3: "H"}, {0: "Y", 1: "X", 2: "Z", 3: "H"}]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-    assert correct[1] ==  out[1]
+    assert correct[0] == out[0]
+    assert correct[1] == out[1]
 
     admg = ADMG()
     admg.add_edge("X", "A", admg.directed_edge_name)
@@ -537,10 +536,9 @@ def test_possibly_directed():
     Y = {"H"}
     X = {"Y", "A"}
 
-    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    correct = [{0: "Y", 1: "X", 2: "Z", 3: "H"}]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-
+    assert correct[0] == out[0]
 
     admg = ADMG()
     admg.add_edge("X", "A", admg.directed_edge_name)
@@ -552,10 +550,9 @@ def test_possibly_directed():
     Y = {"H", "K"}
     X = {"Y", "A"}
 
-    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    correct = [{0: "Y", 1: "X", 2: "Z", 3: "H"}]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-
+    assert correct[0] == out[0]
 
     admg = ADMG()
     admg.add_edge("A", "X", admg.directed_edge_name)
@@ -567,13 +564,17 @@ def test_possibly_directed():
     Y = {"H", "K"}
     X = {"Y", "A"}
 
-    correct = [{0: 'A', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'A', 1: 'X', 2: 'Z', 3: 'K'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}]
+    correct = [
+        {0: "A", 1: "X", 2: "Z", 3: "H"},
+        {0: "A", 1: "X", 2: "Z", 3: "K"},
+        {0: "Y", 1: "X", 2: "Z", 3: "H"},
+        {0: "Y", 1: "X", 2: "Z", 3: "K"},
+    ]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-    assert correct[1] ==  out[1]
-    assert correct[2] ==  out[2]
-    assert correct[3] ==  out[3]
-
+    assert correct[0] == out[0]
+    assert correct[1] == out[1]
+    assert correct[2] == out[2]
+    assert correct[3] == out[3]
 
     admg = ADMG()
     admg.add_edge("A", "G", admg.directed_edge_name)
@@ -586,11 +587,10 @@ def test_possibly_directed():
     Y = {"H", "K"}
     X = {"Y", "A"}
 
-    correct = [{0: 'A', 1: 'G', 2: 'C', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}]
+    correct = [{0: "A", 1: "G", 2: "C", 3: "H"}, {0: "Y", 1: "X", 2: "Z", 3: "K"}]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-    assert correct[1] ==  out[1]
-
+    assert correct[0] == out[0]
+    assert correct[1] == out[1]
 
     admg = ADMG()
     admg.add_edge("A", "G", admg.directed_edge_name)
@@ -604,8 +604,12 @@ def test_possibly_directed():
     Y = {"H", "K"}
     X = {"Y", "A"}
 
-    correct = [{0: 'A', 1: 'G', 2: 'C', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'C', 4: 'H'}]
+    correct = [
+        {0: "A", 1: "G", 2: "C", 3: "H"},
+        {0: "Y", 1: "X", 2: "Z", 3: "K"},
+        {0: "Y", 1: "X", 2: "Z", 3: "C", 4: "H"},
+    ]
     pywhy_graphs.possibly_directed_path(admg, X, Y)
-    assert correct[0] ==  out[0]
-    assert correct[1] ==  out[1]
-    assert correct[2] ==  out[2]
+    assert correct[0] == out[0]
+    assert correct[1] == out[1]
+    assert correct[2] == out[2]

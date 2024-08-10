@@ -857,15 +857,19 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
 
+
 def check_back_arrow(G: ADMG, X, Y: set):
-    
+
     out = set()
 
     for elem in Y:
-        if not (G.has_edge(X,elem,G.bidirected_edge_name) or G.has_edge(elem,X,G.directed_edge_name)):
+        if not (
+            G.has_edge(X, elem, G.bidirected_edge_name) or G.has_edge(elem, X, G.directed_edge_name)
+        ):
             out.update(elem)
 
     return out
+
 
 def get_X_neighbors(G, X: set):
 
@@ -877,7 +881,7 @@ def get_X_neighbors(G, X: set):
         to_remove = X.intersection(elem_possible_neighbors)
         elem_neighbors = elem_possible_neighbors - to_remove
 
-        if len(elem_neighbors) !=  0:
+        if len(elem_neighbors) != 0:
             temp = dict()
             count = 0
             temp[count] = elem
@@ -887,6 +891,7 @@ def get_X_neighbors(G, X: set):
             out.append(temp)
 
     return out
+
 
 def recursively_find_pd_paths(G, X, paths, Y):
 
@@ -900,7 +905,7 @@ def recursively_find_pd_paths(G, X, paths, Y):
 
         if len(nbr_possible) == 0:
             new_paths.append(paths[i].copy())
-    
+
         possible_end = nbr_possible.intersection(Y)
 
         if len(possible_end) != 0:
@@ -910,19 +915,22 @@ def recursively_find_pd_paths(G, X, paths, Y):
                 new_paths.append(temp_path)
 
         remaining_nodes = nbr_possible - possible_end
-        remaining_nodes = remaining_nodes - remaining_nodes.intersection(paths[i].values()) - remaining_nodes.intersection(X)
+        remaining_nodes = (
+            remaining_nodes
+            - remaining_nodes.intersection(paths[i].values())
+            - remaining_nodes.intersection(X)
+        )
 
         temp_arr = []
         for elem in remaining_nodes:
-            temp_paths =  paths[i].copy()
-            temp_paths[len(temp_paths)]  = elem
+            temp_paths = paths[i].copy()
+            temp_paths[len(temp_paths)] = elem
             temp_arr.append(temp_paths)
 
         new_paths.extend(recursively_find_pd_paths(G, X, temp_arr, Y))
 
     return new_paths
 
-        
 
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
 
