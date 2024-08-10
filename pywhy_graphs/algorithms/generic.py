@@ -869,21 +869,22 @@ def check_back_arrow(G: ADMG, X, Y: set):
 
 def get_X_neighbors(G, X: set):
 
-    final_neighbors = set()
+    out = []
 
     for elem in X:
         elem_neighbors = set(G.neighbors(elem))
         elem_possible_neighbors = check_back_arrow(G, elem, elem_neighbors)
         to_remove = X.intersection(elem_possible_neighbors)
         elem_neighbors = elem_possible_neighbors - to_remove
-        final_neighbors.update(elem_neighbors)
 
-    out = []
-
-    for elem in final_neighbors:
-        temp = dict()
-        temp[0] = elem
-        out.append(temp)
+        if len(elem_neighbors) !=  0:
+            temp = dict()
+            count = 0
+            temp[count] = elem
+            for elem in elem_neighbors:
+                count += 1
+                temp[count] = elem
+            out.append(temp)
 
     return out
 
@@ -893,23 +894,33 @@ def recursively_find_pd_paths(G, X, paths, Y):
     new_paths = []
 
     for i in range(len(paths)):
-        cur_elem = paths[i][paths[i].keys()[-1]]
-        if cur_elem in Y:
-            counter += 1
-            continue
-        nbr_temp = G.neighbors(X)
-        nbr_possible = check_back_arrow(nbr_temp)
+        cur_elem = paths[i][list(paths[i].keys())[-1]]
+        nbr_temp = G.neighbors(cur_elem)
+        nbr_possible = check_back_arrow(G, cur_elem, nbr_temp)
 
+        if len(nbr_possible) == 0:
+            new_paths.append(paths[i].copy())
+    
+        possible_end = nbr_possible.intersection(Y)
 
-        endpoints = nbr_possible.intersection(Y)
-        if len(endpoints) > 0:
-            paths[i][len(paths[i])] = next(iter(endpoints))
-        else:
-            pass
-        if len(nbr_possible) != 0:
-            new_paths.append(paths[i])
+        if len(possible_end) != 0:
+            for elem in possible_end:
+                temp_path = paths[i].copy()
+                temp_path[len(temp_path)] = elem
+                new_paths.append(temp_path)
 
+        remaining_nodes = nbr_possible - possible_end
+        remaining_nodes = remaining_nodes - remaining_nodes.intersection(paths[i].values()) - remaining_nodes.intersection(X)
 
+        temp_arr = []
+        for elem in remaining_nodes:
+            temp_paths =  paths[i].copy()
+            temp_paths[len(temp_paths)]  = elem
+            temp_arr.append(temp_paths)
+
+        new_paths.extend(recursively_find_pd_paths(G, X, temp_arr, Y))
+
+    return new_paths
 
         
 
@@ -924,10 +935,10 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
 
         for elem in nbr_possible:
             temp = dict()
-            temp[0] = elem
+            temp[0] = X
+            temp[1] = elem
             x_neighbors.append(temp)
 
-    print(x_neighbors)
     path_list = recursively_find_pd_paths(G, X, x_neighbors, Y)
 
-    return
+    return path_list

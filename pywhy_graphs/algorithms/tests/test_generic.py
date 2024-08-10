@@ -500,12 +500,112 @@ def test_all_vstructures():
 
 def test_possibly_directed():
     # X <- Y <-> Z <-> H; Z -> X
+
     admg = ADMG()
     admg.add_edge("Y", "X", admg.directed_edge_name)
-    admg.add_edge("Z", "X", admg.directed_edge_name)
-    admg.add_edge("Z", "Y", admg.bidirected_edge_name)
-    admg.add_edge("Z", "H", admg.bidirected_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
 
-    S = "X"
-    L = {"Y", "Z"}
-    assert not pywhy_graphs.possibly_directed_path(admg, L, S)
+    Y = {"H"}
+    X = {"Y"}
+
+
+    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+
+    admg = ADMG()
+    admg.add_edge("A", "X", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+
+    Y = {"H"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'A', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+    assert correct[1] ==  out[1]
+
+    admg = ADMG()
+    admg.add_edge("X", "A", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+
+    Y = {"H"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+
+
+    admg = ADMG()
+    admg.add_edge("X", "A", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+    admg.add_edge("K", "Z", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+
+
+    admg = ADMG()
+    admg.add_edge("A", "X", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'A', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'A', 1: 'X', 2: 'Z', 3: 'K'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+    assert correct[1] ==  out[1]
+    assert correct[2] ==  out[2]
+    assert correct[3] ==  out[3]
+
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'A', 1: 'G', 2: 'C', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+    assert correct[1] ==  out[1]
+
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "C", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = [{0: 'A', 1: 'G', 2: 'C', 3: 'H'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'K'}, {0: 'Y', 1: 'X', 2: 'Z', 3: 'C', 4: 'H'}]
+    pywhy_graphs.possibly_directed_path(admg, X, Y)
+    assert correct[0] ==  out[0]
+    assert correct[1] ==  out[1]
+    assert correct[2] ==  out[2]
