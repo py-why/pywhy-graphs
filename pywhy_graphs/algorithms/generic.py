@@ -949,7 +949,6 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
             temp[1] = elem
             x_neighbors.append(temp)
 
-
     path_list = recursively_find_pd_paths(G, X, x_neighbors, Y)
 
     return path_list
