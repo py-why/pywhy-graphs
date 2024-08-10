@@ -882,14 +882,11 @@ def get_X_neighbors(G, X: set):
         elem_neighbors = elem_possible_neighbors - to_remove
 
         if len(elem_neighbors) != 0:
-            temp = dict()
-            count = 0
-            temp[count] = elem
-            for elem in elem_neighbors:
-                count += 1
-                temp[count] = elem
-            out.append(temp)
-
+            for nbh in elem_neighbors:
+                temp = dict()
+                temp[0] = elem
+                temp[1] = nbh
+                out.append(temp)
     return out
 
 
@@ -900,6 +897,11 @@ def recursively_find_pd_paths(G, X, paths, Y):
 
     for i in range(len(paths)):
         cur_elem = paths[i][list(paths[i].keys())[-1]]
+
+        if cur_elem in Y:
+            new_paths.append(paths[i])
+            continue
+
         nbr_temp = G.neighbors(cur_elem)
         nbr_possible = check_back_arrow(G, cur_elem, nbr_temp)
 
@@ -946,6 +948,7 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
             temp[0] = X
             temp[1] = elem
             x_neighbors.append(temp)
+
 
     path_list = recursively_find_pd_paths(G, X, x_neighbors, Y)
 
