@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:04.279** total execution time for 3 files **from auto_examples/intro**:
+**00:04.863** total execution time for 3 files **from auto_examples/intro**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py` (``intro_causal_graphs.py``)
-     - 00:02.220
-     - 252.4
+     - 00:02.491
+     - 252.7
    * - :ref:`sphx_glr_auto_examples_intro_checking_validity_of_a_pag.py` (``checking_validity_of_a_pag.py``)
-     - 00:01.035
-     - 166.3
+     - 00:01.200
+     - 166.6
    * - :ref:`sphx_glr_auto_examples_intro_inducing_path.py` (``inducing_path.py``)
-     - 00:01.024
-     - 164.9
+     - 00:01.172
+     - 165.1
