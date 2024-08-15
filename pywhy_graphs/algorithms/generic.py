@@ -859,7 +859,23 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
 
 
 def _check_back_arrow(G: ADMG, X, Y: set):
+    """Retrieve all the neigbors of X that do not have
+    an arrow pointing back to it.
 
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Node
+    Y : Set
+        A set of neigbors of X.
+
+    Returns
+    -------
+    out : set
+        A set of all the neighbors of X that do not have an arrow pointing 
+        back to it.
+    """
     out = set()
 
     for elem in Y:
@@ -872,6 +888,20 @@ def _check_back_arrow(G: ADMG, X, Y: set):
 
 
 def _get_X_neighbors(G, X: set):
+    """Retrieve all the neigbors of X when X has more than one element.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+
+    Returns
+    -------
+    out : set
+        A set of all the neighbors of X.
+    """
+
 
     out = set()
 
@@ -890,6 +920,24 @@ def _get_X_neighbors(G, X: set):
 
 
 def _recursively_find_pd_paths(G, X, paths, Y):
+    """Recursively finds all the possibly directed paths for a given
+    graph.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+        Source.
+    Y : Set
+        Destination
+
+    Returns
+    -------
+    out : set
+        A set of all the possibly directed paths.
+    """
+
 
     counter = 0
     new_paths = set()
@@ -934,6 +982,22 @@ def _recursively_find_pd_paths(G, X, paths, Y):
 
 
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
+    """Find all the possibly directed paths in a graph.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+        Source.
+    Y : Set
+        Destination
+
+    Returns
+    -------
+    out : set
+        A set of all the possibly directed paths.
+    """
 
     if isinstance(X, set):
         x_neighbors = _get_X_neighbors(G, X)
