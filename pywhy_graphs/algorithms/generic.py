@@ -858,7 +858,7 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
     return vstructs
 
 
-def check_back_arrow(G: ADMG, X, Y: set):
+def _check_back_arrow(G: ADMG, X, Y: set):
 
     out = set()
 
@@ -871,13 +871,13 @@ def check_back_arrow(G: ADMG, X, Y: set):
     return out
 
 
-def get_X_neighbors(G, X: set):
+def _get_X_neighbors(G, X: set):
 
     out = set()
 
     for elem in X:
         elem_neighbors = set(G.neighbors(elem))
-        elem_possible_neighbors = check_back_arrow(G, elem, elem_neighbors)
+        elem_possible_neighbors = _check_back_arrow(G, elem, elem_neighbors)
         to_remove = X.intersection(elem_possible_neighbors)
         elem_neighbors = elem_possible_neighbors - to_remove
 
@@ -889,7 +889,7 @@ def get_X_neighbors(G, X: set):
     return out
 
 
-def recursively_find_pd_paths(G, X, paths, Y):
+def _recursively_find_pd_paths(G, X, paths, Y):
 
     counter = 0
     new_paths = set()
@@ -902,7 +902,7 @@ def recursively_find_pd_paths(G, X, paths, Y):
             continue
 
         nbr_temp = G.neighbors(cur_elem)
-        nbr_possible = check_back_arrow(G, cur_elem, nbr_temp)
+        nbr_possible = _check_back_arrow(G, cur_elem, nbr_temp)
 
         if len(nbr_possible) == 0:
             new_paths = new_paths + (elem,)
@@ -928,7 +928,7 @@ def recursively_find_pd_paths(G, X, paths, Y):
             temp_paths = temp_paths + (nbr,)
             temp_set.add(temp_paths)
 
-        new_paths.update(recursively_find_pd_paths(G, X, temp_set, Y))
+        new_paths.update(_recursively_find_pd_paths(G, X, temp_set, Y))
 
     return new_paths
 
@@ -936,10 +936,10 @@ def recursively_find_pd_paths(G, X, paths, Y):
 def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
 
     if isinstance(X, set):
-        x_neighbors = get_X_neighbors(G, X)
+        x_neighbors = _get_X_neighbors(G, X)
     else:
         nbr_temp = G.neighbors(X)
-        nbr_possible = check_back_arrow(nbr_temp)
+        nbr_possible = _check_back_arrow(nbr_temp)
         x_neighbors = []
 
         for elem in nbr_possible:
@@ -948,7 +948,7 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
             temp[1] = elem
             x_neighbors.append(temp)
 
-    path_list = recursively_find_pd_paths(G, X, x_neighbors, Y)
+    path_list = _recursively_find_pd_paths(G, X, x_neighbors, Y)
     print(path_list)
 
     return path_list
