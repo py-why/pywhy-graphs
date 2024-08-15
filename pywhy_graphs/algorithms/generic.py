@@ -873,7 +873,7 @@ def _check_back_arrow(G: ADMG, X, Y: set):
     Returns
     -------
     out : set
-        A set of all the neighbors of X that do not have an arrow pointing 
+        A set of all the neighbors of X that do not have an arrow pointing
         back to it.
     """
     out = set()
@@ -901,7 +901,6 @@ def _get_X_neighbors(G, X: set):
     out : set
         A set of all the neighbors of X.
     """
-
 
     out = set()
 
@@ -937,7 +936,6 @@ def _recursively_find_pd_paths(G, X, paths, Y):
     out : set
         A set of all the possibly directed paths.
     """
-
 
     counter = 0
     new_paths = set()
