@@ -498,7 +498,7 @@ def test_all_vstructures():
     assert len(v_structs_tuples) == 0
 
 
-def test_possibly_directed():
+def test_proper_possibly_directed():
     # X <- Y <-> Z <-> H; Z -> X
 
     admg = ADMG()
@@ -510,7 +510,7 @@ def test_possibly_directed():
     X = {"Y"}
 
     correct = {("Y", "X", "Z", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -523,7 +523,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "H"), ("A", "X", "Z", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -536,7 +536,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -550,7 +550,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -569,7 +569,7 @@ def test_possibly_directed():
         ("Y", "X", "Z", "H"),
         ("A", "X", "Z", "H"),
     }
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -584,7 +584,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "K"), ("A", "G", "C", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -600,7 +600,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "K"), ("Y", "X", "Z", "C", "H"), ("A", "G", "C", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -613,7 +613,7 @@ def test_possibly_directed():
     X = {"A", "K"}
 
     correct = {("K", "H"), ("K", "G"), ("A", "G"), ("A", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -632,7 +632,7 @@ def test_possibly_directed():
         ("A", "G", "C", "H"),
         ("Y", "X", "Z", "K"),
     }
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = ADMG()
@@ -648,7 +648,7 @@ def test_possibly_directed():
     X = {"Y", "A"}
 
     correct = {("Y", "X", "Z", "K"), ("A", "G", "C", "H")}
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
     admg = PAG()
@@ -670,5 +670,5 @@ def test_possibly_directed():
         ("A", "G", "C", "H"),
         ("A", "G", "C", "Z", "K"),
     }
-    out = pywhy_graphs.possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out

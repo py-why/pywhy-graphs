@@ -19,7 +19,7 @@ __all__ = [
     "dag_to_mag",
     "is_maximal",
     "all_vstructures",
-    "possibly_directed_path",
+    "proper_possibly_directed_path",
 ]
 
 
@@ -979,7 +979,7 @@ def _recursively_find_pd_paths(G, X, paths, Y):
     return new_paths
 
 
-def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
+def proper_possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
     """Find all the possibly directed paths in a graph.
 
     Parameters
@@ -994,7 +994,7 @@ def possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
     Returns
     -------
     out : set
-        A set of all the possibly directed paths.
+        A set of all the proper possibly directed paths.
     """
 
     if isinstance(X, set):
