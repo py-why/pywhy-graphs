@@ -887,7 +887,7 @@ def _check_back_arrow(G: ADMG, X, Y: set):
     return out
 
 
-def _get_X_neighbors(G, X: set):
+def _get_neighbors_of_set(G, X: set):
     """Retrieve all the neigbors of X when X has more than one element.
 
     Parameters
