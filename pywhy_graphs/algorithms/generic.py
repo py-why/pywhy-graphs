@@ -930,6 +930,8 @@ def _recursively_find_pd_paths(G, X, paths, Y):
         A directed graph.
     X : Set
         Source.
+    paths : Set
+        Set of initial paths from X.
     Y : Set
         Destination
 
@@ -1037,6 +1039,5 @@ def proper_possibly_directed_path(G, X: Optional[Set], Y: Optional[Set]):
             x_neighbors.append(temp)
 
     path_list = _recursively_find_pd_paths(G, X, x_neighbors, Y)
-    print(path_list)
 
     return path_list
