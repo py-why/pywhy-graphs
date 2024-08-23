@@ -1018,7 +1018,7 @@ def proper_possibly_directed_path(G, X: Optional[Set], Y: Optional[Set]):
     >>> X = {"Y", "A"}
     >>> pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
     {('A', 'G', 'C', 'H'), ('Y', 'X', 'Z', 'C', 'H'), ('Y', 'X', 'Z', 'K'), ('A', 'G', 'C', 'Z', 'K')}
-    
+
     """
 
     if isinstance(X, set):
