@@ -651,15 +651,18 @@ def test_proper_possibly_directed():
     out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
     assert correct == out
 
-    admg = PAG()
-    admg.add_edge("A", "G", admg.directed_edge_name)
-    admg.add_edge("G", "C", admg.directed_edge_name)
-    admg.add_edge("C", "H", admg.directed_edge_name)
-    admg.add_edge("Z", "C", admg.circle_edge_name)
-    admg.add_edge("C", "Z", admg.circle_edge_name)
-    admg.add_edge("Y", "X", admg.directed_edge_name)
-    admg.add_edge("X", "Z", admg.directed_edge_name)
-    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+def test_ppdp_PAG():
+
+    pag = PAG()
+    pag.add_edge("A", "G", pag.directed_edge_name)
+    pag.add_edge("G", "C", pag.directed_edge_name)
+    pag.add_edge("C", "H", pag.directed_edge_name)
+    pag.add_edge("Z", "C", pag.circle_edge_name)
+    pag.add_edge("C", "Z", pag.circle_edge_name)
+    pag.add_edge("Y", "X", pag.directed_edge_name)
+    pag.add_edge("X", "Z", pag.directed_edge_name)
+    pag.add_edge("Z", "K", pag.directed_edge_name)
 
     Y = {"H", "K"}
     X = {"Y", "A"}
@@ -670,5 +673,5 @@ def test_proper_possibly_directed():
         ("A", "G", "C", "H"),
         ("A", "G", "C", "Z", "K"),
     }
-    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    out = pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
     assert correct == out

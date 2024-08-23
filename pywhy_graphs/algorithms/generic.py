@@ -979,8 +979,10 @@ def _recursively_find_pd_paths(G, X, paths, Y):
     return new_paths
 
 
-def proper_possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] = None):
-    """Find all the possibly directed paths in a graph.
+def proper_possibly_directed_path(G, X: Optional[Set], Y: Optional[Set]):
+    """Find all the proper possibly directed paths in a graph. A proper possibly directed
+    path from X to Y is a set of edges with just the first node in X and none of the edges
+    with an arrow pointing back to X.
 
     Parameters
     ----------
@@ -995,10 +997,32 @@ def proper_possibly_directed_path(G, X: Optional[Set] = None, Y: Optional[Set] =
     -------
     out : set
         A set of all the proper possibly directed paths.
+
+    Examples
+    --------
+    The function generates a set of tuples containing all the valid
+    proper possibly directed paths from X to Y.
+
+    >>> import pywhy_graphs
+    >>> from pywhy_graphs import PAG
+    >>> pag = PAG()
+    >>> pag.add_edge("A", "G", pag.directed_edge_name)
+    >>> pag.add_edge("G", "C", pag.directed_edge_name)
+    >>> pag.add_edge("C", "H", pag.directed_edge_name)
+    >>> pag.add_edge("Z", "C", pag.circle_edge_name)
+    >>> pag.add_edge("C", "Z", pag.circle_edge_name)
+    >>> pag.add_edge("Y", "X", pag.directed_edge_name)
+    >>> pag.add_edge("X", "Z", pag.directed_edge_name)
+    >>> pag.add_edge("Z", "K", pag.directed_edge_name)
+    >>> Y = {"H", "K"}
+    >>> X = {"Y", "A"}
+    >>> pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
+    {('A', 'G', 'C', 'H'), ('Y', 'X', 'Z', 'C', 'H'), ('Y', 'X', 'Z', 'K'), ('A', 'G', 'C', 'Z', 'K')}
+    
     """
 
     if isinstance(X, set):
-        x_neighbors = _get_X_neighbors(G, X)
+        x_neighbors = _get_neighbors_of_set(G, X)
     else:
         nbr_temp = G.neighbors(X)
         nbr_possible = _check_back_arrow(nbr_temp)
