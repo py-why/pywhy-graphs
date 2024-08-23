@@ -890,6 +890,8 @@ def _check_back_arrow(G: ADMG, X, Y: set):
 def _get_neighbors_of_set(G, X: set):
     """Retrieve all the neigbors of X when X has more than one element.
 
+    Note that if X is not a set, graph.neighbors(X) is sufficient.
+
     Parameters
     ----------
     G : DiGraph
@@ -1018,7 +1020,7 @@ def proper_possibly_directed_path(G, X: Optional[Set], Y: Optional[Set]):
     >>> X = {"Y", "A"}
     >>> pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
     {('A', 'G', 'C', 'H'), ('Y', 'X', 'Z', 'C', 'H'), ('Y', 'X', 'Z', 'K'), ('A', 'G', 'C', 'Z', 'K')}
-    
+
     """
 
     if isinstance(X, set):
