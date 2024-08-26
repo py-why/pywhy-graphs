@@ -480,6 +480,7 @@ document.write(`
     <span class="s2">&quot;dag_to_mag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_maximal&quot;</span><span class="p">,</span>
     <span class="s2">&quot;all_vstructures&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;proper_possibly_directed_path&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -1331,6 +1332,191 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">vstructs</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">p1</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">p2</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
     <span class="k">return</span> <span class="n">vstructs</span>
+
+
+<span class="k">def</span> <span class="nf">_check_back_arrow</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve all the neigbors of X that do not have</span>
+<span class="sd">    an arrow pointing back to it.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A directed graph.</span>
+<span class="sd">    X : Node</span>
+<span class="sd">    Y : Set</span>
+<span class="sd">        A set of neigbors of X.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        A set of all the neighbors of X that do not have an arrow pointing</span>
+<span class="sd">        back to it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">bidirected_edge_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">directed_edge_name</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span> <span class="nf">_get_neighbors_of_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve all the neigbors of X when X has more than one element.</span>
+
+<span class="sd">    Note that if X is not a set, graph.neighbors(X) is sufficient.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A directed graph.</span>
+<span class="sd">    X : Set</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        A set of all the neighbors of X.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">X</span><span class="p">:</span>
+        <span class="n">elem_neighbors</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+        <span class="n">elem_possible_neighbors</span> <span class="o">=</span> <span class="n">_check_back_arrow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">elem_neighbors</span><span class="p">)</span>
+        <span class="n">to_remove</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">elem_possible_neighbors</span><span class="p">)</span>
+        <span class="n">elem_neighbors</span> <span class="o">=</span> <span class="n">elem_possible_neighbors</span> <span class="o">-</span> <span class="n">to_remove</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem_neighbors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">nbh</span> <span class="ow">in</span> <span class="n">elem_neighbors</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">elem</span><span class="p">,)</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">+</span> <span class="p">(</span><span class="n">nbh</span><span class="p">,)</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span> <span class="nf">_recursively_find_pd_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively finds all the possibly directed paths for a given</span>
+<span class="sd">    graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A directed graph.</span>
+<span class="sd">    X : Set</span>
+<span class="sd">        Source.</span>
+<span class="sd">    paths : Set</span>
+<span class="sd">        Set of initial paths from X.</span>
+<span class="sd">    Y : Set</span>
+<span class="sd">        Destination</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        A set of all the possibly directed paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">new_paths</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">cur_elem</span> <span class="o">=</span> <span class="n">elem</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cur_elem</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">:</span>
+            <span class="n">new_paths</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">nbr_temp</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">cur_elem</span><span class="p">)</span>
+        <span class="n">nbr_possible</span> <span class="o">=</span> <span class="n">_check_back_arrow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">cur_elem</span><span class="p">,</span> <span class="n">nbr_temp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbr_possible</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_paths</span> <span class="o">=</span> <span class="n">new_paths</span> <span class="o">+</span> <span class="p">(</span><span class="n">elem</span><span class="p">,)</span>
+
+        <span class="n">possible_end</span> <span class="o">=</span> <span class="n">nbr_possible</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_end</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">possible_end</span><span class="p">:</span>
+                <span class="n">temp_path</span> <span class="o">=</span> <span class="n">elem</span>
+                <span class="n">temp_path</span> <span class="o">=</span> <span class="n">temp_path</span> <span class="o">+</span> <span class="p">(</span><span class="n">nbr</span><span class="p">,)</span>
+                <span class="n">new_paths</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+
+        <span class="n">remaining_nodes</span> <span class="o">=</span> <span class="n">nbr_possible</span> <span class="o">-</span> <span class="n">possible_end</span>
+        <span class="n">remaining_nodes</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">remaining_nodes</span>
+            <span class="o">-</span> <span class="n">remaining_nodes</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+            <span class="o">-</span> <span class="n">remaining_nodes</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">temp_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">remaining_nodes</span><span class="p">:</span>
+            <span class="n">temp_paths</span> <span class="o">=</span> <span class="n">elem</span>
+            <span class="n">temp_paths</span> <span class="o">=</span> <span class="n">temp_paths</span> <span class="o">+</span> <span class="p">(</span><span class="n">nbr</span><span class="p">,)</span>
+            <span class="n">temp_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">temp_paths</span><span class="p">)</span>
+
+        <span class="n">new_paths</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_recursively_find_pd_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">temp_set</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">new_paths</span>
+
+
+<span class="k">def</span> <span class="nf">proper_possibly_directed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">],</span> <span class="n">Y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all the proper possibly directed paths in a graph. A proper possibly directed</span>
+<span class="sd">    path from X to Y is a set of edges with just the first node in X and none of the edges</span>
+<span class="sd">    with an arrow pointing back to X.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : DiGraph</span>
+<span class="sd">        A directed graph.</span>
+<span class="sd">    X : Set</span>
+<span class="sd">        Source.</span>
+<span class="sd">    Y : Set</span>
+<span class="sd">        Destination</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : set</span>
+<span class="sd">        A set of all the proper possibly directed paths.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The function generates a set of tuples containing all the valid</span>
+<span class="sd">    proper possibly directed paths from X to Y.</span>
+
+<span class="sd">    &gt;&gt;&gt; import pywhy_graphs</span>
+<span class="sd">    &gt;&gt;&gt; from pywhy_graphs import PAG</span>
+<span class="sd">    &gt;&gt;&gt; pag = PAG()</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;A&quot;, &quot;G&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;G&quot;, &quot;C&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;C&quot;, &quot;H&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;Z&quot;, &quot;C&quot;, pag.circle_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;C&quot;, &quot;Z&quot;, pag.circle_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;Y&quot;, &quot;X&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;X&quot;, &quot;Z&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; pag.add_edge(&quot;Z&quot;, &quot;K&quot;, pag.directed_edge_name)</span>
+<span class="sd">    &gt;&gt;&gt; Y = {&quot;H&quot;, &quot;K&quot;}</span>
+<span class="sd">    &gt;&gt;&gt; X = {&quot;Y&quot;, &quot;A&quot;}</span>
+<span class="sd">    &gt;&gt;&gt; pywhy_graphs.proper_possibly_directed_path(pag, X, Y)</span>
+<span class="sd">    {(&#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;H&#39;), (&#39;Y&#39;, &#39;X&#39;, &#39;Z&#39;, &#39;C&#39;, &#39;H&#39;), (&#39;Y&#39;, &#39;X&#39;, &#39;Z&#39;, &#39;K&#39;), (&#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;Z&#39;, &#39;K&#39;)}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+        <span class="n">x_neighbors</span> <span class="o">=</span> <span class="n">_get_neighbors_of_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nbr_temp</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">nbr_possible</span> <span class="o">=</span> <span class="n">_check_back_arrow</span><span class="p">(</span><span class="n">nbr_temp</span><span class="p">)</span>
+        <span class="n">x_neighbors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">nbr_possible</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span>
+            <span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span>
+            <span class="n">x_neighbors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+    <span class="n">path_list</span> <span class="o">=</span> <span class="n">_recursively_find_pd_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">x_neighbors</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">path_list</span>
 </pre></div>
 
                 </article>
