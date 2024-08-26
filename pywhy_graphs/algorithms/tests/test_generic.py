@@ -2,7 +2,7 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import ADMG
+from pywhy_graphs import ADMG, PAG
 from pywhy_graphs.algorithms import all_vstructures
 
 
@@ -496,3 +496,182 @@ def test_all_vstructures():
     # Assert that the returned values are as expected
     assert len(v_structs_edges) == 0
     assert len(v_structs_tuples) == 0
+
+
+def test_proper_possibly_directed():
+    # X <- Y <-> Z <-> H; Z -> X
+
+    admg = ADMG()
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+
+    Y = {"H"}
+    X = {"Y"}
+
+    correct = {("Y", "X", "Z", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "X", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+
+    Y = {"H"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "H"), ("A", "X", "Z", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("X", "A", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+
+    Y = {"H"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("X", "A", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+    admg.add_edge("K", "Z", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "X", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {
+        ("Y", "X", "Z", "K"),
+        ("A", "X", "Z", "K"),
+        ("Y", "X", "Z", "H"),
+        ("A", "X", "Z", "H"),
+    }
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "K"), ("A", "G", "C", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "C", admg.directed_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "K"), ("Y", "X", "Z", "C", "H"), ("A", "G", "C", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("A", "H", admg.directed_edge_name)
+    admg.add_edge("K", "G", admg.directed_edge_name)
+    admg.add_edge("K", "H", admg.directed_edge_name)
+
+    Y = {"G", "H"}
+    X = {"A", "K"}
+
+    correct = {("K", "H"), ("K", "G"), ("A", "G"), ("A", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "C", admg.bidirected_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {
+        ("A", "G", "C", "H"),
+        ("Y", "X", "Z", "K"),
+    }
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+    admg = ADMG()
+    admg.add_edge("A", "G", admg.directed_edge_name)
+    admg.add_edge("G", "C", admg.directed_edge_name)
+    admg.add_edge("C", "H", admg.directed_edge_name)
+    admg.add_edge("Z", "C", admg.bidirected_edge_name)
+    admg.add_edge("Y", "X", admg.directed_edge_name)
+    admg.add_edge("X", "Z", admg.directed_edge_name)
+    admg.add_edge("Z", "K", admg.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {("Y", "X", "Z", "K"), ("A", "G", "C", "H")}
+    out = pywhy_graphs.proper_possibly_directed_path(admg, X, Y)
+    assert correct == out
+
+
+def test_ppdp_PAG():
+
+    pag = PAG()
+    pag.add_edge("A", "G", pag.directed_edge_name)
+    pag.add_edge("G", "C", pag.directed_edge_name)
+    pag.add_edge("C", "H", pag.directed_edge_name)
+    pag.add_edge("Z", "C", pag.circle_edge_name)
+    pag.add_edge("C", "Z", pag.circle_edge_name)
+    pag.add_edge("Y", "X", pag.directed_edge_name)
+    pag.add_edge("X", "Z", pag.directed_edge_name)
+    pag.add_edge("Z", "K", pag.directed_edge_name)
+
+    Y = {"H", "K"}
+    X = {"Y", "A"}
+
+    correct = {
+        ("Y", "X", "Z", "K"),
+        ("Y", "X", "Z", "C", "H"),
+        ("A", "G", "C", "H"),
+        ("A", "G", "C", "Z", "K"),
+    }
+    out = pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
+    assert correct == out

@@ -19,6 +19,7 @@ __all__ = [
     "dag_to_mag",
     "is_maximal",
     "all_vstructures",
+    "proper_possibly_directed_path",
 ]
 
 
@@ -855,3 +856,188 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                 else:
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
+
+
+def _check_back_arrow(G: ADMG, X, Y: set):
+    """Retrieve all the neigbors of X that do not have
+    an arrow pointing back to it.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Node
+    Y : Set
+        A set of neigbors of X.
+
+    Returns
+    -------
+    out : set
+        A set of all the neighbors of X that do not have an arrow pointing
+        back to it.
+    """
+    out = set()
+
+    for elem in Y:
+        if not (
+            G.has_edge(X, elem, G.bidirected_edge_name) or G.has_edge(elem, X, G.directed_edge_name)
+        ):
+            out.update(elem)
+
+    return out
+
+
+def _get_neighbors_of_set(G, X: set):
+    """Retrieve all the neigbors of X when X has more than one element.
+
+    Note that if X is not a set, graph.neighbors(X) is sufficient.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+
+    Returns
+    -------
+    out : set
+        A set of all the neighbors of X.
+    """
+
+    out = set()
+
+    for elem in X:
+        elem_neighbors = set(G.neighbors(elem))
+        elem_possible_neighbors = _check_back_arrow(G, elem, elem_neighbors)
+        to_remove = X.intersection(elem_possible_neighbors)
+        elem_neighbors = elem_possible_neighbors - to_remove
+
+        if len(elem_neighbors) != 0:
+            for nbh in elem_neighbors:
+                temp = (elem,)
+                temp = temp + (nbh,)
+                out.add(temp)
+    return out
+
+
+def _recursively_find_pd_paths(G, X, paths, Y):
+    """Recursively finds all the possibly directed paths for a given
+    graph.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+        Source.
+    paths : Set
+        Set of initial paths from X.
+    Y : Set
+        Destination
+
+    Returns
+    -------
+    out : set
+        A set of all the possibly directed paths.
+    """
+
+    counter = 0
+    new_paths = set()
+
+    for elem in paths:
+        cur_elem = elem[-1]
+
+        if cur_elem in Y:
+            new_paths.add(elem)
+            continue
+
+        nbr_temp = G.neighbors(cur_elem)
+        nbr_possible = _check_back_arrow(G, cur_elem, nbr_temp)
+
+        if len(nbr_possible) == 0:
+            new_paths = new_paths + (elem,)
+
+        possible_end = nbr_possible.intersection(Y)
+
+        if len(possible_end) != 0:
+            for nbr in possible_end:
+                temp_path = elem
+                temp_path = temp_path + (nbr,)
+                new_paths.add(temp_path)
+
+        remaining_nodes = nbr_possible - possible_end
+        remaining_nodes = (
+            remaining_nodes
+            - remaining_nodes.intersection(set(elem))
+            - remaining_nodes.intersection(X)
+        )
+
+        temp_set = set()
+        for nbr in remaining_nodes:
+            temp_paths = elem
+            temp_paths = temp_paths + (nbr,)
+            temp_set.add(temp_paths)
+
+        new_paths.update(_recursively_find_pd_paths(G, X, temp_set, Y))
+
+    return new_paths
+
+
+def proper_possibly_directed_path(G, X: Optional[Set], Y: Optional[Set]):
+    """Find all the proper possibly directed paths in a graph. A proper possibly directed
+    path from X to Y is a set of edges with just the first node in X and none of the edges
+    with an arrow pointing back to X.
+
+    Parameters
+    ----------
+    G : DiGraph
+        A directed graph.
+    X : Set
+        Source.
+    Y : Set
+        Destination
+
+    Returns
+    -------
+    out : set
+        A set of all the proper possibly directed paths.
+
+    Examples
+    --------
+    The function generates a set of tuples containing all the valid
+    proper possibly directed paths from X to Y.
+
+    >>> import pywhy_graphs
+    >>> from pywhy_graphs import PAG
+    >>> pag = PAG()
+    >>> pag.add_edge("A", "G", pag.directed_edge_name)
+    >>> pag.add_edge("G", "C", pag.directed_edge_name)
+    >>> pag.add_edge("C", "H", pag.directed_edge_name)
+    >>> pag.add_edge("Z", "C", pag.circle_edge_name)
+    >>> pag.add_edge("C", "Z", pag.circle_edge_name)
+    >>> pag.add_edge("Y", "X", pag.directed_edge_name)
+    >>> pag.add_edge("X", "Z", pag.directed_edge_name)
+    >>> pag.add_edge("Z", "K", pag.directed_edge_name)
+    >>> Y = {"H", "K"}
+    >>> X = {"Y", "A"}
+    >>> pywhy_graphs.proper_possibly_directed_path(pag, X, Y)
+    {('A', 'G', 'C', 'H'), ('Y', 'X', 'Z', 'C', 'H'), ('Y', 'X', 'Z', 'K'), ('A', 'G', 'C', 'Z', 'K')}
+
+    """
+
+    if isinstance(X, set):
+        x_neighbors = _get_neighbors_of_set(G, X)
+    else:
+        nbr_temp = G.neighbors(X)
+        nbr_possible = _check_back_arrow(nbr_temp)
+        x_neighbors = []
+
+        for elem in nbr_possible:
+            temp = dict()
+            temp[0] = X
+            temp[1] = elem
+            x_neighbors.append(temp)
+
+    path_list = _recursively_find_pd_paths(G, X, x_neighbors, Y)
+
+    return path_list
