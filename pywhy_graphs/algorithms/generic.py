@@ -823,3 +823,7 @@ def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
             else:
                 continue
     return True
+
+
+def find_visible_edges(G):
+    pass
