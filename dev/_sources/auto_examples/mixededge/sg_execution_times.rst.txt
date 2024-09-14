@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.387** total execution time for 1 file **from auto_examples/mixededge**:
+**00:01.380** total execution time for 1 file **from auto_examples/mixededge**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_mixededge_plot_mixed_edge_graph.py` (``plot_mixed_edge_graph.py``)
-     - 00:01.387
-     - 172.0
+     - 00:01.380
+     - 171.5
