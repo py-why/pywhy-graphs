@@ -61,6 +61,28 @@ causal graph operations.
    find_connected_pairs
    add_all_snode_combinations
    compute_invariant_domains_per_node
+   is_semi_directed_path
+   all_semi_directed_paths
+
+:mod:`pywhy_graphs.algorithms`: Algorithms for dealing with CPDAGs
+==================================================================
+With Markov equivalence classes of DAGs in a Markovian SCM setting, we obtain
+a potentially directed acyclic graph (PDAG), which may be completed (CPDAG).
+We may want to generate a consistent DAG extension (i.e. Markov equivalent) of a CPDAG
+then we may use some of the algorithms described here. Or perhaps one may want to 
+convert a DAG to its corresponding CPDAG.
+
+.. currentmodule:: pywhy_graphs.algorithms
+
+.. autosummary::
+   :toctree: generated/
+
+   pdag_to_dag
+   dag_to_cpdag
+   pdag_to_cpdag
+   order_edges
+   label_edges
+   
 
 Conversions between other package's causal graphs
 =================================================

@@ -34,6 +34,8 @@ cpdag.add_edges_from(G.edges, cpdag.undirected_edge_name)
 cpdag.orient_uncertain_edge("x", "y")
 cpdag.orient_uncertain_edge("xy", "y")
 cpdag.orient_uncertain_edge("z", "y")
+
+# create a PAG from the CPDAG, with all undirected edges
 pag = PAG()
 pag.add_edges_from(G.edges, cpdag.undirected_edge_name)
 
