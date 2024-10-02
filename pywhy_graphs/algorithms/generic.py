@@ -825,5 +825,29 @@ def is_maximal(G, L: Optional[Set] = None, S: Optional[Set] = None):
     return True
 
 
-def find_visible_edges(G):
+def get_collider_path(G, X, Y):
     pass
+
+def check_visibility(G: PAG, X: str, Y: str):
+    X_neighbors = G.neighbors(X)
+    Y_neighbors = G.neighbors(Y)
+
+    only_x_neighbors = X_neighbors - Y_neighbors
+
+    for elem in only_x_neighbors:
+        if G.has_edge(elem, X, G.directed_edge_name):
+            return True
+        
+    all_nodes = set(G.nodes)
+
+    candidates = all_nodes - Y_neighbors
+
+    for elem in candidates:
+        collider_path = get_collider_path(G,elem,X)
+        final_node = collider_path[-2]
+        if G.has_edge(final_node, X, G.directed_edge_name):
+            return True
+    
+    return False
+
+    
