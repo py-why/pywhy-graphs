@@ -139,7 +139,7 @@ such as `Dagitty <http://dagitty.net>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.392 seconds)
+   **Total running time of the script:** (0 minutes 0.472 seconds)
 
 **Estimated memory usage:**  165 MB
 
