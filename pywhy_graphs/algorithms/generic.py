@@ -855,8 +855,28 @@ def all_vstructures(G: nx.DiGraph, as_edges: bool = False):
                     vstructs.add((p1, node, p2))  # type: ignore
     return vstructs
 
-def get_collider_path(G, X, Y):
-    pass
+def get_all_collider_paths(G : PAG, X, Y):
+
+    out = []
+
+    # find all the possible paths from X to Y with only bi-directed edges
+
+    bidirected_edge_graph = G.sub_bidirected_graph
+
+    X_descendants = set(G.sub_directed_graph.neigbors(X))
+
+    candidate_collider_path_nodes = set(bidirected_edge_graph.nodes).intersection(X_descendants)
+
+    if candidate_collider_path_nodes is None:
+        return out
+    
+    for elem in candidate_collider_path_nodes:
+        out.extend(nx.all_simple_paths(G, elem, Y))
+
+    # for path in out:
+    #     path.insert(0,X)
+
+    return out
 
 def check_visibility(G: PAG, X: str, Y: str):
     X_neighbors = G.neighbors(X)
@@ -873,10 +893,13 @@ def check_visibility(G: PAG, X: str, Y: str):
     candidates = all_nodes - Y_neighbors
 
     for elem in candidates:
-        collider_path = get_collider_path(G,elem,X)
-        final_node = collider_path[-2]
-        if G.has_edge(final_node, X, G.directed_edge_name):
-            return True
+        collider_paths = get_all_collider_paths(G,elem,X)
+        for path in collider_paths:
+            for node in path:
+                if node in G.neighbors(Y):
+                    continue
+                else:
+                    return True
     
     return False
 
