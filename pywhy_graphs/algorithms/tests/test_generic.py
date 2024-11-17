@@ -2,8 +2,8 @@ import networkx as nx
 import pytest
 
 import pywhy_graphs
-from pywhy_graphs import ADMG
-from pywhy_graphs.algorithms import all_vstructures
+from pywhy_graphs import ADMG, PAG
+from pywhy_graphs.algorithms import all_vstructures, check_visibility
 
 
 def test_convert_to_latent_confounder_errors():
@@ -496,3 +496,32 @@ def test_all_vstructures():
     # Assert that the returned values are as expected
     assert len(v_structs_edges) == 0
     assert len(v_structs_tuples) == 0
+
+
+
+def test_check_visibility():
+
+    # H <-> K <-> Z <-> X <- Y 
+
+    pag = PAG()
+    pag.add_edge("Y", "X", pag.directed_edge_name)
+    pag.add_edge("Z", "X", pag.bidirected_edge_name)
+    pag.add_edge("Z", "K", pag.bidirected_edge_name)
+    pag.add_edge("K", "H", pag.bidirected_edge_name)
+
+    assert True == check_visibility(pag, "X", "Y")
+
+    pag = PAG()
+    pag.add_edge("Y", "X", pag.directed_edge_name)
+    pag.add_edge("Z", "X", pag.bidirected_edge_name)
+
+    assert True == check_visibility(pag, "X", "Y")
+
+    pag = PAG()
+    pag.add_edge("Y", "X", pag.directed_edge_name)
+    pag.add_edge("Z", "Y", pag.bidirected_edge_name)
+    pag.add_edge("Z", "K", pag.bidirected_edge_name)
+    pag.add_edge("K", "H", pag.bidirected_edge_name)
+
+    assert False == check_visibility(pag, "X", "Y")
+

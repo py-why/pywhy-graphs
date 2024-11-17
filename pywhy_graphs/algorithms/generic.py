@@ -19,6 +19,7 @@ __all__ = [
     "dag_to_mag",
     "is_maximal",
     "all_vstructures",
+    "check_visibility"
 ]
 
 
@@ -879,16 +880,21 @@ def get_all_collider_paths(G : PAG, X, Y):
     return out
 
 def check_visibility(G: PAG, X: str, Y: str):
-    X_neighbors = G.neighbors(X)
-    Y_neighbors = G.neighbors(Y)
+    
+    X_neighbors = set(G.neighbors(X))
+    Y_neighbors = set(G.neighbors(Y))
 
     only_x_neighbors = X_neighbors - Y_neighbors
 
+    
     for elem in only_x_neighbors:
         if G.has_edge(elem, X, G.directed_edge_name):
             return True
         
     all_nodes = set(G.nodes)
+
+    all_nodes.remove(X)
+
 
     candidates = all_nodes - Y_neighbors
 
