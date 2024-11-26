@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:07.367** total execution time for 6 files **from all galleries**:
+**00:08.031** total execution time for 6 files **from all galleries**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_intro_intro_causal_graphs.py` (``../examples/intro/intro_causal_graphs.py``)
-     - 00:02.350
-     - 247.8
+     - 00:02.536
+     - 248.6
    * - :ref:`sphx_glr_auto_examples_mixededge_plot_mixed_edge_graph.py` (``../examples/mixededge/plot_mixed_edge_graph.py``)
-     - 00:01.329
-     - 170.1
-   * - :ref:`sphx_glr_auto_examples_intro_checking_validity_of_a_pag.py` (``../examples/intro/checking_validity_of_a_pag.py``)
-     - 00:01.105
-     - 165.6
+     - 00:01.468
+     - 170.4
    * - :ref:`sphx_glr_auto_examples_intro_inducing_path.py` (``../examples/intro/inducing_path.py``)
-     - 00:01.101
-     - 163.9
+     - 00:01.272
+     - 164.5
+   * - :ref:`sphx_glr_auto_examples_intro_checking_validity_of_a_pag.py` (``../examples/intro/checking_validity_of_a_pag.py``)
+     - 00:01.176
+     - 166.2
    * - :ref:`sphx_glr_auto_examples_visualization_plot_timeseries_graphs.py` (``../examples/visualization/plot_timeseries_graphs.py``)
-     - 00:01.065
-     - 163.9
+     - 00:01.110
+     - 164.8
    * - :ref:`sphx_glr_auto_examples_visualization_draw_and_compare_graphs_with_same_layout.py` (``../examples/visualization/draw_and_compare_graphs_with_same_layout.py``)
-     - 00:00.418
-     - 163.9
+     - 00:00.467
+     - 164.5
