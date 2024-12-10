@@ -154,7 +154,7 @@ Mixed Edge Graph Properties
     MixedEdgeGraph named 'IV Graph' with 3 nodes and 3 edges and 2 edge types is directed: False because there are directed edges.
     False
     ['directed', 'bidirected']
-    {'directed': <networkx.classes.digraph.DiGraph object at 0x7c948b6c43d0>, 'bidirected': <networkx.classes.graph.Graph object at 0x7c93caa5df10>}
+    {'directed': <networkx.classes.digraph.DiGraph object at 0x70527bf1f010>, 'bidirected': <networkx.classes.graph.Graph object at 0x7051b8fdaf90>}
 
 
 
