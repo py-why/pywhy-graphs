@@ -16,8 +16,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -27,8 +27,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=130a53a1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
@@ -52,10 +52,11 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/intro/checking_validity_of_a_pag';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/neurodata/treeple/main/doc/_static/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <link rel="icon" href="../../_static/favicon_url.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -408,9 +409,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -533,7 +539,7 @@ To check if the constructed PAG is a valid one in pywhy-graphs, we can simply do
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
-Context(observed_variables={&#39;PSH&#39;, &#39;S&#39;, &#39;G&#39;, &#39;L&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7458092a9950&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7458092aa050&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7458092aa490&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+Context(observed_variables={&#39;I&#39;, &#39;G&#39;, &#39;L&#39;, &#39;S&#39;, &#39;PSH&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7873a52be2d0&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7873a52be9d0&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7873a52bee10&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
 True
 </pre></div>
 </div>
@@ -552,7 +558,7 @@ relationship. As such, the resulting graph is no longer a valid PAG.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
-Context(observed_variables={&#39;PSH&#39;, &#39;S&#39;, &#39;G&#39;, &#39;L&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7458090b9750&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7458090b9e50&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7458090ba290&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+Context(observed_variables={&#39;I&#39;, &#39;G&#39;, &#39;L&#39;, &#39;S&#39;, &#39;PSH&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7873a52ca450&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7873a52cab50&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7873a52caf90&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
 False
 </pre></div>
 </div>
@@ -568,7 +574,7 @@ False
 </aside>
 </aside>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.326 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.982 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  165 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-checking-validity-of-a-pag-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
@@ -639,13 +645,13 @@ False
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../../_sources/auto_examples/intro/checking_validity_of_a_pag.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/auto_examples/intro/checking_validity_of_a_pag.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -660,8 +666,8 @@ False
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -694,7 +700,8 @@ False
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
