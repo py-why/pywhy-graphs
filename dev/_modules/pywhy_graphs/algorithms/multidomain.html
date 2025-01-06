@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,17 +432,17 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.algorithms.multidomain</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes</span> <span class="kn">import</span> <span class="n">AugmentedGraph</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes</span><span class="w"> </span><span class="kn">import</span> <span class="n">AugmentedGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 
 <div class="viewcode-block" id="add_all_snode_combinations">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.add_all_snode_combinations.html#pywhy_graphs.algorithms.add_all_snode_combinations">[docs]</a>
-<span class="k">def</span> <span class="nf">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_all_snode_combinations</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add all possible S-nodes to the graph given number of domains.</span>
 
 <span class="sd">    Parameters</span>
@@ -495,7 +495,7 @@
 <span class="c1"># XXX: does not work?</span>
 <div class="viewcode-block" id="compute_invariant_domains_per_node">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.compute_invariant_domains_per_node.html#pywhy_graphs.algorithms.compute_invariant_domains_per_node">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_invariant_domains_per_node</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_invariant_domains_per_node</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">AugmentedGraph</span><span class="p">,</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">all_poss_snodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -585,13 +585,13 @@
 
 
 
-<span class="k">class</span> <span class="nc">DisjointSet</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DisjointSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper data structure to enable disjoint set.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
             <span class="k">return</span> <span class="n">x</span>
@@ -599,13 +599,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">root_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">root_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">root_x</span> <span class="o">!=</span> <span class="n">root_y</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">root_x</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_y</span>
 
-    <span class="k">def</span> <span class="nf">get_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">sets</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
             <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
@@ -617,7 +617,7 @@
 
 <div class="viewcode-block" id="find_connected_pairs">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.find_connected_pairs.html#pywhy_graphs.algorithms.find_connected_pairs">[docs]</a>
-<span class="k">def</span> <span class="nf">find_connected_pairs</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">max_number</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_connected_pairs</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">max_number</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find connected pairs of domain tuples.</span>
 
 <span class="sd">    Parameters</span>

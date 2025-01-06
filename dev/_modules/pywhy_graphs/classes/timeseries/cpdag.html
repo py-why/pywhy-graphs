@@ -29,7 +29,7 @@
   <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,21 +432,21 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.timeseries.cpdag</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">FrozenSet</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">FrozenSet</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.base</span> <span class="kn">import</span> <span class="n">AncestralMixin</span><span class="p">,</span> <span class="n">ConservativeMixin</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AncestralMixin</span><span class="p">,</span> <span class="n">ConservativeMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
-<span class="kn">from</span> <span class="nn">.digraph</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
-<span class="kn">from</span> <span class="nn">.graph</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesGraph</span>
-<span class="kn">from</span> <span class="nn">.mixededge</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesMixedEdgeGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.digraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.mixededge</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesMixedEdgeGraph</span>
 
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG">
 <a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG">[docs]</a>
-<span class="k">class</span> <span class="nc">StationaryTimeSeriesCPDAG</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StationaryTimeSeriesCPDAG</span><span class="p">(</span>
     <span class="n">StationaryTimeSeriesMixedEdgeGraph</span><span class="p">,</span> <span class="n">AncestralMixin</span><span class="p">,</span> <span class="n">ConservativeMixin</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Completed partially directed acyclic graphs (CPDAG).</span>
@@ -488,7 +488,7 @@
 <span class="sd">    One should not use CPDAGs if they suspect their data has unobserved latent confounders.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -509,7 +509,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span> <span class="o">=</span> <span class="n">directed_edge_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span> <span class="o">=</span> <span class="n">undirected_edge_name</span>
 
-        <span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">is_valid_mec_graph</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_valid_mec_graph</span>
 
         <span class="c1"># check that construction of PAG was valid</span>
         <span class="n">is_valid_mec_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -519,42 +519,42 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_unfaithful_triples</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">FrozenSet</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the undirected edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the directed edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.sub_directed_graph">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.sub_directed_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.sub_undirected_graph">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.sub_undirected_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.orient_uncertain_edge">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.orient_uncertain_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
 
 <span class="sd">        If there is an undirected edge u - v, then the arrowhead</span>
@@ -577,7 +577,7 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.possible_children">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.possible_children">[docs]</a>
-    <span class="k">def</span> <span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
 
 <span class="sd">        Children of node &#39;n&#39; are nodes with a directed</span>
@@ -603,7 +603,7 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.possible_parents">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.possible_parents">[docs]</a>
-    <span class="k">def</span> <span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over parents of node n.</span>
 
 <span class="sd">        Parents of node &#39;n&#39; are nodes with a directed</span>
@@ -629,8 +629,8 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.add_edge">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.add_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_cpdag_edge</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">_check_adding_cpdag_edge</span>
 
         <span class="n">_check_adding_cpdag_edge</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span>
@@ -640,8 +640,8 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesCPDAG.add_edges_from">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesCPDAG.add_edges_from">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_cpdag_edge</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">_check_adding_cpdag_edge</span>
 
         <span class="k">for</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span> <span class="ow">in</span> <span class="n">ebunch_to_add</span><span class="p">:</span>
             <span class="n">_check_adding_cpdag_edge</span><span class="p">(</span>

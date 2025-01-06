@@ -30,7 +30,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -486,14 +486,14 @@ by all members in the equivalence class and displaying circle endpoints for thos
 that are not common. That is, a circular endpoint (<code class="docutils literal notranslate"><span class="pre">*-o</span></code>) can represent both a directed
 (<code class="docutils literal notranslate"><span class="pre">*-&gt;</span></code>) and tail (<code class="docutils literal notranslate"><span class="pre">*—</span></code>) endpoint in causal graphs within the equivalence class.</p>
 <p>More details on PAGs can be found at <a class="footnote-reference brackets" href="#footcite-zhang2008" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pywhy_graphs</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.viz</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a>
-<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.viz</span><span class="w"> </span><span class="kn">import</span> <a href="../../generated/pywhy_graphs.viz.draw.html#pywhy_graphs.viz.draw" title="pywhy_graphs.viz.draw" class="sphx-glr-backref-module-pywhy_graphs-viz sphx-glr-backref-type-py-function"><span class="n">draw</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="kn">import</span> <a href="../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG" title="pywhy_graphs.PAG" class="sphx-glr-backref-module-pywhy_graphs sphx-glr-backref-type-py-class"><span class="n">PAG</span></a>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">dodiscover</span> <span class="kn">import</span> <span class="n">FCI</span><span class="p">,</span> <span class="n">make_context</span>
-    <span class="kn">from</span> <span class="nn">dodiscover.ci</span> <span class="kn">import</span> <span class="n">Oracle</span>
-    <span class="kn">from</span> <span class="nn">dodiscover.constraint.utils</span> <span class="kn">import</span> <span class="n">dummy_sample</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover</span><span class="w"> </span><span class="kn">import</span> <span class="n">FCI</span><span class="p">,</span> <span class="n">make_context</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover.ci</span><span class="w"> </span><span class="kn">import</span> <span class="n">Oracle</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover.constraint.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dummy_sample</span>
 <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;dodiscover&#39; package is required to convert a MAG to a PAG.&quot;</span><span class="p">)</span>
 </pre></div>
@@ -539,7 +539,7 @@ To check if the constructed PAG is a valid one in pywhy-graphs, we can simply do
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
-Context(observed_variables={&#39;PSH&#39;, &#39;I&#39;, &#39;S&#39;, &#39;G&#39;, &#39;L&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7f0909eda0d0&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7f0909eda7d0&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7f0909edac10&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+Context(observed_variables={&#39;L&#39;, &#39;G&#39;, &#39;S&#39;, &#39;PSH&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x75eb650e4f50&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x75eb650e5650&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x75eb650e5a90&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
 True
 </pre></div>
 </div>
@@ -558,7 +558,7 @@ relationship. As such, the resulting graph is no longer a valid PAG.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ConditioningSetSelection.PDS
-Context(observed_variables={&#39;PSH&#39;, &#39;I&#39;, &#39;S&#39;, &#39;G&#39;, &#39;L&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x7f0909eee490&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x7f0909eeeb90&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x7f0909eeefd0&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
+Context(observed_variables={&#39;L&#39;, &#39;G&#39;, &#39;S&#39;, &#39;PSH&#39;, &#39;I&#39;}, latent_variables=set(), state_variables={}, init_graph=&lt;networkx.classes.graph.Graph object at 0x75eb650f8e50&gt;, included_edges=&lt;networkx.classes.graph.Graph object at 0x75eb650f9550&gt;, excluded_edges=&lt;networkx.classes.graph.Graph object at 0x75eb650f9990&gt;, num_distributions=1, obs_distribution=True, intervention_targets=[], symmetric_diff_map={}, sigma_map={}, f_nodes=[], num_domains=1, domain_map={}, s_nodes=[])
 False
 </pre></div>
 </div>
@@ -574,7 +574,7 @@ False
 </aside>
 </aside>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.144 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.086 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  166 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-intro-checking-validity-of-a-pag-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">

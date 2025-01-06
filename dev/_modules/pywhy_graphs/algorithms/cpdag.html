@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,16 +432,16 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.algorithms.cpdag</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pg</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pdag_to_dag&quot;</span><span class="p">,</span> <span class="s2">&quot;dag_to_cpdag&quot;</span><span class="p">,</span> <span class="s2">&quot;pdag_to_cpdag&quot;</span><span class="p">,</span> <span class="s2">&quot;order_edges&quot;</span><span class="p">,</span> <span class="s2">&quot;label_edges&quot;</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">EDGELABELS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EDGELABELS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Edge labels for a CPDAG.&quot;&quot;&quot;</span>
 
     <span class="n">COMPELLED</span> <span class="o">=</span> <span class="s2">&quot;compelled&quot;</span>
@@ -449,7 +449,7 @@
     <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">is_clique</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nodelist</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_clique</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nodelist</span><span class="p">):</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">nodelist</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodelist</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">H</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
@@ -457,7 +457,7 @@
 
 <div class="viewcode-block" id="order_edges">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.order_edges.html#pywhy_graphs.algorithms.order_edges">[docs]</a>
-<span class="k">def</span> <span class="nf">order_edges</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">order_edges</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find total ordering of the edges of DAG G.</span>
 
 <span class="sd">    A total ordering is a topological sorting of the nodes, and then</span>
@@ -509,7 +509,7 @@
 
 <div class="viewcode-block" id="label_edges">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.label_edges.html#pywhy_graphs.algorithms.label_edges">[docs]</a>
-<span class="k">def</span> <span class="nf">label_edges</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">label_edges</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Label compelled and reversible edges of a DAG G.</span>
 
 <span class="sd">    Label the edges of a DAG G as either compelled or reversible. Compelled</span>
@@ -590,7 +590,7 @@
 
 <div class="viewcode-block" id="pdag_to_dag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pdag_to_dag.html#pywhy_graphs.algorithms.pdag_to_dag">[docs]</a>
-<span class="k">def</span> <span class="nf">pdag_to_dag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pdag_to_dag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute consistent extension of given PDAG resulting in a DAG.</span>
 
 <span class="sd">    Implements the algorithm described in Figure 11 of :footcite:`chickering2002learning`.</span>
@@ -677,7 +677,7 @@
 
 <div class="viewcode-block" id="dag_to_cpdag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.dag_to_cpdag.html#pywhy_graphs.algorithms.dag_to_cpdag">[docs]</a>
-<span class="k">def</span> <span class="nf">dag_to_cpdag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dag_to_cpdag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a DAG to a CPDAG.</span>
 
 <span class="sd">    Creates a CPDAG from a DAG.</span>
@@ -711,7 +711,7 @@
 
 <div class="viewcode-block" id="pdag_to_cpdag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pdag_to_cpdag.html#pywhy_graphs.algorithms.pdag_to_cpdag">[docs]</a>
-<span class="k">def</span> <span class="nf">pdag_to_cpdag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pdag_to_cpdag</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a PDAG to a CPDAG.</span>
 
 <span class="sd">    Parameters</span>

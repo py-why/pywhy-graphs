@@ -29,7 +29,7 @@
   <link href="../../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,12 +432,12 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.networkx.algorithms.causal.m_separation</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs.networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pywhy_nx</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;m_separated&quot;</span><span class="p">,</span> <span class="s2">&quot;minimal_m_separator&quot;</span><span class="p">,</span> <span class="s2">&quot;is_minimal_m_separator&quot;</span><span class="p">]</span>
 
@@ -446,7 +446,7 @@
 
 <div class="viewcode-block" id="m_separated">
 <a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.m_separated.html#pywhy_graphs.networkx.m_separated">[docs]</a>
-<span class="k">def</span> <span class="nf">m_separated</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">m_separated</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">x</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
@@ -614,7 +614,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_anterior</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_nodes</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_anterior</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_nodes</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="n">undirected_edge_name</span><span class="o">=</span><span class="s2">&quot;undirected&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the anterior of a set of nodes in a graph with directed and undirected edges.</span>
 
 <span class="sd">    This algorithm works through breadth-first search on mixed edge graphs with directed</span>
@@ -675,7 +675,7 @@
 
 <div class="viewcode-block" id="is_minimal_m_separator">
 <a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.is_minimal_m_separator.html#pywhy_graphs.networkx.is_minimal_m_separator">[docs]</a>
-<span class="k">def</span> <span class="nf">is_minimal_m_separator</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_minimal_m_separator</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">x</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
@@ -785,7 +785,7 @@
 
 <div class="viewcode-block" id="minimal_m_separator">
 <a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.minimal_m_separator.html#pywhy_graphs.networkx.minimal_m_separator">[docs]</a>
-<span class="k">def</span> <span class="nf">minimal_m_separator</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">minimal_m_separator</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">x</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
@@ -889,7 +889,7 @@
 
 <span class="c1"># XXX: If networkx makes the corresponding function in `d_separation.py` public, then we can</span>
 <span class="c1"># depend on that implementation</span>
-<span class="k">def</span> <span class="nf">_bfs_with_marks</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="n">check_set</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_bfs_with_marks</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="n">check_set</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Breadth-first-search with markings.</span>
 
 <span class="sd">    Performs BFS starting from ``start_node`` and whenever a node</span>

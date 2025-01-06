@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,14 +432,14 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.functional.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">to_pgmpy_bayesian_network</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_pgmpy_bayesian_network</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a discrete graph to a pgmpy Bayesian network.</span>
 
 <span class="sd">    Parameters</span>
@@ -464,7 +464,7 @@
     <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;discrete&quot;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model is not a functional model.&quot;</span><span class="p">)</span>
 
-    <span class="kn">from</span> <span class="nn">pgmpy.models</span> <span class="kn">import</span> <span class="n">BayesianNetwork</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pgmpy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BayesianNetwork</span>
 
     <span class="n">model</span> <span class="o">=</span> <span class="n">BayesianNetwork</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -472,7 +472,7 @@
     <span class="k">return</span> <span class="n">model</span>
 
 
-<span class="k">def</span> <span class="nf">pre_compute_reduce_maps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pre_compute_reduce_maps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get probability array-maps for a node as function of conditional dependencies</span>
 
@@ -521,7 +521,7 @@
     <span class="k">return</span> <span class="n">state_to_index</span><span class="p">,</span> <span class="n">index_to_weight</span>
 
 
-<span class="k">def</span> <span class="nf">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the CPD associated with a node.</span>
 
 <span class="sd">    Parameters</span>
@@ -548,14 +548,14 @@
     <span class="k">return</span> <span class="n">cpd</span>
 
 
-<span class="k">def</span> <span class="nf">get_cardinality</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pgmpy.factors.discrete</span> <span class="kn">import</span> <span class="n">TabularCPD</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cardinality</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pgmpy.factors.discrete</span><span class="w"> </span><span class="kn">import</span> <span class="n">TabularCPD</span>
 
     <span class="n">cpd</span><span class="p">:</span> <span class="n">TabularCPD</span> <span class="o">=</span> <span class="n">get_cpd</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cpd</span><span class="o">.</span><span class="n">cardinality</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">check_discrete_model</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_discrete_model</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check the model for various errors. This method checks for the following</span>
 <span class="sd">    errors.</span>
@@ -573,8 +573,8 @@
 <span class="sd">    check : boolean</span>
 <span class="sd">        True if all the checks pass otherwise should throw an error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pgmpy.factors.continuous</span> <span class="kn">import</span> <span class="n">ContinuousFactor</span>
-    <span class="kn">from</span> <span class="nn">pgmpy.factors.discrete</span> <span class="kn">import</span> <span class="n">TabularCPD</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pgmpy.factors.continuous</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContinuousFactor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pgmpy.factors.discrete</span><span class="w"> </span><span class="kn">import</span> <span class="n">TabularCPD</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;discrete&quot;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model is not a functional model.&quot;</span><span class="p">)</span>
@@ -623,7 +623,7 @@
 
 <div class="viewcode-block" id="set_node_attributes_with_G">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.set_node_attributes_with_G.html#pywhy_graphs.functional.set_node_attributes_with_G">[docs]</a>
-<span class="k">def</span> <span class="nf">set_node_attributes_with_G</span><span class="p">(</span><span class="n">G1</span><span class="p">,</span> <span class="n">G2</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_node_attributes_with_G</span><span class="p">(</span><span class="n">G1</span><span class="p">,</span> <span class="n">G2</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set node attributes in G1 using G2.</span>
 
 <span class="sd">    Parameters</span>
@@ -649,7 +649,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_preprocess_parameter_inputs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_preprocess_parameter_inputs</span><span class="p">(</span>
     <span class="n">node_mean_lims</span><span class="p">,</span>
     <span class="n">node_std_lims</span><span class="p">,</span>
     <span class="n">edge_functions</span><span class="p">,</span>
@@ -693,7 +693,7 @@
     <span class="k">return</span> <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span>
 
 
-<span class="k">def</span> <span class="nf">_preprocess_md_parameter_inputs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_preprocess_md_parameter_inputs</span><span class="p">(</span>
     <span class="n">node_mean_lims</span><span class="p">,</span> <span class="n">node_std_lims</span><span class="p">,</span> <span class="n">edge_functions</span><span class="p">,</span> <span class="n">edge_weight_lims</span><span class="p">,</span> <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to preprocess common parameter inputs for sampling functional graphs.</span>

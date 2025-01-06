@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,19 +432,19 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.export.causallearn</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.functions</span> <span class="kn">import</span> <span class="n">edge_types</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.config</span> <span class="kn">import</span> <span class="n">CLearnEndpoint</span><span class="p">,</span> <span class="n">EdgeType</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">edge_types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLearnEndpoint</span><span class="p">,</span> <span class="n">EdgeType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 
 <div class="viewcode-block" id="graph_to_clearn">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.export.graph_to_clearn.html#pywhy_graphs.export.graph_to_clearn">[docs]</a>
-<span class="k">def</span> <span class="nf">graph_to_clearn</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">graph_to_clearn</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
     <span class="c1"># define the array</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -567,7 +567,7 @@
 
 <div class="viewcode-block" id="clearn_to_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.export.clearn_to_graph.html#pywhy_graphs.export.clearn_to_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">clearn_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clearn_to_graph</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">arr_idx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">graph_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert causal-learn array to a graph object.</span>
 
 <span class="sd">    Parameters</span>
@@ -737,7 +737,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">graph_to_arr</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">graph_to_arr</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;causal-learn&quot;</span><span class="p">,</span>
     <span class="n">node_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

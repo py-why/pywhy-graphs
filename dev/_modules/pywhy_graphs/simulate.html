@@ -29,7 +29,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,19 +432,19 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.simulate</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries</span> <span class="kn">import</span> <span class="n">numpy_to_tsgraph</span><span class="p">,</span> <span class="n">tsgraph_to_numpy</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs.networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pywhy_nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes.timeseries</span><span class="w"> </span><span class="kn">import</span> <span class="n">numpy_to_tsgraph</span><span class="p">,</span> <span class="n">tsgraph_to_numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 
-<span class="k">def</span> <span class="nf">simulate_random_er_dag</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_random_er_dag</span><span class="p">(</span>
     <span class="n">n_nodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ensure_acyclic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a random Erdos-Renyi graph.</span>
@@ -482,7 +482,7 @@
     <span class="k">return</span> <span class="n">graph</span>
 
 
-<span class="k">def</span> <span class="nf">simulate_random_tsgraph</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_random_tsgraph</span><span class="p">(</span>
     <span class="n">n_variables</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">,</span> <span class="n">p_time_self</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">p_time_vars</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">p_contemporaneous</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a random time-series graph.</span>
@@ -540,7 +540,7 @@
 
 <div class="viewcode-block" id="simulate_data_from_var">
 <a class="viewcode-back" href="../../generated/pywhy_graphs.simulate.simulate_data_from_var.html#pywhy_graphs.simulate.simulate_data_from_var">[docs]</a>
-<span class="k">def</span> <span class="nf">simulate_data_from_var</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_data_from_var</span><span class="p">(</span>
     <span class="n">var_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">n_times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">n_realizations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -584,7 +584,7 @@
 <span class="sd">    ``n_realizations`` parameter instead. To generate 500 independent realizations in the</span>
 <span class="sd">    above example, one would set ``n_realizations = 500`` and ``n_times=2``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="k">if</span> <span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">var_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -629,7 +629,7 @@
 
 <div class="viewcode-block" id="simulate_linear_var_process">
 <a class="viewcode-back" href="../../generated/pywhy_graphs.simulate.simulate_linear_var_process.html#pywhy_graphs.simulate.simulate_linear_var_process">[docs]</a>
-<span class="k">def</span> <span class="nf">simulate_linear_var_process</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_linear_var_process</span><span class="p">(</span>
     <span class="n">n_variables</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">p_time_self</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="n">p_time_vars</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
@@ -727,7 +727,7 @@
 
 <div class="viewcode-block" id="simulate_var_process_from_summary_graph">
 <a class="viewcode-back" href="../../generated/pywhy_graphs.simulate.simulate_var_process_from_summary_graph.html#pywhy_graphs.simulate.simulate_var_process_from_summary_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">simulate_var_process_from_summary_graph</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_var_process_from_summary_graph</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_times</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate a VAR(max_lag) process starting from a summary graph.</span>
@@ -756,7 +756,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    Right now, it is assumed that the summary graph is just a DAG.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
     <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>

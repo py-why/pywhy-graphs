@@ -29,7 +29,7 @@
   <link href="../../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,18 +432,18 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.networkx.algorithms.causal.convert</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs.networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pywhy_nx</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;bidirected_to_unobserved_confounder&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="bidirected_to_unobserved_confounder">
 <a class="viewcode-back" href="../../../../../generated/pywhy_graphs.networkx.bidirected_to_unobserved_confounder.html#pywhy_graphs.networkx.bidirected_to_unobserved_confounder">[docs]</a>
-<span class="k">def</span> <span class="nf">bidirected_to_unobserved_confounder</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bidirected_to_unobserved_confounder</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span>
     <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span><span class="p">,</span>

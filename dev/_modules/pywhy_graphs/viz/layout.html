@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,13 +432,13 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.viz.layout</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">networkx.drawing.layout</span> <span class="kn">import</span> <span class="n">_process_params</span><span class="p">,</span> <span class="n">rescale_layout</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">networkx.drawing.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">_process_params</span><span class="p">,</span> <span class="n">rescale_layout</span>
 
 
 <div class="viewcode-block" id="timeseries_layout">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.viz.timeseries_layout.html#pywhy_graphs.viz.timeseries_layout">[docs]</a>
-<span class="k">def</span> <span class="nf">timeseries_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">3</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeseries_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">variable_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect_ratio</span><span class="o">=</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Position nodes in a time-series layout from left to right with lags as columns.</span>
 
 <span class="sd">    Parameters</span>

@@ -29,7 +29,7 @@
   <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,21 +432,21 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.timeseries.mixededge</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">TsNode</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs.networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pywhy_nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TsNode</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">tsdict</span>
-<span class="kn">from</span> <span class="nn">.digraph</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span>
-<span class="kn">from</span> <span class="nn">.graph</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesGraph</span><span class="p">,</span> <span class="n">TimeSeriesGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">tsdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.digraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesGraph</span><span class="p">,</span> <span class="n">TimeSeriesGraph</span>
 
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph">
 <a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph">[docs]</a>
-<span class="k">class</span> <span class="nc">TimeSeriesMixedEdgeGraph</span><span class="p">(</span><span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeSeriesMixedEdgeGraph</span><span class="p">(</span><span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to imbue mixed-edge graph with time-series structure.</span>
 
 <span class="sd">    This should not be used directly.</span>
@@ -462,7 +462,7 @@
     <span class="c1"># supported graph types</span>
     <span class="n">graph_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">TimeSeriesGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">max_lag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">graphs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">max_lag</span> <span class="o">==</span> <span class="n">graph</span><span class="o">.</span><span class="n">max_lag</span> <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -489,7 +489,7 @@
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.copy">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.copy">[docs]</a>
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the graph.</span>
 
 <span class="sd">        Exactly the same as :meth:`pywhy_graphs.networkx.MixedEdgeGraph.copy`,</span>
@@ -536,32 +536,32 @@
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.add_edge">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.add_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.add_edges_from">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.add_edges_from">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.remove_edge">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.remove_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
 
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.remove_edges_from">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.remove_edges_from">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">ebunch</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.add_homologous_edges">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.add_homologous_edges">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_homologous_edges</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_homologous_edges</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add homologous edges.</span>
@@ -589,7 +589,7 @@
 
 <div class="viewcode-block" id="TimeSeriesMixedEdgeGraph.remove_homologous_edges">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.html#pywhy_graphs.classes.timeseries.TimeSeriesMixedEdgeGraph.remove_homologous_edges">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_homologous_edges</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_homologous_edges</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;both&quot;</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove homologous edges.</span>
@@ -619,7 +619,7 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesMixedEdgeGraph">
 <a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesMixedEdgeGraph">[docs]</a>
-<span class="k">class</span> <span class="nc">StationaryTimeSeriesMixedEdgeGraph</span><span class="p">(</span><span class="n">TimeSeriesMixedEdgeGraph</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StationaryTimeSeriesMixedEdgeGraph</span><span class="p">(</span><span class="n">TimeSeriesMixedEdgeGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A mixed-edge causal graph for stationary time-series.</span>
 
 <span class="sd">    Parameters</span>
@@ -640,10 +640,10 @@
     <span class="c1"># supported graph types</span>
     <span class="n">graph_types</span> <span class="o">=</span> <span class="p">(</span><span class="n">StationaryTimeSeriesGraph</span><span class="p">,</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">edge_types</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_stationarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_stationarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stationary</span> <span class="o">=</span> <span class="n">stationary</span>
         <span class="k">for</span> <span class="n">graph</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">stationary</span> <span class="o">=</span> <span class="n">stationary</span></div>

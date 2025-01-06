@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,27 +432,27 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.functional.multidomain</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">add_all_snode_combinations</span><span class="p">,</span>
     <span class="n">compute_invariant_domains_per_node</span><span class="p">,</span>
     <span class="n">find_connected_pairs</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes</span> <span class="kn">import</span> <span class="n">AugmentedGraph</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.functional.utils</span> <span class="kn">import</span> <span class="n">_preprocess_parameter_inputs</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes</span><span class="w"> </span><span class="kn">import</span> <span class="n">AugmentedGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.functional.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_preprocess_parameter_inputs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
-<span class="kn">from</span> <span class="nn">.additive</span> <span class="kn">import</span> <span class="n">generate_edge_functions_for_node</span>
-<span class="kn">from</span> <span class="nn">.linear</span> <span class="kn">import</span> <span class="n">generate_noise_for_node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.additive</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_edge_functions_for_node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.linear</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_noise_for_node</span>
 
 
 <div class="viewcode-block" id="make_graph_multidomain">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.functional.make_graph_multidomain.html#pywhy_graphs.functional.make_graph_multidomain">[docs]</a>
-<span class="k">def</span> <span class="nf">make_graph_multidomain</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_graph_multidomain</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
     <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">n_nodes_with_s_nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -624,7 +624,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">generate_multidomain_noise_for_node</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_multidomain_noise_for_node</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">n_domains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -696,7 +696,7 @@
     <span class="k">return</span> <span class="n">G</span>
 
 
-<span class="k">def</span> <span class="nf">sample_multidomain_lin_functions</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample_multidomain_lin_functions</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">AugmentedGraph</span><span class="p">,</span>
     <span class="n">node_mean_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">node_std_lims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

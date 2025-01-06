@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,18 +432,18 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.pag</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">FrozenSet</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">FrozenSet</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
-<span class="kn">from</span> <span class="nn">.admg</span> <span class="kn">import</span> <span class="n">ADMG</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ConservativeMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.admg</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADMG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConservativeMixin</span>
 
 
 <div class="viewcode-block" id="PAG">
 <a class="viewcode-back" href="../../../reference/classes/index.html#pywhy_graphs.PAG">[docs]</a>
-<span class="k">class</span> <span class="nc">PAG</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">ConservativeMixin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PAG</span><span class="p">(</span><span class="n">ADMG</span><span class="p">,</span> <span class="n">ConservativeMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Partial ancestral graph (PAG).</span>
 
 <span class="sd">    PAGs are a Markov equivalence class with mixed edges of directed,</span>
@@ -556,7 +556,7 @@
 <span class="sd">        one edge in the `~.PAG.sub_circle_graph` between x and y.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">incoming_undirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -587,30 +587,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_unfaithful_triples</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">FrozenSet</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># check that construction of PAG was valid</span>
-        <span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">is_valid_mec_graph</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_valid_mec_graph</span>
 
         <span class="n">is_valid_mec_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">circle_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circle_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the circle edge subgraph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circle_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">circle_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circle_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the circle edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
 <div class="viewcode-block" id="PAG.sub_circle_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.sub_circle_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_circle_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_circle_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the circle edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle_edge_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PAG.orient_uncertain_edge">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.orient_uncertain_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orient_uncertain_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Orient undirected edge into an arrowhead.</span>
 
 <span class="sd">        If there is an undirected edge u - v, then the arrowhead</span>
@@ -653,7 +653,7 @@
 
 <div class="viewcode-block" id="PAG.possible_children">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_children">[docs]</a>
-    <span class="k">def</span> <span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">possible_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over children of node n.</span>
 
 <span class="sd">        Possible children of &#39;n&#39; are nodes with an edge like</span>
@@ -681,7 +681,7 @@
 
 <div class="viewcode-block" id="PAG.possible_parents">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.possible_parents">[docs]</a>
-    <span class="k">def</span> <span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">possible_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an iterator over possible parents of node n.</span>
 
 <span class="sd">        Possible parents of &#39;n&#39; are nodes with an edge like</span>
@@ -709,7 +709,7 @@
 
 <div class="viewcode-block" id="PAG.parents">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.parents">[docs]</a>
-    <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite parents of node &#39;n&#39; in a PAG.</span>
 
 <span class="sd">        Definite parents are parents of node &#39;n&#39; with only</span>
@@ -742,7 +742,7 @@
 
 <div class="viewcode-block" id="PAG.children">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.children">[docs]</a>
-    <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the definite children of node &#39;n&#39; in a PAG.</span>
 
 <span class="sd">        Definite children are children of node &#39;n&#39; with only</span>
@@ -775,8 +775,8 @@
 
 <div class="viewcode-block" id="PAG.add_edge">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
 
         <span class="n">_check_adding_pag_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="o">=</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="o">=</span><span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="o">=</span><span class="n">edge_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
@@ -784,8 +784,8 @@
 
 <div class="viewcode-block" id="PAG.add_edges_from">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.PAG.html#pywhy_graphs.PAG.add_edges_from">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_edges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ebunch_to_add</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">_check_adding_pag_edge</span>
 
         <span class="k">for</span> <span class="n">u_of_edge</span><span class="p">,</span> <span class="n">v_of_edge</span> <span class="ow">in</span> <span class="n">ebunch_to_add</span><span class="p">:</span>
             <span class="n">_check_adding_pag_edge</span><span class="p">(</span>

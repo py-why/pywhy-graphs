@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,18 +432,18 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.admg</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Set</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Set</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs.networkx</span> <span class="k">as</span> <span class="nn">pywhy_nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs.networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pywhy_nx</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">AncestralMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AncestralMixin</span>
 
 
 <div class="viewcode-block" id="ADMG">
 <a class="viewcode-back" href="../../../reference/classes/index.html#pywhy_graphs.ADMG">[docs]</a>
-<span class="k">class</span> <span class="nc">ADMG</span><span class="p">(</span><span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">AncestralMixin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ADMG</span><span class="p">(</span><span class="n">pywhy_nx</span><span class="o">.</span><span class="n">MixedEdgeGraph</span><span class="p">,</span> <span class="n">AncestralMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Acyclic directed mixed graph (ADMG).</span>
 
 <span class="sd">    A causal graph with two different edge types: bidirected and traditional</span>
@@ -507,7 +507,7 @@
 <span class="sd">    that multiple types of edges between the same pairs of nodes are possible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">incoming_directed_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">incoming_bidirected_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -530,23 +530,23 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not a DAG, which it should be.&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">undirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the undirected edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">directed_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the directed edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bidirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bidirected_edge_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the bidirected edge internal graph.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span>
 
 <div class="viewcode-block" id="ADMG.c_components">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.c_components">[docs]</a>
-    <span class="k">def</span> <span class="nf">c_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Set</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">c_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Set</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate confounded components of the graph.</span>
 
 <span class="sd">        Note the trivial c-component of a node without bidirected</span>
@@ -561,37 +561,37 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bidirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bidirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the bidirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">undirected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">directed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``EdgeView`` of the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_graphs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span><span class="o">.</span><span class="n">edges</span>
 
 <div class="viewcode-block" id="ADMG.sub_directed_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_directed_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_directed_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the directed edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directed_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ADMG.sub_bidirected_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_bidirected_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_bidirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_bidirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the bidirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bidirected_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ADMG.sub_undirected_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.ADMG.html#pywhy_graphs.ADMG.sub_undirected_graph">[docs]</a>
-    <span class="k">def</span> <span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sub_undirected_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sub-graph of just the undirected edges.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_undirected_name</span><span class="p">)</span></div>
 </div>

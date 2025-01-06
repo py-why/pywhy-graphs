@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,10 +432,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.algorithms.semi_directed_paths</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">EdgeType</span>
-<span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EdgeType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;is_semi_directed_path&quot;</span><span class="p">,</span>
@@ -443,13 +443,13 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_empty_generator</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_empty_generator</span><span class="p">():</span>
     <span class="k">yield from</span> <span class="p">()</span>
 
 
 <div class="viewcode-block" id="is_semi_directed_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.semi_directed_paths.is_semi_directed_path.html#pywhy_graphs.algorithms.is_semi_directed_path">[docs]</a>
-<span class="k">def</span> <span class="nf">is_semi_directed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_semi_directed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if and only if `nodes` form a semi-directed path in `G`.</span>
 
 <span class="sd">    A *semi-directed path* in a graph is a nonempty sequence of nodes in which</span>
@@ -511,7 +511,7 @@
 
 <div class="viewcode-block" id="all_semi_directed_paths">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.semi_directed_paths.all_semi_directed_paths.html#pywhy_graphs.algorithms.all_semi_directed_paths">[docs]</a>
-<span class="k">def</span> <span class="nf">all_semi_directed_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">all_semi_directed_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate all semi-directed paths from source to target in G.</span>
 
 <span class="sd">    A semi-directed path is a path from ``source`` to ``target`` in that</span>
@@ -571,7 +571,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_all_semi_directed_paths_graph</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_all_semi_directed_paths_graph</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">directed_edge_name</span><span class="o">=</span><span class="s2">&quot;directed&quot;</span><span class="p">,</span> <span class="n">bidirected_edge_name</span><span class="o">=</span><span class="s2">&quot;bidirected&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See networkx&#39;s all_simple_paths function.</span>

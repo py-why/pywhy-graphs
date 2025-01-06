@@ -29,7 +29,7 @@
   <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,18 +432,18 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.timeseries.functions</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries</span> <span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes.timeseries</span><span class="w"> </span><span class="kn">import</span> <span class="n">StationaryTimeSeriesDiGraph</span><span class="p">,</span> <span class="n">TimeSeriesDiGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
 
 
 <div class="viewcode-block" id="nodes_in_time_order">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.nodes_in_time_order.html#pywhy_graphs.classes.timeseries.nodes_in_time_order">[docs]</a>
-<span class="k">def</span> <span class="nf">nodes_in_time_order</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nodes_in_time_order</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return nodes from G in time order starting from max-lag to t=0.</span>
 
 <span class="sd">    Parameters</span>
@@ -459,7 +459,7 @@
 
 <div class="viewcode-block" id="complete_ts_graph">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.complete_ts_graph.html#pywhy_graphs.classes.timeseries.complete_ts_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">complete_ts_graph</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">complete_ts_graph</span><span class="p">(</span>
     <span class="n">variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span>
     <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">include_contemporaneous</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -517,7 +517,7 @@
 
 <div class="viewcode-block" id="empty_ts_graph">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.empty_ts_graph.html#pywhy_graphs.classes.timeseries.empty_ts_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">empty_ts_graph</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">StationaryTimeSeriesDiGraph</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">empty_ts_graph</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">StationaryTimeSeriesDiGraph</span><span class="p">):</span>
     <span class="n">G</span> <span class="o">=</span> <span class="n">create_using</span><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
         <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">((</span><span class="n">node</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -527,7 +527,7 @@
 
 <div class="viewcode-block" id="get_summary_graph">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.get_summary_graph.html#pywhy_graphs.classes.timeseries.get_summary_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">get_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">include_self_loops</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">include_self_loops</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the summary graph from a time-series graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -566,7 +566,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">get_extended_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">TimeSeriesDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_extended_summary_graph</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">TimeSeriesDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the extended summary graph from a ts-graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -610,7 +610,7 @@
 
 <div class="viewcode-block" id="has_homologous_edges">
 <a class="viewcode-back" href="../../../../generated/pywhy_graphs.classes.timeseries.has_homologous_edges.html#pywhy_graphs.classes.timeseries.has_homologous_edges">[docs]</a>
-<span class="k">def</span> <span class="nf">has_homologous_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_homologous_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether the graph contains all homologous edges for (u, v).</span>
 
 <span class="sd">    Parameters</span>

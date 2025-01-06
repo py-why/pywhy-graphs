@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,22 +432,22 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.algorithms.pag</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">permutations</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">permutations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.algorithms.generic</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.algorithms.generic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">has_adc</span><span class="p">,</span>
     <span class="n">inducing_path</span><span class="p">,</span>
     <span class="n">single_source_shortest_mixed_path</span><span class="p">,</span>
     <span class="n">valid_mag</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pywhy_graphs.typing</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TsNode</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
 
@@ -468,7 +468,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_possibly_directed</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_possibly_directed</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that edge is possibly directed.</span>
 
 <span class="sd">    A possibly directed edge is one of the form:</span>
@@ -514,7 +514,7 @@
 
 <div class="viewcode-block" id="possible_ancestors">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.possible_ancestors.html#pywhy_graphs.algorithms.possible_ancestors">[docs]</a>
-<span class="k">def</span> <span class="nf">possible_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">possible_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Possible ancestors of a source node.</span>
 
 <span class="sd">    Parameters</span>
@@ -538,7 +538,7 @@
 
 <div class="viewcode-block" id="possible_descendants">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.possible_descendants.html#pywhy_graphs.algorithms.possible_descendants">[docs]</a>
-<span class="k">def</span> <span class="nf">possible_descendants</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">possible_descendants</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Possible descendants of a source node.</span>
 
 <span class="sd">    Parameters</span>
@@ -560,7 +560,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">is_definite_collider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_definite_collider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite collider.</span>
 
 <span class="sd">    I.e. node1 *-&gt; node2 &lt;-* node3.</span>
@@ -593,7 +593,7 @@
 
 <div class="viewcode-block" id="is_definite_noncollider">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.is_definite_noncollider.html#pywhy_graphs.algorithms.is_definite_noncollider">[docs]</a>
-<span class="k">def</span> <span class="nf">is_definite_noncollider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_definite_noncollider</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node3</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if &lt;node1, node2, node3&gt; path forms a definite non-collider.</span>
 
 <span class="sd">    Definite noncolliders have the form:</span>
@@ -638,7 +638,7 @@
 
 <div class="viewcode-block" id="discriminating_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.discriminating_path.html#pywhy_graphs.algorithms.discriminating_path">[docs]</a>
-<span class="k">def</span> <span class="nf">discriminating_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">discriminating_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the discriminating path for &lt;..., a, u, c&gt;.</span>
@@ -783,7 +783,7 @@
 
 <div class="viewcode-block" id="uncovered_pd_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.uncovered_pd_path.html#pywhy_graphs.algorithms.uncovered_pd_path">[docs]</a>
-<span class="k">def</span> <span class="nf">uncovered_pd_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">uncovered_pd_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">c</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -969,7 +969,7 @@
 
 <div class="viewcode-block" id="pds">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds.html#pywhy_graphs.algorithms.pds">[docs]</a>
-<span class="k">def</span> <span class="nf">pds</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pds</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all PDS sets between node_x and node_y.</span>
@@ -1128,7 +1128,7 @@
 
 <div class="viewcode-block" id="pds_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_path.html#pywhy_graphs.algorithms.pds_path">[docs]</a>
-<span class="k">def</span> <span class="nf">pds_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pds_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">max_path_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the possibly-d-separating set path.</span>
@@ -1189,7 +1189,7 @@
 
 <div class="viewcode-block" id="pds_t">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_t.html#pywhy_graphs.algorithms.pds_t">[docs]</a>
-<span class="k">def</span> <span class="nf">pds_t</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pds_t</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
     <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
     <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
@@ -1249,7 +1249,7 @@
 
 <div class="viewcode-block" id="pds_t_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pds_t_path.html#pywhy_graphs.algorithms.pds_t_path">[docs]</a>
-<span class="k">def</span> <span class="nf">pds_t_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pds_t_path</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">StationaryTimeSeriesPAG</span><span class="p">,</span>
     <span class="n">node_x</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
     <span class="n">node_y</span><span class="p">:</span> <span class="n">TsNode</span><span class="p">,</span>
@@ -1308,7 +1308,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">definite_m_separated</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">definite_m_separated</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">x</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
@@ -1370,7 +1370,7 @@
     <span class="c1"># this proceeds by first removing unnecessary nodes</span>
 
 
-<span class="k">def</span> <span class="nf">_check_ts_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_ts_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;All nodes in time series DAG must be a 2-tuple of the form (&lt;node&gt;, &lt;lag&gt;). &quot;</span>
@@ -1380,7 +1380,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All lag points should be 0, or less. You passed in </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_meek_rules</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_meek_rules</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Orient edges in a skeleton graph to estimate the causal DAG, or CPDAG.</span>
 <span class="sd">    These are known as the Meek rules :footcite:`Meek1995`. They are deterministic</span>
 <span class="sd">    in the sense that they are logical characterizations of what edges must be</span>
@@ -1423,7 +1423,7 @@
             <span class="k">break</span>
 
 
-<span class="k">def</span> <span class="nf">_meek_rule1</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_meek_rule1</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rule 1 of Meek&#39;s rules.</span>
 <span class="sd">    Looks for i - j such that k -&gt; i, such that (k,i,j)</span>
 <span class="sd">    is an unshielded triple. Then can orient i - j as i -&gt; j.</span>
@@ -1450,7 +1450,7 @@
     <span class="k">return</span> <span class="n">added_arrows</span>
 
 
-<span class="k">def</span> <span class="nf">_meek_rule2</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_meek_rule2</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rule 2 of Meek&#39;s rules.</span>
 <span class="sd">    Check for i - j, and then looks for i -&gt; k -&gt; j</span>
 <span class="sd">    triple, to orient i - j as i -&gt; j.</span>
@@ -1488,7 +1488,7 @@
     <span class="k">return</span> <span class="n">added_arrows</span>
 
 
-<span class="k">def</span> <span class="nf">_meek_rule3</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_meek_rule3</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rule 3 of Meek&#39;s rules.</span>
 <span class="sd">    Check for i - j, and then looks for k -&gt; j &lt;- l</span>
 <span class="sd">    collider, and i - k and i - l, then orient i -&gt; j.</span>
@@ -1529,7 +1529,7 @@
     <span class="k">return</span> <span class="n">added_arrows</span>
 
 
-<span class="k">def</span> <span class="nf">_meek_rule4</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_meek_rule4</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rule 4 of Meek&#39;s rules.</span>
 <span class="sd">    Check for i - j, and then looks for i - k -&gt; l -&gt; j, to orient i - j as i -&gt; j.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1576,7 +1576,7 @@
 
 <div class="viewcode-block" id="pag_to_mag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.pag_to_mag.html#pywhy_graphs.algorithms.pag_to_mag">[docs]</a>
-<span class="k">def</span> <span class="nf">pag_to_mag</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pag_to_mag</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample a MAG from a PAG using Zhang&#39;s algorithm.</span>
 
 <span class="sd">     Using the algorithm defined in Theorem 2 of :footcite:`Zhang2008`, which turns all</span>
@@ -1652,7 +1652,7 @@
 
 <div class="viewcode-block" id="check_pag_definition">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.check_pag_definition.html#pywhy_graphs.algorithms.check_pag_definition">[docs]</a>
-<span class="k">def</span> <span class="nf">check_pag_definition</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_pag_definition</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the provided graph is a valid Partial Ancestral Graph (PAG).</span>
 
 <span class="sd">    A valid PAG as defined in :footcite:`Zhang2008` is a mixed edge graph that</span>
@@ -1743,7 +1743,7 @@
 
 <div class="viewcode-block" id="mag_to_pag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.mag_to_pag.html#pywhy_graphs.algorithms.mag_to_pag">[docs]</a>
-<span class="k">def</span> <span class="nf">mag_to_pag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mag_to_pag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the provided mag into a pag using the FCI algorithm.</span>
 
 <span class="sd">    The FCI algorithms, as defined in :footcite:`Zhang2008` is a provably</span>
@@ -1761,9 +1761,9 @@
 <span class="sd">        The PAG constructed from the MAG.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">dodiscover</span> <span class="kn">import</span> <span class="n">FCI</span><span class="p">,</span> <span class="n">make_context</span>
-        <span class="kn">from</span> <span class="nn">dodiscover.ci</span> <span class="kn">import</span> <span class="n">Oracle</span>
-        <span class="kn">from</span> <span class="nn">dodiscover.constraint.utils</span> <span class="kn">import</span> <span class="n">dummy_sample</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover</span><span class="w"> </span><span class="kn">import</span> <span class="n">FCI</span><span class="p">,</span> <span class="n">make_context</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover.ci</span><span class="w"> </span><span class="kn">import</span> <span class="n">Oracle</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dodiscover.constraint.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dummy_sample</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;dodiscover&#39; package is required to convert a MAG to a PAG.&quot;</span><span class="p">)</span>
 
@@ -1778,7 +1778,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_check_pag_edges_are_equal</span><span class="p">(</span><span class="n">G1</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">G2</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_pag_edges_are_equal</span><span class="p">(</span><span class="n">G1</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">G2</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the two provided PAGs are equivalent or not.</span>
 
 <span class="sd">    This function compares the edges in both the graphs to determine</span>
@@ -1819,7 +1819,7 @@
 
 <div class="viewcode-block" id="valid_pag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.valid_pag.html#pywhy_graphs.algorithms.valid_pag">[docs]</a>
-<span class="k">def</span> <span class="nf">valid_pag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">valid_pag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">PAG</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the provided PAG is valid or not.</span>
 
 <span class="sd">    The function applies Theorem 2 from :footcite:`Zhang2008`, which constitutes</span>

@@ -29,7 +29,7 @@
   <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,14 +432,14 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.classes.timeseries.digraph</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs.classes.timeseries.base</span> <span class="kn">import</span> <span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">TsGraphEdgeMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs.classes.timeseries.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">TsGraphEdgeMixin</span>
 
 
 <div class="viewcode-block" id="TimeSeriesDiGraph">
 <a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.TimeSeriesDiGraph">[docs]</a>
-<span class="k">class</span> <span class="nc">TimeSeriesDiGraph</span><span class="p">(</span><span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">TsGraphEdgeMixin</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeSeriesDiGraph</span><span class="p">(</span><span class="n">BaseTimeSeriesGraph</span><span class="p">,</span> <span class="n">TsGraphEdgeMixin</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to imbue directed graph with time-series structure.</span>
 
 <span class="sd">    See ``BaseTimeSeriesGraph`` for documentation on the</span>
@@ -452,7 +452,7 @@
     <span class="c1"># whether to check for valid time-directionality in edges</span>
     <span class="n">check_time_direction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incoming_graph_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incoming_graph_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">max_lag</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max lag for time series graph should be at least 1, not </span><span class="si">{</span><span class="n">max_lag</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">max_lag</span><span class="o">=</span><span class="n">max_lag</span><span class="p">))</span>
@@ -479,7 +479,7 @@
 
 <div class="viewcode-block" id="StationaryTimeSeriesDiGraph">
 <a class="viewcode-back" href="../../../../reference/classes/index.html#pywhy_graphs.classes.timeseries.StationaryTimeSeriesDiGraph">[docs]</a>
-<span class="k">class</span> <span class="nc">StationaryTimeSeriesDiGraph</span><span class="p">(</span><span class="n">TimeSeriesDiGraph</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StationaryTimeSeriesDiGraph</span><span class="p">(</span><span class="n">TimeSeriesDiGraph</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stationary time-series directed graph.</span>
 
 <span class="sd">    A stationary graph is one where lagged edges repeat themselves</span>
@@ -528,7 +528,7 @@
     <span class="c1"># whether or not the graph should be assumed to be stationary</span>
     <span class="n">stationary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">incoming_graph_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>

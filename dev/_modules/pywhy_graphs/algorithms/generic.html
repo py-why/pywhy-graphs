@@ -29,7 +29,7 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,15 +432,15 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.algorithms.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">from</span> <span class="nn">pywhy_graphs</span> <span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesCPDAG</span><span class="p">,</span> <span class="n">StationaryTimeSeriesPAG</span>
 
-<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">EdgeType</span>
-<span class="kn">from</span> <span class="nn">..typing</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EdgeType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;single_source_shortest_mixed_path&quot;</span><span class="p">,</span>
@@ -457,7 +457,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">is_node_common_cause</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_node_common_cause</span><span class="p">(</span>
     <span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">exclude_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a node is a common cause within the graph.</span>
@@ -489,7 +489,7 @@
     <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">set_nodes_as_latent_confounders</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">ADMG</span><span class="p">],</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ADMG</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_nodes_as_latent_confounders</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">ADMG</span><span class="p">],</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ADMG</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set nodes as latent unobserved confounders.</span>
 
 <span class="sd">    Note that this only works if the original node is a common cause</span>
@@ -552,7 +552,7 @@
 
 <div class="viewcode-block" id="is_valid_mec_graph">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.is_valid_mec_graph.html#pywhy_graphs.algorithms.is_valid_mec_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">is_valid_mec_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_valid_mec_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check G is a valid PAG.</span>
 
 <span class="sd">    A valid CPDAG/PAG is one where each pair of nodes have</span>
@@ -590,7 +590,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_check_adding_cpdag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_adding_cpdag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">CPDAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
 
 <span class="sd">    Parameters</span>
@@ -629,7 +629,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_check_adding_pag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_adding_pag_edge</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">PAG</span><span class="p">,</span> <span class="n">u_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">v_of_edge</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">edge_type</span><span class="p">:</span> <span class="n">EdgeType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check compatibility among internal graphs when adding an edge of a certain type.</span>
 
 <span class="sd">    Parameters</span>
@@ -683,7 +683,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">single_source_shortest_mixed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">single_source_shortest_mixed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute shortest mixed-edge path between source and all other nodes.</span>
 
 <span class="sd">    Parameters</span>
@@ -725,7 +725,7 @@
     <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">nx</span><span class="o">.</span><span class="n">NodeNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> not in G&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">join</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span>
 
     <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -738,7 +738,7 @@
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nextlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">firstlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_single_shortest_path_early_stop</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">firstlevel</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">valid_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return shortest paths.</span>
 
 <span class="sd">    Shortest Path helper function.</span>
@@ -782,7 +782,7 @@
     <span class="k">return</span> <span class="n">paths</span>
 
 
-<span class="k">def</span> <span class="nf">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_directed_sub_graph_ancestors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the ancestors of a node in the directed subgraph.</span>
 
 <span class="sd">    Parameters</span>
@@ -801,7 +801,7 @@
     <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">ancestors</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">(),</span> <span class="n">node</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_directed_sub_graph_parents</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the parents of a node in the directed subgraph.</span>
 
 <span class="sd">    Parameters</span>
@@ -820,7 +820,7 @@
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sub_directed_graph</span><span class="p">()</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_bidirected_sub_graph_neighbors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds the neighbors of a node in the bidirected subgraph.</span>
 
 <span class="sd">    Parameters</span>
@@ -843,7 +843,7 @@
     <span class="k">return</span> <span class="n">bidirected_parents</span>
 
 
-<span class="k">def</span> <span class="nf">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_collider</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">cur_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the given node is a collider or not.</span>
 
 <span class="sd">    Parameters</span>
@@ -871,7 +871,7 @@
     <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_shortest_valid_path</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_shortest_valid_path</span><span class="p">(</span>
     <span class="n">G</span><span class="p">,</span>
     <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -963,7 +963,7 @@
 
 <div class="viewcode-block" id="inducing_path">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.inducing_path.html#pywhy_graphs.algorithms.inducing_path">[docs]</a>
-<span class="k">def</span> <span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">inducing_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node_x</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node_y</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if an inducing path exists between two nodes.</span>
 
 <span class="sd">    An inducing path is defined in :footcite:`Zhang2008`.</span>
@@ -1059,7 +1059,7 @@
 
 <div class="viewcode-block" id="has_adc">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.has_adc.html#pywhy_graphs.algorithms.has_adc">[docs]</a>
-<span class="k">def</span> <span class="nf">has_adc</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_adc</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a graph has an almost directed cycle (adc).</span>
 
 <span class="sd">    An almost directed cycle is a is a directed cycle containing</span>
@@ -1095,7 +1095,7 @@
 
 <div class="viewcode-block" id="valid_mag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.valid_mag.html#pywhy_graphs.algorithms.valid_mag">[docs]</a>
-<span class="k">def</span> <span class="nf">valid_mag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">valid_mag</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the provided graph is a valid maximal ancestral graph (MAG).</span>
 
 <span class="sd">    A valid MAG as defined in :footcite:`Zhang2008` is a mixed edge graph that</span>
@@ -1162,7 +1162,7 @@
 
 <div class="viewcode-block" id="dag_to_mag">
 <a class="viewcode-back" href="../../../generated/pywhy_graphs.algorithms.dag_to_mag.html#pywhy_graphs.algorithms.dag_to_mag">[docs]</a>
-<span class="k">def</span> <span class="nf">dag_to_mag</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dag_to_mag</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a DAG to a valid MAG.</span>
 
 <span class="sd">    The algorithm is defined in :footcite:`Zhang2008` on page 1877.</span>
@@ -1239,7 +1239,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">is_maximal</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_maximal</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks to see if the graph is maximal.</span>
 
 <span class="sd">    Parameters:</span>
@@ -1277,7 +1277,7 @@
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">all_vstructures</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">as_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">all_vstructures</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">as_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate all v-structures in the graph.</span>
 
 <span class="sd">    Parameters</span>
@@ -1307,7 +1307,7 @@
     <span class="k">return</span> <span class="n">vstructs</span>
 
 
-<span class="k">def</span> <span class="nf">_check_back_arrow</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_back_arrow</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">ADMG</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve all the neigbors of X that do not have</span>
 <span class="sd">    an arrow pointing back to it.</span>
 
@@ -1336,7 +1336,7 @@
     <span class="k">return</span> <span class="n">out</span>
 
 
-<span class="k">def</span> <span class="nf">_get_neighbors_of_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_neighbors_of_set</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve all the neigbors of X when X has more than one element.</span>
 
 <span class="sd">    Note that if X is not a set, graph.neighbors(X) is sufficient.</span>
@@ -1369,7 +1369,7 @@
     <span class="k">return</span> <span class="n">out</span>
 
 
-<span class="k">def</span> <span class="nf">_recursively_find_pd_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_recursively_find_pd_paths</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively finds all the possibly directed paths for a given</span>
 <span class="sd">    graph.</span>
 
@@ -1432,7 +1432,7 @@
     <span class="k">return</span> <span class="n">new_paths</span>
 
 
-<span class="k">def</span> <span class="nf">proper_possibly_directed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">],</span> <span class="n">Y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">proper_possibly_directed_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">],</span> <span class="n">Y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all the proper possibly directed paths in a graph. A proper possibly directed</span>
 <span class="sd">    path from X to Y is a set of edges with just the first node in X and none of the edges</span>
 <span class="sd">    with an arrow pointing back to X.</span>

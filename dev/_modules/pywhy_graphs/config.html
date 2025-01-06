@@ -29,7 +29,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -432,14 +432,14 @@
                 <article class="bd-article">
                   
   <h1>Source code for pywhy_graphs.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">op</span>
-<span class="kn">import</span> <span class="nn">platform</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">EnumMeta</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">op</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">EnumMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># internal edge type to value mapping for numpy array representation</span>
 <span class="n">EDGE_TO_VALUE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
@@ -452,10 +452,10 @@
 <span class="n">VALUE_TO_EDGE_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="n">val</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">EDGE_TO_VALUE_MAPPING</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
 
-<span class="k">class</span> <span class="nc">MetaEnum</span><span class="p">(</span><span class="n">EnumMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MetaEnum</span><span class="p">(</span><span class="n">EnumMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Meta enumeration to make &#39;in&#39; keyword work.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -463,11 +463,11 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="c1"># Prints out the name of the type</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
 
-<span class="k">class</span> <span class="nc">EdgeType</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EdgeType</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of different causal edge endpoints.</span>
 
 <span class="sd">    Categories</span>
@@ -502,7 +502,7 @@
     <span class="n">UNDIRECTED</span> <span class="o">=</span> <span class="s2">&quot;undirected&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">TetradEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TetradEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of tetrad endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">TAIL</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
@@ -510,7 +510,7 @@
     <span class="n">CIRCLE</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">PCAlgPAGEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PCAlgPAGEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of pcalg PAG endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">NULL</span> <span class="o">=</span> <span class="mi">0</span>
@@ -519,7 +519,7 @@
     <span class="n">TAIL</span> <span class="o">=</span> <span class="mi">3</span>
 
 
-<span class="k">class</span> <span class="nc">PCAlgCPDAGEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PCAlgCPDAGEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of pcalg CPDAG endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">NULL</span> <span class="o">=</span> <span class="mi">0</span>
@@ -532,7 +532,7 @@
 <span class="c1"># &#39;TAIL_AND_ARROW&#39; and &#39;ARROW_AND_ARROW&#39; means there are two types of edges (&lt;-&gt; and --&gt;)</span>
 <span class="c1"># between two nodes.</span>
 <span class="c1"># &#39;TAIL_AND_TAIL&#39; means there are two types of edges with two tails ending on this endpoint</span>
-<span class="k">class</span> <span class="nc">CLearnEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CLearnEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of causal-learn endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">TAIL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -545,7 +545,7 @@
     <span class="n">TAIL_AND_TAIL</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># added by pywhy.</span>
 
 
-<span class="k">class</span> <span class="nc">TigramiteEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TigramiteEndpoint</span><span class="p">(</span><span class="n">Enum</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of causal-learn endpoints.&quot;&quot;&quot;</span>
 
     <span class="n">TAIL</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
@@ -562,16 +562,16 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">_pl</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">non_pl</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pl</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">non_pl</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine if plural should be used.&quot;&quot;&quot;</span>
     <span class="n">len_x</span> <span class="o">=</span> <span class="n">x</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">generic</span><span class="p">))</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">non_pl</span> <span class="k">if</span> <span class="n">len_x</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">pl</span>
 
 
-<span class="k">def</span> <span class="nf">_get_numpy_libs</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_numpy_libs</span><span class="p">():</span>
     <span class="n">bad_lib</span> <span class="o">=</span> <span class="s2">&quot;unknown linalg bindings&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">threadpoolctl</span> <span class="kn">import</span> <span class="n">threadpool_info</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">threadpoolctl</span><span class="w"> </span><span class="kn">import</span> <span class="n">threadpool_info</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">bad_lib</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; (threadpoolctl module not found: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">)&quot;</span>
     <span class="n">pools</span> <span class="o">=</span> <span class="n">threadpool_info</span><span class="p">()</span>
@@ -591,7 +591,7 @@
 
 <div class="viewcode-block" id="sys_info">
 <a class="viewcode-back" href="../../generated/pywhy_graphs.sys_info.html#pywhy_graphs.sys_info">[docs]</a>
-<span class="k">def</span> <span class="nf">sys_info</span><span class="p">(</span><span class="n">fid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_paths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sys_info</span><span class="p">(</span><span class="n">fid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_paths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Print the system information for debugging.</span>
 
 <span class="sd">    This function is useful for printing system information</span>
@@ -655,14 +655,14 @@
     <span class="n">out</span><span class="p">(</span><span class="s2">&quot;Executable:&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">ljust</span><span class="p">)</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">out</span><span class="p">(</span><span class="s2">&quot;CPU:&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">ljust</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">()</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">multiprocessing</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">out</span><span class="p">(</span><span class="s2">&quot;number of processors unavailable &quot;</span> <span class="s1">&#39;(requires &quot;multiprocessing&quot; package)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span><span class="si">}</span><span class="s2"> cores</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">out</span><span class="p">(</span><span class="s2">&quot;Memory:&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">ljust</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">psutil</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">out</span><span class="p">(</span><span class="s1">&#39;Unavailable (requires &quot;psutil&quot; package)&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>

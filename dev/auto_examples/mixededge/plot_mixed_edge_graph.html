@@ -30,7 +30,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -493,10 +493,10 @@ confounder.</p></li>
 <p>This would type of mixed-edge graph with two internal graphs: a <code class="docutils literal notranslate"><span class="pre">nx.DiGraph</span></code>
 to represent the directed edges, and a <code class="docutils literal notranslate"><span class="pre">nx.Graph</span></code> to represent the bidirected
 edges.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="kn">import</span> <span class="nn">pywhy_graphs</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywhy_graphs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pg</span>
 </pre></div>
 </div>
 <section id="construct-a-mixededgegraph">
@@ -559,7 +559,7 @@ by composing networkx graphs.</p>
 MixedEdgeGraph named &#39;IV Graph&#39; with 3 nodes and 3 edges and 2 edge types is directed: False because there are directed edges.
 False
 [&#39;directed&#39;, &#39;bidirected&#39;]
-{&#39;directed&#39;: &lt;networkx.classes.digraph.DiGraph object at 0x7f09085ed2d0&gt;, &#39;bidirected&#39;: &lt;networkx.classes.graph.Graph object at 0x7f08481a5110&gt;}
+{&#39;directed&#39;: &lt;networkx.classes.digraph.DiGraph object at 0x75eb643db710&gt;, &#39;bidirected&#39;: &lt;networkx.classes.graph.Graph object at 0x75ea9a1546d0&gt;}
 </pre></div>
 </div>
 </section>
@@ -583,7 +583,7 @@ False
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Graph has node A: </span><span class="si">{</span><a href="../../generated/pywhy_graphs.networkx.MixedEdgeGraph.html#pywhy_graphs.networkx.MixedEdgeGraph.has_node" title="pywhy_graphs.networkx.MixedEdgeGraph.has_node" class="sphx-glr-backref-module-pywhy_graphs-networkx sphx-glr-backref-type-py-method"><span class="n">G</span><span class="o">.</span><span class="n">has_node</span></a><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>MixedEdgeGraph named &#39;IV Graph&#39; with 3 nodes and 3 edges and 2 edge types has nodes: [&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>MixedEdgeGraph named &#39;IV Graph&#39; with 3 nodes and 3 edges and 2 edge types has nodes: [&#39;Y&#39;, &#39;X&#39;, &#39;Z&#39;]
 Graph has node A: False
 Now graph has node A: True
 Graph has node A: False
@@ -665,7 +665,7 @@ directed with degree: [(&#39;X&#39;, 2), (&#39;Y&#39;, 1), (&#39;Z&#39;, 1)]
 bidirected with degree: [(&#39;X&#39;, 1), (&#39;Y&#39;, 1), (&#39;Z&#39;, 0)]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.365 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.385 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  170 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-mixededge-plot-mixed-edge-graph-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
